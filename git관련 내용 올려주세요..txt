@@ -1,0 +1,4 @@
+지라 commit message 연동
+git commit -m "#이슈번호 내용"
+ex) git commit -m "#S08P12C106-48 commit message"
+이렇게 커밋하면 48번 이슈에 커밋메시지 연동됨
