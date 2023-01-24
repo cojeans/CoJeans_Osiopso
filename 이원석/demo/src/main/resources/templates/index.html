@@ -6,12 +6,13 @@
 </head>
 <body>
 <h1>Kakao Login Test</h1>
-<span th:if="${userId==null}">
-		<a href="https://kauth.kakao.com/oauth/authorize?client_id=dc864200647ea057f6a0c1e84dda06b7&redirect_uri=http://localhost:8080/login&response_type=code">
+<h2 th:value="${session.userId}"></h2>
+<span th:if="${session.userId==null}">
+		<a href="https://kauth.kakao.com/oauth/authorize?client_id=ef14fb79403feb7ba433bb24121f7342&redirect_uri=http://localhost:8080/login&response_type=code">
 			<img src = "img/kakao_login_medium_narrow.png">
 		</a>
 	</span>
-<span th:if="${userId!=null}">
+<span th:if="${session.userId!=null}">
 		<form name="logout" action="http://localhost:8080/logout">
 			<input type="submit" value="로그아웃">
 		</form>
