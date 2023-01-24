@@ -1,0 +1,3 @@
+https://thalals.tistory.com/237
+https://github.com/JSBeatCode/kakaologin/blob/main/src/main/java/com/kakao/app/KakaoAPI.java
+https://developers.kakao.com/console/app/794013/product/login/scope
