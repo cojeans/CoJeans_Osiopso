@@ -1,4 +1,4 @@
-package com.cojeans.osiopso;
+package com.cojeans.osiopso.api.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
