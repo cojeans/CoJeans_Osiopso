@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.api.entity;
+package com.cojeans.osiopso.entity.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.api.entity.feed;
+package com.cojeans.osiopso.entity.feed;
 
 
 import javax.persistence.DiscriminatorValue;

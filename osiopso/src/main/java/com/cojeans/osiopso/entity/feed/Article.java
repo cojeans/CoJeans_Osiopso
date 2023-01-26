@@ -1,6 +1,6 @@
-package com.cojeans.osiopso.api.entity.feed;
+package com.cojeans.osiopso.entity.feed;
 
-import com.cojeans.osiopso.api.entity.User;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,12 +8,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor @Builder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "articles")
 @DiscriminatorColumn(name = "DTYPE")
 public class Article {
 
@@ -41,7 +39,4 @@ public class Article {
 
     @OneToMany(mappedBy = "article")
     private List<ArticleTag> articleTags;
-
-//    @OneToMany(mappedBy = "article")
-//    private int liked;
 }

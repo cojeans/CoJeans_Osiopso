@@ -1,22 +1,23 @@
-package com.cojeans.osiopso.api.entity.closet;
+package com.cojeans.osiopso.entity.closet;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@AllArgsConstructor @NoArgsConstructor
 @Builder
-public class Season {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ClosetClothes {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String seasonName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLOSET_ID")
+    private Closet closet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")

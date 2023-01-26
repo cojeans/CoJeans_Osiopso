@@ -1,6 +1,6 @@
-package com.cojeans.osiopso.api.entity.closet;
+package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.api.entity.User;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

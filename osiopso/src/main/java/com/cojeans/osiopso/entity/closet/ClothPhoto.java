@@ -1,6 +1,9 @@
-package com.cojeans.osiopso.api.entity.closet;
+package com.cojeans.osiopso.entity.closet;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

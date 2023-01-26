@@ -1,5 +1,6 @@
-package com.cojeans.osiopso.api.entity.closet;
+package com.cojeans.osiopso.entity.closet;
 
+import com.cojeans.osiopso.entity.feed.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,5 +24,4 @@ public class ClothesTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
-
 }

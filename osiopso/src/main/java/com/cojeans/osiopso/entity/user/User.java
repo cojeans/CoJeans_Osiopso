@@ -1,7 +1,8 @@
-package com.cojeans.osiopso.api.entity;
+package com.cojeans.osiopso.entity.user;
 
-import com.cojeans.osiopso.api.entity.closet.Closet;
-import com.cojeans.osiopso.api.entity.feed.Article;
+import com.cojeans.osiopso.entity.closet.Closet;
+import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.Comment;
 import lombok.*;
 
 import javax.persistence.*;
@@ -55,10 +56,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Closet> closets;
 
-    @OneToMany(mappedBy = "followUser")
-    private List<Follow> followUsers;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 
-    @OneToMany(mappedBy = "followingUser")
-    private List<Follow> followingUsers;
-
+//    @OneToMany(mappedBy = "followUser")
+//    private List<Follow> followUsers;
+//
+//    @OneToMany(mappedBy = "followingUser")
+//    private List<Follow> followingUsers;
 }

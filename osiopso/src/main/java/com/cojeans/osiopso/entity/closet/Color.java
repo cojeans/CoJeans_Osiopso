@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.api.entity.closet;
+package com.cojeans.osiopso.entity.closet;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
