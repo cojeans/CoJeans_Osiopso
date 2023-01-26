@@ -8,8 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor @Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
 public class Article {
@@ -39,11 +42,6 @@ public class Article {
     @OneToMany(mappedBy = "article")
     private List<ArticleTag> articleTags;
 
-
-
-
-
-
-
-    
+//    @OneToMany(mappedBy = "article")
+//    private int liked;
 }
