@@ -37,7 +37,7 @@ public class Article {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "aritcle")
+    @OneToMany(mappedBy = "article")
     private List<ArticleTag> articleTags;
 
 
