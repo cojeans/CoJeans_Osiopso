@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Builder @NoArgsConstructor @AllArgsConstructor
@@ -13,8 +15,12 @@ public class Clothes {
     @Id @GeneratedValue
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Season season;
+    private String category;
 
+    @OneToMany(mappedBy = "clothes")
+    private List<Season> seasons;
+
+    @OneToMany(mappedBy = "clothes")
+    private List<Color> colors;
 
 }

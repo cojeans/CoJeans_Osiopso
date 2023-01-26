@@ -8,15 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@AllArgsConstructor @NoArgsConstructor
+@Getter @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class Season {
-    @Id
-    @GeneratedValue
+public class Color {
+    @Id @GeneratedValue
     private Long id;
 
-    private String seasonName;
+    private String colorName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")

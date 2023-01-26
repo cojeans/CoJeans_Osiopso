@@ -1,22 +1,22 @@
 package com.cojeans.osiopso.api.entity.closet;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Season {
+@Entity
+public class ClothPhoto {
     @Id
     @GeneratedValue
     private Long id;
-
-    private String seasonName;
+    @Column(name = "origin_filename")
+    private String originFilename;
+    @Column(name = "store_filename")
+    private String storeFilename;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")

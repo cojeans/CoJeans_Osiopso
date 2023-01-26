@@ -6,19 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 @Entity
 @Getter
-@AllArgsConstructor @NoArgsConstructor
 @Builder
-public class Season {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ClothesTag {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String seasonName;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")
     private Clothes clothes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TAG_ID")
+    private Tag tag;
+
 }
