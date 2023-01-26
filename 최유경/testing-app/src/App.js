@@ -1,10 +1,18 @@
 import React, { useEffect, useState, useRef} from "react";
+import {Routes, Route} from 'react-router-dom'
+
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 
 import html2canvas from 'html2canvas'
 import Cropper from 'react-cropper';
 import CanvasDraw from "react-canvas-draw";
+
+import TreeShakingApp from './routes/DDtest/drag-drop-test.component'
+
+import { flushSync } from "react-dom";
+
+import Moveable from "react-moveable";
 
 
 // import Example from "./components/example/example.component";
@@ -94,7 +102,7 @@ function App() {
 
   const cropperRef = useRef(null);
   // 유저가 첨부한 이미지
-  const [inputImage, setInputImage] = useState(null);
+  const [inputImage, setInputImage] = useState('null');
   // 유저가 선택한 영역만큼 크롭된 이미지
   const [croppedImage, setCroppedImage] = useState(null);
 
@@ -153,22 +161,12 @@ function App() {
   }, [croppedImage])
 
 
-  // connectPython_print.js 파일
-
-  const spawn = require('child_process').spawn;
-
-  const result = spawn('python', ['print.py']);
-
-  result.stdout.on('data', function(data) {
-      console.log(data.toString());
-  });
-
-  result.stderr.on('data', function(data) {
-      console.log(data.toString());
-  });
-
   return (
+  
     <div className={classes.root}>
+      <Routes>
+        <Route path='/dd' element={<TreeShakingApp/>} />
+      </Routes>
       <Grid container>
         <Grid item xs={12}>
           <video id="vid" height="500" width="500" autoPlay></video>
@@ -212,7 +210,6 @@ function App() {
       >
         CLEAR
       </button>
-      
     </div>
   );
 }
