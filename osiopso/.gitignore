@@ -36,3 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Application.yml ###
+/osiopso/src/main/resources.application.yml
