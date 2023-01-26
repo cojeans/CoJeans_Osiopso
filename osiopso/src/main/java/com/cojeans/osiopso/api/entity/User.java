@@ -55,4 +55,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Closet> closets;
 
+    @OneToMany(mappedBy = "followUser")
+    private List<Follow> followUsers;
+
+    @OneToMany(mappedBy = "followingUser")
+    private List<Follow> followingUsers;
+
 }
