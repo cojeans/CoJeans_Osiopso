@@ -1,8 +1,10 @@
 package com.cojeans.osiopso.api.entity;
 
+import com.cojeans.osiopso.api.entity.feed.Article;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,4 +47,8 @@ public class User {
 
     @Column(name = "refresh_token")
     private String refreshToken;
+
+    @OneToMany(mappedBy = "user")
+    private List<Article> articles;
+
 }

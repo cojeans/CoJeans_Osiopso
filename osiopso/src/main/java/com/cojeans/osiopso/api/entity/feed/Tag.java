@@ -3,6 +3,7 @@ package com.cojeans.osiopso.api.entity.feed;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,5 +18,9 @@ public class Tag {
     private Long id;
 
     String keyword;
+
+    @OneToMany(mappedBy = "tag")
+    private List<ArticleTag> tags;
+
 
 }
