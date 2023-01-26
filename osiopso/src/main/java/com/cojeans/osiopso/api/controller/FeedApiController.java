@@ -2,6 +2,7 @@ package com.cojeans.osiopso.api.controller;
 
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.service.ArticleService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/feed")
+@Api(tags = "게시글 관련 API")
 public class FeedApiController {
 
     private final ArticleService articleService;
