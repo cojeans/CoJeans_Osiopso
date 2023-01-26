@@ -4,7 +4,6 @@ import com.cojeans.osiopso.api.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class Article {
 
     //일대 다 관계로 테이블로 만들어져야함
     @OneToMany(mappedBy = "article")
-    private List<Photo> photos;
+    private List<ArticlePhoto> photos;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;

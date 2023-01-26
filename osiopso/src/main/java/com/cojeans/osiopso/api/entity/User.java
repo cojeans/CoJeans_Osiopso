@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.api.entity;
 
+import com.cojeans.osiopso.api.entity.closet.Closet;
 import com.cojeans.osiopso.api.entity.feed.Article;
 import lombok.*;
 
@@ -50,5 +51,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Closet> closets;
 
 }

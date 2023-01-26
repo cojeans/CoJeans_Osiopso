@@ -4,6 +4,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("S")
-public class StyleTag extends Tag{
+@DiscriminatorValue("T")
+public class TpoTag extends Tag{
+
+
 }
