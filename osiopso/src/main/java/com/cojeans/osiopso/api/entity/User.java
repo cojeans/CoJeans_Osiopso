@@ -1,8 +1,11 @@
 package com.cojeans.osiopso.api.entity;
 
+import com.cojeans.osiopso.api.entity.closet.Closet;
+import com.cojeans.osiopso.api.entity.feed.Article;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,4 +48,17 @@ public class User {
 
     @Column(name = "refresh_token")
     private String refreshToken;
+
+    @OneToMany(mappedBy = "user")
+    private List<Article> articles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Closet> closets;
+
+    @OneToMany(mappedBy = "followUser")
+    private List<Follow> followUsers;
+
+    @OneToMany(mappedBy = "followingUser")
+    private List<Follow> followingUsers;
+
 }
