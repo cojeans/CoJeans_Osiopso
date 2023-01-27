@@ -9,11 +9,8 @@ import Cropper from 'react-cropper';
 import CanvasDraw from "react-canvas-draw";
 
 import TreeShakingApp from './routes/DDtest/drag-drop-test.component'
-
-import { flushSync } from "react-dom";
-
-import Moveable from "react-moveable";
-
+import SignInForm from "./routes/sign-in/sign-in-form.component";
+import SignUpForm from "./routes/sign-up/sign-up-form.component";
 
 // import Example from "./components/example/example.component";
 import 'cropperjs/dist/cropper.css';
@@ -166,12 +163,14 @@ function App() {
     <div className={classes.root}>
       <Routes>
         <Route path='/dd' element={<TreeShakingApp/>} />
+        <Route path='/sign-in' element={<SignInForm/>} />
+        <Route path='/sign-up' element={<SignUpForm/>} />
       </Routes>
       <Grid container>
         <Grid item xs={12}>
           <video id="vid" height="500" width="500" autoPlay></video>
           <br />
-          <button onClick={capOff}>Turn Capture Off</button>
+          <button onClick={capOff}>Tu`rn Capture Off</button>
           <button onClick={camON}>Turn Capture ON</button>
           <button onClick={onCapture}>사진찍기</button>
         </Grid>
