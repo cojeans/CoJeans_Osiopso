@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.entity.feed.Tag;
+import com.cojeans.osiopso.entity.tag.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

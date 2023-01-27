@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.entity.feed;
 
+import com.cojeans.osiopso.entity.tag.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
