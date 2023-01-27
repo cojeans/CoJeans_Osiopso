@@ -57,7 +57,7 @@ public class KakaoOAuth2 {
             String accessToken = rjson.getString("access_token");
 //            String refresh_token = rjson.getString("refresh_token");
 
-            System.out.println(accessToken);
+            System.out.println(accessToken + "accesstoken");
             return accessToken;
         } catch (Exception e) {
             e.printStackTrace();
