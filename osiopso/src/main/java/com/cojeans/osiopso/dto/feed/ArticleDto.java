@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.dto.feed;
 
+import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.user.User;
@@ -19,5 +20,9 @@ public class ArticleDto {
     private int hit;
     private String content;
     private User user;
+
+//    public Article toEntity(){
+//        return Article.builder();
+//    }
 
 }
