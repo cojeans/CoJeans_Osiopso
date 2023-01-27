@@ -33,6 +33,9 @@ public class Article {
 
     private String content;
 
+    @Column(insertable = false, updatable=false)
+    private String dtype;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
