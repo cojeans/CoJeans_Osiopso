@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.service;
 
+import com.cojeans.osiopso.dto.feed.ArticleDto;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +16,13 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public List<Article> listFeed() {
-        List<Article> feeds = articleRepository.findFeeds();
+    public List<ArticleDto> listFeed() {
+        List<ArticleDto> feeds = articleRepository.findFeeds();
 
         return feeds;
     }
 
-    public boolean writeFeed(Article article) {
-        article.setDtype("F");
-
-        articleRepository.writeFeed();
-
+    public boolean writeFeed(ArticleDto articleDto) {
+        articleRepository.save(articleDto);
     }
 }

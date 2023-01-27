@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.api.controller;
 
+import com.cojeans.osiopso.dto.feed.ArticleDto;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.service.ArticleService;
 import io.swagger.annotations.Api;
@@ -25,17 +26,18 @@ public class FeedApiController {
     private final ArticleService articleService;
 
     @GetMapping
-    public ResponseEntity<List<Article>> listFeed() {
+    public ResponseEntity<List<ArticleDto>> listFeed() {
         System.out.println("listfeed 호출");
-        return new ResponseEntity<List<Article>>(articleService.listFeed(), HttpStatus.OK);
+        return new ResponseEntity<>(articleService.listFeed(), HttpStatus.OK);
     }
 
 
     @PostMapping
-    public ResponseEntity<String> writeFeed(@RequestBody Article article) {
+    public ResponseEntity<String> createFeed(@RequestBody ArticleDto articleDto) {
 
         System.out.println("writefeed 호출");
-        if(articleService.writeFeed(article)) {
+
+        if(articleService.writeFeed(articleDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         }
 
