@@ -20,4 +20,11 @@ public class ArticleService {
 
         return feeds;
     }
+
+    public boolean writeFeed(Article article) {
+        article.setDtype("F");
+
+        articleRepository.writeFeed();
+
+    }
 }

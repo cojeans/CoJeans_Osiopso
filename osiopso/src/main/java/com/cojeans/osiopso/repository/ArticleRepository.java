@@ -12,4 +12,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("select a from Article a join ArticlePhoto ap on a.id = ap.article.id " +
             "where a.dtype = 'O'")
     List<Article> findFeeds();
+
+    boolean writeFeed();
 }
