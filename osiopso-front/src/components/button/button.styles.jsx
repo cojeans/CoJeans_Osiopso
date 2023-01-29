@@ -9,7 +9,7 @@ export const BaseButton = styled.button`
   padding: 0 35px 0 35px;
   font-size: 20px;
   background-color: #e7e2ff;
-  color: white;
+  color: #32144f;
   text-transform: uppercase;
   font-weight: bolder;
   border: none;

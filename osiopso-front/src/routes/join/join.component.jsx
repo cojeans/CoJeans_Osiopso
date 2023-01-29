@@ -27,7 +27,6 @@ const Join = () => {
 
 	return (
 		<SignUpContainer>
-			<h1>Join</h1>
 			<form>
 				<FormInput
 				label="아이디" 
