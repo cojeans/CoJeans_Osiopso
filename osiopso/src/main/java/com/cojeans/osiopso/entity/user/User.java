@@ -38,7 +38,7 @@ public class User {
 
     // Role
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Role role;
 
     // 소셜로그인

@@ -4,10 +4,15 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class ArticlePhoto {
-    @Id@GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
     @Column(name = "origin_filename")
     private String originFilename;

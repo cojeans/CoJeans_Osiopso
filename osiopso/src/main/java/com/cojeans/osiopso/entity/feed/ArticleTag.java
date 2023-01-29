@@ -21,5 +21,4 @@ public class ArticleTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
-
 }
