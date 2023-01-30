@@ -11,6 +11,10 @@
 - 접두사와 콜론은 붙이고, 콜론 후 한 칸은 띄어쓰기
 - git commit -m "S08P12C106-# 접두사: 메시지"
 
+## 🖤 Daily Docs 컨벤션
+- git commit -m "S08P12C106-# Docs: 월-일 이름 Daily"
+- ex) git commit -m "S08P12C106-# Docs: 01-30 희주 Daily"
+
 ### 1. 커밋 유형 지정
 
 - 커밋 유형은 영어 대문자로 작성하기
