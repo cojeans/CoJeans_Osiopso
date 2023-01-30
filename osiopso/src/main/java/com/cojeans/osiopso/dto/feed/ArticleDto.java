@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Builder
 public class ArticleDto {
 
     private Long id;
@@ -27,25 +28,37 @@ public class ArticleDto {
     private String subject;
 
 
-    @Builder
-    public ArticleDto(Long id, List<ArticlePhoto> photos, List<ArticleTag> tags, Date createTime, Date modifyTime, int hit, String dtype, String content, Long userId, boolean isSelected, String subject) {
-        this.id = id;
-        this.photos = photos;
-        this.tags = tags;
-        this.createTime = createTime;
-        this.modifyTime = modifyTime;
-        this.hit = hit;
-        this.dtype = dtype;
-        this.content = content;
-        this.userId = userId;
-        this.isSelected = isSelected;
-        this.subject = subject;
-    }
+    public Article toEntity(User user, Long articleNo){
 
+        // 수정하는 경우
+        if (articleNo != 0) {
+            switch (dtype) {
+                // DTYPE = "OOTD"
+                case "O":
+                    return Ootd.builder()
+                            .id(articleNo)
+                            .dtype(dtype)
+                            .user(user)
+                            .photos(photos)
+                            .tags(tags)
+                            .hit(hit)
+                            .content(content).build();
 
+                // DTYPE = "Advice"
+                case "A":
+                    return Advice.builder()
+                            .id(articleNo)
+                            .dtype(dtype)
+                            .isSelected(isSelected)
+                            .subject(subject)
+                            .user(user)
+                            .photos(photos)
+                            .tags(tags)
+                            .hit(hit)
+                            .content(content).build();
+            }
+        }
 
-    public Article toEntity(User user){
-        System.out.println(dtype);
         switch (dtype) {
             // DTYPE = "OOTD"
             case "O":
