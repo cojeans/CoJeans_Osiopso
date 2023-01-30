@@ -5,11 +5,15 @@
 2. 상세 기능은 소제목 형식으로 하겠습니다.
 - GitFlow브랜치명/지라이슈넘버-지라이슈이름
 - 공백에는 하이픈(-)을 넣어주시면 됩니다.
-- ex) Feature/S08P12C106-91-[BE]옷장-등록
+- ex) Feature/S08P12C106-91-BE-옷장-등록
 
 ## 🖤 커밋 메시지 컨벤션
 - 접두사와 콜론은 붙이고, 콜론 후 한 칸은 띄어쓰기
 - git commit -m "S08P12C106-# 접두사: 메시지"
+
+## 🖤 Daily Docs 컨벤션
+- git commit -m "S08P12C106-# Docs: 월-일 이름 Daily"
+- ex) git commit -m "S08P12C106-# Docs: 01-30 희주 Daily"
 
 ### 1. 커밋 유형 지정
 
