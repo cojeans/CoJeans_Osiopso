@@ -35,7 +35,7 @@ public class SecurityConfig {
 
 //                .anyRequest().permitAll()
 //                .requestMatchers("/api/user").permitAll()
-                .requestMatchers("/","api/user").permitAll()
+                .requestMatchers("/","api/user","/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login().userInfoEndpoint().userService(myOauth2UserService);
@@ -43,4 +43,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 }
