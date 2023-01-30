@@ -11,7 +11,7 @@ const Closet = ({ closet }) => {
 	return (
 		<ItemContainer>
 			<ClosetItem>
-				<ClosetPreview />
+				<ClosetPreview closetPev={ closet.url} />
 			</ClosetItem>
 			<ItemInfo>
 				<p>
