@@ -34,7 +34,7 @@ const Navigation = () => {
 					<Hand />
 					<span>훈수</span>
 				</LogoContainer>
-				<LogoContainer to='/login'>
+				<LogoContainer to='/'>
 					<HomeLogo />
 					<span>홈</span>
 				</LogoContainer>
