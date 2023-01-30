@@ -1,8 +1,10 @@
 package com.cojeans.osiopso.service;
 
 import com.cojeans.osiopso.dto.feed.ArticleDto;
+import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.repository.AdviceRepository;
 import com.cojeans.osiopso.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = false)
@@ -17,6 +20,7 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final AdviceRepository adviceRepository;
 
     public List<ArticleDto> listFeed() {
         List<Article> feeds = articleRepository.findFeeds();
@@ -38,8 +42,6 @@ public class ArticleService {
             articleDtos.add(dto);
         }
 
-
-
         for (ArticleDto articleDto : articleDtos) {
             System.out.println(articleDto.toString());
         }
@@ -60,8 +62,21 @@ public class ArticleService {
         }
     }
 
-    public void detailFeed(int feedno) {
+    public ArticleDto detailFeed(Long feedNo) {
+        Advice advice = adviceRepository.findById(feedNo).orElseThrow();
 
-        articleRepository.findArticleById(feedno);
+        return ArticleDto.builder()
+                .id(advice.getId())
+                .photos(advice.getPhotos())
+                .hit(advice.getHit())
+                .content(advice.getContent())
+                .createTime(advice.getCreateTime())
+                .dtype(advice.getDtype())
+                .modifyTime(advice.getModifyTime())
+                .tags(advice.getTags())
+                .userId(advice.getUser().getId())
+                .isSelected(advice.isSelected())
+                .subject(advice.getSubject())
+                .build();
     }
 }
