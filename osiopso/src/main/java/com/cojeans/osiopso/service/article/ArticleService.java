@@ -1,11 +1,12 @@
-package com.cojeans.osiopso.service;
+package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.feed.ArticleDto;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
-import com.cojeans.osiopso.repository.AdviceRepository;
-import com.cojeans.osiopso.repository.ArticleRepository;
+import com.cojeans.osiopso.repository.article.AdviceRepository;
+import com.cojeans.osiopso.repository.article.ArticleRepository;
+import com.cojeans.osiopso.repository.article.OotdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,63 +21,30 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final AdviceRepository adviceRepository;
 
-    public List<ArticleDto> listFeed() {
-        List<Article> feeds = articleRepository.findFeeds();
-        List<ArticleDto> articleDtos = new ArrayList<>();
-
-        for (Article article : feeds) {
-            ArticleDto dto = ArticleDto.builder()
-                    .id(article.getId())
-                    .photos(article.getPhotos())
-                    .hit(article.getHit())
-                    .content(article.getContent())
-                    .createTime(article.getCreateTime())
-                    .dtype(article.getDtype())
-                    .modifyTime(article.getModifyTime())
-                    .tags(article.getTags())
-                    .userId(article.getUser().getId())
-                    .build();
-
-            articleDtos.add(dto);
-        }
-
-        for (ArticleDto articleDto : articleDtos) {
-            System.out.println(articleDto.toString());
-        }
-
-        return articleDtos;
-    }
-
-    public boolean createFeed(ArticleDto articleDto) {
+    public boolean createArticle(ArticleDto articleDto) {
         // 추후에 로그인 기능이 완성된다면 어떤식으로 유저 정보(JWT) 를 받아올지?
-        User user = new User();
+        User token = new User();
 
         System.out.println("호출됨");
         System.out.println(articleDto);
-        if (articleRepository.save(articleDto.toEntity(user)) == null) {
+        if (articleRepository.save(articleDto.toEntity(token, 0L)) == null) {
             return false;
         } else {
             return true;
         }
     }
 
-    public ArticleDto detailFeed(Long feedNo) {
-        Advice advice = adviceRepository.findById(feedNo).orElseThrow();
+    public boolean deleteArticle(Long articleNo) {
+        articleRepository.deleteById(articleNo);
 
-        return ArticleDto.builder()
-                .id(advice.getId())
-                .photos(advice.getPhotos())
-                .hit(advice.getHit())
-                .content(advice.getContent())
-                .createTime(advice.getCreateTime())
-                .dtype(advice.getDtype())
-                .modifyTime(advice.getModifyTime())
-                .tags(advice.getTags())
-                .userId(advice.getUser().getId())
-                .isSelected(advice.isSelected())
-                .subject(advice.getSubject())
-                .build();
+        Optional<Article> byId = articleRepository.findById(articleNo);
+        System.out.println(byId);
+        // 확실히 지워진 경우 (삭제한 articleNo로 해당 게시물을 찾을 수 없어야 한다.)
+        if (articleRepository.findById(articleNo).isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
