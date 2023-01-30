@@ -2,7 +2,9 @@ package com.cojeans.osiopso.entity.feed;
 
 import com.cojeans.osiopso.entity.user.User;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.DiscriminatorValue;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue("A")
+@Getter
+@ToString
 @SuperBuilder
 public class Advice extends Article{
 
