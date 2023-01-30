@@ -1,10 +1,14 @@
-import { Mapage } from "./mypage.styles"
+import { Fragment } from "react"
+
+import Profile from "../../components/profile/profile.component"
+import ProfileBody from "../../components/profile-body/profile-body.component"
 
 const Mypage = () => {
 	return (
-		<div>
-			<Mapage/>
-		</div>
+		<Fragment>
+			<Profile />
+			<ProfileBody/>
+		</Fragment>
 	)
 }
 

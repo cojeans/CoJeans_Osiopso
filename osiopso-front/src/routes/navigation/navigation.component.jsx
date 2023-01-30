@@ -44,7 +44,7 @@ const Navigation = () => {
 				</LogoContainer>
 				<LogoContainer to='/mypage'>
 					<User />
-					<span>마이페이지</span>
+					<span>프로필</span>
 				</LogoContainer>
 				{/* <Link to='/login'>Login</Link> 
 				<Link to='/join'>Join</Link>

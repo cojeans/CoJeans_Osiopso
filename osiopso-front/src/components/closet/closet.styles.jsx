@@ -1,0 +1,40 @@
+import styled from "styled-components";
+
+export const ItemContainer = styled.div`
+	cursor:pointer;
+	p{
+		font-size:14px;
+	}
+`
+
+export const ClosetItem = styled.div`
+	width:8em;
+	height:8em;
+	border-radius:10px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+	p{
+		font-size:15px;
+		text-align:center;
+		color:gray;
+		margin:0 ;
+	}
+	display:flex;
+	flex-direction:column;
+	align-items: center;
+	justify-content: center;
+
+	`
+
+export const ItemInfo = styled.div`
+	width:80%;
+	display:flex;
+	flex-direction:column;
+	margin:auto;
+	p{
+		margin-bottom:0;
+		span{
+			font-size:13px;
+			color:gray;
+		}
+	}
+`

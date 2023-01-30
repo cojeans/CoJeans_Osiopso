@@ -18,9 +18,6 @@ const TopBar = () => {
 			case '/join':
 				setTopName('회원가입')
 				break
-			case '/mypage':
-				setTopName('마이페이지')
-				break
 			case '/login':
 				setTopName('로그인')
 				break
@@ -32,8 +29,8 @@ const TopBar = () => {
 	return (
 		<TopBarContainer>
 			<ButtonContainer>
-				<BackButton/>
-			</ButtonContainer>
+				<BackButton />
+			</ButtonContainer>	
 			<TopBarContent>
 				{ topName }
 			</TopBarContent>
