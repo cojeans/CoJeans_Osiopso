@@ -61,19 +61,4 @@ public class Article {
         this.user = user;
         this.tags = tags;
     }
-
-
-    public ArticleDto toArticleDto() {
-        return ArticleDto.builder()
-                .id(id)
-                .photos(photos)
-                .hit(hit)
-                .content(content)
-                .createTime(createTime)
-                .dtype(dtype)
-                .modifyTime(modifyTime)
-                .tags(tags)
-                .userId(user.getId())
-                .build();
-    }
 }
