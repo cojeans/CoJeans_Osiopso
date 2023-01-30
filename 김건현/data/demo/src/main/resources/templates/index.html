@@ -7,12 +7,19 @@
 <body>
   <h1>Hello Spring Oauth demo!</h1>
   <a href="/oauth2/authorization/google">
-      <img th:src="@{images}" >
+      <img th:src="@{images/btn_google_signin_light_normal_web.png}" >
   </a>
+  <div>
+      <a href="/oauth2/authorization/naver">
+          네이버
+      </a>
+  </div>
 
-  <a href="/oauth2/authorization/naver">
-      네이버
-  </a>
+  <div>
+    <a th:href="@{/account/join}" ><button type="button" >Join</button></a>
+  </div>
+
+
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.oauth.demo.dto;
+package com.oauth.demo.config.oauth.dto;
 
 import com.oauth.demo.entity.Role;
 import com.oauth.demo.entity.User;
@@ -6,18 +6,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Getter
 @Builder
-public class OauthAttributes {
+public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
     private String name;
     private String email;
     private String provider;
 
-    public static OauthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if("naver".equals(registrationId)) {
             return ofNaver("id", attributes);
         } else if ("kakao".equals(registrationId)) {
@@ -27,8 +26,8 @@ public class OauthAttributes {
         return ofGoogle(userNameAttributeName, attributes);
     }
 
-    private static OauthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-        return OauthAttributes.builder()
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .provider("Google")
@@ -37,10 +36,10 @@ public class OauthAttributes {
                 .build();
     }
 
-
-    private static OauthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-        return OauthAttributes.builder()
+
+        return OAuthAttributes.builder()
                 .name((String) response.get("name"))
                 .email((String) response.get("email"))
                 .provider("Naver")
@@ -48,11 +47,12 @@ public class OauthAttributes {
                 .nameAttributeKey(userNameAttributeName)
                 .build();
     }
-    private static OauthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> account = (Map<String, Object>) response.get("profile");
 
-        return OauthAttributes.builder()
+        return OAuthAttributes.builder()
                 .name((String) account.get("nickname"))
                 .email((String) response.get("email"))
                 .provider("Kakao")
@@ -61,15 +61,20 @@ public class OauthAttributes {
                 .build();
     }
 
-    public User toEntity(){
+    public User toEntity() {
         return User.builder()
                 .name(name)
                 .email(email)
                 .provider(provider)
                 .role(Role.ROLE_USER)
-                .password(UUID.randomUUID().toString())
                 .build();
     }
-
-
+    public User toEntity(String encPwd) {
+        return User.builder()
+                .name(name)
+                .email(email)
+                .password(encPwd)
+                .role(Role.ROLE_USER)
+                .build();
+    }
 }
