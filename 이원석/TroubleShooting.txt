@@ -2,7 +2,7 @@
 https://velog.io/@minji104/JPA-%EC%83%81%EC%86%8D-%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91-Enum-%EC%82%AC%EC%9A%A9
 https://velog.io/@mooh2jj/%EC%98%AC%EB%B0%94%EB%A5%B8-%EC%97%94%ED%8B%B0%ED%8B%B0-Builder-%EC%82%AC%EC%9A%A9%EB%B2%95
 https://velog.io/@jsb100800/super-builder
-
+https://thalals.tistory.com/303 [DTO 무한참조]
 
 -- GIT --
 git config --global core.autocrlf input

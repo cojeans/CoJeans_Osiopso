@@ -1,8 +1,12 @@
 package com.cojeans.osiopso.entity.feed;
 
+import com.cojeans.osiopso.dto.feed.ArticleDto;
 import com.cojeans.osiopso.entity.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,18 +31,17 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
     private List<ArticlePhoto> photos;
 
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
+    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifyTime;
 
     private int hit;
 
     private String content;
-
-    @Column(insertable = false, updatable=false)
-    private String dtype;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "USER_ID")
@@ -47,6 +50,8 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
     private List<ArticleTag> tags;
 
+    @Column(insertable = false, updatable=false)
+    private String dtype;
 
     public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, List<ArticleTag> tags) {
         this.photos = photos;
@@ -55,5 +60,20 @@ public class Article {
         this.dtype = dtype;
         this.user = user;
         this.tags = tags;
+    }
+
+
+    public ArticleDto toArticleDto() {
+        return ArticleDto.builder()
+                .id(id)
+                .photos(photos)
+                .hit(hit)
+                .content(content)
+                .createTime(createTime)
+                .dtype(dtype)
+                .modifyTime(modifyTime)
+                .tags(tags)
+                .userId(user.getId())
+                .build();
     }
 }
