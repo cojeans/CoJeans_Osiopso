@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.oauth.demo.config.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.oauth.demo.config.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME; //"redirect_uri"
 
-
+/**
+ * 성공시 호출되는 핸들러. SimpleUrlAuthenticationSuccessHandler를 상속받는다
+ */
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
@@ -38,11 +40,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
-                .map(Cookie::getValue);
+                .map(Cookie::getValue); //Requet에서 쿠키를 가져와서 쿠키값을 가져온다.
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        String token = tokenProvider.generateToken(authentication);
+        String token = tokenProvider.generateToken(authentication); //토큰을 만들고
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)

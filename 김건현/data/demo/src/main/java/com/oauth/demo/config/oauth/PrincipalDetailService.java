@@ -1,6 +1,6 @@
 package com.oauth.demo.config.oauth;
 
-import com.oauth.demo.config.oauth.dto.SessionUser;
+import com.oauth.demo.config.oauth.dto.userDetail;
 import com.oauth.demo.entity.User;
 import com.oauth.demo.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +23,6 @@ public class PrincipalDetailService implements UserDetailsService {
                 .orElseThrow(() -> {
                     return new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다");
                 });
-        return new SessionUser(user);
+        return new userDetail(user);
     }
 }

@@ -2,6 +2,7 @@ package com.oauth.demo.config.oauth.dto;
 
 import com.oauth.demo.entity.User;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,10 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
-public class SessionUser implements UserDetails {
+@ToString()
+public class userDetail implements UserDetails {
     private User user;
 
-    public SessionUser(User user) {
+    public userDetail(User user) {
         this.user = user;
     }
 
@@ -34,7 +36,7 @@ public class SessionUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return user.getEmail();
     }
 
     @Override

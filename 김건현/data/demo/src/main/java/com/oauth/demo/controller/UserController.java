@@ -7,18 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-/*@Controller
-public class UserController {
-    @GetMapping(value = "/account/join")
-    public String joinForm(User user, HttpSession session){
-        user = (User)session.getAttribute("user");
-        if(user != null && user.getRoleKey().contains("ROLE_USER")) {
-            return "redirect:/";
-        }
-        return "join";
-    }
-}*/
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
