@@ -28,6 +28,7 @@ public class FeedApiController {
 
     private final ArticleService articleService;
 
+
     @GetMapping
     public ResponseEntity<List<ArticleDto>> listFeed() {
         return new ResponseEntity<>(articleService.listFeed(), HttpStatus.OK);
@@ -36,19 +37,17 @@ public class FeedApiController {
 
     @PostMapping
     public ResponseEntity<String> createFeed(@RequestBody ArticleDto articleDto) {
-        if(articleService.createFeed(articleDto)) {
+        if (articleService.createFeed(articleDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         }
-        return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_ACCEPTABLE);
     }
 
 
     @GetMapping("/{feedno}")
-    public ResponseEntity<List<Article>> detailFeed(@PathVariable("feedno") int feedno) {
-
-        articleService.detailFeed(feedno);
-
-        return null;
+    public ResponseEntity<ArticleDto> detailFeed(@PathVariable("feedno") Long feedNo) {
+        ArticleDto detail = articleService.detailFeed(feedNo);
+        return new ResponseEntity<ArticleDto>(detail, HttpStatus.OK);
     }
 
     @PutMapping("/{feedno}")
