@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ModaContainer = styled.div`
   display:flex;
   justify-content:center;
-  align-items: center;
+  align-items: flex-end;
   width:100%;
   height:100%;
   /* 최상단 위치 */
@@ -37,25 +37,28 @@ export const ClosetInput = styled.input`
   `
 
 export const ClosetContent = styled.div`
-  width:90%;
+  width:80%;
   height:80%;
 `
 
 export const ButtonContainer = styled.div`
+  width:100%;
   display:flex;
     button{
     border:none;
     background-color:white;
     padding:10px;
     margin-left:auto;
+    margin-right:20px;
   }
 `
 
 export const ModalBody = styled.div`
   height:500px;
-  width:360px;
+  width:100%;
    display:flex;
   flex-direction:column;
   align-items:center;
   background-color:white;
+  border-radius:20px;
 `

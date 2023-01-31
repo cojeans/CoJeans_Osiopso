@@ -49,12 +49,12 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
     return (
 			<ModaContainer>
 				<ModalBody  ref={modalRef}>
+					<ButtonContainer>
+						<button onClick={closeModal}>
+								X
+						</button>
+					</ButtonContainer>
 					<ClosetContent>
-						<ButtonContainer>
-							<button onClick={closeModal}>
-									X
-							</button>
-						</ButtonContainer>
 						<CreateClosetTitle>옷장 만들기</CreateClosetTitle>
 						<p>옷장 이름</p>
 						<ClosetInput
