@@ -14,9 +14,14 @@ import java.util.List;
 @Builder
 public class ArticleDto {
 
+    private Long id;
+    private Date createTime;
+    private Date modifyTime;
+    private Long userId;
+
     private String dtype;
     private List<ArticlePhotoDto> photos;
-    private List<ArticleTagDto> tags;
+    private List<TagDto> tags;
     private int hit;
     private String content;
     private boolean isSelected;
@@ -89,24 +94,4 @@ public class ArticleDto {
 
         return list;
     }
-
-    public ArticleTag toArticleTag() {
-
-    }
-
-
-    public Tag toTagEntity() {
-
-    }
-
-
-//    private List<ArticleTag> toTagEntity(List<ArticleTagDto> tags) {
-//        List<ArticleTag> list = new ArrayList<>();
-//
-//        for (ArticleTagDto tag : tags) {
-//            list.add(tag.toEntity());
-//        }
-//
-//        return list;
-//    }
 }
