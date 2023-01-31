@@ -1,14 +1,29 @@
 import Closet from "../closet/closet.component"
 
-import { Fragment, useState } from "react"
+import { useState, useCallback } from "react"
+import { useNavigate } from 'react-router-dom'
 
 
+import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
 	ClosetBodyContainer,
 	LogoContainer2,
 	PlusCloset
 } from "./profile-closet.styles"
 import { ClosetItem } from "../closet/closet.styles"
+
+
+export function useBodyScrollLock() {
+  const lockScroll = useCallback(() => {
+		document.body.style.overflow = 'hidden';
+  }, []);
+
+  const openScroll = useCallback(() => {
+    document.body.style.removeProperty('overflow');
+  }, []);
+
+  return { lockScroll, openScroll };
+}
 
 const initialList = [
 	{
@@ -40,11 +55,24 @@ const initialList = [
 ]
 
 const ProfileCloset = () => {
-	const [closetList, setClosetList ] = useState(initialList)
+	const [closetList, setClosetList] = useState(initialList)
+	const [modalOpen, setModalOpen] = useState(false);
+	const { lockScroll, openScroll } = useBodyScrollLock();
+
+	const showModal = () => {
+		setModalOpen(true);
+		lockScroll();
+
+	};
+	// const navigate = useNavigate()
+
+	// const goToCheckoutHandler = () => {
+	// 	navigate('closet-create')
+  // }
 	
 	return (
 		<ClosetBodyContainer>
-			<ClosetItem>
+			<ClosetItem onClick={showModal}>
 				<LogoContainer2>
 					<PlusCloset/>
 				</LogoContainer2>
@@ -55,6 +83,10 @@ const ProfileCloset = () => {
 					return <Closet closet={ closet } key={idx} />
 				})
 			}
+			{
+				modalOpen && <ClosetCreateModal setModalOpen={setModalOpen} openScroll={ openScroll} />
+			}
+
 		</ClosetBodyContainer>
 	)
 }

@@ -6,8 +6,6 @@ import {
 } from "./closet-preview.styles"
 
 const ClosetPreview = ({ closetPev }) => {
-	const prevBox = [1, 2, 3, 4]
-	console.log(closetPev)
 	return (
 		<PrevContainer>
 				{

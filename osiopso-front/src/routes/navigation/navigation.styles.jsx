@@ -1,6 +1,15 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
+export const Container = styled.div`
+  width: 100%;
+	max-width:450px;
+	height:100%;
+	margin:auto;
+	position:relative;
+
+`
+
 export const NavigationContainer = styled.div`
 	height: 60px;
   width: 100%;
@@ -10,10 +19,10 @@ export const NavigationContainer = styled.div`
 	color: #e7e2ff;
 	background-color: white;
 	margin:auto;
-	 position: fixed;
-		left: 0;
-		right: 0;
-		bottom: 0;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
 `
 
 export const LogoContainer = styled(NavLink)`

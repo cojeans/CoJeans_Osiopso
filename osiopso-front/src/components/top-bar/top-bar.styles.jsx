@@ -26,6 +26,7 @@ export const ButtonContainer = styled.div`
 		width:30px;
 		height:80%;
 	}
+	cursor:pointer;
 `
 
 export const TopBarContent = styled.div`
@@ -36,4 +37,19 @@ export const TopBarContent = styled.div`
 	text-decoration:none;
 	align-items:center;
 	justify-content:center
+`
+export const CategoryContainer = styled.div`
+	height: 100%;
+	margin-left:auto;
+  width: 50%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	text-decoration:none;
+		svg{
+		width:30px;
+		height:80%;
+	}
+	cursor:pointer;
+	
 `

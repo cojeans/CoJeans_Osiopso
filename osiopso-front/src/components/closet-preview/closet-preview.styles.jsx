@@ -13,21 +13,21 @@ export const PrevBox = styled.div`
 	justify-content: center;
 	align-items: center;
 	&:nth-child(1){
-		border-bottom:solid 0.5px gray;
-		border-right:solid 0.5px gray;
+		border-bottom:solid 0.5px #E2E2E2;
+		border-right:solid 0.5px #E2E2E2;
 		}
 	&:nth-child(2){
-		border-bottom:solid 0.5px gray;
-		border-left:solid	 0.5px gray;
+		border-bottom:solid 0.5px #E2E2E2;
+		border-left:solid	 0.5px #E2E2E2;
 		}
 	&:nth-child(3){
-		border-top:solid 0.5px gray;
-		border-right:solid 0.5px gray;
+		border-top:solid 0.5px #E2E2E2;
+		border-right:solid 0.5px #E2E2E2;
 	}
 
 	&:nth-child(4){
-		border-top:solid 0.5px gray;
-		border-left:solid 0.5px gray;
+		border-top:solid 0.5px #E2E2E2;
+		border-left:solid 0.5px #E2E2E2;
 	}
 	img{
 		width:3em;

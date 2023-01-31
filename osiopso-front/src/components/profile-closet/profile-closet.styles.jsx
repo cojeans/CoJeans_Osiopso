@@ -6,7 +6,10 @@ export const ClosetBodyContainer = styled.div`
 	justify-items: center;
 	grid-gap:20px;
 
+
 `
+
+
 export const LogoContainer2 = styled.div`
   height: 50%;
   width: 70px;
@@ -23,3 +26,4 @@ export const PlusCloset = styled.img.attrs({
 })`
 	
 `;
+

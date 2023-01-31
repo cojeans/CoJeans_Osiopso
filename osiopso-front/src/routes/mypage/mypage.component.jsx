@@ -1,14 +1,15 @@
-import { Fragment } from "react"
+import {Routes, Route} from 'react-router-dom'
 
-import Profile from "../../components/profile/profile.component"
-import ProfileBody from "../../components/profile-body/profile-body.component"
+import MypageBody from '../../components/mypage/mypage.component'
+import ClosetCreate from '../../components/closet-create/closet-create.component'
 
 const Mypage = () => {
 	return (
-		<Fragment>
-			<Profile />
-			<ProfileBody/>
-		</Fragment>
+		<Routes>
+			<Route index element={<MypageBody/>} />
+			<Route path=":closet-create" element={<ClosetCreate/>} />
+		</Routes>
+		
 	)
 }
 

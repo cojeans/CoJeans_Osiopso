@@ -22,7 +22,7 @@ export const ClosetItem = styled.div`
 	flex-direction:column;
 	align-items: center;
 	justify-content: center;
-
+	cursor:pointer;
 	`
 
 export const ItemInfo = styled.div`
