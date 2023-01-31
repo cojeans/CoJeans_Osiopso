@@ -18,7 +18,8 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
 public class Tag {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     String keyword;
@@ -26,6 +27,6 @@ public class Tag {
 //    @OneToMany(mappedBy = "tag")
 //    private List<ArticleTag> articleTags;
 
-//    @OneToMany(mappedBy = "tag")
-//    private List<ClothesTag> clothesTags;
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.PERSIST)
+    private List<ClothesTag> clothesTags;
 }
