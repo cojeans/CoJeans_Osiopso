@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Button from '../button/button.component';
+import ToggleButton from '../toggle/toggle.component';
 
 import {
 	ModaContainer,
@@ -8,7 +9,8 @@ import {
 	CreateClosetTitle,
 	ClosetInput,
 	ClosetContent,
-	ButtonContainer
+	ButtonContainer,
+	ToggleContainer
 } from "./closet-create-modal.styles";
 
 
@@ -62,8 +64,10 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 							autoFocus
 							maxLength={ 25 }
 						/>
-						<p>공개 설정</p>
-
+						<ToggleContainer>
+							<p>공개 설정</p>
+							<ToggleButton />
+						</ToggleContainer>
 					</ClosetContent>
 						<Button>저장</Button>
 				</ModalBody>

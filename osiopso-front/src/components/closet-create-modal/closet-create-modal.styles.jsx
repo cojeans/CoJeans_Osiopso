@@ -62,3 +62,9 @@ export const ModalBody = styled.div`
   background-color:white;
   border-radius:20px;
 `
+
+export const ToggleContainer = styled.div`
+  display:flex; 
+  justify-content: space-between;
+
+  `
