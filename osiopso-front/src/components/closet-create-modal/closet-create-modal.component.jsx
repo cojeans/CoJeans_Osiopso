@@ -48,7 +48,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 	
     return (
 			<ModaContainer>
-				<ModalBody  ref={modalRef}>
+				<ModalBody ref={modalRef}>
 					<ButtonContainer>
 						<button onClick={closeModal}>
 								X

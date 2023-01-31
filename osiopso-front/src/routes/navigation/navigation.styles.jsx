@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 export const Container = styled.div`
   width: 100%;
-	max-width:450px;
+	max-width:430px;
 	height:100%;
 	margin:auto;
 	position:relative;
@@ -13,7 +13,7 @@ export const Container = styled.div`
 export const NavigationContainer = styled.div`
 	height: 60px;
   width: 100%;
-	max-width:450px;
+	max-width:430px;
   display: flex;
   justify-content: space-between;
 	color: #e7e2ff;
@@ -73,7 +73,7 @@ export const LogoContainer = styled(NavLink)`
 export const BodyContainer = styled.div`
 	padding:65px 0;
 	width: 100%;
-	max-width:450px;
+	max-width:430px;
 	margin:auto;
 	min-height:100%
 `

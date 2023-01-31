@@ -54,7 +54,7 @@ export const ButtonContainer = styled.div`
 `
 
 export const ModalBody = styled.div`
-  height:500px;
+  height:50%;
   width:100%;
    display:flex;
   flex-direction:column;
