@@ -30,6 +30,11 @@ public class JwtTokenProvider {
     Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class.getName());
 
 
+    //Token유효시간추가
+    private long TOKEN_VALID_TIME = 1000L * 60 * 30; // 30분
+
+
+
     private final Key key;
 
     /**
@@ -47,6 +52,7 @@ public class JwtTokenProvider {
      * @return "권한, 권한, 권한"을 받아서 JWT로 만듦
      */
     public String generateToken(Authentication authentication) {
+        Date now = new Date();
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -60,7 +66,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 30))
+                .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -114,4 +120,6 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
+
+
 }
