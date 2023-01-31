@@ -15,8 +15,9 @@ export const ClosetItem = styled.div`
 	p{
 		font-size:15px;
 		text-align:center;
-		color:gray;
+		color:#D3D3D3;
 		margin:0 ;
+		font-weight:bold;
 	}
 	display:flex;
 	flex-direction:column;

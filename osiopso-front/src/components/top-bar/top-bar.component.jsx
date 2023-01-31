@@ -25,8 +25,8 @@ const TopBar = () => {
 			case '/login':
 				setTopName('로그인')
 				break
-			case '/mypage/closet-create':
-				setTopName('옷장 추가')
+			case '/mypage/add-clothes':
+				setTopName('옷 등록')
 				break
 			default:
 				setTopName('Osiopso')

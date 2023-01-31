@@ -1,13 +1,13 @@
 import {Routes, Route} from 'react-router-dom'
 
 import MypageBody from '../../components/mypage/mypage.component'
-import ClosetCreate from '../../components/closet-create/closet-create.component'
+import ClothesAdd from '../../components/clothes-add/clothes-add.component'
 
 const Mypage = () => {
 	return (
 		<Routes>
 			<Route index element={<MypageBody/>} />
-			<Route path=":closet-create" element={<ClosetCreate/>} />
+			<Route path=":add-clothes" element={<ClothesAdd/>} />
 		</Routes>
 		
 	)

@@ -76,7 +76,7 @@ const ProfileCloset = () => {
 				<LogoContainer2>
 					<PlusCloset/>
 				</LogoContainer2>
-				<p> 옷장 추가 </p>
+				<p> 옷장 만들기 </p>
 			</ClosetItem>
 			{
 				closetList.map((closet, idx) => {
