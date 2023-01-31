@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
-
+import { SideBar } from "../side-bar/side-bar.component"
 import {
 	TopBarContainer,
 	TopBarContent,
@@ -32,6 +32,7 @@ const TopBar = () => {
 	return (
 		<TopBarContainer>
 			<ButtonContainer>
+        <SideBar/>  
 				<BackButton/>
 			</ButtonContainer>
 			<TopBarContent>
