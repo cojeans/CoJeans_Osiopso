@@ -26,19 +26,4 @@ public class Converter {
 
         return list;
     }
-
-
-    public List<ArticleTagDto> toTagDto(List<ArticleTag> tags) {
-        List<ArticleTagDto> list = new ArrayList<>();
-
-        for (ArticleTag tag : tags) {
-            list.add(ArticleTagDto.builder()
-                    .id(tag.getId())
-                    .tag(tag.getTag())
-                    .article(tag.getArticle())
-                    .build());
-        }
-
-        return list;
-    }
 }
