@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.entity.feed;
 
 import com.cojeans.osiopso.dto.feed.ArticleDto;
+import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -47,18 +48,20 @@ public class Article {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-    private List<ArticleTag> tags;
+//    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
+//    private List<ArticleTag> tags;
 
-    @Column(insertable = false, updatable=false)
+    @Column(insertable = false, updatable = false)
     private String dtype;
 
-    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, List<ArticleTag> tags) {
+
+
+
+    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
         this.photos = photos;
         this.hit = hit;
         this.content = content;
         this.dtype = dtype;
         this.user = user;
-        this.tags = tags;
     }
 }

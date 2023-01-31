@@ -1,9 +1,9 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.feed.ArticleDto;
-import com.cojeans.osiopso.entity.feed.Advice;
-import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.entity.feed.Ootd;
+import com.cojeans.osiopso.dto.feed.ArticlePhotoDto;
+import com.cojeans.osiopso.dto.feed.ArticleTagDto;
+import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.AdviceRepository;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
@@ -22,6 +22,7 @@ public class AdviceService {
 
     private final ArticleRepository articleRepository;
     private final AdviceRepository adviceRepository;
+    private final Converter converter;
 
 
     public List<ArticleDto> listAdvice() {
@@ -31,13 +32,13 @@ public class AdviceService {
         for (Advice advice : Advices) {
             ArticleDto dto = ArticleDto.builder()
                     .id(advice.getId())
-                    .photos(advice.getPhotos())
+                    .photos(converter.toPhotoDto(advice.getPhotos()))
                     .hit(advice.getHit())
                     .content(advice.getContent())
                     .createTime(advice.getCreateTime())
                     .dtype(advice.getDtype())
                     .modifyTime(advice.getModifyTime())
-                    .tags(advice.getTags())
+//                    .tags(converter.toTagDto(advice.getTags()))
                     .userId(advice.getUser().getId())
                     .isSelected(advice.isSelected())
                     .subject(advice.getSubject())
@@ -54,23 +55,18 @@ public class AdviceService {
     }
 
 
-
-
-
-
-
     public ArticleDto detailAdvice(Long feedNo) {
         Advice advice = adviceRepository.findById(feedNo).orElseThrow();
 
         return ArticleDto.builder()
                 .id(advice.getId())
-                .photos(advice.getPhotos())
+                .photos(converter.toPhotoDto(advice.getPhotos()))
                 .hit(advice.getHit())
                 .content(advice.getContent())
                 .createTime(advice.getCreateTime())
                 .dtype(advice.getDtype())
                 .modifyTime(advice.getModifyTime())
-                .tags(advice.getTags())
+//                .tags(converter.toTagDto(advice.getTags()))
                 .userId(advice.getUser().getId())
                 .isSelected(advice.isSelected())
                 .subject(advice.getSubject())
@@ -89,7 +85,7 @@ public class AdviceService {
                 .createTime(articleDto.getCreateTime())
                 .dtype(articleDto.getDtype())
                 .modifyTime(articleDto.getModifyTime())
-                .tags(articleDto.getTags())
+//                .tags(articleDto.getTags())
                 .userId(articleDto.getUserId())
                 .isSelected(articleDto.isSelected())
                 .subject(articleDto.getSubject())
@@ -101,4 +97,5 @@ public class AdviceService {
             return true;
         }
     }
+
 }

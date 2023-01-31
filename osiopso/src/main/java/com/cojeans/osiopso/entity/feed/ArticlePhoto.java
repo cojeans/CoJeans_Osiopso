@@ -22,4 +22,6 @@ public class ArticlePhoto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ARTICLE_ID")
     private Article article;
+
+
 }

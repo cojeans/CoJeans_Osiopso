@@ -23,9 +23,9 @@ public class Tag {
 
     String keyword;
 
-    @OneToMany(mappedBy = "tag")
-    private List<ArticleTag> articleTags;
+//    @OneToMany(mappedBy = "tag")
+//    private List<ArticleTag> articleTags;
 
-    @OneToMany(mappedBy = "tag")
-    private List<ClothesTag> clothesTags;
+//    @OneToMany(mappedBy = "tag")
+//    private List<ClothesTag> clothesTags;
 }

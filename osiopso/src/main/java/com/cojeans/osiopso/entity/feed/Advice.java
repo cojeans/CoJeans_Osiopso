@@ -23,7 +23,7 @@ public class Advice extends Article{
     String subject;
 
     public Advice(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, List<ArticleTag> tags, boolean isSelected, String subject) {
-        super(photos, hit, content, dtype, user, tags);
+        super(photos, hit, content, dtype, user);
         this.isSelected = isSelected;
         this.subject = subject;
     }

@@ -1,7 +1,11 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.feed.ArticleDto;
+import com.cojeans.osiopso.dto.feed.ArticlePhotoDto;
+import com.cojeans.osiopso.dto.feed.ArticleTagDto;
 import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.ArticlePhoto;
+import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
@@ -21,6 +25,7 @@ public class OotdService {
 
     private final ArticleRepository articleRepository;
     private final OotdRepository ootdRepository;
+    private final Converter converter;
 
     public List<ArticleDto> listOotd() {
         List<Ootd> Ootds = ootdRepository.findList();
@@ -29,13 +34,13 @@ public class OotdService {
         for (Ootd ootd : Ootds) {
             ArticleDto dto = ArticleDto.builder()
                     .id(ootd.getId())
-                    .photos(ootd.getPhotos())
+                    .photos(converter.toPhotoDto(ootd.getPhotos()))
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
                     .createTime(ootd.getCreateTime())
                     .dtype(ootd.getDtype())
                     .modifyTime(ootd.getModifyTime())
-                    .tags(ootd.getTags())
+//                    .tags(converter.toTagDto(ootd.getTags()))
                     .userId(ootd.getUser().getId())
                     .build();
 
@@ -49,31 +54,19 @@ public class OotdService {
         return articleDtos;
     }
 
-    public boolean createOotd(ArticleDto articleDto) {
-        // 추후에 로그인 기능이 완성된다면 어떤식으로 유저 정보(JWT) 를 받아올지?
-        User token = new User();
-
-        System.out.println("호출됨");
-        System.out.println(articleDto);
-        if (articleRepository.save(articleDto.toEntity(token, 0L)) == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     public ArticleDto detailOotd(Long articleNo) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         return ArticleDto.builder()
                 .id(ootd.getId())
-                .photos(ootd.getPhotos())
+                .photos(converter.toPhotoDto(ootd.getPhotos()))
                 .hit(ootd.getHit())
                 .content(ootd.getContent())
                 .createTime(ootd.getCreateTime())
                 .dtype(ootd.getDtype())
                 .modifyTime(ootd.getModifyTime())
-                .tags(ootd.getTags())
+//                .tags(converter.toTagDto(ootd.getTags()))
                 .userId(ootd.getUser().getId())
                 .build();
     }
@@ -90,7 +83,7 @@ public class OotdService {
                 .createTime(articleDto.getCreateTime())
                 .dtype(articleDto.getDtype())
                 .modifyTime(articleDto.getModifyTime())
-                .tags(articleDto.getTags())
+//                .tags(articleDto.getTags())
                 .userId(articleDto.getUserId())
                 .build();
 
@@ -100,6 +93,4 @@ public class OotdService {
             return true;
         }
     }
-
-
 }
