@@ -38,7 +38,7 @@ public class FeedApiController {
     // ====================== CREATE ========================
     @PostMapping("/article")
     public ResponseEntity<String> createArticle(@RequestBody ArticleDto articleDto) {
-
+        System.out.println(articleDto);
         if (articleService.createArticle(articleDto)) {
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         }
