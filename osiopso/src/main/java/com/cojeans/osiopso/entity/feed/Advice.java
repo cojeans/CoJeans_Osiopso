@@ -22,7 +22,7 @@ public class Advice extends Article{
     boolean isSelected;
     String subject;
 
-    public Advice(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, List<ArticleTag> tags, boolean isSelected, String subject) {
+    public Advice(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, boolean isSelected, String subject) {
         super(photos, hit, content, dtype, user);
         this.isSelected = isSelected;
         this.subject = subject;

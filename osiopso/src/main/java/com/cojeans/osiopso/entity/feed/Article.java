@@ -19,7 +19,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "articles")
 @DiscriminatorColumn(name = "DTYPE")
 @SuperBuilder
 public class Article {
