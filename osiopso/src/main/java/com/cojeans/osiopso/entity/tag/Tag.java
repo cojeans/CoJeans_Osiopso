@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.entity.tag;
 
+import com.cojeans.osiopso.dto.tag.TagDto;
 import com.cojeans.osiopso.entity.closet.ClothesTag;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import lombok.*;
@@ -25,6 +26,11 @@ public class Tag {
 //    @OneToMany(mappedBy = "tag")
 //    private List<ArticleTag> articleTags;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.PERSIST)
-    private List<ClothesTag> clothesTags;
+    public TagDto toDto(){
+        return TagDto.builder()
+                .id(id)
+                .keyword(keyword)
+                .build();
+    }
+
 }

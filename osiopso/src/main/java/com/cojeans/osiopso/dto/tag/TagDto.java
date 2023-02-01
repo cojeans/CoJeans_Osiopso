@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagDto {
+    private Long id;
     private String keyword;
 
     private String type;
