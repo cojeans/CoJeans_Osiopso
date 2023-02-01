@@ -32,7 +32,7 @@ box-sizing: border-box;
 display:block;
 font-size: 1.5rem;
 text-transform: capitalize;
-padding: 1rem 1,5rem;
+padding: 1rem 1.5rem;
 color: hsl(210, 22%, 49%);
 transition: all 0.3s linear;
 cursor: pointer;
