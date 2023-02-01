@@ -89,5 +89,4 @@ public class ArticleRequestDto {
 
         return list;
     }
-    //test
 }
