@@ -33,7 +33,7 @@ public class AdviceService {
         for (Advice advice : Advices) {
             ArticleResponseDto dto = ArticleResponseDto.builder()
                     .id(advice.getId())
-                    .photos(converter.toPhotoDto(advice.getPhotos()))
+//                    .photos(converter.toPhotoDto(advice.getPhotos()))
                     .hit(advice.getHit())
                     .content(advice.getContent())
                     .createTime(advice.getCreateTime())
@@ -63,7 +63,7 @@ public class AdviceService {
 
         return ArticleResponseDto.builder()
                 .id(advice.getId())
-                .photos(converter.toPhotoDto(advice.getPhotos()))
+//                .photos(converter.toPhotoDto(advice.getPhotos()))
                 .hit(advice.getHit())
                 .createTime(advice.getCreateTime())
                 .dtype(advice.getDtype())

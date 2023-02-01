@@ -1,8 +1,10 @@
 package com.cojeans.osiopso.service.article;
 
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.request.feed.TagDto;
 import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleTagRepository articleTagRepository;
+    private final ArticlePhotoRepository articlePhotoRepository;
     private final TagRepository tagRepository;
 
 
@@ -34,7 +38,18 @@ public class ArticleService {
         List<TagDto> tags = articleRequestDto.getTags();
         Article article = articleRequestDto.toEntity(token, 0L);
 
-        articleRepository.save(article);
+        Article savedArticle = articleRepository.save(article);
+
+
+        List<ArticlePhotoDto> photos = articleRequestDto.getPhotos();
+
+        for (ArticlePhotoDto photo : photos) {
+            articlePhotoRepository.save(ArticlePhoto.builder()
+                    .storeFilename(photo.getStoreFilename())
+                    .originFilename(photo.getOriginFilename())
+                    .article(savedArticle)
+                    .build());
+        }
 
         for (TagDto tag : tags) {
             Tag tagE = tag.toEntity();

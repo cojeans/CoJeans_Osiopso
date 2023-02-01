@@ -37,7 +37,7 @@ public class OotdService {
         for (Ootd ootd : Ootds) {
             ArticleResponseDto dto = ArticleResponseDto.builder()
                     .id(ootd.getId())
-                    .photos(converter.toPhotoDto(ootd.getPhotos()))
+//                    .photos(converter.toPhotoDto(ootd.getPhotos()))
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
                     .createTime(ootd.getCreateTime())
@@ -72,15 +72,15 @@ public class OotdService {
                     .build());
         }
 
-        List<ArticlePhoto> photos = ootd.getPhotos();
-        for (ArticlePhoto p : photos) {
-            System.out.println(p);
-        }
+//        List<ArticlePhoto> photos = ootd.getPhotos();
+//        for (ArticlePhoto p : photos) {
+//            System.out.println(p);
+//        }
 
 
         return ArticleResponseDto.builder()
                 .id(ootd.getId())
-                .photos(converter.toPhotoDto(ootd.getPhotos()))
+//                .photos(converter.toPhotoDto(ootd.getPhotos()))
                 .hit(ootd.getHit())
                 .content(ootd.getContent())
                 .createTime(ootd.getCreateTime())
