@@ -1,19 +1,20 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.feed.ArticleDto;
-import com.cojeans.osiopso.dto.feed.ArticlePhotoDto;
-import com.cojeans.osiopso.dto.feed.ArticleTagDto;
+import com.cojeans.osiopso.dto.request.feed.TagDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.entity.feed.*;
-import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.repository.article.AdviceRepository;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
+import com.cojeans.osiopso.repository.article.ArticleTagRepository;
+import com.cojeans.osiopso.repository.article.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = false)
@@ -25,48 +26,48 @@ public class AdviceService {
     private final Converter converter;
 
 
-    public List<ArticleDto> listAdvice() {
+    public List<ArticleResponseDto> listAdvice() {
         List<Advice> Advices = adviceRepository.findList();
-        List<ArticleDto> articleDtos = new ArrayList<>();
+        List<ArticleResponseDto> articleRequestDtos = new ArrayList<>();
 
         for (Advice advice : Advices) {
-            ArticleDto dto = ArticleDto.builder()
+            ArticleResponseDto dto = ArticleResponseDto.builder()
                     .id(advice.getId())
                     .photos(converter.toPhotoDto(advice.getPhotos()))
                     .hit(advice.getHit())
                     .content(advice.getContent())
                     .createTime(advice.getCreateTime())
-                    .dtype(advice.getDtype())
                     .modifyTime(advice.getModifyTime())
-//                    .tags(converter.toTagDto(advice.getTags()))
                     .userId(advice.getUser().getId())
                     .isSelected(advice.isSelected())
                     .subject(advice.getSubject())
                     .build();
 
-            articleDtos.add(dto);
+            articleRequestDtos.add(dto);
         }
 
-        for (ArticleDto articleDto : articleDtos) {
-            System.out.println(articleDto.toString());
+        for (ArticleResponseDto articleRequestDto : articleRequestDtos) {
+            System.out.println(articleRequestDto.toString());
         }
 
-        return articleDtos;
+        return articleRequestDtos;
     }
 
 
-    public ArticleDto detailAdvice(Long feedNo) {
+
+    // 1. param 으로 훈수 찾아오기
+    // 2. 훈수 게시물 Id로 articleTag 찾아오기
+    // 3. articleTag iterator 돌려서 id로 keyword
+    public ArticleResponseDto detailAdvice(Long feedNo) {
         Advice advice = adviceRepository.findById(feedNo).orElseThrow();
 
-        return ArticleDto.builder()
+        return ArticleResponseDto.builder()
                 .id(advice.getId())
                 .photos(converter.toPhotoDto(advice.getPhotos()))
                 .hit(advice.getHit())
-                .content(advice.getContent())
                 .createTime(advice.getCreateTime())
                 .dtype(advice.getDtype())
                 .modifyTime(advice.getModifyTime())
-//                .tags(converter.toTagDto(advice.getTags()))
                 .userId(advice.getUser().getId())
                 .isSelected(advice.isSelected())
                 .subject(advice.getSubject())
@@ -74,21 +75,16 @@ public class AdviceService {
     }
 
 
-    public boolean editAdvice(Long articleNo, ArticleDto articleDto) {
+    public boolean editAdvice(Long articleNo, ArticleRequestDto articleRequestDto) {
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
-        ArticleDto editDto = ArticleDto.builder()
-                .id(articleNo)
-                .photos(articleDto.getPhotos())
-                .hit(articleDto.getHit())
-                .content(articleDto.getContent())
-                .createTime(articleDto.getCreateTime())
-                .dtype(articleDto.getDtype())
-                .modifyTime(articleDto.getModifyTime())
-//                .tags(articleDto.getTags())
-                .userId(articleDto.getUserId())
-                .isSelected(articleDto.isSelected())
-                .subject(articleDto.getSubject())
+        ArticleRequestDto editDto = ArticleRequestDto.builder()
+                .photos(articleRequestDto.getPhotos())
+                .content(articleRequestDto.getContent())
+                .createTime(articleRequestDto.getCreateTime())
+                .modifyTime(articleRequestDto.getModifyTime())
+                .isSelected(articleRequestDto.isSelected())
+                .subject(articleRequestDto.getSubject())
                 .build();
 
         if (articleRepository.save(editDto.toEntity(article.getUser(), articleNo)) == null) {

@@ -1,7 +1,6 @@
-package com.cojeans.osiopso.dto.feed;
+package com.cojeans.osiopso.dto.request.feed;
 
 import com.cojeans.osiopso.entity.feed.*;
-import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -12,13 +11,10 @@ import java.util.List;
 
 @Data
 @Builder
-public class ArticleDto {
+public class ArticleRequestDto {
 
-    private Long id;
     private Date createTime;
     private Date modifyTime;
-    private Long userId;
-
     private String dtype;
     private List<ArticlePhotoDto> photos;
     private List<TagDto> tags;
@@ -39,7 +35,6 @@ public class ArticleDto {
                             .dtype(dtype)
                             .user(user)
                             .photos(toPhotoEntity(photos))
-//                            .tags(toTagEntity(tags))
                             .hit(hit)
                             .content(content).build();
 
@@ -52,7 +47,6 @@ public class ArticleDto {
                             .subject(subject)
                             .user(user)
                             .photos(toPhotoEntity(photos))
-//                            .tags(toTagEntity(tags))
                             .hit(hit)
                             .content(content).build();
             }
@@ -65,7 +59,6 @@ public class ArticleDto {
                         .dtype(dtype)
                         .user(user)
                         .photos(toPhotoEntity(photos))
-//                        .tags(toTagEntity(tags))
                         .hit(hit)
                         .content(content).build();
 
@@ -77,7 +70,6 @@ public class ArticleDto {
                         .subject(subject)
                         .user(user)
                         .photos(toPhotoEntity(photos))
-//                        .tags(toTagEntity(tags))
                         .hit(hit)
                         .content(content).build();
         }

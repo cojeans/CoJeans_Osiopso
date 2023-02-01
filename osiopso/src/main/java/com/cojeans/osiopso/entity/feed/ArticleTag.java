@@ -2,10 +2,8 @@ package com.cojeans.osiopso.entity.feed;
 
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ArticleTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,7 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.feed.ArticlePhotoDto;
-import com.cojeans.osiopso.dto.feed.ArticleTagDto;
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoDto;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
-import com.cojeans.osiopso.entity.feed.ArticleTag;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ public class Converter {
 
         for (ArticlePhoto photo : photos) {
             list.add(ArticlePhotoDto.builder()
-                    .id(photo.getId())
+//                    .id(photo.getId())
                     .originFilename(photo.getOriginFilename())
                     .storeFilename(photo.getStoreFilename())
                     .article(photo.getArticle())

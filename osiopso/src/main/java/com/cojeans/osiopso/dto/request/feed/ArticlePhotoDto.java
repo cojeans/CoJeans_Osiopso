@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.dto.feed;
+package com.cojeans.osiopso.dto.request.feed;
 
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
@@ -13,14 +13,12 @@ import javax.persistence.*;
 @Builder
 public class ArticlePhotoDto {
 
-    private Long id;
     private String originFilename;
     private String storeFilename;
     private Article article;
 
     public ArticlePhoto toEntity() {
         return ArticlePhoto.builder()
-                .id(id)
                 .originFilename(originFilename)
                 .storeFilename(storeFilename)
                 .article(article)

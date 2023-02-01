@@ -10,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 public class ArticlePhoto {
     @Id
     @GeneratedValue

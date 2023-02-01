@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.dto.feed;
+package com.cojeans.osiopso.dto.request.feed;
 
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;

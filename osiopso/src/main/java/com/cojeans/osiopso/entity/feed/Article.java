@@ -1,16 +1,12 @@
 package com.cojeans.osiopso.entity.feed;
 
-import com.cojeans.osiopso.dto.feed.ArticleDto;
-import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,9 +48,6 @@ public class Article {
 
     @Column(insertable = false, updatable = false)
     private String dtype;
-
-
-
 
     public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
         this.photos = photos;

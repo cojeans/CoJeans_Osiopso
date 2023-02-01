@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.dto.feed;
+package com.cojeans.osiopso.dto.request.feed;
 
 
 import com.cojeans.osiopso.entity.tag.Tag;
@@ -13,9 +13,12 @@ import lombok.*;
 public class TagDto {
     private String keyword;
 
-    public Tag toTagEntity() {
+    private String type;
+
+    public Tag toEntity() {
         return Tag.builder()
-                .keyword(keyword)
-                .build();
+                    .type(type)
+                    .keyword(keyword)
+                    .build();
     }
 }

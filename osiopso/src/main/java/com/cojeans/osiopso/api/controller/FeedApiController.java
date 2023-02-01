@@ -1,8 +1,7 @@
 package com.cojeans.osiopso.api.controller;
 
-import com.cojeans.osiopso.dto.feed.ArticleDto;
-import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.repository.article.ArticleRepository;
+import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
 import com.cojeans.osiopso.service.article.OotdService;
@@ -13,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
@@ -25,8 +21,6 @@ import java.util.Map;
 @RequestMapping("/feed")
 @Api(tags = "게시글 관련 API")
 public class FeedApiController {
-    private final ArticleRepository articleRepository;
-
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
@@ -37,12 +31,56 @@ public class FeedApiController {
 
     // ====================== CREATE ========================
     @PostMapping("/article")
-    public ResponseEntity<String> createArticle(@RequestBody ArticleDto articleDto) {
-        System.out.println(articleDto);
-        if (articleService.createArticle(articleDto)) {
+    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
+        if (articleService.createArticle(articleRequestDto)) {
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
+    // ====================== READ ========================
+    @GetMapping("/advice")
+    public ResponseEntity<List<ArticleResponseDto>> listAdivce() {
+        return new ResponseEntity<>(adviceService.listAdvice(), HttpStatus.OK);
+    }
+
+    @GetMapping("/advice/{articleno}")
+    public ResponseEntity<ArticleResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
+        ArticleResponseDto detail = adviceService.detailAdvice(articleNo);
+        return new ResponseEntity<>(detail, HttpStatus.OK);
+    }
+
+    @GetMapping("/ootd")
+    public ResponseEntity<List<ArticleResponseDto>> listOotd() {
+        return new ResponseEntity<>(ootdService.listOotd(), HttpStatus.OK);
+    }
+
+    @GetMapping("/ootd/{articleno}")
+    public ResponseEntity<ArticleResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
+        ArticleResponseDto detail = ootdService.detailOotd(articleNo);
+        return new ResponseEntity<>(detail, HttpStatus.OK);
+    }
+
+
+
+    // ====================== UPDATE ========================
+    @PutMapping("/ootd/{articleno}")
+    public ResponseEntity<String> editOotd(@PathVariable("articleno") Long articleNo, @RequestBody ArticleRequestDto articleRequestDto) {
+        if (ootdService.editOotd(articleNo, articleRequestDto)){
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PutMapping("/advice/{articleno}")
+    public ResponseEntity<String> editAdvice(@PathVariable("articleno") Long articleNo, @RequestBody ArticleRequestDto articleRequestDto) {
+        if (adviceService.editAdvice(articleNo, articleRequestDto)){
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 
@@ -50,56 +88,6 @@ public class FeedApiController {
     @DeleteMapping("/article/{articleno}")
     public ResponseEntity<String> deleteArticle(@PathVariable("articleno") Long articleNo) {
         if (articleService.deleteArticle(articleNo)) {
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-
-
-
-    // ====================== READ ========================
-    @GetMapping("/ootd")
-    public ResponseEntity<List<ArticleDto>> listOotd() {
-        return new ResponseEntity<>(ootdService.listOotd(), HttpStatus.OK);
-    }
-
-    @GetMapping("/ootd/{articleno}")
-    public ResponseEntity<ArticleDto> detailOotd(@PathVariable("articleno") Long articleNo) {
-        ArticleDto detail = ootdService.detailOotd(articleNo);
-        return new ResponseEntity<>(detail, HttpStatus.OK);
-    }
-
-
-    // ====================== UPDATE ========================
-    @PutMapping("/ootd/{articleno}")
-    public ResponseEntity<String> editOotd(@PathVariable("articleno") Long articleNo, @RequestBody ArticleDto articleDto) {
-        if (ootdService.editOotd(articleNo, articleDto)){
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-
-
-
-    // ====================== READ ========================
-    @GetMapping("/advice")
-    public ResponseEntity<List<ArticleDto>> listAdivce() {
-        return new ResponseEntity<>(adviceService.listAdvice(), HttpStatus.OK);
-    }
-
-    @GetMapping("/advice/{articleno}")
-    public ResponseEntity<ArticleDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
-        ArticleDto detail = adviceService.detailAdvice(articleNo);
-        return new ResponseEntity<>(detail, HttpStatus.OK);
-    }
-
-
-    // ====================== UPDATE ========================
-    @PutMapping("/advice/{articleno}")
-    public ResponseEntity<String> editAdvice(@PathVariable("articleno") Long articleNo, @RequestBody ArticleDto articleDto) {
-        if (adviceService.editAdvice(articleNo, articleDto)){
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
