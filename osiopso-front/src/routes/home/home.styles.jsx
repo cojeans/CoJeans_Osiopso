@@ -14,4 +14,6 @@ margin: 0px 20px 0px
 export const TextToLeft = styled.div`
 text-align: left;
 `
+export const MainPageImages = styled.div`
 
+`

@@ -36,6 +36,10 @@ const TopBar = () => {
 			<TopBarContent>
 				{ topName }
 			</TopBarContent>
+			{/* <CategoryContainer > */}
+				{/* <Category /> */}
+        {/* <SideBar/> */}
+			{/* </CategoryContainer> */}
 		</TopBarContainer>
 	)
 }
