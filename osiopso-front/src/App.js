@@ -23,16 +23,17 @@ function App() {
     });
   return (
     <Routes>
-      <Route path='/' element={<Navigation/>}>
-        <Route index element={<Home />} />  
-        <Route path='login' element={<Login />} />
-        <Route path='join' element={<Join />} />
-        <Route path='mypage' element={<Mypage />} />
+
+      <Route path="/" element={<Navigation />}>
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="join" element={<Join />} />
+        <Route path="mypage/*" element={<Mypage />} />
         <Route path='advice' element={<Advice />} />
         <Route path='ootd' element={<OOTD/>}></Route>
         
       </Route>
-   </Routes>
+    </Routes>
   );
 }
 

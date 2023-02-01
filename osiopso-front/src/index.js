@@ -5,13 +5,15 @@ import {BrowserRouter} from 'react-router-dom'
 import './index.scss';
 
 import App from './App';
+import ScrollToTop from './components/scroll-up/scroll-up.component';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-        <App />
+      <ScrollToTop />
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

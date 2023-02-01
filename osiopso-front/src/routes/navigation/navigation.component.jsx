@@ -5,7 +5,8 @@ import { Outlet } from "react-router-dom"
 import {
 	NavigationContainer,
 	LogoContainer,
-	BodyContainer
+	BodyContainer,
+	Container
 } from "./navigation.styles"
 
 import TopBar from "../../components/top-bar/top-bar.component"
@@ -18,7 +19,7 @@ import { ReactComponent as User } from '../../assets/user.svg'
 
 const Navigation = () => {
 	return (
-		<Fragment>
+		<Container>
 			<TopBar />
 			<BodyContainer>
 				<Outlet />
@@ -44,13 +45,13 @@ const Navigation = () => {
 				</LogoContainer>
 				<LogoContainer to='/mypage'>
 					<User />
-					<span>마이페이지</span>
+					<span>프로필</span>
 				</LogoContainer>
 				{/* <Link to='/login'>Login</Link> 
 				<Link to='/join'>Join</Link>
 				<Link to='/mypage'>My page</Link> */}
 			</NavigationContainer>
-		</Fragment>
+		</Container>
 	)
 }
 
