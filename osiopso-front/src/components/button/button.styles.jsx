@@ -19,11 +19,7 @@ export const BaseButton = styled.button`
   justify-content: center;
 	margin:auto;
 
-  // &:hover {
-  //   background-color: white;
-  //   color: black;
-  //   border: 1px solid black;
-  // }
+
 `
 
 
