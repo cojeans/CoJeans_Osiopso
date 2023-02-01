@@ -9,8 +9,6 @@ import {
 
 import { ReactComponent as BackButton } from '../../assets/back.svg'
 import { ReactComponent as Category } from '../../assets/category.svg'
-
-
 import { SideBar } from "../side-bar/side-bar.component"
 
 const TopBar = () => {
@@ -39,12 +37,13 @@ const TopBar = () => {
 			<ButtonContainer onClick={() => navigate(-1)}>
 				<BackButton />
 			</ButtonContainer>	
-        <SideBar/>
+
 			<TopBarContent>
 				{ topName }
 			</TopBarContent>
 			<CategoryContainer >
 				<Category />
+        <SideBar/>
 			</CategoryContainer>
 		</TopBarContainer>
 	)
