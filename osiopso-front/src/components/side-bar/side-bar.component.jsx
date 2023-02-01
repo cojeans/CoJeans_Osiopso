@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { links } from "../../data";
+
 import {
 	SidebarToggle,
   NavbarContainer,
@@ -8,6 +8,9 @@ import {
 
 import styles from "./side-bar.css"
 import { ReactComponent as Category } from '../../assets/category.svg'
+
+// 로그인 상황 가정
+const isLogin = true;
 
 export const SideBar = () => {
   const [isSideOpen, setIsSideOpen] = useState(false);
@@ -32,14 +35,32 @@ export const SideBar = () => {
       <NavbarContainer className={`${isSideOpen ? "nav-open" : "nav-closed"}`}>
         <div className="logo">The company</div>
         <ul>
-          {links.map((link) => (
-            <li>
-              <LinkContainer to ="/">
-                {link.text}
+          <LinkContainer to='/'>
+            Home
+          </LinkContainer>
+          {!isLogin && <LinkContainer to='/join'>
+            회원가입
+          </LinkContainer>}
 
-              </LinkContainer>
-            </li>
-          ))}
+          {!isLogin && <LinkContainer to='/login'>
+            로그인
+          </LinkContainer>}
+
+          {isLogin && <LinkContainer to='/login'>
+            회원탈퇴
+          </LinkContainer>}
+          
+          {isLogin && <LinkContainer to='/login'>
+            로그아웃
+          </LinkContainer>}
+
+          {isLogin && <LinkContainer to='/login'>
+            비밀번호 변경
+          </LinkContainer>}
+
+          {isLogin && <LinkContainer to='/login'>
+            공개범위 설정
+          </LinkContainer>}
         </ul>
       </NavbarContainer>
       
