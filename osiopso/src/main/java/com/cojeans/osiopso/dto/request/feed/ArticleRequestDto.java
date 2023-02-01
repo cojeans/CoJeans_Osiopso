@@ -79,14 +79,14 @@ public class ArticleRequestDto {
         return null;
     }
 
-    private List<ArticlePhoto> toPhotoEntity(List<ArticlePhotoDto> photos, Long articleId) {
-        List<ArticlePhoto> list = new ArrayList<>();
-
-        for (ArticlePhotoDto photo : photos) {
-            ArticlePhoto articlePhoto = photo.toEntity();
-            list.add(photo.toEntity());
-        }
-
-        return list;
-    }
+//    private List<ArticlePhoto> toPhotoEntity(List<ArticlePhotoDto> photos, Long articleId) {
+//        List<ArticlePhoto> list = new ArrayList<>();
+//
+//        for (ArticlePhotoDto photo : photos) {
+//            ArticlePhoto articlePhoto = photo.toEntity();
+//            list.add(photo.toEntity());
+//        }
+//
+//        return list;
+//    }
 }
