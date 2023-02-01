@@ -23,10 +23,6 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //일대 다 관계로 테이블로 만들어져야함
-//    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-//    private List<ArticlePhoto> photos;
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -43,14 +39,10 @@ public class Article {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-//    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-//    private List<ArticleTag> tags;
-
     @Column(insertable = false, updatable = false)
     private String dtype;
 
     public Article(int hit, String content, String dtype, User user) {
-//        this.photos = photos;
         this.hit = hit;
         this.content = content;
         this.dtype = dtype;
