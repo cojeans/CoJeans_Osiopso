@@ -2,6 +2,7 @@ package com.cojeans.osiopso.api.controller;
 
 import com.cojeans.osiopso.dto.feed.ArticleDto;
 import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.repository.ArticleRepository;
 import com.cojeans.osiopso.service.ArticleService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,36 +21,33 @@ import java.util.List;
 @RequestMapping("/feed")
 @Api(tags = "게시글 관련 API")
 public class FeedApiController {
+    private final ArticleRepository articleRepository;
 
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
     private final ArticleService articleService;
 
+
     @GetMapping
     public ResponseEntity<List<ArticleDto>> listFeed() {
-        System.out.println("listfeed 호출");
         return new ResponseEntity<>(articleService.listFeed(), HttpStatus.OK);
     }
 
 
     @PostMapping
     public ResponseEntity<String> createFeed(@RequestBody ArticleDto articleDto) {
-
-        System.out.println("writefeed 호출");
-
-        if(articleService.writeFeed(articleDto)) {
+        if (articleService.createFeed(articleDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         }
-
-        return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_ACCEPTABLE);
     }
 
 
     @GetMapping("/{feedno}")
-    public ResponseEntity<List<Article>> detailFeed(@PathVariable("feedno") int feedno) {
-        System.out.println(feedno);
-        return null;
+    public ResponseEntity<ArticleDto> detailFeed(@PathVariable("feedno") Long feedNo) {
+        ArticleDto detail = articleService.detailFeed(feedNo);
+        return new ResponseEntity<ArticleDto>(detail, HttpStatus.OK);
     }
 
     @PutMapping("/{feedno}")
