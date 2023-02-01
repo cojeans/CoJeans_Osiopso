@@ -27,7 +27,7 @@ export const NavigationContainer = styled.div`
 
 export const LogoContainer = styled(NavLink)`
   height: 100%;
-  width: 70px;
+  width: 25%;
 	display:flex;
 	flex-direction:column;
 	text-align:center;
@@ -42,30 +42,20 @@ export const LogoContainer = styled(NavLink)`
 	span{
 		font-size:0.7em;
 		font-weight:bold;
-		color:#e7e2ff;
+		color:#32144f;
 	}
 
 	svg{
-		stroke:#e7e2ff;
-		fill:#e7e2ff;
+		stroke:#32144f;
+		fill:#32144f;
 	}
 	path{
-		stroke:#e7e2ff
+		stroke:#32144f;
 		
 	}
 	
   &.active {
-		span{
-			color:#32144f
-		}
-		svg{
-			stroke:#32144f;
-			fill:#32144f;
-		}
-		path{
-			stroke:#32144f
-			
-		}
+		background-color:#e7e2ff
   }
 	
 `
