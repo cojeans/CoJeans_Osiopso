@@ -7,7 +7,7 @@ import Login from './routes/login/login.component';
 import Join from './routes/join/join.component';
 import Mypage from './routes/mypage/mypage.component';
 import Advice from './routes/advice/advice.component';
-import OOTD from './routes/ootd/ootd.component'
+import OOTDPage from './routes/ootd/ootd.component'
 
 
 import './App.scss';
@@ -29,7 +29,7 @@ function App() {
         <Route path='join' element={<Join />} />
         <Route path='mypage' element={<Mypage />} />
         <Route path='advice' element={<Advice />} />
-        <Route path='ootd' element={<OOTD/>}></Route>
+        <Route path='ootd/*' element={<OOTDPage/>}></Route>
         
       </Route>
    </Routes>

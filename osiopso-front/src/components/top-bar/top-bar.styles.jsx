@@ -37,3 +37,4 @@ export const TopBarContent = styled.div`
 	align-items:center;
 	justify-content:center
 `
+

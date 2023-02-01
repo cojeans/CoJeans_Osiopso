@@ -38,7 +38,7 @@ const Navigation = () => {
 					<HomeLogo />
 					<span>홈</span>
 				</LogoContainer>
-				<LogoContainer to='/mypage'>
+				<LogoContainer to='/ootd'>
 					<OOTD />
 					<span>OOTD</span>
 				</LogoContainer>
