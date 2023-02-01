@@ -14,7 +14,6 @@ import java.util.List;
 @DiscriminatorValue("A")
 @SuperBuilder
 public class Advice extends Article{
-
     boolean isSelected;
     String subject;
 
