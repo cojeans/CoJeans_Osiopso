@@ -12,7 +12,6 @@ import lombok.*;
 @AllArgsConstructor
 public class TagDto {
     private String keyword;
-
     private String type;
 
     public Tag toEntity() {

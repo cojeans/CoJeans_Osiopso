@@ -29,6 +29,7 @@ public class ArticleRequestDto {
     public Article toEntity(User user, Long articleNo) {
         // 수정하는 경우
         if (articleNo != 0) {
+            System.out.println(dtype);
             switch (dtype) {
                 // DTYPE = "OOTD"
                 case "O":
@@ -48,7 +49,6 @@ public class ArticleRequestDto {
                             .isSelected(isSelected)
                             .subject(subject)
                             .user(user)
-//                            .photos(toPhotoEntity(photos))
                             .hit(hit)
                             .content(content).build();
             }
@@ -60,7 +60,6 @@ public class ArticleRequestDto {
                 return Ootd.builder()
                         .dtype(dtype)
                         .user(user)
-//                        .photos(toPhotoEntity(photos))
                         .hit(hit)
                         .content(content).build();
 
@@ -71,22 +70,10 @@ public class ArticleRequestDto {
                         .isSelected(isSelected)
                         .subject(subject)
                         .user(user)
-//                        .photos(toPhotoEntity(photos))
                         .hit(hit)
                         .content(content).build();
         }
 
         return null;
     }
-
-//    private List<ArticlePhoto> toPhotoEntity(List<ArticlePhotoDto> photos, Long articleId) {
-//        List<ArticlePhoto> list = new ArrayList<>();
-//
-//        for (ArticlePhotoDto photo : photos) {
-//            ArticlePhoto articlePhoto = photo.toEntity();
-//            list.add(photo.toEntity());
-//        }
-//
-//        return list;
-//    }
 }
