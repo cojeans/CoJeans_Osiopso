@@ -7,7 +7,7 @@ import {
 } from "./top-bar.styles"
 
 import { ReactComponent as BackButton } from '../../assets/back.svg'
-
+import { SideBar } from "../side-bar/side-bar.component"
 
 const TopBar = () => {
 	const [topName, setTopName] = useState('Osiopso')
@@ -31,6 +31,7 @@ const TopBar = () => {
 	return (
 		<TopBarContainer>
 			<ButtonContainer>
+        <SideBar/>
 				<BackButton/>
 			</ButtonContainer>
 			<TopBarContent>
