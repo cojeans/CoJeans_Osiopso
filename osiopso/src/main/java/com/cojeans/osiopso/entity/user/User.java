@@ -53,8 +53,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
 
-    @OneToMany(mappedBy = "user")
-    private List<Closet> closets;
+//    @OneToMany(mappedBy = "user")
+//    private List<Closet> closets;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
