@@ -79,7 +79,6 @@ public class AdviceService {
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
         ArticleRequestDto editDto = ArticleRequestDto.builder()
-                .photos(articleRequestDto.getPhotos())
                 .content(articleRequestDto.getContent())
                 .createTime(articleRequestDto.getCreateTime())
                 .modifyTime(articleRequestDto.getModifyTime())

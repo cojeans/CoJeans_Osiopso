@@ -35,6 +35,7 @@ public class ArticleService {
         // 추후에 로그인 기능이 완성된다면 어떤식으로 유저 정보(JWT) 를 받아올지?
         User token = new User();
 
+        // 게시물 저장
         List<TagDto> tags = articleRequestDto.getTags();
         Article article = articleRequestDto.toEntity(token, 0L);
 
@@ -43,6 +44,7 @@ public class ArticleService {
 
         List<ArticlePhotoDto> photos = articleRequestDto.getPhotos();
 
+        // 사진 저장
         for (ArticlePhotoDto photo : photos) {
             articlePhotoRepository.save(ArticlePhoto.builder()
                     .storeFilename(photo.getStoreFilename())
@@ -51,19 +53,21 @@ public class ArticleService {
                     .build());
         }
 
-        for (TagDto tag : tags) {
-            Tag tagE = tag.toEntity();
-            System.out.println(tagE);
-            Tag tagSaved = tagRepository.save(tagE);
-            System.out.println(tagSaved);
+        if (tags != null) {
+            // 태그 저장
+            for (TagDto tag : tags) {
+                Tag tagE = tag.toEntity();
+                Tag tagSaved = tagRepository.save(tagE);
 
-            ArticleTag articleTagE = ArticleTag.builder()
-                    .article(article)
-                    .tag(tagSaved)
-                    .build();
+                ArticleTag articleTagE = ArticleTag.builder()
+                        .article(article)
+                        .tag(tagSaved)
+                        .build();
 
-            articleTagRepository.save(articleTagE);
+                articleTagRepository.save(articleTagE);
+            }
         }
+
         return true;
     }
 
@@ -74,18 +78,19 @@ public class ArticleService {
     // 해당 article_tag 삭제
     // 게시물 삭제
     public boolean deleteArticle(Long articleNo) {
-
+        // 게시물과 관련된 태그들 삭제
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(articleNo);
         for (ArticleTag at : articleTag) {
             articleTagRepository.deleteById(at.getId());
             tagRepository.deleteById(at.getTag().getId());
         }
 
+        // 게시물과 관련된 사진삭제
+        articlePhotoRepository.deleteByArticle_Id(articleNo);
         Long articleId = articleRepository.findById(articleNo).orElseThrow().getId();
-        articleRepository.deleteById(articleId);
 
-        Optional<Article> byId = articleRepository.findById(articleNo);
-        System.out.println(byId);
+        // 게시물 삭제
+        articleRepository.deleteById(articleId);
 
         // 확실히 지워진 경우 (삭제한 articleNo로 해당 게시물을 찾을 수 없어야 한다.)
         if (articleRepository.findById(articleNo).isEmpty()) {
