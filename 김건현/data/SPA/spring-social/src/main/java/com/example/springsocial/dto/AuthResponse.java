@@ -1,4 +1,4 @@
-package com.example.springsocial.payload;
+package com.example.springsocial.dto;
 
 public class AuthResponse {
     private String accessToken;

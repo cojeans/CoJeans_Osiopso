@@ -1,8 +1,10 @@
-package com.example.springsocial.payload;
+package com.example.springsocial.dto;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ApiResponse {
-    private boolean success;
-    private String message;
+    public boolean success;
+    public String message;
 
     public ApiResponse(boolean success, String message) {
         this.success = success;

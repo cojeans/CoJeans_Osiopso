@@ -1,6 +1,6 @@
 package com.example.springsocial.security;
 
-import com.example.springsocial.model.User;
+import com.example.springsocial.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,25 +11,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class UserPrincipal implements OAuth2User, UserDetails {
+public class UserDetail implements OAuth2User, UserDetails {
     private Long id;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetail(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(User user) {
+    public static UserDetail create(User user) {
         List<GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new UserPrincipal(
+        return new UserDetail(
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
@@ -37,10 +37,10 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         );
     }
 
-    public static UserPrincipal create(User user, Map<String, Object> attributes) {
-        UserPrincipal userPrincipal = UserPrincipal.create(user);
-        userPrincipal.setAttributes(attributes);
-        return userPrincipal;
+    public static UserDetail create(User user, Map<String, Object> attributes) {
+        UserDetail userDetail = UserDetail.create(user);
+        userDetail.setAttributes(attributes);
+        return userDetail;
     }
 
     public Long getId() {
