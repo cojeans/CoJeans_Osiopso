@@ -6,13 +6,31 @@ export const AddClothesTopContainer = styled.div`
 	display: grid;
 	grid-template-columns:1fr 1fr;
 	justify-items: center;
+	width:80%;
+	margin:auto;
+	padding: 15px 0;
 `
 
 
-export const PictureImg = styled.img.attrs({
-  src: `https://pixlr.com/images/index/remove-bg.webp`,
-})`
-	width:300px;
-	height:300px;
-	margin:auto;
-`;
+export const LogoContainer3 = styled.div`
+  width: 50px;
+	height: 50px;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+	text-decoration:none;
+	svg{
+		height:100%;
+	}
+`
+
+
+export const LogoButtonBox = styled.div`
+	display:flex;
+	flex-direction:column;
+	align-items: center;
+	span{
+		font-size:14px;
+	}
+	cursor:pointer;
+`

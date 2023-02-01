@@ -3,7 +3,6 @@ import Closet from "../closet/closet.component"
 import { useState, useCallback } from "react"
 import { useNavigate } from 'react-router-dom'
 
-
 import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
 	ClosetBodyContainer,
@@ -60,6 +59,7 @@ const ProfileCloset = () => {
 	const { lockScroll, openScroll } = useBodyScrollLock();
 
 	const showModal = () => {
+		window.scrollTo(0, 0);
 		setModalOpen(true);
 		lockScroll();
 

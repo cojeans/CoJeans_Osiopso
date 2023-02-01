@@ -1,12 +1,13 @@
-import { Fragment } from "react"
-import { PictureImg } from "../clothes-add/clothes-add.styles"
+
+import ClothesAddPicture from "../clothes-add-picture/clothes-add-picture.component"
+
+import { ClothesAddBodyContainer } from "./clothes-add-body.styles"
 
 const ClothesAddBody = () => {
 	return (
-		<Fragment>
-			<p>body</p>
-			<PictureImg/>
-		</Fragment>
+		<ClothesAddBodyContainer>
+			<ClothesAddPicture/>
+		</ClothesAddBodyContainer>
 	)
 }
 
