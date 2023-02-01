@@ -7,6 +7,7 @@ import {
 } from "./side-bar.styles"
 
 import styles from "./side-bar.css"
+import { ReactComponent as Category } from '../../assets/category.svg'
 
 export const SideBar = () => {
   const [isSideOpen, setIsSideOpen] = useState(false);
@@ -23,11 +24,11 @@ export const SideBar = () => {
 
 	return (
     <>
-      <SidebarToggle onClick={() => setIsSideOpen(!isSideOpen)}>
+      <Category onClick={() => setIsSideOpen(!isSideOpen)}>
         <span class="material-symbols-outlined">
           {isSideOpen? "toggle_on":"toggle_off"}
         </span>
-      </SidebarToggle>
+      </Category>
       <NavbarContainer className={`${isSideOpen ? "nav-open" : "nav-closed"}`}>
         <div className="logo">The company</div>
         <ul>

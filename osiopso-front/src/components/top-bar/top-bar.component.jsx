@@ -8,7 +8,6 @@ import {
 } from "./top-bar.styles"
 
 import { ReactComponent as BackButton } from '../../assets/back.svg'
-import { ReactComponent as Category } from '../../assets/category.svg'
 import { SideBar } from "../side-bar/side-bar.component"
 
 const TopBar = () => {
@@ -42,8 +41,7 @@ const TopBar = () => {
 				{ topName }
 			</TopBarContent>
 			<CategoryContainer >
-				<Category />
-        <SideBar/>
+        		<SideBar/>
 			</CategoryContainer>
 		</TopBarContainer>
 	)

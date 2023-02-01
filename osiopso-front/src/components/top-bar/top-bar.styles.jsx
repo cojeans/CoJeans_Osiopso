@@ -36,7 +36,8 @@ export const TopBarContent = styled.div`
 	display:flex;
 	text-decoration:none;
 	align-items:center;
-	justify-content:center
+	justify-content:center;
+	z-index: -1;
 `
 export const CategoryContainer = styled.div`
 	height: 100%;

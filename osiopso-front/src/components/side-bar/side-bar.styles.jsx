@@ -15,7 +15,6 @@ width: 310px;
 position: fixed;
 z-index: -1;
 top: 0;
-right: 0;
 background-color: #f1f1f1;
 height: 100%;
 overflow-x: hidden;
