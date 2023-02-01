@@ -34,7 +34,9 @@ const TopBar = () => {
 
 	return (
 		<TopBarContainer>
-			<ButtonContainer onClick={() => navigate(-1)}>
+			<ButtonContainer onClick={() =>{
+				navigate(-1)
+			}}>
 				<BackButton />
 			</ButtonContainer>	
 
@@ -43,7 +45,7 @@ const TopBar = () => {
 			</TopBarContent>
 			<CategoryContainer >
 				<Category />
-        <SideBar/>
+        {/* <SideBar/> */}
 			</CategoryContainer>
 		</TopBarContainer>
 	)

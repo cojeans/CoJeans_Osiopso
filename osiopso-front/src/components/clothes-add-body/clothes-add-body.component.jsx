@@ -6,7 +6,7 @@ import { ClothesAddBodyContainer } from "./clothes-add-body.styles"
 const ClothesAddBody = () => {
 	return (
 		<ClothesAddBodyContainer>
-			<ClothesAddPicture/>
+			<ClothesAddPicture />
 		</ClothesAddBodyContainer>
 	)
 }

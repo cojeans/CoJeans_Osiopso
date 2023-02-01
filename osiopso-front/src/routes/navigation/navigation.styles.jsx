@@ -11,7 +11,7 @@ export const Container = styled.div`
 `
 
 export const NavigationContainer = styled.div`
-	height: 60px;
+	height: 50px;
   width: 100%;
 	max-width:430px;
   display: flex;
@@ -32,25 +32,26 @@ export const LogoContainer = styled(NavLink)`
 	flex-direction:column;
 	text-align:center;
 	text-decoration:none;
+	border-radius:5px;
 
 	
 	svg{
-		width:50%;
-		height:50%;
+		width:45%;
+		height:45%;
 		margin:auto;
 	}
 	span{
 		font-size:0.7em;
-		font-weight:bold;
-		color:#32144f;
+		// font-weight:bold;
+		color:black;
 	}
 
 	svg{
-		stroke:#32144f;
-		fill:#32144f;
+		stroke:black;
+		fill:black;
 	}
 	path{
-		stroke:#32144f;
+		stroke:black;
 		
 	}
 	
