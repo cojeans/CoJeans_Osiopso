@@ -1,24 +1,26 @@
-package com.cojeans.osiopso.dto.request.feed;
+package com.cojeans.osiopso.dto.response.feed;
 
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoDto;
+import com.cojeans.osiopso.dto.tag.TagDto;
+import lombok.Builder;
+import lombok.Data;
 
-import com.cojeans.osiopso.entity.tag.Tag;
-import lombok.*;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class TagDto {
-    private String keyword;
+public class ArticleResponseDto {
 
-    private String type;
-
-    public Tag toEntity() {
-        return Tag.builder()
-                    .type(type)
-                    .keyword(keyword)
-                    .build();
-    }
+    private Long id;
+    private Long userId;
+    private Date createTime;
+    private Date modifyTime;
+    private List<ArticlePhotoDto> photos;
+    private List<TagDto> tags;
+    private int hit;
+    private String content;
+    private boolean isSelected;
+    private String subject;
+    private String dtype;
 }
