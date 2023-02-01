@@ -4,6 +4,7 @@ import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Builder
+@Getter
 public class ArticleRequestDto {
 
     private Date createTime;
@@ -34,7 +36,7 @@ public class ArticleRequestDto {
                             .id(articleNo)
                             .dtype(dtype)
                             .user(user)
-                            .photos(toPhotoEntity(photos))
+//                            .photos(toPhotoEntity(photos))
                             .hit(hit)
                             .content(content).build();
 
@@ -46,7 +48,7 @@ public class ArticleRequestDto {
                             .isSelected(isSelected)
                             .subject(subject)
                             .user(user)
-                            .photos(toPhotoEntity(photos))
+//                            .photos(toPhotoEntity(photos))
                             .hit(hit)
                             .content(content).build();
             }
@@ -58,7 +60,7 @@ public class ArticleRequestDto {
                 return Ootd.builder()
                         .dtype(dtype)
                         .user(user)
-                        .photos(toPhotoEntity(photos))
+//                        .photos(toPhotoEntity(photos))
                         .hit(hit)
                         .content(content).build();
 
@@ -69,7 +71,7 @@ public class ArticleRequestDto {
                         .isSelected(isSelected)
                         .subject(subject)
                         .user(user)
-                        .photos(toPhotoEntity(photos))
+//                        .photos(toPhotoEntity(photos))
                         .hit(hit)
                         .content(content).build();
         }
@@ -77,13 +79,15 @@ public class ArticleRequestDto {
         return null;
     }
 
-    private List<ArticlePhoto> toPhotoEntity(List<ArticlePhotoDto> photos) {
+    private List<ArticlePhoto> toPhotoEntity(List<ArticlePhotoDto> photos, Long articleId) {
         List<ArticlePhoto> list = new ArrayList<>();
 
         for (ArticlePhotoDto photo : photos) {
+            ArticlePhoto articlePhoto = photo.toEntity();
             list.add(photo.toEntity());
         }
 
         return list;
     }
+    //test
 }
