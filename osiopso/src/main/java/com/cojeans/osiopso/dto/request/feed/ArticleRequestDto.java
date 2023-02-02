@@ -37,7 +37,6 @@ public class ArticleRequestDto {
                             .id(articleNo)
                             .dtype(dtype)
                             .user(user)
-//                            .photos(toPhotoEntity(photos))
                             .hit(hit)
                             .content(content).build();
 
