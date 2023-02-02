@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const AddPictureBody = styled.div`
 	margin:auto;
 	display:flex;
+	width:80%;
 	flex-direction:column;
 	align-items: center;
 	p{
