@@ -15,10 +15,10 @@ public class ArticleTagDto {
     private Article article;
     private Tag tag;
 
-    public ArticleTag toEntity() {
-        return ArticleTag.builder()
-                .article(article)
-                .tag(tag)
-                .build();
-    }
+//    public ArticleTag toEntity() {
+//        return ArticleTag.builder()
+//                .article(article)
+//                .tag(tag)
+//                .build();
+//    }
 }

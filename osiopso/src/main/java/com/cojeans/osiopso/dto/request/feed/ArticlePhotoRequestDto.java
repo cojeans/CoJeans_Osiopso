@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ArticlePhotoDto {
+public class ArticlePhotoRequestDto {
 
     private String originFilename;
     private String storeFilename;

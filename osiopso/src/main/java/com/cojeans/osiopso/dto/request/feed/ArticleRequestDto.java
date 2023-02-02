@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class ArticleRequestDto {
     private Date createTime;
     private Date modifyTime;
     private String dtype;
-    private List<ArticlePhotoDto> photos;
+    private List<ArticlePhotoRequestDto> photos;
     private List<TagDto> tags;
     private int hit;
     private String content;
