@@ -23,7 +23,6 @@ public class AdviceService {
 
     private final ArticleRepository articleRepository;
     private final AdviceRepository adviceRepository;
-    private final Converter converter;
 
 
     public List<ArticleResponseDto> listAdvice() {
@@ -33,7 +32,6 @@ public class AdviceService {
         for (Advice advice : Advices) {
             ArticleResponseDto dto = ArticleResponseDto.builder()
                     .id(advice.getId())
-//                    .photos(converter.toPhotoDto(advice.getPhotos()))
                     .hit(advice.getHit())
                     .content(advice.getContent())
                     .createTime(advice.getCreateTime())
@@ -63,7 +61,6 @@ public class AdviceService {
 
         return ArticleResponseDto.builder()
                 .id(advice.getId())
-//                .photos(converter.toPhotoDto(advice.getPhotos()))
                 .hit(advice.getHit())
                 .createTime(advice.getCreateTime())
                 .dtype(advice.getDtype())
@@ -79,6 +76,7 @@ public class AdviceService {
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
         ArticleRequestDto editDto = ArticleRequestDto.builder()
+                .dtype(articleRequestDto.getDtype())
                 .content(articleRequestDto.getContent())
                 .createTime(articleRequestDto.getCreateTime())
                 .modifyTime(articleRequestDto.getModifyTime())

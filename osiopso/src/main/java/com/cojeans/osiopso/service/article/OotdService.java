@@ -86,6 +86,13 @@ public class OotdService {
 
     public boolean editOotd(Long articleNo, ArticleRequestDto articleRequestDto) {
         Article article = articleRepository.findById(articleNo).orElseThrow();
+
+        // ========================= 태그수정 로직 ================================
+        // 기존 태그 : 1, 2, 3 => 1, 2, 3, 4
+        // 새로운 태그 : 2, 3, 4
+        // 1. 새로운 태그를 돌리면서 기존태그에 없다면 추가한다.
+        // 2. 기존 태그를 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
+        
         List<ArticleTag> articleTags = articleTagRepository.findByArticle_Id(article.getId());
         List<String> old_tags_keyword = new ArrayList<>();
         List<String> new_tags_keyword = new ArrayList<>();
@@ -139,10 +146,12 @@ public class OotdService {
             }
         }
 
-        // 기존 태그 : 1, 2, 3 => 1, 2, 3, 4
-        // 새로운 태그 : 2, 3, 4
-        // 1. 새로운 태그를 돌리면서 기존태그에 없다면 추가한다.
-        // 2. 기존 태그를 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
+        // ========================= 사진수정 로직 ================================
+        // 기존 사진 : 1, 2, 3 => 1, 2, 3, 4
+        // 새로운 사진 : 2, 3, 4
+        // 1. 새로운 사진을 돌리면서 기존사진에 없다면 추가한다.
+        // 2. 기존 사진을 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
+        // 나중에 사진 업로드 완성되면 할 예정
 
         ArticleRequestDto editDto = ArticleRequestDto.builder()
             .dtype(articleRequestDto.getDtype())
