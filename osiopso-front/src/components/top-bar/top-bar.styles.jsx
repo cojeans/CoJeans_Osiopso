@@ -7,7 +7,7 @@ export const TopBarContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 	  justify-content: center;
-	background-color: white;
+	background-color: #F0E6EE;
 	margin:auto;
 	position: fixed;
   top: 0;
