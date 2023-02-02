@@ -2,12 +2,17 @@ import { useEffect } from "react"
 
 import {
 	CameraContainer,
-	Video
+	Video,
 } from "./clothes-add-camera.styles";
+
+
 
 
 const CameraPage = () => {
 	let localstream;
+	useEffect(() => {
+		camON()
+	},[])
 	
 	useEffect(() => {
     let vid = document.getElementById("vid");
@@ -31,15 +36,15 @@ const CameraPage = () => {
     }
 	});
 	
-	  const capOff = () => {
-    let vid = document?.getElementById("vid");
-    if (vid) {
-      vid.pause();
-      vid.src = "";
-    }
-    localstream?.getTracks()?.forEach((x) => x.stop());
-    console.log("all capture devices off");
-  };
+	//   const capOff = () => {
+  //   let vid = document?.getElementById("vid");
+  //   if (vid) {
+  //     vid.pause();
+  //     vid.src = "";
+  //   }
+  //   localstream?.getTracks()?.forEach((x) => x.stop());
+  //   console.log("all capture devices off");
+  // };
 
   const camON = () => {
     let vid = document.getElementById("vid");
@@ -65,10 +70,11 @@ const CameraPage = () => {
 
 	return (
 		<CameraContainer>
-			<video id="vid" height="360" width="360" autoPlay></video>
-			<br />
+			<Video id="vid" autoPlay></Video>
+			<button>촬영</button>
+			{/* <br /> */}
 			{/* <button onClick={capOff}>Turn Capture Off</button> */}
-			<button onClick={camON}>Turn Capture ON</button>
+			{/* <button onClick={camON}>Turn Capture ON</button> */}
 		</CameraContainer>
 	)
 }
