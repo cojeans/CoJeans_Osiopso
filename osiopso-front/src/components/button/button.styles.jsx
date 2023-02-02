@@ -18,8 +18,6 @@ export const BaseButton = styled.button`
   display: flex;
   justify-content: center;
 	margin:auto;
-
-
 `
 
 

@@ -26,7 +26,7 @@ export function useBodyScrollLock() {
 
 const initialList = [
 	{
-		name: '봄',
+		closetName: '봄',
 		url:
 			['https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg',
 				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3F0T-vHn_FrpqKg6DH2Hst2cMN0ptOBMYYcI988bJ0CdwwVzbNbSRFH5ERWevleor69M&usqp=CAU',
@@ -37,17 +37,17 @@ const initialList = [
 		count: 1,
 	},
 	{
-		name: '여름',
+		closetName: '여름',
 		url: ['https://static.discovery-expedition.com/images/goods/ec/X22FDXHD17024BGL/thnail/C760DBC2144C4F99A0FA7476C4B07851.png/dims/resize/828x1104','','',''],
 		count: 5
 	},
 	{
-		name: '가을',
+		closetName: '가을',
 		url: ['https://m.ilsanghabo.com/web/upload/NNEditor/20200206/9c4ecbc1d0514f4c6ce4b1052480b5ba.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg',''],
 		count: 192
 	},
 	{
-		name: '겨울',
+		closetName: '겨울',
 		url: ['https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg',''],
 		count: 19
 	},

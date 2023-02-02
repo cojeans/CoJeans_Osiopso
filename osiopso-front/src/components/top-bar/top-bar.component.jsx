@@ -33,7 +33,9 @@ const TopBar = () => {
 
 	return (
 		<TopBarContainer>
-			<ButtonContainer onClick={() => navigate(-1)}>
+			<ButtonContainer onClick={() =>{
+				navigate(-1)
+			}}>
 				<BackButton />
 			</ButtonContainer>	
 

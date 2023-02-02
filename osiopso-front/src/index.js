@@ -7,14 +7,18 @@ import './index.scss';
 import App from './App';
 import ScrollToTop from './components/scroll-up/scroll-up.component';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from "react-redux";
+import { store } from './store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ScrollToTop />
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ScrollToTop />
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 

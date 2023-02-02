@@ -1,5 +1,7 @@
 import ClosetPreview from "../closet-preview/closet-preview.component"
 
+import { useNavigate } from 'react-router-dom'
+
 import {
 	ClosetItem,
 	ItemContainer,
@@ -8,15 +10,24 @@ import {
 
 
 const Closet = ({ closet }) => {
+	const { closetName, url, count } = closet
+	const navigate = useNavigate()
+	
+	const onNavigateHandler = () => navigate(
+		'closet/' + closetName, {
+			state: {
+		closet:closet
+	}})
+ 	
 	return (
-		<ItemContainer>
+		<ItemContainer onClick={onNavigateHandler}>
 			<ClosetItem>
-				<ClosetPreview closetPev={ closet.url} />
+				<ClosetPreview closetPev={ url } />
 			</ClosetItem>
 			<ItemInfo>
 				<p>
-					{ closet.name }<br/>
-					<span>{closet.count}</span>
+					{ closetName }<br/>
+					<span>{count}</span>
 				</p>
 			</ItemInfo>
 		</ItemContainer>
