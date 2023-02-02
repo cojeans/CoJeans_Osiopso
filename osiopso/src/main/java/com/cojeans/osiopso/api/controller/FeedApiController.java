@@ -1,7 +1,9 @@
 package com.cojeans.osiopso.api.controller;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
+import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
 import com.cojeans.osiopso.service.article.OotdService;
@@ -41,24 +43,24 @@ public class FeedApiController {
 
     // ====================== READ ========================
     @GetMapping("/advice")
-    public ResponseEntity<List<ArticleResponseDto>> listAdivce() {
+    public ResponseEntity<List<AdviceListResponseDto>> listAdivce() {
         return new ResponseEntity<>(adviceService.listAdvice(), HttpStatus.OK);
     }
 
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<ArticleResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
-        ArticleResponseDto detail = adviceService.detailAdvice(articleNo);
+    public ResponseEntity<ArticleDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
+        ArticleDetailResponseDto detail = adviceService.detailAdvice(articleNo);
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 
     @GetMapping("/ootd")
-    public ResponseEntity<List<ArticleResponseDto>> listOotd() {
+    public ResponseEntity<List<OotdListResponseDto>> listOotd() {
         return new ResponseEntity<>(ootdService.listOotd(), HttpStatus.OK);
     }
 
     @GetMapping("/ootd/{articleno}")
-    public ResponseEntity<ArticleResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
-        ArticleResponseDto detail = ootdService.detailOotd(articleNo);
+    public ResponseEntity<ArticleDetailResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
+        ArticleDetailResponseDto detail = ootdService.detailOotd(articleNo);
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 

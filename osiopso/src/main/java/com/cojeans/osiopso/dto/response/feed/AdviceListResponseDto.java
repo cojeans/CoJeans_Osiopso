@@ -10,14 +10,14 @@ import java.util.List;
 
 @Data
 @Builder
-public class ArticleResponseDto {
+public class ArticleListResponseDto {
 
     private Long id;
     private Long userId;
-    private Date createTime;
-    private Date modifyTime;
-    private List<ArticlePhotoDto> photos;
-    private List<TagDto> tags;
+
+    // 지금 시간 - createdTime
+    private Long time;
+    private ArticlePhotoDto photo;
     private int hit;
     private String content;
     private boolean isSelected;
