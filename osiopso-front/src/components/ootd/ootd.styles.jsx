@@ -66,6 +66,7 @@ export const UpperCommentContainer = styled.div`
 display: flex;
 justify-content: start;
 align-items: center;
+
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;
