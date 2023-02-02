@@ -56,8 +56,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Closet> closets;
 
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "user")
+//    private List<Comment> comments;
 
 //    @OneToMany(mappedBy = "followUser")
 //    private List<Follow> followUsers;
