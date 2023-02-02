@@ -1,4 +1,3 @@
-import { Fragment } from "react"
 import { Outlet } from "react-router-dom"
 // import { Link } from 'react-router-dom'
 
@@ -6,7 +5,8 @@ import {
 	NavigationContainer,
 	LogoContainer,
 	BodyContainer,
-	Container
+	Container,
+	PlusContainer
 } from "./navigation.styles"
 
 import TopBar from "../../components/top-bar/top-bar.component"
@@ -14,7 +14,7 @@ import TopBar from "../../components/top-bar/top-bar.component"
 import { ReactComponent as HomeLogo } from '../../assets/home.svg'
 import { ReactComponent as Hand } from '../../assets/hand.svg'
 import { ReactComponent as OOTD } from '../../assets/ootd.svg'
-import { ReactComponent as Category } from '../../assets/category.svg'
+import { ReactComponent as Plus } from '../../assets/plusNav.svg'
 import { ReactComponent as User } from '../../assets/user.svg'
 
 const Navigation = () => {
@@ -25,20 +25,19 @@ const Navigation = () => {
 				<Outlet />
 			</BodyContainer>
 			<NavigationContainer>
-				<LogoContainer
-					to='/'
-				>
-					<Category />
-					<span>카테고리</span>
+				<LogoContainer to='/'>
+					<HomeLogo />
+					<span>홈</span>
 				</LogoContainer>
 				<LogoContainer to='/join'>
 					<Hand />
 					<span>훈수</span>
 				</LogoContainer>
-				<LogoContainer to='/'>
-					<HomeLogo />
-					<span>홈</span>
-				</LogoContainer>
+				<PlusContainer
+					to='/'
+				>
+					<Plus />
+				</PlusContainer>
 				<LogoContainer to='/ootd'>
 					<OOTD />
 					<span>OOTD</span>
