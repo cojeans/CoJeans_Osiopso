@@ -13,8 +13,8 @@ export const AddClothesTopContainer = styled.div`
 
 
 export const LogoContainer3 = styled.div`
-  width: 50px;
-	height: 50px;
+  width: 40px;
+	height: 40px;
 	display:flex;
 	flex-direction:column;
 	text-align:center;
@@ -30,7 +30,7 @@ export const LogoButtonBox = styled.div`
 	flex-direction:column;
 	align-items: center;
 	span{
-		font-size:14px;
+		font-size:13px;
 	}
 	cursor:pointer;
 `
