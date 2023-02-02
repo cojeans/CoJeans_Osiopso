@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.dto.response.feed;
 
-import com.cojeans.osiopso.dto.request.feed.ArticlePhotoDto;
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,7 +13,7 @@ public class AdviceListResponseDto {
 
     // 지금 시간 - createdTime
     private Long time;
-    private ArticlePhotoDto photo;
+    private ArticlePhotoRequestDto photo;
     private int hit;
     private String content;
     private boolean isSelected;
