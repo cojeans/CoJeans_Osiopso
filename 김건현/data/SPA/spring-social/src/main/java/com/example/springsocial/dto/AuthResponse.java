@@ -1,10 +1,11 @@
 package com.example.springsocial.dto;
 
-public class AuthResponse {
+public class AuthResponse extends ApiResponse{
     private String accessToken;
     private String tokenType = "Bearer";
 
     public AuthResponse(String accessToken) {
+        super();
         this.accessToken = accessToken;
     }
 
