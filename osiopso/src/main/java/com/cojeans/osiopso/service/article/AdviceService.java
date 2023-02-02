@@ -1,14 +1,11 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.request.feed.TagDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
 import com.cojeans.osiopso.entity.feed.*;
-import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.repository.article.AdviceRepository;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
-import com.cojeans.osiopso.repository.article.ArticleTagRepository;
-import com.cojeans.osiopso.repository.article.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,30 +22,22 @@ public class AdviceService {
     private final AdviceRepository adviceRepository;
 
 
-    public List<ArticleResponseDto> listAdvice() {
+    public List<AdviceListResponseDto> listAdvice() {
         List<Advice> Advices = adviceRepository.findList();
-        List<ArticleResponseDto> articleRequestDtos = new ArrayList<>();
+        List<AdviceListResponseDto> list = new ArrayList<>();
 
         for (Advice advice : Advices) {
-            ArticleResponseDto dto = ArticleResponseDto.builder()
-                    .id(advice.getId())
-                    .hit(advice.getHit())
-                    .content(advice.getContent())
-                    .createTime(advice.getCreateTime())
-                    .modifyTime(advice.getModifyTime())
-                    .userId(advice.getUser().getId())
-                    .isSelected(advice.isSelected())
-                    .subject(advice.getSubject())
+            AdviceListResponseDto dto = AdviceListResponseDto.builder()
                     .build();
 
-            articleRequestDtos.add(dto);
+            list.add(dto);
         }
 
-        for (ArticleResponseDto articleRequestDto : articleRequestDtos) {
-            System.out.println(articleRequestDto.toString());
+        for (AdviceListResponseDto response : list) {
+            System.out.println(response.toString());
         }
 
-        return articleRequestDtos;
+        return list;
     }
 
 
@@ -56,10 +45,10 @@ public class AdviceService {
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    public ArticleResponseDto detailAdvice(Long feedNo) {
+    public ArticleDetailResponseDto detailAdvice(Long feedNo) {
         Advice advice = adviceRepository.findById(feedNo).orElseThrow();
 
-        return ArticleResponseDto.builder()
+        return ArticleDetailResponseDto.builder()
                 .id(advice.getId())
                 .hit(advice.getHit())
                 .createTime(advice.getCreateTime())

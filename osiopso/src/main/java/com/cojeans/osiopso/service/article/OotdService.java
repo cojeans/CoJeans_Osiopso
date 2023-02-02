@@ -2,9 +2,10 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.request.feed.TagDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
+import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.entity.tag.Tag;
@@ -30,33 +31,34 @@ public class OotdService {
     private final OotdRepository ootdRepository;
     private final Converter converter;
 
-    public List<ArticleResponseDto> listOotd() {
+
+    public List<OotdListResponseDto> listOotd() {
         List<Ootd> Ootds = ootdRepository.findList();
-        List<ArticleResponseDto> articleRequestDtos = new ArrayList<>();
+        List<OotdListResponseDto> list = new ArrayList<>();
 
         for (Ootd ootd : Ootds) {
-            ArticleResponseDto dto = ArticleResponseDto.builder()
+            OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-                    .createTime(ootd.getCreateTime())
+//                    .createTime(ootd.getCreateTime())
                     .dtype(ootd.getDtype())
-                    .modifyTime(ootd.getModifyTime())
+//                    .modifyTime(ootd.getModifyTime())
                     .userId(ootd.getUser().getId())
                     .build();
 
-            articleRequestDtos.add(dto);
+            list.add(dto);
         }
 
-        for (ArticleResponseDto articleResponseDto : articleRequestDtos) {
-            System.out.println(articleResponseDto.toString());
-        }
+//        for (AdviceListResponseDto articleListResponseDto : articleRequestDtos) {
+//            System.out.println(articleListResponseDto.toString());
+//        }
 
-        return articleRequestDtos;
+        return list;
     }
 
 
-    public ArticleResponseDto detailOotd(Long articleNo) {
+    public ArticleDetailResponseDto detailOotd(Long articleNo) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(ootd.getId());
@@ -71,7 +73,7 @@ public class OotdService {
         }
 
 
-        return ArticleResponseDto.builder()
+        return ArticleDetailResponseDto.builder()
                 .id(ootd.getId())
                 .hit(ootd.getHit())
                 .content(ootd.getContent())
@@ -92,7 +94,7 @@ public class OotdService {
         // 새로운 태그 : 2, 3, 4
         // 1. 새로운 태그를 돌리면서 기존태그에 없다면 추가한다.
         // 2. 기존 태그를 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
-        
+
         List<ArticleTag> articleTags = articleTagRepository.findByArticle_Id(article.getId());
         List<String> old_tags_keyword = new ArrayList<>();
         List<String> new_tags_keyword = new ArrayList<>();
@@ -117,7 +119,7 @@ public class OotdService {
         }
 
 
-        
+
         for (TagDto new_tag : articleRequestDto.getTags()) {
             String keyword = new_tag.getKeyword();
             new_tags_keyword.add(keyword);
