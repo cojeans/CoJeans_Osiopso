@@ -2,8 +2,6 @@ package com.example.springsocial.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -17,7 +15,6 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Email
     @Column(nullable = false)
     private String email;
 
@@ -29,7 +26,6 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 

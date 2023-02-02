@@ -23,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -83,7 +82,7 @@ public class UserController {
 
 
     @PostMapping("/signUp")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
         //중복된 Email로 등록을하면
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("이미 사용중인 Email입니다.");
