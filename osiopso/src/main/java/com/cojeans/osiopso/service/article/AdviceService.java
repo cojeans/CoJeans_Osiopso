@@ -29,7 +29,6 @@ public class AdviceService {
         for (Advice advice : Advices) {
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
                     .build();
-
             list.add(dto);
         }
 
@@ -47,6 +46,11 @@ public class AdviceService {
     // 3. articleTag iterator 돌려서 id로 keyword
     public ArticleDetailResponseDto detailAdvice(Long feedNo) {
         Advice advice = adviceRepository.findById(feedNo).orElseThrow();
+
+
+        // 사진 저장
+
+
 
         return ArticleDetailResponseDto.builder()
                 .id(advice.getId())

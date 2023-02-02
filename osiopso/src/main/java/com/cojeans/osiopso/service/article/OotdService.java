@@ -1,18 +1,17 @@
 package com.cojeans.osiopso.service.article;
 
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.request.feed.TagDto;
-import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
+import com.cojeans.osiopso.dto.response.feed.ArticlePhotoResponseDto;
 import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.entity.tag.Tag;
-import com.cojeans.osiopso.repository.article.ArticleRepository;
-import com.cojeans.osiopso.repository.article.ArticleTagRepository;
-import com.cojeans.osiopso.repository.article.OotdRepository;
-import com.cojeans.osiopso.repository.article.TagRepository;
+import com.cojeans.osiopso.repository.article.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,7 @@ public class OotdService {
     private final ArticleTagRepository articleTagRepository;
     private final ArticleRepository articleRepository;
     private final OotdRepository ootdRepository;
+    private final ArticlePhotoRepository articlePhotoRepository;
     private final Converter converter;
 
 
@@ -61,12 +61,25 @@ public class OotdService {
     public ArticleDetailResponseDto detailOotd(Long articleNo) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
+        // 사진들 저장
+        List<ArticlePhoto> articlePhoto = articlePhotoRepository.findAllById(articleNo);
+        List<ArticlePhotoResponseDto> photoList = new ArrayList<>();
+
+        for (ArticlePhoto entity : articlePhoto) {
+            photoList.add(ArticlePhotoResponseDto.builder()
+                    .storeFilename(entity.getStoreFilename())
+                    .originFilename(entity.getOriginFilename())
+                    .build());
+        }
+
+
+        // 태그들 저장
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(ootd.getId());
-        List<TagDto> list = new ArrayList<>();
+        List<TagDto> tagList = new ArrayList<>();
 
         for (ArticleTag at : articleTag) {
             Tag tagE = tagRepository.findById(at.getTag().getId()).orElseThrow();
-            list.add(TagDto.builder()
+            tagList.add(TagDto.builder()
                     .type(tagE.getType())
                     .keyword(tagE.getKeyword())
                     .build());
@@ -76,11 +89,12 @@ public class OotdService {
         return ArticleDetailResponseDto.builder()
                 .id(ootd.getId())
                 .hit(ootd.getHit())
+                .photos(photoList)
                 .content(ootd.getContent())
                 .createTime(ootd.getCreateTime())
                 .dtype(ootd.getDtype())
                 .modifyTime(ootd.getModifyTime())
-                .tags(list)
+                .tags(tagList)
                 .userId(ootd.getUser().getId())
                 .build();
     }
