@@ -40,15 +40,23 @@ public class UserController {
     @Autowired
     private TokenProvider tokenProvider;
 
+//    @GetMapping("")
+//    @PreAuthorize("hasRole('USER')")
+//    public User getCurrentUser(@CurrentUser UserDetail userDetail) {
+//        return userRepository.findById(userDetail.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+//    }
     @GetMapping("")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserDetail userDetail) {
+    public User getCurrentUser(Authentication authentication) {
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+
         return userRepository.findById(userDetail.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
