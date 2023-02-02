@@ -8,7 +8,7 @@ import Join from "./routes/join/join.component";
 import Mypage from "./routes/mypage/mypage.component";
 import Advice from './routes/advice/advice.component';
 import OOTDPage from './routes/ootd/ootd.component'
-import axios from "axios"
+// import axios from "axios"
 
 import "./App.scss";
 
