@@ -55,6 +55,16 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
     }
 
+    @PutMapping("")
+    @PreAuthorize("hasRole('USER')")
+    public User modifyCurrentUser(Authentication authentication) {
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+
+        return userRepository.findById(userDetail.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+    }
+
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 
@@ -96,6 +106,8 @@ public class UserController {
 
         return new ResponseEntity(new ApiResponse(true, "User registered successfully@"), HttpStatus.CREATED);
     }
+
+
 }
 
 
