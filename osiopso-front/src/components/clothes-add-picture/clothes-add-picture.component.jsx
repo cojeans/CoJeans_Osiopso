@@ -10,6 +10,7 @@ import Button from '../button/button.component'
 import {  useRef, useState } from 'react';
 import { useDispatch, } from 'react-redux';
 import { upload } from '../../store/clothes/clothes.reducer';
+import { useNavigate } from 'react-router';
 
 const ClothesAddPicture = () => {
 
@@ -17,6 +18,10 @@ const ClothesAddPicture = () => {
 	const imgRef = useRef();
 
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	const onNavigateHandler = () => navigate(
+		'camera/'
+	)
 
 	// 이미지 업로드 input의 onChange
 	const saveImgFile = () => {
@@ -48,12 +53,12 @@ const ClothesAddPicture = () => {
 					ref={imgRef}
 					/>
 				</ExampleBox>
-				<ExampleBox>
+				<ExampleBox onClick={onNavigateHandler}>
 					<img src={require('../../assets/upload-camera.png')} alt="" />
 					<span>사진 촬영</span>
 				</ExampleBox>
 			</ExampleContainer>
-				<Button>선택 완료</Button>
+				<Button >선택 완료</Button>
 		</AddPictureBody>
 	)
 }
