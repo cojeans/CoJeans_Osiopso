@@ -1,15 +1,18 @@
 package com.cojeans.osiopso.api.controller;
 
+import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
 import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
+import com.cojeans.osiopso.service.article.CommentService;
 import com.cojeans.osiopso.service.article.OotdService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,7 @@ public class FeedApiController {
     private final AdviceService adviceService;
     private final OotdService ootdService;
     private final ArticleService articleService;
+    private final CommentService commentService;
 
 
     // ====================== CREATE ========================
@@ -39,6 +43,17 @@ public class FeedApiController {
         }
         return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
     }
+
+    @PostMapping("/{articleno}/comment")
+    public ResponseEntity<String> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleno){
+        System.out.println(commentRequestDto + ", " + articleno);
+
+        if (commentService.createComment(commentRequestDto, articleno)) {
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+    }
+
 
 
     // ====================== READ ========================
@@ -85,11 +100,27 @@ public class FeedApiController {
         }
     }
 
+    @PutMapping("/{articleno}/comment/{commentno}")
+    public ResponseEntity<String> editComment(@PathVariable("articleno") Long articleno, @PathVariable("commentno") Long commentno, @RequestBody CommentRequestDto commentRequestDto){
+        commentService.editComment(articleno, commentno, commentRequestDto);
+
+        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    }
+
 
     // ====================== DELETE ========================
     @DeleteMapping("/article/{articleno}")
     public ResponseEntity<String> deleteArticle(@PathVariable("articleno") Long articleNo) {
         if (articleService.deleteArticle(articleNo)) {
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @DeleteMapping("/{articleno}/comment/{commentno}")
+    public ResponseEntity<String> deleteComment(@PathVariable("articleno") Long articleno, @PathVariable("commentno") Long commentno){
+        if (commentService.deleteComment(articleno, commentno)){
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
