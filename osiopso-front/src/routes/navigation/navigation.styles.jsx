@@ -68,3 +68,34 @@ export const BodyContainer = styled.div`
 	margin:auto;
 	min-height:100%
 `
+
+export const PlusContainer = styled(NavLink)`
+  height: 100%;
+  width: 25%;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+	text-decoration:none;
+	border-radius:5px;
+
+	
+	svg{
+		width:90%;
+		height:90%;
+		margin:auto;
+	}
+	span{
+		font-size:0.7em;
+		// font-weight:bold;
+		color:black;
+	}
+
+	svg{
+		stroke:black;
+		fill:black;
+	}
+	path{
+		stroke:black;
+		
+	}
+`

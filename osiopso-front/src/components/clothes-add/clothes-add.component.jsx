@@ -19,7 +19,7 @@ const ClothesAdd = () => {
 					<LogoContainer3>
 						<GallaryLogo/>
 					</LogoContainer3>
-					<span>사진선택</span>
+					<span>앨범에서 찾기</span>
 				</LogoButtonBox>
 				<LogoButtonBox>
 					<LogoContainer3>
