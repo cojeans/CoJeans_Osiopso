@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AdviceListResponseDto {
+public class OotdListResponseDto {
 
     private Long id;
     private Long userId;
