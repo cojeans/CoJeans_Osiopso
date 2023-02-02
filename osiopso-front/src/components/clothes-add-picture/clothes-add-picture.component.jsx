@@ -7,12 +7,16 @@ import {
 } from './clothes-add-picture.styles'
 
 import Button from '../button/button.component'
-import { useRef, useState } from 'react';
-
+import {  useRef, useState } from 'react';
+import { useDispatch, } from 'react-redux';
+import { upload } from '../../store/clothes/clothes.reducer';
 
 const ClothesAddPicture = () => {
+
 	const [imgFile, setImgFile] = useState("");
 	const imgRef = useRef();
+
+	const dispatch = useDispatch()
 
 	// 이미지 업로드 input의 onChange
 	const saveImgFile = () => {
@@ -20,7 +24,8 @@ const ClothesAddPicture = () => {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-		setImgFile(reader.result);
+			setImgFile(reader.result);
+			dispatch(upload(reader.result))
 		};
 	};
 	return (
