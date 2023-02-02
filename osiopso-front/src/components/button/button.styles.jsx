@@ -18,12 +18,6 @@ export const BaseButton = styled.button`
   display: flex;
   justify-content: center;
 	margin:auto;
-
-  // &:hover {
-  //   background-color: white;
-  //   color: black;
-  //   border: 1px solid black;
-  // }
 `
 
 

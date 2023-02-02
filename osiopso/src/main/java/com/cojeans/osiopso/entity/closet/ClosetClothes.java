@@ -1,7 +1,9 @@
 package com.cojeans.osiopso.entity.closet;
 
+import com.cojeans.osiopso.dto.closet.ClosetClothesDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class ClosetClothes {
     @Id
     @GeneratedValue
@@ -22,4 +25,12 @@ public class ClosetClothes {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")
     private Clothes clothes;
+
+    public ClosetClothesDto toDto(){
+        return ClosetClothesDto.builder()
+                .id(id)
+                .closetDto(closet.toDto())
+                .clothesDto(clothes.toDto())
+                .build();
+    }
 }

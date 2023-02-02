@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.entity.closet;
 
+import com.cojeans.osiopso.dto.closet.ColorDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,4 +20,12 @@ public class Color {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")
     private Clothes clothes;
+
+    public ColorDto toDto(){
+        return ColorDto.builder()
+                .id(id)
+                .colorName(colorName)
+                .clothesDto(clothes.toDto())
+                .build();
+    }
 }
