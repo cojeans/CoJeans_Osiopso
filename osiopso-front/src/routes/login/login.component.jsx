@@ -51,15 +51,11 @@ const Login = () => {
 
   return (
     <SignInContainer>
-      <div>
-        <button onClick={() => {
-          dispatch(login({name: "내 이름", email: "email@gmail.com", password: 1234}))
-        }}>Login</button>
-      </div>
+
       <hr />
       {/* <h2>Already have an account?</h2> */}
       <span>이메일과 비밀번호를 입력하세요.</span>
-      {/* <form>
+      <form>
         <FormInput
           label='Email'
           type='email'
@@ -82,7 +78,7 @@ const Login = () => {
           <Button type='submit'>Sign In</Button>
 
         </ButtonsContainer>
-      </form> */}
+      </form>
     </SignInContainer>
   );
 };
