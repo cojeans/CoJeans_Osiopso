@@ -16,6 +16,7 @@ import {
 	ToggleContainer
 } from "./closet-create-modal.styles";
 
+import axios from 'axios'
 
 const defaultClosetFields = {
 	closetName: '',
@@ -58,12 +59,20 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 	const handleChange = (event) => {
 		const { name, value } = event.target
 		setClosetField({ ...closetField, [name]: value })
-		console.log(closetField)
 	}
 
 	const handleSubmit = () => {
-		// console.log('저장?')
-		dispatch(createCloset(closetName))
+		console.log('저장?')
+		axios({
+			method: "get",
+			url: "http://localhost:8080/closet",
+			data: {
+					email:"testId@gmail.com"
+			}
+		}).then((response) => {
+			console.log(response.data)
+		}).catch((err) => {
+		})
 	}
 	
 	

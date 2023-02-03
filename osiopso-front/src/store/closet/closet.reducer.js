@@ -1,24 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from 'axios'
-
-export const action = {
-	postCloset: createAsyncThunk("POST/CLOSET", async () => {
-		return axios({
-      method: "post",
-      url: "",
-      data: {
-        closetName: "Closet Create Test",
-        email: "handleSubmit",
-        isSelected: "true",
-      },
-    }).then((response) => response.data);
-	})
-}
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   closet: {
-    closetName: "",
-    isOpen: "false",
+    closetName: "Closet Create Test",
+    isSelected: "true",
+    email: "testId@gmail.com",
   },
 };
 
