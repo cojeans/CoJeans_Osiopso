@@ -34,7 +34,7 @@ const Navigation = () => {
 					<span>훈수</span>
 				</LogoContainer>
 				<PlusContainer
-					to='/'
+					to='mypage/add-clothes'
 				>
 					<Plus />
 				</PlusContainer>

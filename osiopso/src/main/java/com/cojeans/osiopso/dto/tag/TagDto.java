@@ -13,11 +13,11 @@ import lombok.*;
 public class TagDto {
     private Long id;
     private String keyword;
-
     private String type;
 
     public Tag toEntity() {
         return Tag.builder()
+                .id(id)
                 .type(type)
                 .keyword(keyword)
                 .build();

@@ -7,16 +7,32 @@ import {
 } from './clothes-add-picture.styles'
 
 import Button from '../button/button.component'
-import {  useRef, useState } from 'react';
-import { useDispatch, } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { upload } from '../../store/clothes/clothes.reducer';
+import { useNavigate } from 'react-router';
+import { selectClothes } from '../../store/clothes/clothes.selector';
 
 const ClothesAddPicture = () => {
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	const onNavigateHandler = () => navigate(
+		'camera/'
+	)
+	const saveData = useSelector(selectClothes)
 
 	const [imgFile, setImgFile] = useState("");
 	const imgRef = useRef();
 
-	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(upload(''))	
+	}, [])
+	
+	useEffect(() => {
+		setImgFile(saveData)
+	},[saveData])
+	
+
 
 	// 이미지 업로드 input의 onChange
 	const saveImgFile = () => {
@@ -28,6 +44,8 @@ const ClothesAddPicture = () => {
 			dispatch(upload(reader.result))
 		};
 	};
+
+
 	return (
 		<	AddPictureBody>
 			<p>등록하고 싶은 옷을 업로드해주세요</p>
@@ -48,12 +66,12 @@ const ClothesAddPicture = () => {
 					ref={imgRef}
 					/>
 				</ExampleBox>
-				<ExampleBox>
+				<ExampleBox onClick={onNavigateHandler}>
 					<img src={require('../../assets/upload-camera.png')} alt="" />
 					<span>사진 촬영</span>
 				</ExampleBox>
 			</ExampleContainer>
-				<Button>선택 완료</Button>
+				<Button >선택 완료</Button>	
 		</AddPictureBody>
 	)
 }

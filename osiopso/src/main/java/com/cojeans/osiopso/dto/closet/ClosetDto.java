@@ -1,12 +1,7 @@
 package com.cojeans.osiopso.dto.closet;
 
 import com.cojeans.osiopso.entity.closet.Closet;
-import com.cojeans.osiopso.entity.closet.ClosetClothes;
-import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -17,12 +12,12 @@ public class ClosetDto {
 
     private String closetName;
 
+    // private User user; // 임포트 dto로 추후 수정 ?
     private String email; // 임시로 유저 이메일을 받습니다.
 
     private Boolean isSelected;
-//    private User user; // 임포트 dto로 추후 수정 ?
 
-    private List<ClosetClothesDto> closetClothesDtos;
+
 
     public Closet toEntity(){
         System.out.println("ClosetDto toEntity");

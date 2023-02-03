@@ -1,0 +1,39 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.example.springsocial.config.AppProperties",
+      "sourceType": "com.example.springsocial.config.AppProperties"
+    },
+    {
+      "name": "app.auth",
+      "type": "com.example.springsocial.config.AppProperties$Auth",
+      "sourceType": "com.example.springsocial.config.AppProperties",
+      "sourceMethod": "public com.example.springsocial.config.AppProperties.Auth getAuth() "
+    },
+    {
+      "name": "app.oauth2",
+      "type": "com.example.springsocial.config.AppProperties$OAuth2",
+      "sourceType": "com.example.springsocial.config.AppProperties",
+      "sourceMethod": "public com.example.springsocial.config.AppProperties.OAuth2 getOauth2() "
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.auth.token-expiration-msec",
+      "type": "java.lang.Long",
+      "sourceType": "com.example.springsocial.config.AppProperties$Auth"
+    },
+    {
+      "name": "app.auth.token-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.example.springsocial.config.AppProperties$Auth"
+    },
+    {
+      "name": "app.oauth2.authorized-redirect-uris",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.example.springsocial.config.AppProperties$OAuth2"
+    }
+  ],
+  "hints": []
+}

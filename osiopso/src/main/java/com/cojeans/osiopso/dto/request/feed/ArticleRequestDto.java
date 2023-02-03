@@ -1,7 +1,10 @@
 package com.cojeans.osiopso.dto.request.feed;
 
 import com.cojeans.osiopso.dto.tag.TagDto;
-import com.cojeans.osiopso.entity.feed.*;
+import com.cojeans.osiopso.entity.feed.Advice;
+import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.ArticlePhoto;
+import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -82,6 +85,8 @@ public class ArticleRequestDto {
         List<ArticlePhoto> list = new ArrayList<>();
 
         for (ArticlePhotoDto photo : photos) {
+            ArticlePhoto articlePhoto = photo.toEntity();
+            System.out.println(articlePhoto);
             list.add(photo.toEntity());
         }
 

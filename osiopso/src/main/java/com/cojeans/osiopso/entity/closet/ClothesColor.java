@@ -1,32 +1,32 @@
 package com.cojeans.osiopso.entity.closet;
 
 import com.cojeans.osiopso.dto.closet.ClothesColorDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Builder
 @AllArgsConstructor @NoArgsConstructor
+@ToString
 public class ClothesColor {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String color;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "CLOTHES_ID")
     private  Clothes clothes;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "COLOR_ID")
+    private  Color color;
 
     public ClothesColorDto toDto(){
         return ClothesColorDto.builder()
                 .id(id)
-                .color(color)
                 .clothesDto(clothes.toDto())
+                .colorDto(color.toDto())
                 .build();
     }
 }

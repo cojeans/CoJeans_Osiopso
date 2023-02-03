@@ -1,7 +1,6 @@
 package com.cojeans.osiopso.entity.feed;
 
 import com.cojeans.osiopso.entity.user.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
