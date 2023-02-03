@@ -1,4 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { createCloset } from '../../store/closet/closet.reducer';
 
 import Button from '../button/button.component';
 import ToggleButton from '../toggle/toggle.component';
@@ -14,38 +17,54 @@ import {
 } from "./closet-create-modal.styles";
 
 
-
+const defaultClosetFields = {
+	closetName: '',
+}
 
 
 const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
-	
-	 // 모달 끄기 
-    const closeModal = () => {
-			setModalOpen(false);
-			openScroll()
-	};
-		const modalRef = useRef(null);
+	const [closetField, setClosetField] = useState(defaultClosetFields)
+	const { closetName } = closetField
+	const dispatch = useDispatch()
 
-		useEffect(() => {
-			// 이벤트 핸들러 함수
-			const handler = (event) => {
-					// mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
-					if (modalRef.current && !modalRef.current.contains(event.target)) {
-						setModalOpen(false);
-						openScroll()
-					}
-			};
-			
-			// 이벤트 핸들러 등록
-			document.addEventListener('mousedown', handler);
-			// document.addEventListener('touchstart', handler); // 모바일 대응
-			
-			return () => {
-					// 이벤트 핸들러 해제
-					document.removeEventListener('mousedown', handler);
-					// document.removeEventListener('touchstart', handler); // 모바일 대응
-			};
-		});
+	 // 모달 끄기 
+	const closeModal = () => {
+		setModalOpen(false);
+		openScroll()
+	};
+	const modalRef = useRef(null);
+
+	useEffect(() => {
+		// 이벤트 핸들러 함수
+		const handler = (event) => {
+				// mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+				if (modalRef.current && !modalRef.current.contains(event.target)) {
+					setModalOpen(false);
+					openScroll()
+				}
+		};
+		
+		// 이벤트 핸들러 등록
+		document.addEventListener('mousedown', handler);
+		// document.addEventListener('touchstart', handler); // 모바일 대응
+		
+		return () => {
+				// 이벤트 핸들러 해제
+				document.removeEventListener('mousedown', handler);
+				// document.removeEventListener('touchstart', handler); // 모바일 대응
+		};
+	});
+	
+	const handleChange = (event) => {
+		const { name, value } = event.target
+		setClosetField({ ...closetField, [name]: value })
+		console.log(closetField)
+	}
+
+	const handleSubmit = () => {
+		// console.log('저장?')
+		dispatch(createCloset(closetName))
+	}
 	
 	
     return (
@@ -62,17 +81,22 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 						<ClosetInput
 							type="text"
 							autoFocus
-							maxLength={ 25 }
+							maxLength={25}
+							name='closetName'
+							value={closetName}
+							onChange={handleChange}
 						/>
 						<ToggleContainer>
 							<p>공개 설정</p>
-							<ToggleButton />
+							<ToggleButton
+							/>
 						</ToggleContainer>
 					</ClosetContent>
-						<Button>저장</Button>
+						<Button onClick={handleSubmit}>저장</Button>
 				</ModalBody>
 			</ModaContainer>
     );
 }
 
 export default ClosetCreateModal
+

@@ -1,8 +1,8 @@
 import { BaseButton } from "./button.styles";
 
-const Button = ({ children }) => {
+const Button = ({ children, ...otherProps }) => {
 	return (
-		<BaseButton>{ children }</BaseButton>
+		<BaseButton {...otherProps}>{ children }</BaseButton>
 	)
 }
 

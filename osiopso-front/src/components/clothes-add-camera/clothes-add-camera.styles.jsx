@@ -6,6 +6,7 @@ export const CameraContainer = styled.div`
 	display:flex;
 	flex-direction:column;
 	align-items: center;
+	justify-content: center;
 	margin:auto;
 	button{
 		width:90%;
@@ -18,7 +19,7 @@ export const CameraContainer = styled.div`
 
 export const Video = styled.video`
 	width:90%;
-	height:700px;
-	object-fit:cover ;
+	height:500px;
+	object-fit:fill ;
 	
 `
