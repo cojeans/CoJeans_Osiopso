@@ -4,7 +4,7 @@ import userReducer from "./user/user.reducer";
 
 export const rootReducer = combineReducers({
   clothes:clothesReducer,
-  userSlice:userReducer,
+  user:userReducer,
 });
 
 

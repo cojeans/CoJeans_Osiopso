@@ -1,1 +1,1 @@
-export const selectUser = (state) => state.userSlice.value
+export const selectUser = (state) => state.user.value
