@@ -44,7 +44,7 @@ public class ClosetApiController {
 
     // 2. R : 옷장 조회
     // 2-1 : 사용자 옷장 전체 리스트 조회
-    @GetMapping
+    @PostMapping("/list")
     public ResponseEntity<List<ClosetDto>> listCloset(@RequestBody Map<String, String> emailMap){
         LOGGER.info("listCloset() 호출 : " + emailMap.get("email"));
         List<ClosetDto> list = closetService.listCloset(emailMap.get("email"));
