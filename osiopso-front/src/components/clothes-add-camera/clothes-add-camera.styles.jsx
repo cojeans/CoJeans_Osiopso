@@ -6,6 +6,7 @@ export const CameraContainer = styled.div`
 	display:flex;
 	flex-direction:column;
 	align-items: center;
+	margin:auto;
 	button{
 		width:90%;
 		background-color:black;
