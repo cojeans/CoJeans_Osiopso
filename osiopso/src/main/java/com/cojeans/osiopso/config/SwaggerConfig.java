@@ -39,7 +39,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo apiInfo() { //선택
         return new ApiInfoBuilder()
-                .title("OSIPOPSO:Cojeans") //자신에게 맞는 타이틀을 작성해준다.
+                .title("OSIOPSO:Cojeans") //자신에게 맞는 타이틀을 작성해준다.
                 .description("backend api document") //알맞는 description을 작성해준다.
                 .version("0.0") //알맞는 버전을 작성해준다.
                 .build();
