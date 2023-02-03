@@ -48,7 +48,10 @@ public class SecurityConfigTest extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+<<<<<<< HEAD
+=======
 
+>>>>>>> d5e9df4b54f486085701ad499d561d9355b6baca
 //        JwtAuthenticationFilter jwtAuthFilter = new JwtAuthenticationFilter(authTokenProvider);
 
         http
@@ -66,6 +69,9 @@ public class SecurityConfigTest extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> d5e9df4b54f486085701ad499d561d9355b6baca
     }
 }
