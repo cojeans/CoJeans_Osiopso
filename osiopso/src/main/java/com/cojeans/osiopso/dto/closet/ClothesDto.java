@@ -20,12 +20,6 @@ public class ClothesDto {
 
     private String storeFilename;
 
-    private List<SeasonDto> seasons;
-
-    private List<ColorDto> colors;
-
-    private List<ClosetClothesDto> closetClothesDtos;
-
     public Clothes toEntity(){
         System.out.println("Clothes toEntity");
 

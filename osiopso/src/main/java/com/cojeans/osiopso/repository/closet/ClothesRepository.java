@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.repository;
+package com.cojeans.osiopso.repository.closet;
 
 import com.cojeans.osiopso.entity.closet.Clothes;
 import org.springframework.data.jpa.repository.JpaRepository;

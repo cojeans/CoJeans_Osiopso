@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @Data
 public class ClothesColorDto {
     private Long id;
-    private String color;
+    private String colorName;
 
     private ClothesDto clothesDto;
 
+    private ColorDto colorDto;
     public ClothesColor toEntity(){
         return ClothesColor.builder()
                 .id(id)
-                .color(color)
                 .clothes(clothesDto.toEntity())
+                .color(colorDto.toEntity())
                 .build();
     }
 
