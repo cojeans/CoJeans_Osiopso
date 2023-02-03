@@ -1,7 +1,10 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
-import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.Comment;
+import com.cojeans.osiopso.entity.user.UserTest;
+import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.article.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,7 @@ public class CommentService {
 
     public boolean createComment(CommentRequestDto dto, Long articleno) {
         // 추후에 로그인 기능이 완성된다면 어떤식으로 유저 정보(JWT) 를 받아올지?
-        User token = new User();
+        UserTest token = new UserTest();
 
         Article article = articleRepository.findById(articleno).orElseThrow();
 

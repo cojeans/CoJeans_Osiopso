@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.dto.closet;
 
-import com.cojeans.osiopso.dto.tag.TagDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

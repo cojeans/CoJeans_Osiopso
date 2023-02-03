@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.dto.request.feed;
 
+import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import lombok.Builder;
 import lombok.Data;

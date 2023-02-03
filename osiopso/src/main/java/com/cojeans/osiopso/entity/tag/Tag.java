@@ -1,10 +1,13 @@
 package com.cojeans.osiopso.entity.tag;
 
-import com.cojeans.osiopso.entity.closet.ClothesTag;
+
+import com.cojeans.osiopso.dto.tag.TagDto;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Getter
@@ -21,9 +24,11 @@ public class Tag {
 
     private String keyword;
 
-//    @OneToMany(mappedBy = "tag")
-//    private List<ArticleTag> articleTags;
-
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.PERSIST)
-    private List<ClothesTag> clothesTags;
+    public TagDto toDto(){
+        return TagDto.builder()
+                .id(id)
+                .type(type)
+                .keyword(keyword)
+                .build();
+    }
 }

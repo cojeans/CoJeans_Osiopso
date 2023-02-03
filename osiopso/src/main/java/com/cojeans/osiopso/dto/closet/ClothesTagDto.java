@@ -2,7 +2,10 @@ package com.cojeans.osiopso.dto.closet;
 
 import com.cojeans.osiopso.dto.tag.TagDto;
 import com.cojeans.osiopso.entity.closet.ClothesTag;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

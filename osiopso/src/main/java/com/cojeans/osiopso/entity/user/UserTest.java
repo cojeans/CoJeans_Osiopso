@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.entity.user;
 
+import com.cojeans.osiopso.entity.feed.Article;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class UserTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")

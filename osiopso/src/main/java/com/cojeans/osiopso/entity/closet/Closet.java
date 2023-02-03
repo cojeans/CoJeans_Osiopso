@@ -1,13 +1,9 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ClosetClothesDto;
 import com.cojeans.osiopso.dto.closet.ClosetDto;
-import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter @AllArgsConstructor @NoArgsConstructor

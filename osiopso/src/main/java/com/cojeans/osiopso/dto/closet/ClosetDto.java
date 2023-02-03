@@ -1,12 +1,7 @@
 package com.cojeans.osiopso.dto.closet;
 
 import com.cojeans.osiopso.entity.closet.Closet;
-import com.cojeans.osiopso.entity.closet.ClosetClothes;
-import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder

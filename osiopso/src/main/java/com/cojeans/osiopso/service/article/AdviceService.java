@@ -2,6 +2,8 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.entity.feed.Advice;
+import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.repository.article.AdviceRepository;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import lombok.RequiredArgsConstructor;
