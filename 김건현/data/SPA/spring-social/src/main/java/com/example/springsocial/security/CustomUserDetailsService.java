@@ -2,7 +2,7 @@ package com.example.springsocial.security;
 
 
 import com.example.springsocial.exception.ResourceNotFoundException;
-import com.example.springsocial.model.User;
+import com.example.springsocial.entity.User;
 import com.example.springsocial.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +23,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    //userRepository에서 email로 가져오기
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
@@ -31,16 +30,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new UsernameNotFoundException("User not found with email : " + email)
         );
 
-        return UserPrincipal.create(user);
+        return UserDetail.create(user);
     }
 
     @Transactional
-    //userRepository에서 id값으로 가져오기
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("User", "id", id)
         );
 
-        return UserPrincipal.create(user);
+        return UserDetail.create(user);
     }
 }

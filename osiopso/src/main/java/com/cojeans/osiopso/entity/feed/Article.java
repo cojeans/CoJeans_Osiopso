@@ -1,15 +1,15 @@
 package com.cojeans.osiopso.entity.feed;
 
-import com.cojeans.osiopso.dto.feed.ArticleDto;
 import com.cojeans.osiopso.entity.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "articles")
 @DiscriminatorColumn(name = "DTYPE")
 @SuperBuilder
 public class Article {
@@ -47,33 +46,17 @@ public class Article {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-    private List<ArticleTag> tags;
+//    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
+//    private List<ArticleTag> tags;
 
-    @Column(insertable = false, updatable=false)
+    @Column(insertable = false, updatable = false)
     private String dtype;
 
-    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, List<ArticleTag> tags) {
+    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
         this.photos = photos;
         this.hit = hit;
         this.content = content;
         this.dtype = dtype;
         this.user = user;
-        this.tags = tags;
-    }
-
-
-    public ArticleDto toArticleDto() {
-        return ArticleDto.builder()
-                .id(id)
-                .photos(photos)
-                .hit(hit)
-                .content(content)
-                .createTime(createTime)
-                .dtype(dtype)
-                .modifyTime(modifyTime)
-                .tags(tags)
-                .userId(user.getId())
-                .build();
     }
 }

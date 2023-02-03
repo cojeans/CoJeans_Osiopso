@@ -1,13 +1,15 @@
-import './ootd.styles'
-import { OotdCategory, FilterMenu, OotdTopBar } from './ootd.styles'
+import Ootd from "../../components/ootd/ootd.component";
+import OotdDetail from "../../components/ootd-detail/ootd-detail.component";
+import { Route, Routes } from "react-router-dom";
 
-const OOTD = () => {
+const OOTDPage = () => {
     return (
-        <div>
-            <h1>This is OOTD page</h1>
-            <OotdTopBar><OotdCategory><span>최신</span><span>인기</span><span>팔로잉</span></OotdCategory> <span>필터</span></OotdTopBar>
-        </div>
+        <Routes>
+            <Route index element={<Ootd/>} />
+            <Route path=":detail" element={<OotdDetail/>} />
+        </Routes>
+  
     )
 }
 
-export default OOTD
+export default OOTDPage

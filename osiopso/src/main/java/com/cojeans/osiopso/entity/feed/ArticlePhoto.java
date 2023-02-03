@@ -10,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 public class ArticlePhoto {
     @Id
     @GeneratedValue
@@ -22,4 +23,6 @@ public class ArticlePhoto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ARTICLE_ID")
     private Article article;
+
+
 }

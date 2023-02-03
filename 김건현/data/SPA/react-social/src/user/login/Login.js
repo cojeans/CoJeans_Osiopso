@@ -98,7 +98,7 @@ class LoginForm extends Component {
             Alert.success("You're successfully logged in!");
             this.props.history.push("/");
         }).catch(error => {
-            Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
+            Alert.error((error && error.message) || '아이디 혹은 비밀번호오류!');
         });
     }
     

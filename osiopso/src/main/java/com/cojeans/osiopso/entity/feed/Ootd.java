@@ -14,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 public class Ootd extends Article {
 
-    public Ootd(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, List<ArticleTag> tags, boolean isSelected, String subject) {
-        super(photos, hit, content, dtype, user, tags);
+    public Ootd(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
+        super(photos, hit, content, dtype, user);
     }
 }
