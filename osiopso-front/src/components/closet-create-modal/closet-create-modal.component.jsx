@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { createCloset } from '../../store/closet/closet.reducer';
+import { getClosetAxios } from '../../utils/axios.utils';
 
 import Button from '../button/button.component';
 import ToggleButton from '../toggle/toggle.component';
@@ -16,7 +16,6 @@ import {
 	ToggleContainer
 } from "./closet-create-modal.styles";
 
-import axios from 'axios'
 
 const defaultClosetFields = {
 	closetName: '',
@@ -63,18 +62,8 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 
 	const handleSubmit = () => {
 		console.log('저장?')
-		axios({
-			method: "get",
-			url: "http://localhost:8080/closet",
-			data: {
-					email:"testId@gmail.com"
-			}
-		}).then((response) => {
-			console.log(response.data)
-		}).catch((err) => {
-		})
+		getClosetAxios("testId@gmail.com")
 	}
-	
 	
     return (
 			<ModaContainer>
