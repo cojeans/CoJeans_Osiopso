@@ -23,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -40,15 +39,33 @@ public class UserController {
     @Autowired
     private TokenProvider tokenProvider;
 
+//    @GetMapping("")
+//    @PreAuthorize("hasRole('USER')")
+//    public User getCurrentUser(@CurrentUser UserDetail userDetail) {
+//        return userRepository.findById(userDetail.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+//    }
     @GetMapping("")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserDetail userDetail) {
+    public User getCurrentUser(Authentication authentication) {
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+
         return userRepository.findById(userDetail.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
     }
 
+    @PutMapping("")
+    @PreAuthorize("hasRole('USER')")
+    public User modifyCurrentUser(Authentication authentication) {
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+
+        return userRepository.findById(userDetail.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+    }
+
+
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -65,7 +82,7 @@ public class UserController {
 
 
     @PostMapping("/signUp")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
         //중복된 Email로 등록을하면
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("이미 사용중인 Email입니다.");
@@ -88,6 +105,8 @@ public class UserController {
 
         return new ResponseEntity(new ApiResponse(true, "User registered successfully@"), HttpStatus.CREATED);
     }
+
+
 }
 
 
