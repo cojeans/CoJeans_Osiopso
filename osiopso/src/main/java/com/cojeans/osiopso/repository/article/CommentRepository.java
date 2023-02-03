@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.repository.article;
 
+import com.cojeans.osiopso.entity.feed.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {

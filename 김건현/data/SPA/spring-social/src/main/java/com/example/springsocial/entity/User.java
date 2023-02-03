@@ -1,15 +1,19 @@
 package com.example.springsocial.entity;
+import com.example.springsocial.dto.SignUpRequest;
+import com.example.springsocial.repository.UserRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
 })
+
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +21,6 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Email
     @Column(nullable = false)
     private String email;
 
@@ -29,7 +32,6 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
@@ -98,4 +100,6 @@ public class User {
     public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
+
+
 }

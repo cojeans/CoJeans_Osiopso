@@ -1,7 +1,10 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
+import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.Comment;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.article.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package com.cojeans.osiopso.dto.response.feed;
 
-import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
-import com.cojeans.osiopso.dto.request.feed.TagDto;
+import com.cojeans.osiopso.dto.tag.TagDto;
 import lombok.Builder;
 import lombok.Data;
 

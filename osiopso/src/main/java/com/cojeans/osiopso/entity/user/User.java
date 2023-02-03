@@ -1,64 +1,107 @@
 package com.cojeans.osiopso.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
+@AllArgsConstructor @NoArgsConstructor
+@ToString
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
+
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_email")
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String email;
 
-    // 소셜로그인은 uuid or default
-    @Column(name = "user_password")
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
+
+    @JsonIgnore
     private String password;
 
-    @Column(name = "user_nickname")
-    private String nickname;
-
-    @Column(name = "birth", nullable = true)
-    private String birth;
-
-    @Column(name = "gender", nullable = true)
-    private String gender;
-
-    // Role
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-    private Role role;
+    private AuthProvider provider;
 
-    // 소셜로그인
-    private String provider;
+    private String providerId;
 
-    @Column(name = "access_token")
-    private String accessToken;
+    public Long getId() {
+        return id;
+    }
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    @OneToMany(mappedBy = "user")
-    private List<Article> articles;
+    public String getName() {
+        return name;
+    }
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Closet> closets;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Comment> comments;
+    public String getEmail() {
+        return email;
+    }
 
-//    @OneToMany(mappedBy = "followUser")
-//    private List<Follow> followUsers;
-//
-//    @OneToMany(mappedBy = "followingUser")
-//    private List<Follow> followingUsers;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+
 }

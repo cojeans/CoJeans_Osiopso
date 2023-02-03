@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.entity.feed;
 
+import com.cojeans.osiopso.entity.tag.Tag;
 import lombok.*;
 
 import javax.persistence.*;

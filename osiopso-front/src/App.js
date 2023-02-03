@@ -8,7 +8,10 @@ import Join from "./routes/join/join.component";
 import Mypage from "./routes/mypage/mypage.component";
 import Advice from './routes/advice/advice.component';
 import OOTDPage from './routes/ootd/ootd.component'
-// import axios from "axios"
+import PasswordCheck from './routes/passwordcheck/passwordcheck.component'
+import ChangePassword from './routes/changeuserinfo/changepassword.component'
+import PasswordChangeComplete from './routes/changeuserinfo/completechangepassword.component'
+
 
 import "./App.scss";
 
@@ -27,9 +30,12 @@ function App() {
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="join" element={<Join />} />
+        <Route path='passwordcheck' element={<PasswordCheck/>}/>
         <Route path="mypage/*" element={<Mypage />} />
         <Route path='advice' element={<Advice />} />
-        <Route path='ootd/*' element={<OOTDPage/>}></Route>
+        <Route path='ootd/*' element={<OOTDPage/>}/>
+        <Route path='changePassword' element={<ChangePassword/>}/>
+        <Route path='passwordchangecomplete' element={<PasswordChangeComplete/>}/>
         
       </Route>
     </Routes>
