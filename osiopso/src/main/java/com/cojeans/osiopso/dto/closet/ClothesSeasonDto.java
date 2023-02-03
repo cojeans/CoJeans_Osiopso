@@ -12,15 +12,17 @@ import lombok.NoArgsConstructor;
 public class ClothesSeasonDto {
     private Long id;
 
-    private String season;
+    private String seasonName;
 
     private ClothesDto clothesDto;
+
+    private SeasonDto seasonDto;
 
     public ClothesSeason toEntity(){
         return ClothesSeason.builder()
                 .id(id)
-                .season(season)
                 .clothes(clothesDto.toEntity())
+                .season(seasonDto.toEntity())
                 .build();
     }
 }

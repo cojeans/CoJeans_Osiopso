@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,8 @@ public class ClosetApiController {
         return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     }
 
-    // 2. R : 사용자 옷장 전체 리스트 조회
+    // 2. R : 옷장 조회
+    // 2-1 : 사용자 옷장 전체 리스트 조회
     @GetMapping
     public ResponseEntity<List<ClosetDto>> listCloset(@RequestBody Map<String, String> emailMap){
         LOGGER.info("listCloset() 호출 : " + emailMap.get("email"));
@@ -53,6 +53,21 @@ public class ClosetApiController {
 
     }
 
+    // 2-2 : 최근 저장된 옷의 사진 4개
+    @GetMapping("/{closetno}")
+    public ResponseEntity<List<ClothesDto>> thumbnailClothes(@PathVariable(value = "closetno") Long closetNo){
+        LOGGER.info("thumbnailClothes() 호출 : " + closetNo);
+
+        return new ResponseEntity<List<ClothesDto>>(closetService.thumbnailCloset(closetNo), HttpStatus.OK);
+    }
+
+    // 2-3 : 선택 카테고리별 옷 리스트(order by desc)
+    @GetMapping("/{closetno}/{category}")
+    public ResponseEntity<List<ClothesDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category){
+        LOGGER.info("categoryList() 호출 : " + closetNo + " | " + category);
+
+        return new ResponseEntity<List<ClothesDto>>(closetService.categoryList(closetNo, category), HttpStatus.OK);
+    }
 
     // 3. U : 옷장 정보 수정
     @PutMapping
@@ -77,27 +92,39 @@ public class ClosetApiController {
 
     // =================================== 옷 관련 ===================================
     // 1. C : 옷 등록
-    // RequestDto 분할
     @PostMapping("/clothes")
-    public ResponseEntity<String> createClothes(@RequestBody RequestClothesDto requestClothesDto){
-        LOGGER.info("createClothes() 호출 : " + requestClothesDto);
+    public ResponseEntity<String> createClothes(@RequestBody ClothesRequestDto clothesRequestDto){
+        LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
 
-        if(clothesService.createClothes(requestClothesDto) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        if(clothesService.createClothes(clothesRequestDto) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
     }
 
-    // 2. R : 옷 정보 상세 조회
+    // 2. R : 옷 조회
+    // 2-1 : 옷 정보 상세 조회
     @GetMapping("/clothes/{clothesno}")
-    public ResponseEntity<ClothesDto> detailClothes(@PathVariable Long clothesNo){
+    public ResponseEntity<ClothesResponseDto> detailClothes(@PathVariable(value = "clothesno") Long clothesNo){
         LOGGER.info("detailCloset() 호출 : " + clothesNo);
 
-        return new ResponseEntity<ClothesDto>(clothesService.detailClothes(clothesNo), HttpStatus.OK);
+        return new ResponseEntity<ClothesResponseDto>(clothesService.detailClothes(clothesNo), HttpStatus.OK);
+    }
+
+    // 3. U : 옷 정보 수정
+    @PutMapping("/clothes")
+    public ResponseEntity<String> modifyClothes(@RequestBody ClothesRequestDto clothesRequestDto){
+        LOGGER.info("modifyClothes() 호출 : " + clothesRequestDto);
+
+        clothesService.modifyClothes(clothesRequestDto);
+        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
 
 
-//    // 3. U : 옷 정보 수정
-//    @PutMapping("/clothes/{clothesno}")
-//
-//    // 4. D : 옷 삭제
-//    @DeleteMapping("/clothes/{clothesno}")
+    // 4. D : 옷 삭제
+    @DeleteMapping("/clothes/{clothno}")
+    public ResponseEntity<String> deleteClothes(@PathVariable (value = "clothno") Long clothesNo){
+        LOGGER.info("deleteClothes() 호출 : " + clothesNo);
+
+        clothesService.deleteClothes(clothesNo);
+        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+    }
 }

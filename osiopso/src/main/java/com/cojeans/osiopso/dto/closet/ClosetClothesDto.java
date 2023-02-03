@@ -20,7 +20,8 @@ public class ClosetClothesDto {
         return ClosetClothes.builder()
                 .id(id)
                 .closet(closetDto.toEntity())
-                .clothes(clothesDto.toEntity()).build();
+                .clothes(clothesDto.toEntity())
+                .build();
 
     }
 }

@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.dto.closet;
 
+import com.cojeans.osiopso.entity.closet.Clothes;
 import com.cojeans.osiopso.entity.closet.Season;
 import lombok.*;
 
@@ -11,14 +12,12 @@ public class SeasonDto {
 
     private String seasonName;
 
-    private ClothesDto clothesDto;
-
     public Season toEntity(){
         System.out.println("SeasonDto toEntity");
 
         return Season.builder()
                 .id(id)
                 .seasonName(seasonName)
-                .clothes(clothesDto.toEntity()).build();
+                .build();
     }
 }

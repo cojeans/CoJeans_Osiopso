@@ -17,12 +17,12 @@ public class ClosetDto {
 
     private String closetName;
 
+    // private User user; // 임포트 dto로 추후 수정 ?
     private String email; // 임시로 유저 이메일을 받습니다.
 
     private Boolean isSelected;
-//    private User user; // 임포트 dto로 추후 수정 ?
 
-    private List<ClosetClothesDto> closetClothesDtos;
+
 
     public Closet toEntity(){
         System.out.println("ClosetDto toEntity");
