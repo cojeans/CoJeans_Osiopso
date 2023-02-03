@@ -1,7 +1,5 @@
 package com.cojeans.osiopso.repository.article;
 
-import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.entity.feed.Ootd;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
