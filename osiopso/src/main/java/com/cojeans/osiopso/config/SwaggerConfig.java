@@ -15,7 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2 //swagger에 해당하는 어노테이션을 작성한다.
-@EnableWebMvc //이것도 함께 작성
 public class SwaggerConfig implements WebMvcConfigurer {
 
     //swagger 2.9.2 버전 리소스 등록
@@ -27,6 +26,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
+
     @Bean
     public Docket api() { //swagger를 연결하기 위한 Bean 작성
         return new Docket(DocumentationType.SWAGGER_2)
@@ -34,6 +34,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
+                .pathMapping("/")
                 .apiInfo(apiInfo());
     }
 

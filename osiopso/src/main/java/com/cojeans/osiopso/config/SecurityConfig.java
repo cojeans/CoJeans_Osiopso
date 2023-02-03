@@ -15,6 +15,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -78,7 +79,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -109,8 +113,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        "/**/*.css",
 //                        "/**/*.js")
 //                        .permitAll()
-//                     .antMatchers("/api/v1/auth/**","/",
-//                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
+//                     .antMatchers("/api/v2/auth/**","/",
+//                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html","**/**swagger/**", "/swagger-ui.html","/webjars/**", "/swagger*/**",   // swagger
 //                        "/h2-console/**",
 //                        "/favicon.ico")
 //                        .permitAll()
@@ -135,5 +139,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    // Spring security룰을 무시하게 하는 url규칙
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/h2-console/**", "/favicon.ico")
+                .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/**")
+                .antMatchers("/resources/**")
+                .antMatchers("/css/**")
+                .antMatchers("/vendor/**")
+                .antMatchers("/js/**")
+                .antMatchers("/favicon*/**")
+                .antMatchers("/img/**");
     }
 }
