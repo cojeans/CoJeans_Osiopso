@@ -1,6 +1,8 @@
 package com.cojeans.osiopso.security;
 
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.repository.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -99,4 +101,6 @@ public class UserDetail implements OAuth2User, UserDetails {
     public String getName() {
         return String.valueOf(id);
     }
+
+
 }

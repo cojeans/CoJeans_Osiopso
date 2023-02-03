@@ -9,7 +9,10 @@ import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.article.ArticleTagRepository;
 import com.cojeans.osiopso.repository.article.TagRepository;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
+@Slf4j
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -29,14 +33,16 @@ public class ArticleService {
     // 1. 게시물 먼저 저장
     // 2. Dto 필드 중, 태그의 개수만큼 태그 저장
     // 3. ArticleTag 에 게시물과 유저를 넣고 저장
-    public boolean createArticle(ArticleRequestDto articleRequestDto) {
+    public boolean createArticle(ArticleRequestDto articleRequestDto, User user) {
+        log.info("service :{}",user);
         // 추후에 로그인 기능이 완성된다면 어떤식으로 유저 정보(JWT) 를 받아올지?
-        User token = new User();
 
         List<TagDto> tags = articleRequestDto.getTags();
-        Article article = articleRequestDto.toEntity(token, 0L);
+        Article article = articleRequestDto.toEntity(user, 0L);
 
         articleRepository.save(article);
+
+
 
         for (TagDto tag : tags) {
             Tag tagE = tag.toEntity();

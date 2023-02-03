@@ -2,6 +2,7 @@ package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
 import com.cojeans.osiopso.service.article.OotdService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +33,8 @@ public class FeedApiController {
 
     // ====================== CREATE ========================
     @PostMapping("/article")
-    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
-        if (articleService.createArticle(articleRequestDto)) {
+    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto,  @AuthenticationPrincipal User user) {
+        if (articleService.createArticle(articleRequestDto, user)) {
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);

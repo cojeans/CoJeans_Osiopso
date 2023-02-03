@@ -1,4 +1,4 @@
-package com.example.springsocial.config;
+package com.cojeans.osiopso.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

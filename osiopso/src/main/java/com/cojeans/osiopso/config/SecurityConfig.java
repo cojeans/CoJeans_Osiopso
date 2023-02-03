@@ -97,26 +97,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
-                .authorizeRequests()
-                    .antMatchers("/",
-                        "/error",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
-                        .permitAll()
-                     .antMatchers("/api/v1/auth/**","/",
-                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
-                        "/h2-console/**",
-                        "/favicon.ico")
-                        .permitAll()
-                    .antMatchers("/user/login","/user/signUp", "/oauth2/**")
-                        .permitAll()
-                    .anyRequest().permitAll()
+                .authorizeRequests().anyRequest().permitAll()
+//                    .antMatchers("/",
+//                        "/error",
+//                        "/favicon.ico",
+//                        "/**/*.png",
+//                        "/**/*.gif",
+//                        "/**/*.svg",
+//                        "/**/*.jpg",
+//                        "/**/*.html",
+//                        "/**/*.css",
+//                        "/**/*.js")
+//                        .permitAll()
+//                     .antMatchers("/api/v1/auth/**","/",
+//                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
+//                        "/h2-console/**",
+//                        "/favicon.ico")
+//                        .permitAll()
+//                    .antMatchers("/user/login","/user/signUp", "/oauth2/**")
+//                        .permitAll()
+//                    .anyRequest()
 //                        .authenticated()
                     .and()
                 .oauth2Login()
