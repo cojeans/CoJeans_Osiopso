@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ClothesSeasonRepository extends JpaRepository<ClothesSeason, Long> {
     public List<ClothesSeason> findAllByClothesId(Long id);
+
+    void deleteByClothesIdAndSeasonId(Long clothesId, Long seasonId);
 }

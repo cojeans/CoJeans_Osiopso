@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -137,7 +136,6 @@ public class ClothesService {
 
         clothesRepository.save(clothes);
 
-
         // 색깔
         // 기존 리스트, 수정 리스트
         // 수정 리스트만큼 돌면서 기존.contains(수정) = false면 추가
@@ -146,15 +144,17 @@ public class ClothesService {
                 .map(a -> colorRepository.findById(a.getColor().getId()).orElseThrow().toDto())
                 .collect(Collectors.toList());
         List<ColorDto> newColors = clothesRequestDto.getColors();
-        List<ColorDto> colors = new ArrayList<>();
 
         for(ColorDto dto : newColors){
-            if(!oldColors.contains(dto)) colors.add(dto);
+            if(!oldColors.contains(dto)) clothesColorRepository.save(ClothesColor.builder()
+                                .clothes(clothes)
+                                .color(dto.toEntity())
+                                .build());
         }
 
         int length = oldColors.size();
-        for(int i = 0; i < length; i++){
-            if(newColors.contains(oldColors.get(i))) colors.add(oldColors.get(i));
+        for(int i = 0; i < length; i++){  // 빠진 색은 delete
+            if(!newColors.contains(oldColors.get(i))) clothesColorRepository.deleteByClothesIdAndColorId(clothes.getId(), oldColors.get(i).getId());
         }
 
         // 계절
@@ -162,15 +162,17 @@ public class ClothesService {
                 .map(a -> seasonRepository.findById(a.getSeason().getId()).orElseThrow().toDto())
                 .collect(Collectors.toList());
         List<SeasonDto> newSeasons = clothesRequestDto.getSeasons();
-        List<SeasonDto> seasons = new ArrayList<>();
 
         for(SeasonDto dto : newSeasons){
-            if(!oldSeasons.contains(dto)) seasons.add(dto);
+            if(!oldSeasons.contains(dto)) clothesSeasonRepository.save(ClothesSeason.builder()
+                            .clothes(clothes)
+                            .season(dto.toEntity())
+                            .build());
         }
 
         length = oldSeasons.size();
         for(int i = 0; i < length; i++){
-            if(newSeasons.contains(oldSeasons.get(i))) seasons.add(oldSeasons.get(i));
+            if(!newSeasons.contains(oldSeasons.get(i))) clothesSeasonRepository.deleteByClothesIdAndSeasonId(clothes.getId(), oldSeasons.get(i).getId());
         }
 
         // 태그
@@ -182,6 +184,21 @@ public class ClothesService {
         System.out.println("Delete Clothes Service : " + id);
 
         clothesRepository.deleteById(id);
+    }
+
+
+    // ========================== 수정, 삭제 할 때 사용하는 함수 ===========================
+    // 색깔, 계절, 태그
+    public void deleteClothesColor(Long clothesId, Long colorId){
+        clothesColorRepository.deleteByClothesIdAndColorId(clothesId, colorId);
+    }
+
+    public void deleteClothesSeason(Long clothesId, Long seasonId){
+        clothesSeasonRepository.deleteByClothesIdAndSeasonId(clothesId, seasonId);
+    }
+
+    public void deleteClothesTag(Long clothesId, Long tagId){
+        clothesTagRepository.deleteByClothesIdAndTagId(clothesId, tagId);
     }
 
 }

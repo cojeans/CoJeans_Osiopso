@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ClothesColorRepository  extends JpaRepository<ClothesColor, Long> {
     public List<ClothesColor> findAllByClothesId(Long id);
+
+    void deleteByClothesIdAndColorId(Long clothesId, Long colorId);
 }
