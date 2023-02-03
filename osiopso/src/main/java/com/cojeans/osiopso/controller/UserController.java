@@ -53,7 +53,6 @@ public class UserController {
 //    }
     @GetMapping("")
     @ApiOperation(value = "회원조회")
-    @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(Authentication authentication) {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 
@@ -67,7 +66,6 @@ public class UserController {
     * */
     @ApiOperation(value = "회원수정")
     @PatchMapping("")
-    @PreAuthorize("hasRole('USER')")
     public User modifyCurrentUser(SignUpRequest signUpRequest) {
         User user = userRepository.findByEmail(signUpRequest.getEmail()).orElse(null);
         log.info(signUpRequest.getEmail());
