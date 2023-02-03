@@ -5,7 +5,7 @@ import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.Ootd;
-import com.cojeans.osiopso.entity.user.UserTest;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
 
@@ -28,7 +28,7 @@ public class ArticleRequestDto {
     private String subject;
 
 
-    public Article toEntity(UserTest user, Long articleNo) {
+    public Article toEntity(User user, Long articleNo) {
         // 수정하는 경우
         if (articleNo != 0) {
             switch (dtype) {

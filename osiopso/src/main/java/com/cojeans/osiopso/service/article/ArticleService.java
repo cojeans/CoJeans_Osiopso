@@ -5,7 +5,7 @@ import com.cojeans.osiopso.dto.tag.TagDto;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.tag.Tag;
-import com.cojeans.osiopso.entity.user.UserTest;
+import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.article.ArticleTagRepository;
 import com.cojeans.osiopso.repository.article.TagRepository;
@@ -31,7 +31,7 @@ public class ArticleService {
     // 3. ArticleTag 에 게시물과 유저를 넣고 저장
     public boolean createArticle(ArticleRequestDto articleRequestDto) {
         // 추후에 로그인 기능이 완성된다면 어떤식으로 유저 정보(JWT) 를 받아올지?
-        UserTest token = new UserTest();
+        User token = new User();
 
         List<TagDto> tags = articleRequestDto.getTags();
         Article article = articleRequestDto.toEntity(token, 0L);

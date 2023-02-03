@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.entity.feed;
 
-import com.cojeans.osiopso.entity.user.UserTest;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +44,7 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "USER_ID")
-    private UserTest user;
+    private User user;
 
 //    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
 //    private List<ArticleTag> tags;
@@ -52,7 +52,7 @@ public class Article {
     @Column(insertable = false, updatable = false)
     private String dtype;
 
-    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, UserTest user) {
+    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
         this.photos = photos;
         this.hit = hit;
         this.content = content;
