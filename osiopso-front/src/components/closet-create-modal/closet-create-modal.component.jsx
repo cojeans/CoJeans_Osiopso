@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Button from '../button/button.component';
 import ToggleButton from '../toggle/toggle.component';
