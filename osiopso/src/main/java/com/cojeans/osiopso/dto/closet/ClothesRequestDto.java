@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class RequestClothesDto {
+public class ClothesRequestDto {
+    private Long id;
     private String category;
 
     private String originFilename;

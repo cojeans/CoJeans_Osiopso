@@ -20,6 +20,7 @@ public class ClothesTagDto {
         return ClothesTag.builder()
                 .id(id)
                 .clothes(clothesDto.toEntity())
-                .tag(tagDto.toEntity()).build();
+                .tag(tagDto.toEntity())
+                .build();
     }
 }

@@ -12,6 +12,9 @@ import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.CurrentUser;
 import com.example.springsocial.security.TokenProvider;
 import com.example.springsocial.security.UserDetail;
+import com.example.springsocial.service.UserService;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +26,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -40,15 +44,47 @@ public class UserController {
     @Autowired
     private TokenProvider tokenProvider;
 
+    @Autowired
+    private UserService userService;
+
+//    @GetMapping("")
+//    @PreAuthorize("hasRole('USER')")
+//    public User getCurrentUser(@CurrentUser UserDetail userDetail) {
+//        return userRepository.findById(userDetail.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+//    }
     @GetMapping("")
+    @ApiOperation(value = "회원조회")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserDetail userDetail) {
+    public User getCurrentUser(Authentication authentication) {
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+
         return userRepository.findById(userDetail.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
     }
 
+    /*
+    * 아직 에러. 수정할것.
+    *
+    * */
+    @ApiOperation(value = "회원수정")
+    @PatchMapping("")
+    @PreAuthorize("hasRole('USER')")
+    public User modifyCurrentUser(SignUpRequest signUpRequest) {
+        User user = userRepository.findByEmail(signUpRequest.getEmail()).orElse(null);
+        log.info(signUpRequest.getEmail());
+        if (user != null) {
+            user.setName(signUpRequest.getName());
+            user.setPassword(signUpRequest.getPassword());
+        }
+        userRepository.save(user);
+        return user;
+    }
+
+
+    @ApiOperation(value = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -64,30 +100,20 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "회원가입")
     @PostMapping("/signUp")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
         //중복된 Email로 등록을하면
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("이미 사용중인 Email입니다.");
         }
+        userService.saveUser(signUpRequest);
 
-        // Creating user's account
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User result = userRepository.save(user);
-        /*URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(result.getId()).toUri();
-
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully@"));*/
-
-        return new ResponseEntity(new ApiResponse(true, "User registered successfully@"), HttpStatus.CREATED);
+        return new ResponseEntity(new ApiResponse(true,
+                "User registered successfully@"), HttpStatus.CREATED);
     }
+
+
 }
 
 
