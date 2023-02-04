@@ -41,8 +41,14 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
-    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+//    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+//    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.10'
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-security
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.5.10'
+
+
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

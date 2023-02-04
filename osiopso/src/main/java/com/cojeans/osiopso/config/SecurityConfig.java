@@ -101,27 +101,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
-                .authorizeRequests().anyRequest().permitAll()
-//                    .antMatchers("/",
-//                        "/error",
-//                        "/favicon.ico",
-//                        "/**/*.png",
-//                        "/**/*.gif",
-//                        "/**/*.svg",
-//                        "/**/*.jpg",
-//                        "/**/*.html",
-//                        "/**/*.css",
-//                        "/**/*.js")
-//                        .permitAll()
-//                     .antMatchers("/api/v2/auth/**","/",
-//                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html","**/**swagger/**", "/swagger-ui.html","/webjars/**", "/swagger*/**",   // swagger
-//                        "/h2-console/**",
-//                        "/favicon.ico")
-//                        .permitAll()
-//                    .antMatchers("/user/login","/user/signUp", "/oauth2/**")
-//                        .permitAll()
-//                    .anyRequest()
-//                        .authenticated()
+                .authorizeRequests()
+                    .antMatchers("/",
+                        "/error",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js")
+                        .permitAll()
+                     .antMatchers("/api/v2/auth/**","/","/api-docs",
+                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html","**/**swagger/**", "/swagger-ui.html","/webjars/**", "/swagger*/**",   // swagger
+                        "/h2-console/**",
+                        "/favicon.ico")
+                        .permitAll()
+                    .antMatchers("/user/login","/user/signUp", "/oauth2/**")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
                     .and()
                 .oauth2Login()
                     .authorizationEndpoint()

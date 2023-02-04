@@ -1,9 +1,12 @@
 package com.cojeans.osiopso.controller;
 
-import com.cojeans.osiopso.dto.closet.*;
+import com.cojeans.osiopso.dto.closet.ClosetDto;
+import com.cojeans.osiopso.dto.closet.ClothesDto;
+import com.cojeans.osiopso.dto.closet.ClothesRequestDto;
+import com.cojeans.osiopso.dto.closet.ClothesResponseDto;
 import com.cojeans.osiopso.service.closet.ClosetService;
 import com.cojeans.osiopso.service.closet.ClothesService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -22,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/closet")
-@Api(tags = "옷장 관련 API")
+@Tag(name = "옷장 관련 API")
 public class ClosetApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClosetApiController.class);
 

@@ -5,13 +5,12 @@ import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
 import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
-import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
 import com.cojeans.osiopso.service.article.CommentService;
 import com.cojeans.osiopso.service.article.OotdService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/feed")
-@Api(tags = "게시글 관련 API")
+@Tag(name = "게시글 관련 API")
 public class FeedApiController {
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
