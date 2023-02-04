@@ -48,6 +48,15 @@ public class FeedApiController {
         return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @PostMapping("/{articleno}/comment")
+    public ResponseEntity<String> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleno, @AuthenticationPrincipal UserDetail user){
+        if (commentService.createComment(commentRequestDto, articleno, user.getId())) {
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
 
     // ====================== READ ========================
     @GetMapping("/advice")

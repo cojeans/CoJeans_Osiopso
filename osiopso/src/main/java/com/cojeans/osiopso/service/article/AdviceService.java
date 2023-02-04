@@ -63,6 +63,7 @@ public class AdviceService {
         return ArticleDetailResponseDto.builder()
                 .id(advice.getId())
                 .hit(advice.getHit())
+                .content(advice.getContent())
                 .createTime(advice.getCreateTime())
                 .dtype(advice.getDtype())
                 .photos(photoResponseDtoList)
