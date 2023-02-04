@@ -32,8 +32,8 @@ public class ArticleService {
 
 
     // 1. 게시물 먼저 저장
-// 2. Dto 필드 중, 태그의 개수만큼 태그 저장
-// 3. ArticleTag 에 게시물과 유저를 넣고 저장
+    // 2. Dto 필드 중, 태그의 개수만큼 태그 저장
+    // 3. ArticleTag 에 게시물과 유저를 넣고 저장
     public boolean createArticle(ArticleRequestDto articleRequestDto, Long id) {
         // 게시물 저장
         List<TagDto> tags = articleRequestDto.getTags();

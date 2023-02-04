@@ -1,7 +1,8 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.repository.article.AdviceRepository;
@@ -20,34 +21,23 @@ public class AdviceService {
 
     private final ArticleRepository articleRepository;
     private final AdviceRepository adviceRepository;
-    private final Converter converter;
 
 
-    public List<ArticleResponseDto> listAdvice() {
+    public List<AdviceListResponseDto> listAdvice() {
         List<Advice> Advices = adviceRepository.findList();
-        List<ArticleResponseDto> articleRequestDtos = new ArrayList<>();
+        List<AdviceListResponseDto> list = new ArrayList<>();
 
         for (Advice advice : Advices) {
-            ArticleResponseDto dto = ArticleResponseDto.builder()
-                    .id(advice.getId())
-                    .photos(converter.toPhotoDto(advice.getPhotos()))
-                    .hit(advice.getHit())
-                    .content(advice.getContent())
-                    .createTime(advice.getCreateTime())
-                    .modifyTime(advice.getModifyTime())
-                    .userId(advice.getUser().getId())
-                    .isSelected(advice.isSelected())
-                    .subject(advice.getSubject())
+            AdviceListResponseDto dto = AdviceListResponseDto.builder()
                     .build();
-
-            articleRequestDtos.add(dto);
+            list.add(dto);
         }
 
-        for (ArticleResponseDto articleRequestDto : articleRequestDtos) {
-            System.out.println(articleRequestDto.toString());
+        for (AdviceListResponseDto response : list) {
+            System.out.println(response.toString());
         }
 
-        return articleRequestDtos;
+        return list;
     }
 
 
@@ -55,12 +45,16 @@ public class AdviceService {
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    public ArticleResponseDto detailAdvice(Long feedNo) {
+    public ArticleDetailResponseDto detailAdvice(Long feedNo) {
         Advice advice = adviceRepository.findById(feedNo).orElseThrow();
 
-        return ArticleResponseDto.builder()
+
+        // 사진 저장
+
+
+
+        return ArticleDetailResponseDto.builder()
                 .id(advice.getId())
-                .photos(converter.toPhotoDto(advice.getPhotos()))
                 .hit(advice.getHit())
                 .createTime(advice.getCreateTime())
                 .dtype(advice.getDtype())
@@ -76,7 +70,7 @@ public class AdviceService {
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
         ArticleRequestDto editDto = ArticleRequestDto.builder()
-                .photos(articleRequestDto.getPhotos())
+                .dtype(articleRequestDto.getDtype())
                 .content(articleRequestDto.getContent())
                 .createTime(articleRequestDto.getCreateTime())
                 .modifyTime(articleRequestDto.getModifyTime())

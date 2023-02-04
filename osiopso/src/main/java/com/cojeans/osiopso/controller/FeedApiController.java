@@ -1,10 +1,15 @@
 package com.cojeans.osiopso.controller;
 
+import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleResponseDto;
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
+import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
+import com.cojeans.osiopso.service.article.CommentService;
 import com.cojeans.osiopso.service.article.OotdService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +34,15 @@ public class FeedApiController {
     private final AdviceService adviceService;
     private final OotdService ootdService;
     private final ArticleService articleService;
+    private final CommentService commentService;
+
 
 
     // ====================== CREATE ========================
     @PostMapping("/article")
-    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto,  @AuthenticationPrincipal User user) {
-        if (articleService.createArticle(articleRequestDto, user)) {
+    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto, @AuthenticationPrincipal UserDetail user) {
+        System.out.println(user);
+        if (articleService.createArticle(articleRequestDto, user.getId())) {
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
@@ -43,27 +51,29 @@ public class FeedApiController {
 
     // ====================== READ ========================
     @GetMapping("/advice")
-    public ResponseEntity<List<ArticleResponseDto>> listAdivce() {
+    public ResponseEntity<List<AdviceListResponseDto>> listAdivce() {
         return new ResponseEntity<>(adviceService.listAdvice(), HttpStatus.OK);
     }
 
+
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<ArticleResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
-        ArticleResponseDto detail = adviceService.detailAdvice(articleNo);
+    public ResponseEntity<ArticleDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
+        ArticleDetailResponseDto detail = adviceService.detailAdvice(articleNo);
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 
+
     @GetMapping("/ootd")
-    public ResponseEntity<List<ArticleResponseDto>> listOotd() {
+    public ResponseEntity<List<OotdListResponseDto>> listOotd() {
         return new ResponseEntity<>(ootdService.listOotd(), HttpStatus.OK);
     }
 
+
     @GetMapping("/ootd/{articleno}")
-    public ResponseEntity<ArticleResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
-        ArticleResponseDto detail = ootdService.detailOotd(articleNo);
+    public ResponseEntity<ArticleDetailResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
+        ArticleDetailResponseDto detail = ootdService.detailOotd(articleNo);
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
-
 
 
     // ====================== UPDATE ========================
@@ -85,6 +95,14 @@ public class FeedApiController {
         }
     }
 
+    @PutMapping("/{articleno}/comment/{commentno}")
+    public ResponseEntity<String> editComment(@PathVariable("articleno") Long articleno, @PathVariable("commentno") Long commentno, @RequestBody CommentRequestDto commentRequestDto){
+        commentService.editComment(articleno, commentno, commentRequestDto);
+
+        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    }
+
+
 
     // ====================== DELETE ========================
     @DeleteMapping("/article/{articleno}")
@@ -95,4 +113,14 @@ public class FeedApiController {
             return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
         }
     }
+
+    @DeleteMapping("/{articleno}/comment/{commentno}")
+    public ResponseEntity<String> deleteComment(@PathVariable("articleno") Long articleno, @PathVariable("commentno") Long commentno){
+        if (commentService.deleteComment(articleno, commentno)){
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
 }
