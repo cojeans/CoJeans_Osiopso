@@ -4,7 +4,7 @@ import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
 import com.cojeans.osiopso.dto.response.feed.ArticlePhotoResponseDto;
 import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
@@ -75,11 +75,11 @@ public class OotdService {
 
         // 태그들 저장
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(ootd.getId());
-        List<TagDto> tagList = new ArrayList<>();
+        List<ArticleTagResponseDto> tagList = new ArrayList<>();
 
         for (ArticleTag at : articleTag) {
             Tag tagE = tagRepository.findById(at.getTag().getId()).orElseThrow();
-            tagList.add(TagDto.builder()
+            tagList.add(ArticleTagResponseDto.builder()
                     .type(tagE.getType())
                     .keyword(tagE.getKeyword())
                     .build());
@@ -134,7 +134,7 @@ public class OotdService {
 
 
 
-        for (TagDto new_tag : articleRequestDto.getTags()) {
+        for (ArticleTagResponseDto new_tag : articleRequestDto.getTags()) {
             String keyword = new_tag.getKeyword();
             new_tags_keyword.add(keyword);
 

@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.dto.request.feed;
 
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.Ootd;
@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class ArticleRequestDto {
     private Date modifyTime;
     private String dtype;
     private List<ArticlePhotoRequestDto> photos;
-    private List<TagDto> tags;
+    private List<ArticleTagResponseDto> tags;
     private int hit;
     private String content;
     private boolean isSelected;

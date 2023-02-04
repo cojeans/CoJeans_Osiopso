@@ -1,7 +1,7 @@
 package com.cojeans.osiopso.service.closet;
 
 import com.cojeans.osiopso.dto.closet.*;
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.closet.*;
 import com.cojeans.osiopso.repository.closet.*;
 import lombok.RequiredArgsConstructor;
@@ -77,8 +77,8 @@ public class ClothesService {
         }
 
         // 태그
-        List<TagDto> tags = requestClothesDto.getTags();
-        for(TagDto t :tags){
+        List<ArticleTagResponseDto> tags = requestClothesDto.getTags();
+        for(ArticleTagResponseDto t :tags){
             ClothesTag result = clothesTagRepository.save(new ClothesTag().builder()
                     .clothes(clothes)
                     .tag(t.toEntity())

@@ -28,7 +28,7 @@ public class ClothesTag {
         return ClothesTagDto.builder()
                 .id(id)
                 .clothesDto(clothes.toDto())
-                .tagDto(tag.toDto())
+                .articleTagResponseDto(tag.toDto())
                 .build();
     }
 }

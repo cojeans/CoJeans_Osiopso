@@ -2,21 +2,18 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.tag.Tag;
-import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
-import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = false)
@@ -36,7 +33,7 @@ public class ArticleService {
     // 3. ArticleTag 에 게시물과 유저를 넣고 저장
     public boolean createArticle(ArticleRequestDto articleRequestDto, Long id) {
         // 게시물 저장
-        List<TagDto> tags = articleRequestDto.getTags();
+        List<ArticleTagResponseDto> tags = articleRequestDto.getTags();
 
         Article article = articleRequestDto.toEntity(userRepository.getById(id), 0L);
         Article savedArticle = articleRepository.save(article);
@@ -55,7 +52,7 @@ public class ArticleService {
 
         if (tags != null) {
             // 태그 저장
-            for (TagDto tag : tags) {
+            for (ArticleTagResponseDto tag : tags) {
                 Tag tagE = tag.toEntity();
                 Tag tagSaved = tagRepository.save(tagE);
 
