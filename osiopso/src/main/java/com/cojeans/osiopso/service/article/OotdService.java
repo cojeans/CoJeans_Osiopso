@@ -61,27 +61,31 @@ public class OotdService {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         // 사진들 저장
-        List<ArticlePhoto> articlePhoto = articlePhotoRepository.findAllById(articleNo);
-        List<ArticlePhotoResponseDto> photoList = new ArrayList<>();
+        List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllById(articleNo);
+        List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
-        for (ArticlePhoto entity : articlePhoto) {
-
-            photoList.add(ArticlePhotoResponseDto.builder()
-                    .storeFilename(entity.getStoreFilename())
-                    .originFilename(entity.getOriginFilename())
+        for (ArticlePhoto ap : photoEntityList) {
+            photoResponseDtoList.add(ArticlePhotoResponseDto.builder()
+                    .originFilename(ap.getOriginFilename())
+                    .storeFilename(ap.getStoreFilename())
                     .build());
         }
 
 
-        // 태그들 저장
-        List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(ootd.getId());
-        List<ArticleTagResponseDto> tagList = new ArrayList<>();
+        // 태그 가져오기
+        // 1. 게시물 번호를 통해서 articleTag 들을 찾아온다.
+        // 2. articleTag 의 article_Id를 통해서
+        List<ArticleTag> tagEntityList = articleTagRepository.findByArticle_Id(articleNo);
+        List<ArticleTagResponseDto> tagResponseDtoList = new ArrayList<>();
 
-        for (ArticleTag at : articleTag) {
-            Tag tagE = tagRepository.findById(at.getTag().getId()).orElseThrow();
-            tagList.add(ArticleTagResponseDto.builder()
-                    .type(tagE.getType())
-                    .keyword(tagE.getKeyword())
+        for (ArticleTag at : tagEntityList) {
+            // tagId
+            Long tagId = at.getTag().getId();
+            Tag tag = tagRepository.findById(tagId).orElseThrow();
+
+            tagResponseDtoList.add(ArticleTagResponseDto.builder()
+                    .keyword(tag.getKeyword())
+                    .type(tag.getType())
                     .build());
         }
 
@@ -89,12 +93,12 @@ public class OotdService {
         return ArticleDetailResponseDto.builder()
                 .id(ootd.getId())
                 .hit(ootd.getHit())
-                .photos(photoList)
+                .photos(photoResponseDtoList)
                 .content(ootd.getContent())
                 .createTime(ootd.getCreateTime())
                 .dtype(ootd.getDtype())
                 .modifyTime(ootd.getModifyTime())
-                .tags(tagList)
+                .tags(tagResponseDtoList)
                 .userId(ootd.getUser().getId())
                 .build();
     }
