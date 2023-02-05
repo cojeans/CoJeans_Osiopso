@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 public class ClothesRequestDto {
     private Long id;
+
     private String category;
 
     private String originFilename;
