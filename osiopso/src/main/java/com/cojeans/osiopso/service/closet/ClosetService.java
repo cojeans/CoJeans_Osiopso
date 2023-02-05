@@ -8,6 +8,7 @@ import com.cojeans.osiopso.entity.closet.Clothes;
 import com.cojeans.osiopso.repository.closet.ClosetClothesRepository;
 import com.cojeans.osiopso.repository.closet.ClosetRepository;
 import com.cojeans.osiopso.repository.closet.ClothesRepository;
+import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,28 +26,32 @@ public class ClosetService {
     private final ClosetRepository closetRepository;
 
     // 연관 Repo
+    private final UserRepository userRepository;
     private final ClothesRepository clothesRepository;
     private final ClosetClothesRepository closetClothesRepository;
+
+    // 연관 Service
+    private final ClothesService clothesService;
 
     // 1. C : 옷장 등록
     // 파라미터 : 이름, 공개여부, 사용자
     // return pk
-    public Closet createCloset(ClosetDto closetDto){
+    public Closet createCloset(ClosetDto closetDto, Long uid){
         System.out.println("Create Closet Service : " + closetDto);
 
-        return closetRepository.save(closetDto.toEntity());
+        return closetRepository.save(closetDto.toEntity(userRepository.getById(uid)));
     }
 
     // 2. R : 옷장 조회
     // 2-1 :사용자 옷장 전체 리스트 조회
     // 파라미터 : 사용자
     // return List<ClosetDto>
-    public List<ClosetDto> listCloset(String email){
+    public List<ClosetDto> listCloset(Long uid){
         System.out.println("List Closet Service");
 
-        List<Closet> entityList = closetRepository.findAllByEmail(email);
+        List<Closet> list = closetRepository.findAllByUserId(uid);
 
-        return entityList.stream()
+        return list.stream()
                 .map(Closet::toDto)
                 .collect(Collectors.toList());
     }
@@ -78,16 +83,30 @@ public class ClosetService {
 
 
     // 3. U : 옷장 정보 수정
-    public Closet modifyCloset(ClosetDto closetDto){
-        System.out.println("Modify Closet Service : " + closetDto);
+    public Closet editCloset(ClosetDto closetDto, Long uid){
+        System.out.println("Edit Closet Service : " + closetDto);
 
-        return closetRepository.save(closetDto.toEntity());
+        return closetRepository.save(closetDto.toEntity(userRepository.getById(uid)));
     }
 
     // 4. D : 옷장 삭제
     public void deleteCloset(Long id) {
         System.out.println("Delete Closet Service : " + id);
 
+        // 1. 연관 ClosetClothes 삭제
+        List<ClosetClothes> closetClothes = closetClothesRepository.findAllByClosetId(id);
+
+        for(ClosetClothes cc : closetClothes){
+            // 임의의 옷이 여러 옷장에 등록된 경우 : 연관 컬럼만 삭제
+            closetClothesRepository.deleteById(cc.getId());
+            
+            // 임의의 옷이 해당 옷장에만 등록된 경우 : 임의의 옷 정보를 함께 삭제
+            if(closetClothesRepository.findAllByClothesId(cc.getClothes().getId()).size() == 0) {
+                clothesService.deleteClothes(cc.getClothes().getId());
+            }
+        }
+
+        // 2. 해당 옷장 삭제
         closetRepository.deleteById(id);
     }
 }

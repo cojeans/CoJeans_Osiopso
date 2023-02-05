@@ -2,6 +2,7 @@ package com.cojeans.osiopso.dto.closet;
 
 import com.cojeans.osiopso.entity.closet.ClosetClothes;
 import com.cojeans.osiopso.entity.closet.Clothes;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ClothesDto {
 
     private String storeFilename;
 
-    public Clothes toEntity(){
+    public Clothes toEntity(User user){
         System.out.println("Clothes toEntity");
 
         return Clothes.builder()
@@ -28,6 +29,7 @@ public class ClothesDto {
                 .category(category)
                 .originFilename(originFilename)
                 .storeFilename(storeFilename)
+                .user(user)
                 .build();
     }
 
