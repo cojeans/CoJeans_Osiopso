@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.dto.response.feed;
 
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
+import com.cojeans.osiopso.entity.feed.CommentLike;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,6 +18,8 @@ public class ArticleDetailResponseDto {
     private Date modifyTime;
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleTagResponseDto> tags;
+    private List<ArticleLikeResponseDto> articleLikes;
+    private List<CommentLikeResponseDto> commentLikes;
     private int hit;
     private String content;
     private boolean isSelected;
