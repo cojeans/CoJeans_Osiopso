@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.ApiResponse;
+import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
@@ -40,9 +41,9 @@ public class FeedApiController {
     public ResponseEntity<?> createAdvice(@RequestBody AdviceRequestDto adviceRequestDto, @AuthenticationPrincipal UserDetail user) {
 
         if (adviceService.createAdvice(adviceRequestDto, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "createArticle Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "createArticle Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "createArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -50,9 +51,9 @@ public class FeedApiController {
     public ResponseEntity<?> createOotd(@RequestBody OotdRequestDto ootdRequestDto, @AuthenticationPrincipal UserDetail user) {
 
         if (ootdService.createOotd(ootdRequestDto, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "createArticle Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "createArticle Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "createArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -60,9 +61,9 @@ public class FeedApiController {
     @PostMapping("/{articleno}/comment")
     public ResponseEntity<?> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
         if (commentService.createComment(commentRequestDto, articleNo, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "createComment Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "createComment Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "createComment Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "createComment Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -70,18 +71,18 @@ public class FeedApiController {
     @PostMapping("/{articleno}/likearticle")
     public ResponseEntity<?> createArticleLike(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
         if (likeService.createArticleLike(articleNo, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "createLike Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "createLike Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "createLike Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "createLike Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PostMapping("/{commentno}/likecomment")
     public ResponseEntity<?> createCommentLike(@PathVariable("commentno") Long commentNo, @AuthenticationPrincipal UserDetail user){
         if (likeService.createCommentLike(commentNo, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "createCommentLike Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "createCommentLike Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "createCommentLike Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "createCommentLike Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -118,18 +119,18 @@ public class FeedApiController {
     @PutMapping("/ootd/{articleno}")
     public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo, @RequestBody OotdRequestDto ootdRequestDto, @AuthenticationPrincipal UserDetail user) {
         if (ootdService.editOotd(articleNo, ootdRequestDto, user.getId())){
-            return new ResponseEntity(new ApiResponse(true, "editOotd Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "editOotd Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "editOotd Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "editOotd Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping("/advice/{articleno}")
     public ResponseEntity<?> editAdvice(@PathVariable("articleno") Long articleNo, @RequestBody AdviceRequestDto adviceRequestDto, @AuthenticationPrincipal UserDetail user) {
         if (adviceService.editAdvice(articleNo, adviceRequestDto, user.getId())){
-            return new ResponseEntity(new ApiResponse(true, "editAdvice Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "editAdvice Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "editAdvice Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "editAdvice Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -137,9 +138,9 @@ public class FeedApiController {
     public ResponseEntity<?> editComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo,
                                               @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetail user){
         if (commentService.editComment(articleNo, commentNo, commentRequestDto, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "editComment Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "editComment Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "editComment Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "editComment Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -149,9 +150,9 @@ public class FeedApiController {
     @DeleteMapping("/article/{articleno}")
     public ResponseEntity<?> deleteArticle(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user) {
         if (articleService.deleteArticle(articleNo, user.getId())) {
-            return new ResponseEntity(new ApiResponse(true, "deleteArticle Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "deleteArticle Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "deleteArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "deleteArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -159,9 +160,9 @@ public class FeedApiController {
     public ResponseEntity<?> deleteComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo,
                                                 @AuthenticationPrincipal UserDetail user){
         if (commentService.deleteComment(articleNo, commentNo, user.getId())){
-            return new ResponseEntity(new ApiResponse(true, "deleteComment Success"), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "deleteComment Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponse(false, "deleteComment Fail"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponseDto(false, "deleteComment Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
