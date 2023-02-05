@@ -33,19 +33,36 @@ public class CommentService {
         return true;
     }
 
-    public void editComment(Long articleno, Long commentno, CommentRequestDto dto) {
+    public boolean editComment(Long articleno, Long commentno, CommentRequestDto dto, Long userId) {
         Article article = articleRepository.findById(articleno).orElseThrow();
+
+        // 게시글 작성자만 수정권한이 있다.
+        if (userId != article.getUser().getId()) {
+            return false;
+        }
+
         Comment comment = commentRepository.findByIdAndArticle_Id(commentno, articleno);
 
-        commentRepository.save(comment.builder()
+        if (commentRepository.save(comment.builder()
                 .id(comment.getId())
                 .content(dto.getContent())
                 .article(article)
                 .user(comment.getUser())
-                .build());
+                .build()) == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public boolean deleteComment(Long commentno, Long articleno) {
+    public boolean deleteComment(Long commentno, Long articleno, Long userId) {
+        Article article = articleRepository.findById(userId).orElseThrow();
+
+        // 게시글 작성자만 삭제권한이 있다.
+        if (userId != article.getUser().getId()) {
+            return false;
+        }
+
         commentRepository.deleteByIdAndArticle_Id(commentno, articleno);
 
         // 제대로 지워졌다면?

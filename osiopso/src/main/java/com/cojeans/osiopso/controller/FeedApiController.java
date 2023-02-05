@@ -1,10 +1,10 @@
 package com.cojeans.osiopso.controller;
 
+import com.cojeans.osiopso.dto.ApiResponse;
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
-import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
-import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
+import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
+import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
+import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,10 +22,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/feed")
-//@Api(tags = "게시글 관련 API")
+@Tag(name = "게시글 관련 API")
 public class FeedApiController {
-    private static final String SUCCESS = "success";
-    private static final String FAIL = "fail";
+//    private static final String SUCCESS = "success";
+//    private static final String FAIL = "fail";
 
     private final AdviceService adviceService;
     private final OotdService ootdService;
@@ -36,39 +36,52 @@ public class FeedApiController {
 
 
     // ====================== CREATE ========================
-    @PostMapping("/article")
-    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto, @AuthenticationPrincipal UserDetail user) {
-        System.out.println(user);
-        if (articleService.createArticle(articleRequestDto, user.getId())) {
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    @PostMapping("/advice")
+    public ResponseEntity<?> createAdvice(@RequestBody AdviceRequestDto adviceRequestDto, @AuthenticationPrincipal UserDetail user) {
+
+        if (adviceService.createAdvice(adviceRequestDto, user.getId())) {
+            return new ResponseEntity(new ApiResponse(true, "createArticle Success"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new ApiResponse(false, "createArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
-        return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/{articleno}/comment")
-    public ResponseEntity<String> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
-        if (commentService.createComment(commentRequestDto, articleNo, user.getId())) {
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    @PostMapping("/ootd")
+    public ResponseEntity<?> createOotd(@RequestBody OotdRequestDto ootdRequestDto, @AuthenticationPrincipal UserDetail user) {
+
+        if (ootdService.createOotd(ootdRequestDto, user.getId())) {
+            return new ResponseEntity(new ApiResponse(true, "createArticle Success"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new ApiResponse(false, "createArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
-        return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
+    @PostMapping("/{articleno}/comment")
+    public ResponseEntity<?> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
+        if (commentService.createComment(commentRequestDto, articleNo, user.getId())) {
+            return new ResponseEntity(new ApiResponse(true, "createComment Success"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new ApiResponse(false, "createComment Fail"), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 
     @PostMapping("/{articleno}/likearticle")
-    public ResponseEntity<String> createArticleLike(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> createArticleLike(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
         if (likeService.createArticleLike(articleNo, user.getId())) {
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            return new ResponseEntity(new ApiResponse(true, "createLike Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponse(false, "createLike Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PostMapping("/{commentno}/likecomment")
-    public ResponseEntity<String> createCommentLike(@PathVariable("commentno") Long commentNo, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> createCommentLike(@PathVariable("commentno") Long commentNo, @AuthenticationPrincipal UserDetail user){
         if (likeService.createCommentLike(commentNo, user.getId())) {
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            return new ResponseEntity(new ApiResponse(true, "createCommentLike Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponse(false, "createCommentLike Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -77,13 +90,13 @@ public class FeedApiController {
     // ====================== READ ========================
     @GetMapping("/advice")
     public ResponseEntity<List<AdviceListResponseDto>> listAdivce() {
-        return new ResponseEntity<>(adviceService.listAdvice(), HttpStatus.OK);
+        return new ResponseEntity(adviceService.listAdvice(), HttpStatus.OK);
     }
 
 
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<ArticleDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
-        ArticleDetailResponseDto detail = adviceService.detailAdvice(articleNo);
+    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
+        AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo);
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 
@@ -95,56 +108,60 @@ public class FeedApiController {
 
 
     @GetMapping("/ootd/{articleno}")
-    public ResponseEntity<ArticleDetailResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
-        ArticleDetailResponseDto detail = ootdService.detailOotd(articleNo);
+    public ResponseEntity<OotdDetailResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
+        OotdDetailResponseDto detail = ootdService.detailOotd(articleNo);
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 
 
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
-    public ResponseEntity<String> editOotd(@PathVariable("articleno") Long articleNo, @RequestBody ArticleRequestDto articleRequestDto) {
-        if (ootdService.editOotd(articleNo, articleRequestDto)){
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo, @RequestBody OotdRequestDto ootdRequestDto, @AuthenticationPrincipal UserDetail user) {
+        if (ootdService.editOotd(articleNo, ootdRequestDto, user.getId())){
+            return new ResponseEntity(new ApiResponse(true, "editOotd Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponse(false, "editOotd Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping("/advice/{articleno}")
-    public ResponseEntity<String> editAdvice(@PathVariable("articleno") Long articleNo, @RequestBody ArticleRequestDto articleRequestDto) {
-        if (adviceService.editAdvice(articleNo, articleRequestDto)){
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    public ResponseEntity<?> editAdvice(@PathVariable("articleno") Long articleNo, @RequestBody AdviceRequestDto adviceRequestDto, @AuthenticationPrincipal UserDetail user) {
+        if (adviceService.editAdvice(articleNo, adviceRequestDto, user.getId())){
+            return new ResponseEntity(new ApiResponse(true, "editAdvice Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponse(false, "editAdvice Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping("/{articleno}/comment/{commentno}")
-    public ResponseEntity<String> editComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo, @RequestBody CommentRequestDto commentRequestDto){
-        commentService.editComment(articleNo, commentNo, commentRequestDto);
-
-        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    public ResponseEntity<?> editComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo,
+                                              @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetail user){
+        if (commentService.editComment(articleNo, commentNo, commentRequestDto, user.getId())) {
+            return new ResponseEntity(new ApiResponse(true, "editComment Success"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new ApiResponse(false, "editComment Fail"), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 
 
     // ====================== DELETE ========================
     @DeleteMapping("/article/{articleno}")
-    public ResponseEntity<String> deleteArticle(@PathVariable("articleno") Long articleNo) {
-        if (articleService.deleteArticle(articleNo)) {
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    public ResponseEntity<?> deleteArticle(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user) {
+        if (articleService.deleteArticle(articleNo, user.getId())) {
+            return new ResponseEntity(new ApiResponse(true, "deleteArticle Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponse(false, "deleteArticle Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @DeleteMapping("/{articleno}/comment/{commentno}")
-    public ResponseEntity<String> deleteComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo){
-        if (commentService.deleteComment(articleNo, commentNo)){
-            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+    public ResponseEntity<?> deleteComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo,
+                                                @AuthenticationPrincipal UserDetail user){
+        if (commentService.deleteComment(articleNo, commentNo, user.getId())){
+            return new ResponseEntity(new ApiResponse(true, "deleteComment Success"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(new ApiResponse(false, "deleteComment Fail"), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 

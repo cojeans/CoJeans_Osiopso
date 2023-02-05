@@ -1,7 +1,6 @@
 package com.cojeans.osiopso.dto.response.feed;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,9 +1,13 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.entity.feed.*;
+import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +25,35 @@ public class AdviceService {
     private final ArticlePhotoRepository photoRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
+    private final UserRepository userRepository;
+    private final ArticlePhotoRepository articlePhotoRepository;
 
+
+    public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+
+        // 게시물 저장
+        Advice adviceSaved = adviceRepository.save(Advice.builder()
+                        .user(user)
+                        .hit(0)
+                        .content(adviceRequestDto.getContent())
+                        .subject(adviceRequestDto.getSubject())
+                        .isSelected(adviceRequestDto.isSelected())
+                        .build());
+
+
+        // 사진 저장
+        List<ArticlePhotoRequestDto> photos = adviceRequestDto.getPhotos();
+        for (ArticlePhotoRequestDto photo : photos) {
+            articlePhotoRepository.save(ArticlePhoto.builder()
+                    .storeFilename(photo.getStoreFilename())
+                    .originFilename(photo.getOriginFilename())
+                    .article(adviceSaved)
+                    .build());
+        }
+
+        return true;
+    }
 
     public List<AdviceListResponseDto> listAdvice() {
         List<Advice> Advices = adviceRepository.findList();
@@ -47,7 +79,7 @@ public class AdviceService {
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    public ArticleDetailResponseDto detailAdvice(Long articleNo) {
+    public AdviceDetailResponseDto detailAdvice(Long articleNo) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
@@ -90,40 +122,46 @@ public class AdviceService {
         }
 
 
-        return ArticleDetailResponseDto.builder()
+        return AdviceDetailResponseDto.builder()
                 .id(advice.getId())
-                .hit(advice.getHit())
-                .content(advice.getContent())
-                .createTime(advice.getCreateTime())
-                .dtype(advice.getDtype())
-                .photos(photoResponseDtoList)
-                .modifyTime(advice.getModifyTime())
                 .userId(advice.getUser().getId())
-                .isSelected(advice.isSelected())
-                .subject(advice.getSubject())
+                .createTime(advice.getCreateTime())
+                .modifyTime(advice.getModifyTime())
+                .photos(photoResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
                 .commentLikes(commentLikeResponseDtoList)
+                .hit(advice.getHit())
+                .content(advice.getContent())
+                .isSelected(advice.isSelected())
+                .subject(advice.getSubject())
                 .build();
     }
 
 
-    public boolean editAdvice(Long articleNo, ArticleRequestDto articleRequestDto) {
-        Article article = articleRepository.findById(articleNo).orElseThrow();
+    public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, Long userId) {
+        Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
-        ArticleRequestDto editDto = ArticleRequestDto.builder()
-                .dtype(articleRequestDto.getDtype())
-                .content(articleRequestDto.getContent())
-                .createTime(articleRequestDto.getCreateTime())
-                .modifyTime(articleRequestDto.getModifyTime())
-                .isSelected(articleRequestDto.isSelected())
-                .subject(articleRequestDto.getSubject())
-                .build();
+        // 게시글 작성자만 수정권한이 있다.
+        if (userId != advice.getUser().getId()) {
+            return false;
+        }
 
-        if (articleRepository.save(editDto.toEntity(article.getUser(), articleNo)) == null) {
+        // ========================= 사진수정 로직 ================================
+        // 기존 사진 : 1, 2, 3 => 1, 2, 3, 4
+        // 새로운 사진 : 2, 3, 4
+        // 1. 새로운 사진을 돌리면서 기존사진에 없다면 추가한다.
+        // 2. 기존 사진을 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
+        // 나중에 사진 업로드 완성되면 할 예정
+
+        if (articleRepository.save(Advice.builder()
+                .id(articleNo)
+                .subject(adviceRequestDto.getSubject())
+                .isSelected(adviceRequestDto.isSelected())
+                .content(adviceRequestDto.getContent())
+                .build()) == null) {
             return false;
         } else {
             return true;
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.dto.response.feed;
+package com.cojeans.osiopso.dto.response.comment;
 
 
 import lombok.Builder;

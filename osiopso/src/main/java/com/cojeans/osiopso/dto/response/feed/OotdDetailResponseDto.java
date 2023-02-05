@@ -1,7 +1,7 @@
 package com.cojeans.osiopso.dto.response.feed;
 
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
-import com.cojeans.osiopso.entity.feed.CommentLike;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ArticleDetailResponseDto {
+public class OotdDetailResponseDto {
 
     private Long id;
     private Long userId;
@@ -22,8 +22,4 @@ public class ArticleDetailResponseDto {
     private List<CommentLikeResponseDto> commentLikes;
     private int hit;
     private String content;
-    private boolean isSelected;
-    private String subject;
-    private String dtype;
 }
-

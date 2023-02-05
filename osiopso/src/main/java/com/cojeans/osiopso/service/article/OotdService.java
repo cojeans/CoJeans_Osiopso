@@ -1,11 +1,16 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
+import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
+import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
+import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +30,47 @@ public class OotdService {
     private final ArticlePhotoRepository articlePhotoRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
+    private final UserRepository userRepository;
+
+    public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+
+        // 게시물 저장
+        Ootd ootdSaved = ootdRepository.save(Ootd.builder()
+                .user(user)
+                .hit(0)
+                .content(ootdRequestDto.getContent())
+                .build());
+
+
+        // 사진 저장
+        List<ArticlePhotoRequestDto> photos = ootdRequestDto.getPhotos();
+        for (ArticlePhotoRequestDto photo : photos) {
+            articlePhotoRepository.save(ArticlePhoto.builder()
+                    .storeFilename(photo.getStoreFilename())
+                    .originFilename(photo.getOriginFilename())
+                    .article(ootdSaved)
+                    .build());
+        }
+
+        // 태그 저장
+        List<ArticleTagRequestDto> tags = ootdRequestDto.getTags();
+        for (ArticleTagRequestDto tag : tags) {
+            Tag tagSaved = tagRepository.save(Tag.builder()
+                    .keyword(tag.getKeyword())
+                    .type(tag.getType())
+                    .build());
+
+            ArticleTag articleTagE = ArticleTag.builder()
+                    .article(ootdSaved)
+                    .tag(tagSaved)
+                    .build();
+
+            articleTagRepository.save(articleTagE);
+        }
+
+        return true;
+    }
 
 
     public List<OotdListResponseDto> listOotd() {
@@ -51,7 +97,7 @@ public class OotdService {
     }
 
 
-    public ArticleDetailResponseDto detailOotd(Long articleNo) {
+    public OotdDetailResponseDto detailOotd(Long articleNo) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
@@ -113,24 +159,28 @@ public class OotdService {
         }
 
 
-        return ArticleDetailResponseDto.builder()
+        return OotdDetailResponseDto.builder()
                 .id(ootd.getId())
-                .hit(ootd.getHit())
-                .photos(photoResponseDtoList)
-                .content(ootd.getContent())
-                .createTime(ootd.getCreateTime())
-                .dtype(ootd.getDtype())
-                .modifyTime(ootd.getModifyTime())
-                .tags(tagResponseDtoList)
                 .userId(ootd.getUser().getId())
-                .commentLikes(commentLikeResponseDtoList)
+                .createTime(ootd.getCreateTime())
+                .modifyTime(ootd.getModifyTime())
+                .photos(photoResponseDtoList)
+                .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
+                .commentLikes(commentLikeResponseDtoList)
+                .hit(ootd.getHit())
+                .content(ootd.getContent())
                 .build();
     }
 
 
-    public boolean editOotd(Long articleNo, ArticleRequestDto articleRequestDto) {
-        Article article = articleRepository.findById(articleNo).orElseThrow();
+    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, Long userId) {
+        Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
+
+        // 게시글 작성자만 수정권한이 있다.
+        if (userId != ootd.getUser().getId()) {
+            return false;
+        }
 
         // ========================= 태그수정 로직 ================================
         // 기존 태그 : 1, 2, 3 => 1, 2, 3, 4
@@ -138,13 +188,13 @@ public class OotdService {
         // 1. 새로운 태그를 돌리면서 기존태그에 없다면 추가한다.
         // 2. 기존 태그를 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
 
-        List<ArticleTag> articleTags = articleTagRepository.findByArticle_Id(article.getId());
+        List<ArticleTag> articleTags = articleTagRepository.findByArticle_Id(ootd.getId());
         List<String> old_tags_keyword = new ArrayList<>();
         List<String> new_tags_keyword = new ArrayList<>();
         List<Tag> old_tags = new ArrayList<>();
 
         // 태그를 모두 삭제하려는 경우
-        if (articleRequestDto.getTags().size() == 0) {
+        if (ootdRequestDto.getTags().size() == 0) {
             List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(articleNo);
 
             for (ArticleTag at : articleTag) {
@@ -163,19 +213,22 @@ public class OotdService {
 
 
 
-        for (ArticleTagResponseDto new_tag : articleRequestDto.getTags()) {
+        for (ArticleTagRequestDto new_tag : ootdRequestDto.getTags()) {
             String keyword = new_tag.getKeyword();
             new_tags_keyword.add(keyword);
 
             // 1. 만약 기존 태그에 새로운 태그가 없는 경우 -> 저장
             if (!old_tags_keyword.contains(keyword)) {
-                Tag tagE = new_tag.toEntity();
+                Tag tagE = Tag.builder()
+                        .type(new_tag.getType())
+                        .keyword(new_tag.getKeyword())
+                        .build();
                 // 기존 태그 리스트에 새로운 태그 추가
                 old_tags.add(tagE);
                 Tag tagSaved = tagRepository.save(tagE);
 
                 ArticleTag articleTagE = ArticleTag.builder()
-                        .article(article)
+                        .article(ootd)
                         .tag(tagSaved)
                         .build();
 
@@ -198,14 +251,18 @@ public class OotdService {
         // 2. 기존 사진을 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
         // 나중에 사진 업로드 완성되면 할 예정
 
-        ArticleRequestDto editDto = ArticleRequestDto.builder()
-                .dtype(articleRequestDto.getDtype())
-                .content(articleRequestDto.getContent())
-                .createTime(articleRequestDto.getCreateTime())
-                .modifyTime(articleRequestDto.getModifyTime())
-                .build();
 
-        if (articleRepository.save(editDto.toEntity(article.getUser(), articleNo)) == null) {
+//        ArticleRequestDto editDto = OotdRequestDto.builder()
+//                .dtype(ootdRequestDto.getDtype())
+//                .content(ootdRequestDto.getContent())
+//                .createTime(ootdRequestDto.getCreateTime())
+//                .modifyTime(ootdRequestDto.getModifyTime())
+//                .build();
+
+        if (articleRepository.save(Ootd.builder()
+                .id(articleNo)
+                .content(ootdRequestDto.getContent())
+                .build()) == null) {
             return false;
         } else {
             return true;
