@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.dto.closet;
 
 import com.cojeans.osiopso.entity.closet.ClothesColor;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +17,10 @@ public class ClothesColorDto {
     private ClothesDto clothesDto;
 
     private ColorDto colorDto;
-    public ClothesColor toEntity(){
+    public ClothesColor toEntity(User user){
         return ClothesColor.builder()
                 .id(id)
-                .clothes(clothesDto.toEntity())
+                .clothes(clothesDto.toEntity(user))
                 .color(colorDto.toEntity())
                 .build();
     }

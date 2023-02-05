@@ -17,8 +17,6 @@ public class ClothesRequestDto {
 
     private String storeFilename;
 
-    private String email;
-
     private List<ClosetDto> closets;
 
     private List<ColorDto> colors;
