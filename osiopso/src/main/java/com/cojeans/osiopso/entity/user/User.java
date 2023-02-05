@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.entity.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,7 +30,8 @@ public class User {
     @Column(nullable = false)
     private Boolean emailVerified = false;
 
-    @JsonIgnore
+//    @JsonIgnore //나중에 실서비스할때는 주석해재
+    @Column
     private String password;
 
     @Enumerated(EnumType.STRING)
