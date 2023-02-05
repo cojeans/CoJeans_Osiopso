@@ -6,10 +6,7 @@ import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
 import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
 import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.security.UserDetail;
-import com.cojeans.osiopso.service.article.AdviceService;
-import com.cojeans.osiopso.service.article.ArticleService;
-import com.cojeans.osiopso.service.article.CommentService;
-import com.cojeans.osiopso.service.article.OotdService;
+import com.cojeans.osiopso.service.article.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/feed")
-@Tag(name = "게시글 관련 API")
+//@Api(tags = "게시글 관련 API")
 public class FeedApiController {
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
@@ -34,6 +31,7 @@ public class FeedApiController {
     private final OotdService ootdService;
     private final ArticleService articleService;
     private final CommentService commentService;
+    private final LikeService likeService;
 
 
 
@@ -48,11 +46,30 @@ public class FeedApiController {
     }
 
     @PostMapping("/{articleno}/comment")
-    public ResponseEntity<String> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleno, @AuthenticationPrincipal UserDetail user){
-        if (commentService.createComment(commentRequestDto, articleno, user.getId())) {
+    public ResponseEntity<String> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
+        if (commentService.createComment(commentRequestDto, articleNo, user.getId())) {
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
+    @PostMapping("/{articleno}/likearticle")
+    public ResponseEntity<String> createArticleLike(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
+        if (likeService.createArticleLike(articleNo, user.getId())) {
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PostMapping("/{commentno}/likecomment")
+    public ResponseEntity<String> createCommentLike(@PathVariable("commentno") Long commentNo, @AuthenticationPrincipal UserDetail user){
+        if (likeService.createCommentLike(commentNo, user.getId())) {
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 
@@ -104,8 +121,8 @@ public class FeedApiController {
     }
 
     @PutMapping("/{articleno}/comment/{commentno}")
-    public ResponseEntity<String> editComment(@PathVariable("articleno") Long articleno, @PathVariable("commentno") Long commentno, @RequestBody CommentRequestDto commentRequestDto){
-        commentService.editComment(articleno, commentno, commentRequestDto);
+    public ResponseEntity<String> editComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo, @RequestBody CommentRequestDto commentRequestDto){
+        commentService.editComment(articleNo, commentNo, commentRequestDto);
 
         return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
     }
@@ -123,8 +140,8 @@ public class FeedApiController {
     }
 
     @DeleteMapping("/{articleno}/comment/{commentno}")
-    public ResponseEntity<String> deleteComment(@PathVariable("articleno") Long articleno, @PathVariable("commentno") Long commentno){
-        if (commentService.deleteComment(articleno, commentno)){
+    public ResponseEntity<String> deleteComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo){
+        if (commentService.deleteComment(articleNo, commentNo)){
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(FAIL, HttpStatus.NOT_ACCEPTABLE);
