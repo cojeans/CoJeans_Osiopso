@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
@@ -27,39 +29,44 @@ public class LikeService {
 
     public boolean createArticleLike(Long articleNo, Long userId) {
         // 현재 게시물과 유저를 기준으로 게시물 좋아요를 추가한다.
-        // 추가로 구현해야할 로직: 좋아요를 한 번 더 눌렀을 경우에 (같은 유저가 이미 눌렀던 게시물을 좋아요 누른경우)
-        // findById를 통해 이미 해당 유저가 좋아요를 눌렀다면 좋아요를 삭제시킨다.
 
-        Article article = articleRepository.findById(articleNo).orElseThrow();
-        User user = userRepository.findById(userId).orElseThrow();
+        // 만약 해당 게시물에 현재 유저가 좋아요를 누르지 않았은경우
+        if (articleLikeRepository.findByUser_IdAndArticle_Id(userId, articleNo) == null) {
+            Article article = articleRepository.findById(articleNo).orElseThrow();
+            User user = userRepository.findById(userId).orElseThrow();
 
-        ArticleLike articleLike = ArticleLike.builder()
-                .article(article)
-                .user(user)
-                .build();
+            ArticleLike articleLike = ArticleLike.builder()
+                    .article(article)
+                    .user(user)
+                    .build();
+            articleLikeRepository.save(articleLike);
 
-        articleLikeRepository.save(articleLike);
-
+        } else { // 좋아요 취소
+            articleLikeRepository.deleteByUser_IdAndArticle_Id(userId, articleNo);
+        }
         return true;
     }
 
     public boolean createCommentLike(Long commentNo, Long userId) {
         // 현재 게시물과 유저 그리고 댓글을 기준으로 좋아요를 추가한다.
-        // 추가로 구현해야할 로직: 좋아요를 한 번 더 눌렀을 경우에 (같은 유저가 이미 눌렀던 댓글 좋아요 누른경우)
-        // findById를 통해 이미 해당 유저가 좋아요를 눌렀다면 좋아요를 삭제시킨다.
 
-        User user = userRepository.findById(userId).orElseThrow();
         Comment comment = commentRepository.findById(commentNo).orElseThrow();
         Article article = comment.getArticle();
 
-        CommentLike commentLike = CommentLike.builder()
-                .comment(comment)
-                .user(user)
-                .article(article)
-                .build();
+        // 만약 해당 게시물의 댓글에 현재 유저가 좋아요를 누르지 않았은경우
+        if (commentLikeRepository.findByUser_IdAndComment_IdAndArticle_Id(userId, commentNo, article.getId()) == null){
+            User user = userRepository.findById(userId).orElseThrow();
 
-        commentLikeRepository.save(commentLike);
+            CommentLike commentLike = CommentLike.builder()
+                    .comment(comment)
+                    .user(user)
+                    .article(article)
+                    .build();
 
+            commentLikeRepository.save(commentLike);
+        } else { // 좋아요 취소
+            commentLikeRepository.deleteByUser_IdAndComment_IdAndArticle_Id(userId, commentNo, article.getId());
+        }
         return true;
     }
 }
