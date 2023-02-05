@@ -10,7 +10,10 @@ import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,21 +42,24 @@ public class ClothesService {
     // 파라미터 : 카테고리, 사진1, 누구? / 옷장, 색깔, 스타일태그, TPO태그
     // 카테고리를 제외한 파라미터는 각각 repo.save 작업 필요
     // return pk
-    public Long createClothes(ClothesRequestDto requestClothesDto, Long uid){
+    public Long createClothes(ClothesRequestDto requestClothesDto, MultipartFile picture, Long uid) throws IOException {
         System.out.println("Create Clothes Service : " + requestClothesDto);
 
         User user = userRepository.getById(uid);
         // 옷
+        String path = System.getProperty("user.dir"); // 현재 디렉토리
+        File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+
+        if(!file.getParentFile().exists()) file.getParentFile().mkdir();
+        picture.transferTo(file);
+
         ClothesDto clothesDto = ClothesDto.builder()
                 .category(requestClothesDto.getCategory())
-                .originFilename(requestClothesDto.getOriginFilename())
-                .storeFilename(requestClothesDto.getStoreFilename())
+                .storeFilename(file.getPath())
                 .build();
 
         Clothes clothes = clothesRepository.save(clothesDto.toEntity(user));
         Long clothesId = clothes.getId();
-
-        Long relateId = null;
 
         // 옷장
         List<ClosetDto> closets = requestClothesDto.getClosets();
