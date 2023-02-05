@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.controller;
 
-import com.cojeans.osiopso.dto.ApiResponse;
+//import com.cojeans.osiopso.dto.ApiResponse;
 import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
