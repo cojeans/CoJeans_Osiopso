@@ -13,7 +13,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class SignUpRequest {
+public class SignUpRequestDto {
     private String name;
 
     private String email;

@@ -1,13 +1,13 @@
 package com.cojeans.osiopso.dto.user;
 
 
-import com.cojeans.osiopso.dto.ApiResponse;
+import com.cojeans.osiopso.dto.ApiResponseDto;
 
-public class AuthResponse extends ApiResponse {
+public class AuthResponseDto extends ApiResponseDto {
     private String accessToken;
     private String tokenType = "Bearer";
 
-    public AuthResponse(String accessToken) {
+    public AuthResponseDto(String accessToken) {
         super();
         this.accessToken = accessToken;
     }
