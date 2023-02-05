@@ -1,7 +1,7 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
-import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+//import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
