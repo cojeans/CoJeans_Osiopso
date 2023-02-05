@@ -1,14 +1,9 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.response.feed.ArticleDetailResponseDto;
-import com.cojeans.osiopso.dto.response.feed.ArticlePhotoResponseDto;
-import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
+import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
-import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.entity.feed.ArticlePhoto;
-import com.cojeans.osiopso.entity.feed.ArticleTag;
-import com.cojeans.osiopso.entity.feed.Ootd;
+import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.repository.article.*;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +23,16 @@ public class OotdService {
     private final ArticleRepository articleRepository;
     private final OotdRepository ootdRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final Converter converter;
+    private final CommentLikeRepository commentLikeRepository;
+    private final ArticleLikeRepository articleLikeRepository;
 
 
     public List<OotdListResponseDto> listOotd() {
         List<Ootd> Ootds = ootdRepository.findList();
         List<OotdListResponseDto> list = new ArrayList<>();
 
+
+        // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
         for (Ootd ootd : Ootds) {
             OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
@@ -49,10 +47,6 @@ public class OotdService {
             list.add(dto);
         }
 
-//        for (AdviceListResponseDto articleListResponseDto : articleRequestDtos) {
-//            System.out.println(articleListResponseDto.toString());
-//        }
-
         return list;
     }
 
@@ -60,7 +54,7 @@ public class OotdService {
     public ArticleDetailResponseDto detailOotd(Long articleNo) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
-        // 사진들 저장
+        // 사진 가져오기
         List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllById(articleNo);
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
@@ -68,6 +62,34 @@ public class OotdService {
             photoResponseDtoList.add(ArticlePhotoResponseDto.builder()
                     .originFilename(ap.getOriginFilename())
                     .storeFilename(ap.getStoreFilename())
+                    .build());
+        }
+
+        // 게시물 좋아요 가져오기
+        // DataFormat) x 유저가 좋아요를 눌렀다.
+        List<ArticleLike> articleLikeList = articleLikeRepository.findAllByArticle_Id(articleNo);
+        List<ArticleLikeResponseDto> articleLikeResponseDtoList = new ArrayList<>();
+
+        for (ArticleLike al : articleLikeList) {
+            articleLikeResponseDtoList.add(ArticleLikeResponseDto.builder()
+                    .id(al.getId())
+                    .userId(al.getUser().getId())
+                    .build());
+        }
+
+
+        // 댓글 좋아요 가져오기
+        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
+        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
+
+        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
+        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+
+        for (CommentLike cl : commentLikeList) {
+            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                    .id(cl.getId())
+                    .userId(cl.getUser().getId())
+                    .commentId(cl.getComment().getId())
                     .build());
         }
 
@@ -84,6 +106,7 @@ public class OotdService {
             Tag tag = tagRepository.findById(tagId).orElseThrow();
 
             tagResponseDtoList.add(ArticleTagResponseDto.builder()
+                    .id(tag.getId())
                     .keyword(tag.getKeyword())
                     .type(tag.getType())
                     .build());
@@ -100,6 +123,8 @@ public class OotdService {
                 .modifyTime(ootd.getModifyTime())
                 .tags(tagResponseDtoList)
                 .userId(ootd.getUser().getId())
+                .commentLikes(commentLikeResponseDtoList)
+                .articleLikes(articleLikeResponseDtoList)
                 .build();
     }
 
