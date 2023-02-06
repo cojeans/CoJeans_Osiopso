@@ -12,6 +12,10 @@ public class UserDto {
 
     private String email;
 
+    private int age;
+
+    private Gender gender;
+
     private String imageUrl;
 
     private Boolean emailVerified;

@@ -1,6 +1,8 @@
 package com.cojeans.osiopso.entity.user;
 
+import com.cojeans.osiopso.dto.user.Gender;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -24,6 +26,14 @@ public class User {
 
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = true)
+    @ColumnDefault("0")
+    private int age;
+
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("INDEFINITE")
+    private Gender gender;
 
     private String imageUrl;
 
