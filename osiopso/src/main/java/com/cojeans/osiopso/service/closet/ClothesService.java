@@ -49,12 +49,13 @@ public class ClothesService {
         // 옷
         String path = System.getProperty("user.dir"); // 현재 디렉토리
         File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
-
+        
         if(!file.getParentFile().exists()) file.getParentFile().mkdir();
         picture.transferTo(file);
 
         ClothesDto clothesDto = ClothesDto.builder()
                 .category(requestClothesDto.getCategory())
+                .originFilename(file.getName())
                 .storeFilename(file.getPath())
                 .build();
 
@@ -142,6 +143,7 @@ public class ClothesService {
     }
 
     // 3. U :  옷 정보 수정
+    // 사진 수정은 나중에 .. 따로 빼서하기
     public void editClothes(ClothesRequestDto clothesRequestDto, Long uid) {
         User user = userRepository.getById(uid);
 

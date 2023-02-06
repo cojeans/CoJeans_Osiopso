@@ -4,6 +4,7 @@ import com.cojeans.osiopso.dto.closet.ClosetDto;
 import com.cojeans.osiopso.dto.closet.ClothesDto;
 import com.cojeans.osiopso.dto.closet.ClothesRequestDto;
 import com.cojeans.osiopso.dto.closet.ClothesResponseDto;
+import com.cojeans.osiopso.dto.request.closet.ClothesTagRequestDto;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.closet.ClosetService;
 import com.cojeans.osiopso.service.closet.ClothesService;
@@ -72,13 +73,13 @@ public class ClosetApiController {
         return new ResponseEntity<List<ClothesDto>>(closetService.thumbnailCloset(closetNo), HttpStatus.OK);
     }
 
-    // 2-3 : 선택 카테고리별 옷 리스트(order by desc)
-    @GetMapping("/{closetno}/{category}")
+    // 2-3 : 선택 카테고리별 옷 리스트 + 태그 필터(order by desc)
+    @PostMapping("/{closetno}/{category}")
     @Operation(summary = "카테고리별 옷 리스트", description = "선택한 카테고리에 속하는 옷 리스트를 조회합니다.")
-    public ResponseEntity<List<ClothesDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category, @AuthenticationPrincipal UserDetail user){
-        LOGGER.info("categoryList() 호출 : " + closetNo + " | " + category);
+    public ResponseEntity<List<ClothesDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category, @RequestBody List<ClothesTagRequestDto> tags, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("categoryList() 호출 : " + closetNo + " | " + category + " | " + tags);
 
-        return new ResponseEntity<List<ClothesDto>>(closetService.categoryList(closetNo, category), HttpStatus.OK);
+        return new ResponseEntity<List<ClothesDto>>(closetService.categoryList(closetNo, category, tags), HttpStatus.OK);
     }
 
     // 3. U : 옷장 정보 수정

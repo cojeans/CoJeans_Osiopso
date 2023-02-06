@@ -14,7 +14,9 @@ import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class OotdService {
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
 
-    public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
+    public boolean createOotd(OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long id) {
         User user = userRepository.findById(id).orElseThrow();
 
         // 게시물 저장
@@ -44,11 +46,20 @@ public class OotdService {
 
 
         // 사진 저장
-        List<ArticlePhotoRequestDto> photos = ootdRequestDto.getPhotos();
-        for (ArticlePhotoRequestDto photo : photos) {
+        for (MultipartFile picture : pictures) {
+            String path = System.getProperty("user.dir"); // 현재 디렉토리
+            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+
+            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
+            try {
+                picture.transferTo(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(photo.getStoreFilename())
-                    .originFilename(photo.getOriginFilename())
+                    .storeFilename(file.getPath())
+                    .originFilename(file.getName())
                     .article(ootdSaved)
                     .build());
         }
@@ -101,7 +112,7 @@ public class OotdService {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
-        List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllById(articleNo);
+        List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllByArticle_Id(articleNo);
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
         for (ArticlePhoto ap : photoEntityList) {
@@ -174,7 +185,7 @@ public class OotdService {
     }
 
 
-    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, Long userId) {
+    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long userId) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         // 게시글 작성자만 수정권한이 있다.
@@ -251,21 +262,34 @@ public class OotdService {
         // 2. 기존 사진을 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
         // 나중에 사진 업로드 완성되면 할 예정
 
+        // 기존의 게시물 사진 모두 삭제
+        articlePhotoRepository.deleteAllByArticle_Id(articleNo);
 
-//        ArticleRequestDto editDto = OotdRequestDto.builder()
-//                .dtype(ootdRequestDto.getDtype())
-//                .content(ootdRequestDto.getContent())
-//                .createTime(ootdRequestDto.getCreateTime())
-//                .modifyTime(ootdRequestDto.getModifyTime())
-//                .build();
+        // 새로운 게시물 사진 추가
+        for (MultipartFile picture : pictures) {
+            String path = System.getProperty("user.dir"); // 현재 디렉토리
+            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
 
-        if (articleRepository.save(Ootd.builder()
+            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
+            try {
+                picture.transferTo(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            articlePhotoRepository.save(ArticlePhoto.builder()
+                    .storeFilename(file.getPath())
+                    .originFilename(file.getName())
+                    .article(ootd)
+                    .build());
+        }
+
+
+        articleRepository.save(Ootd.builder()
                 .id(articleNo)
                 .content(ootdRequestDto.getContent())
-                .build()) == null) {
-            return false;
-        } else {
-            return true;
-        }
+                .build());
+
+        return true;
     }
 }

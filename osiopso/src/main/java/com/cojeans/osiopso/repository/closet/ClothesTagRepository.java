@@ -11,4 +11,6 @@ public interface ClothesTagRepository extends JpaRepository<ClothesTag, Long> {
     void deleteByClothesIdAndTagId(Long clothesId, Long tagId);
 
     void deleteAllByClothesId(Long id);
+
+    ClothesTag findByClothesIdAndTagId(Long clothesId, Long tagId);
 }
