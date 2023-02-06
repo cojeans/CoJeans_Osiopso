@@ -30,6 +30,7 @@ public class AdviceService {
     private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long id) {
@@ -38,12 +39,12 @@ public class AdviceService {
 
         // 게시물 저장
         Advice adviceSaved = adviceRepository.save(Advice.builder()
-                        .user(user)
-                        .hit(0)
-                        .content(adviceRequestDto.getContent())
-                        .subject(adviceRequestDto.getSubject())
-                        .isSelected(adviceRequestDto.isSelected())
-                        .build());
+                .user(user)
+                .hit(0)
+                .content(adviceRequestDto.getContent())
+                .subject(adviceRequestDto.getSubject())
+                .isSelected(adviceRequestDto.isSelected())
+                .build());
 
 
         // 사진 저장
@@ -197,5 +198,28 @@ public class AdviceService {
                 .build());
 
         return true;
+    }
+
+
+    public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
+        List<Advice> adviceList = adviceRepository.findAllBySubjectLike(subject);
+        List<AdviceSearchResponseDto> list = new ArrayList<>();
+
+        for (Advice advice : adviceList) {
+            List<ArticlePhoto> articlePhotoList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
+            ArticlePhoto articlePhoto = articlePhotoList.get(0);
+
+            list.add(AdviceSearchResponseDto.builder()
+                    .subject(advice.getSubject())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .originFilename(articlePhoto.getOriginFilename())
+                            .storeFilename(articlePhoto.getStoreFilename())
+                            .build())
+                    .isSelected(advice.isSelected())
+                    .build());
+        }
+
+        return list;
     }
 }

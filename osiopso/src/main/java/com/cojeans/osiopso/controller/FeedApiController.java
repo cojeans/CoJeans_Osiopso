@@ -118,10 +118,31 @@ public class FeedApiController {
 
 
     @GetMapping("/ootd/{articleno}")
-    public ResponseEntity<OotdDetailResponseDto> detailOotd(@PathVariable("articleno") Long articleNo) {
+    public ResponseEntity<?> detailOotd(@PathVariable("articleno") Long articleNo) {
         OotdDetailResponseDto detail = ootdService.detailOotd(articleNo);
         return new ResponseEntity(new ApiResponseDto(true, "readOotdDetail Success", detail), HttpStatus.OK);
     }
+
+
+    // 훈수 게시판 제목 검색
+    @GetMapping("/advice/search/{subject}")
+    public ResponseEntity<?> searchAdviceBySubject(@PathVariable("subject") String subject){
+        List<AdviceSearchResponseDto> result = adviceService.searchAdviceBySubject(subject);
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchAdivceBySubject Success", result), HttpStatus.OK);
+    }
+
+    // 훈수 게시판 내용 기준 검색
+    @GetMapping("/advice/search/{content}")
+    public ResponseEntity<List<AdviceListResponseDto>> searchAdviceByContent(@PathVariable("content") String content){
+        return null;
+    }
+
+//    // Ootd 유저 검색
+//    @GetMapping("/ootd/user/")
+//
+//    // Ootd 피드 해쉬태그 기반 검색
+//    @GetMapping("/ootd/hashtag/")
 
 
     // ====================== UPDATE ========================
