@@ -1,1 +1,1 @@
-export const selectCloset = (state) => state.closet;
+export const selectCloset = (state) => state.closet.closet;

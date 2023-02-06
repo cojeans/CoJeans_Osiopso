@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createClosetAxios } from '../../utils/axios.utils';
+import {
+	createClosetAxios,
+	postClothesAxios
+} from '../../utils/axios.utils';
 import { createCloset } from '../../store/closet/closet.reducer';
 import { selectCloset } from '../../store/closet/closet.selector';
 
@@ -64,20 +67,21 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 		setClosetField({ ...closetField, [name]: value })
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		console.log('저장?')
 
 		const payload = {
-			...closetData.closet,
+			...closetData,
 		}
+
 		payload.closetName = closetName
 
 		console.log('payload', payload)
 
 		dispatch(createCloset(payload))
 
-		createClosetAxios(closetData.closet.closetName, closetData.closet.isSelected)
-
+		createClosetAxios(closetData.closetName, closetData.isSelected)
+		postClothesAxios()
 	}
 	
     return (
