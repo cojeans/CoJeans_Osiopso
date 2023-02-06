@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ClothesTagDto;
 import com.cojeans.osiopso.entity.tag.Tag;
 import lombok.*;
 
@@ -23,12 +22,4 @@ public class ClothesTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
-
-    public ClothesTagDto toDto(){
-        return ClothesTagDto.builder()
-                .id(id)
-                .clothesDto(clothes.toDto())
-                .articleTagResponseDto(tag.toDto())
-                .build();
-    }
 }

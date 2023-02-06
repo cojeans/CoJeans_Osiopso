@@ -1,5 +1,7 @@
 package com.cojeans.osiopso.security;
 
+import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,14 +20,20 @@ public class UserDetail implements OAuth2User, UserDetails {
     private String email;
     private String password;
     private String name;
+    private int age;
+    private Gender gender;
+    private AuthProvider provider;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserDetail(Long id, String email, String name, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetail(Long id, String email, String name, String password,int age, Gender gender,AuthProvider provider, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
+        this.age = age;
+        this.provider = provider;
+        this.gender = gender;
         this.authorities = authorities;
     }
 
@@ -33,13 +41,16 @@ public class UserDetail implements OAuth2User, UserDetails {
         List<GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority("ROLE_USER")); //기본적으로 USER의 권한주기
 
-        return new UserDetail(
-                user.getId(),
-                user.getEmail(),
-                user.getName(),
-                user.getPassword(),
-                authorities
-        );
+        return UserDetail.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .name(user.getName())
+                .age(user.getAge())
+                .gender(user.getGender())
+                .authorities(authorities)
+                .provider(user.getProvider())
+                .build();
     }
 
     public static UserDetail create(User user, Map<String, Object> attributes) {
@@ -48,13 +59,6 @@ public class UserDetail implements OAuth2User, UserDetails {
         return userDetail;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 
     @Override
     public String getPassword() {

@@ -1,6 +1,5 @@
-package com.cojeans.osiopso.dto.closet;
+package com.cojeans.osiopso.dto.response.closet;
 
-import com.cojeans.osiopso.entity.closet.Closet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +16,8 @@ public class ClothesResponseDto {
     private String category;
     private String originFilename;
     private String storeFilename;
-    private List<Long> closets;
-    private List<Long> colors;
-    private List<Long> seasons;
-    private List<Long> tags;
+    private List<ClosetResponseDto> closets;
+    private List<ColorResponseDto> colors;
+    private List<SeasonResponseDto> seasons;
+    private List<ClothesTagResponseDto> tags;
 }

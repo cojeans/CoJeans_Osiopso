@@ -12,13 +12,19 @@ public class UserDto {
 
     private String email;
 
+    private int age;
+
+    private Gender gender;
+
+    private String password;
+
     private String imageUrl;
 
     private Boolean emailVerified;
 
-    private String password;
-
     private AuthProvider provider;
 
     private String providerId;
+
+
 }

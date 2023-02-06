@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface ArticlePhotoRepository extends JpaRepository<ArticlePhoto, Long> {
     void deleteByArticle_Id(Long articleId);
 
-    List<ArticlePhoto> findAllById(Long articleNo);
+    List<ArticlePhoto> findAllByArticle_Id(Long id);
+    void deleteAllByArticle_Id(Long userId);
+
 }

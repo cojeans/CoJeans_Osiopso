@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.repository.closet;
 
-import com.cojeans.osiopso.dto.closet.ClosetDto;
 import com.cojeans.osiopso.entity.closet.Closet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
