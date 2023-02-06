@@ -326,6 +326,7 @@ public class OotdService {
 
                 // 프론트 단에 넘겨줄 ootdSearchResponseDto를 생성합니다. (사진, 댓글 수, 좋아요 수
                 ootdSearchResponseDtoList.add(OotdSearchResponseDto.builder()
+                                .articleNo(articleTag.getArticle().getId())
                         .photo(ArticlePhotoResponseDto.builder()
                                 .storeFilename(articlePhoto.getStoreFilename())
                                 .originFilename(articlePhoto.getOriginFilename())

@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class OotdSearchResponseDto {
 
+    private Long articleNo;
     private ArticlePhotoResponseDto photo;
     private Long commentCnt;
     private String Time;
