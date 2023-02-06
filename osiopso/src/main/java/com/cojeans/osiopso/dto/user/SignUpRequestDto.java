@@ -14,6 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 public class SignUpRequestDto {
+
     private String name;
 
     private String email;
@@ -25,5 +26,6 @@ public class SignUpRequestDto {
     private Gender gender = Gender.UNKNOWN;
 
     private String imageUrl = "UNKNOWN";
+
 
 }

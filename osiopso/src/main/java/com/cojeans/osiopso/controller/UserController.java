@@ -5,6 +5,7 @@ import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.user.AuthResponseDto;
 import com.cojeans.osiopso.dto.user.LoginRequestDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
+import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.exception.BadRequestException;
 import com.cojeans.osiopso.exception.ResourceNotFoundException;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,14 +67,14 @@ public class UserController{
     * 리턴타입 수정
     *
     * */
-    /*@Operation(summary = "회원수정")
+    @Operation(summary = "회원수정")
     @PutMapping("")
     public ResponseEntity<UserDto> EditUser(@RequestBody SignUpRequestDto signUpRequest) {
         log.info("signUpRequest: {}",signUpRequest);
-        UserDto userDto = userService.EditUser(signUpRequest);
+        UserDto userDto = userService.editUser(signUpRequest).toDto();
 
-        return new ResponseEntity<>(UserDto.);
-    }*/
+        return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
+    }
 
 
     @Operation(summary = "로그인")

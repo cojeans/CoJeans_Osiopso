@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.entity.user;
 
 import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.dto.user.UserDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -112,5 +113,17 @@ public class User {
         this.providerId = providerId;
     }
 
+    public UserDto toDto(){
+        return UserDto.builder()
+                .id(this.getId())
+                .name(this.getName())
+                .email(this.getEmail())
+                .password(this.getPassword())
+                .age(this.getAge())
+                .gender(this.getGender())
+                .provider(this.getProvider())
+                .emailVerified(this.getEmailVerified())
+                .build();
+    }
 
 }
