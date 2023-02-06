@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ClothesSeasonDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,12 +20,4 @@ public class ClothesSeason {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SEASON_ID")
     private Season season;
-
-    public ClothesSeasonDto toDto(){
-        return ClothesSeasonDto.builder()
-                .id(id)
-                .clothesDto(clothes.toDto())
-                .seasonDto(season.toDto())
-                .build();
-    }
 }

@@ -97,7 +97,9 @@ public class AdviceService {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
+
         List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
+
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
         for (ArticlePhoto ap : photoEntityList) {

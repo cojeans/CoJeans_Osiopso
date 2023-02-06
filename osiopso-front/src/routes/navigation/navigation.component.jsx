@@ -1,5 +1,8 @@
 import { Outlet } from "react-router-dom"
 // import { Link } from 'react-router-dom'
+import { useState } from "react"
+
+import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
 
 import {
 	NavigationContainer,
@@ -10,6 +13,7 @@ import {
 } from "./navigation.styles"
 
 import TopBar from "../../components/top-bar/top-bar.component"
+import Modal from "../../components/modal/modal.component"
 
 import { ReactComponent as HomeLogo } from '../../assets/home.svg'
 import { ReactComponent as Hand } from '../../assets/hand.svg'
@@ -18,6 +22,15 @@ import { ReactComponent as Plus } from '../../assets/plusNav.svg'
 import { ReactComponent as User } from '../../assets/user.svg'
 
 const Navigation = () => {
+	const [modalOpen, setModalOpen] = useState(false);
+	const { lockScroll, openScroll } = useBodyScrollLock()
+
+	const showModal = () => {
+	window.scrollTo(0, 0);
+	setModalOpen(true);
+	lockScroll();
+	};
+
 	return (
 		<Container>
 			<TopBar />
@@ -29,12 +42,13 @@ const Navigation = () => {
 					<HomeLogo />
 					<span>홈</span>
 				</LogoContainer>
-				<LogoContainer to='/join'>
+				<LogoContainer to='/advice'>
 					<Hand />
 					<span>훈수</span>
 				</LogoContainer>
 				<PlusContainer
-					to='mypage/add-clothes'
+					// to='mypage/add-clothes'
+					onClick={showModal}
 				>
 					<Plus />
 				</PlusContainer>
@@ -50,6 +64,9 @@ const Navigation = () => {
 				<Link to='/join'>Join</Link>
 				<Link to='/mypage'>My page</Link> */}
 			</NavigationContainer>
+			{
+				modalOpen && <Modal setModalOpen={setModalOpen} openScroll={ openScroll} />
+			}
 		</Container>
 	)
 }

@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ColorDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,13 +11,5 @@ import javax.persistence.*;
 public class Color {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String colorName;
-
-    public ColorDto toDto(){
-        return ColorDto.builder()
-                .id(id)
-                .colorName(colorName)
-                .build();
-    }
+    private String name;
 }
