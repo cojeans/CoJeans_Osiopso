@@ -1,16 +1,23 @@
 package com.cojeans.osiopso.service.user;
 
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
+import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
+
 @Service
+@Slf4j
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -25,13 +32,18 @@ public class UserService {
     private TokenProvider tokenProvider;
 
     public User saveUser(SignUpRequestDto signUpRequest){
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User result = userRepository.save(user);
+        User result = userRepository.save(User.builder()
+                        .name(signUpRequest.getName())
+                        .email(signUpRequest.getEmail())
+                        .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                        .age(signUpRequest.getAge())
+                        .gender(signUpRequest.getGender())
+                        .provider(AuthProvider.local)
+                        .imageUrl(signUpRequest.getImageUrl())
+                        .emailVerified(false)
+                        .build()
+        );
+        log.info("result : {}", result);
 
         return result;
     }
@@ -49,12 +61,26 @@ public class UserService {
         return false;
     }
 
-    public User updateUser(SignUpRequestDto signUpRequest) {
-        User user = userRepository.findByEmail(signUpRequest.getEmail()).orElse(null);
-        if (user != null) {
-            user.setName(signUpRequest.getName());
-            user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-        }
-        return userRepository.save(user);
+    @Transactional
+    public User editUser(SignUpRequestDto signUpRequest) {
+        Optional<User> optionalUser = userRepository.findByEmail(signUpRequest.getEmail());
+        UserDto userDto = optionalUser.get().toDto();
+
+        if(StringUtils.isNotBlank(signUpRequest.getName())) userDto.setName(signUpRequest.getName());
+        if(signUpRequest.getAge()!=0) userDto.setAge(signUpRequest.getAge());
+        if(signUpRequest.getGender()!=null) userDto.setGender(signUpRequest.getGender());
+        if(signUpRequest.getImageUrl()!=null) userDto.setImageUrl(signUpRequest.getImageUrl());
+
+        return userRepository.save(User.builder()
+                        .id(userDto.getId())
+                        .email(userDto.getEmail())
+                        .name(userDto.getName())
+                        .password(userDto.getPassword())
+                        .gender(userDto.getGender())
+                        .imageUrl(userDto.getImageUrl())
+                        .provider(userDto.getProvider())
+                        .providerId(userDto.getProviderId())
+                        .emailVerified(userDto.getEmailVerified())
+                .build());
     }
 }

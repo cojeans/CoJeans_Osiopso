@@ -25,49 +25,6 @@ public class ArticleService {
     private final ArticlePhotoRepository articlePhotoRepository;
     private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-
-
-    // 1. 게시물 먼저 저장
-    // 2. Dto 필드 중, 태그의 개수만큼 태그 저장
-    // 3. ArticleTag 에 게시물과 유저를 넣고 저장
-//    public boolean createArticle(ArticleRequestDto articleRequestDto, Long id) {
-//        // 게시물 저장
-//        List<ArticleTagResponseDto> tags = articleRequestDto.getTags();
-//
-//        Article article = articleRequestDto.toEntity(userRepository.getById(id), 0L);
-//        Article savedArticle = articleRepository.save(article);
-//
-//
-//        List<ArticlePhotoRequestDto> photos = articleRequestDto.getPhotos();
-//
-//        // 사진 저장
-//        for (ArticlePhotoRequestDto photo : photos) {
-//            articlePhotoRepository.save(ArticlePhoto.builder()
-//                    .storeFilename(photo.getStoreFilename())
-//                    .originFilename(photo.getOriginFilename())
-//                    .article(savedArticle)
-//                    .build());
-//        }
-//
-//        if (tags != null) {
-//            // 태그 저장
-//            for (ArticleTagResponseDto tag : tags) {
-//                Tag tagE = tag.toEntity();
-//                Tag tagSaved = tagRepository.save(tagE);
-//
-//                ArticleTag articleTagE = ArticleTag.builder()
-//                        .article(article)
-//                        .tag(tagSaved)
-//                        .build();
-//
-//                articleTagRepository.save(articleTagE);
-//            }
-//        }
-//
-//        return true;
-//    }
-
 
     // 1번 article 을 지울 때..
     // 1번 article 을 외래키로 가진 article_tag 조회

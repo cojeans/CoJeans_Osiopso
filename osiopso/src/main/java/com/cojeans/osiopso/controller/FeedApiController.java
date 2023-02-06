@@ -39,11 +39,11 @@ public class FeedApiController {
     // ====================== CREATE ========================
     @PostMapping("/advice")
     public ResponseEntity<?> createAdvice(@RequestPart("advice") AdviceRequestDto adviceRequestDto,
-                                          @RequestPart("picture") List<MultipartFile> picture,
+                                          @RequestPart("picture") List<MultipartFile> pictures,
                                           @AuthenticationPrincipal UserDetail user
                                           ) {
 
-        if (adviceService.createAdvice(adviceRequestDto, picture, user.getId())) {
+        if (adviceService.createAdvice(adviceRequestDto, pictures, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createArticle Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -51,10 +51,11 @@ public class FeedApiController {
     }
 
     @PostMapping("/ootd")
-    public ResponseEntity<?> createOotd(@RequestBody OotdRequestDto ootdRequestDto,
+    public ResponseEntity<?> createOotd(@RequestPart("ootd") OotdRequestDto ootdRequestDto,
+                                        @RequestPart("picture") List<MultipartFile> pictures,
                                         @AuthenticationPrincipal UserDetail user) {
 
-        if (ootdService.createOotd(ootdRequestDto, user.getId())) {
+        if (ootdService.createOotd(ootdRequestDto, pictures, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createArticle Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -63,7 +64,9 @@ public class FeedApiController {
 
 
     @PostMapping("/{articleno}/comment")
-    public ResponseEntity<?> createComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> createComment(@RequestBody CommentRequestDto commentRequestDto,
+                                           @PathVariable("articleno") Long articleNo,
+                                           @AuthenticationPrincipal UserDetail user){
         if (commentService.createComment(commentRequestDto, articleNo, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createComment Success", null), HttpStatus.OK);
         } else {
@@ -73,7 +76,8 @@ public class FeedApiController {
 
 
     @PostMapping("/{articleno}/likearticle")
-    public ResponseEntity<?> createArticleLike(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> createArticleLike(@PathVariable("articleno") Long articleNo,
+                                               @AuthenticationPrincipal UserDetail user){
         if (likeService.createArticleLike(articleNo, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createLike Success", null), HttpStatus.OK);
         } else {
@@ -82,7 +86,8 @@ public class FeedApiController {
     }
 
     @PostMapping("/{commentno}/likecomment")
-    public ResponseEntity<?> createCommentLike(@PathVariable("commentno") Long commentNo, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> createCommentLike(@PathVariable("commentno") Long commentNo,
+                                               @AuthenticationPrincipal UserDetail user){
         if (likeService.createCommentLike(commentNo, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createCommentLike Success", null), HttpStatus.OK);
         } else {
@@ -121,8 +126,11 @@ public class FeedApiController {
 
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
-    public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo, @RequestBody OotdRequestDto ootdRequestDto, @AuthenticationPrincipal UserDetail user) {
-        if (ootdService.editOotd(articleNo, ootdRequestDto, user.getId())){
+    public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo,
+                                      @RequestPart("ootd") OotdRequestDto ootdRequestDto,
+                                      @RequestPart("picture") List<MultipartFile> pictures,
+                                      @AuthenticationPrincipal UserDetail user) {
+        if (ootdService.editOotd(articleNo, ootdRequestDto, pictures, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "editOotd Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editOotd Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -130,8 +138,11 @@ public class FeedApiController {
     }
 
     @PutMapping("/advice/{articleno}")
-    public ResponseEntity<?> editAdvice(@PathVariable("articleno") Long articleNo, @RequestBody AdviceRequestDto adviceRequestDto, @AuthenticationPrincipal UserDetail user) {
-        if (adviceService.editAdvice(articleNo, adviceRequestDto, user.getId())){
+    public ResponseEntity<?> editAdvice(@PathVariable("articleno") Long articleNo,
+                                        @RequestPart("advice") AdviceRequestDto adviceRequestDto,
+                                        @RequestPart("picture") List<MultipartFile> pictures,
+                                        @AuthenticationPrincipal UserDetail user) {
+        if (adviceService.editAdvice(articleNo, adviceRequestDto, pictures, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "editAdvice Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editAdvice Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -139,8 +150,10 @@ public class FeedApiController {
     }
 
     @PutMapping("/{articleno}/comment/{commentno}")
-    public ResponseEntity<?> editComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo,
-                                              @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> editComment(@PathVariable("articleno") Long articleNo,
+                                         @PathVariable("commentno") Long commentNo,
+                                         @RequestBody CommentRequestDto commentRequestDto,
+                                         @AuthenticationPrincipal UserDetail user){
         if (commentService.editComment(articleNo, commentNo, commentRequestDto, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "editComment Success", null), HttpStatus.OK);
         } else {
@@ -152,7 +165,8 @@ public class FeedApiController {
 
     // ====================== DELETE ========================
     @DeleteMapping("/article/{articleno}")
-    public ResponseEntity<?> deleteArticle(@PathVariable("articleno") Long articleNo, @AuthenticationPrincipal UserDetail user) {
+    public ResponseEntity<?> deleteArticle(@PathVariable("articleno") Long articleNo,
+                                           @AuthenticationPrincipal UserDetail user) {
         if (articleService.deleteArticle(articleNo, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "deleteArticle Success", null), HttpStatus.OK);
         } else {
@@ -161,8 +175,9 @@ public class FeedApiController {
     }
 
     @DeleteMapping("/{articleno}/comment/{commentno}")
-    public ResponseEntity<?> deleteComment(@PathVariable("articleno") Long articleNo, @PathVariable("commentno") Long commentNo,
-                                                @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<?> deleteComment(@PathVariable("articleno") Long articleNo,
+                                           @PathVariable("commentno") Long commentNo,
+                                           @AuthenticationPrincipal UserDetail user){
         if (commentService.deleteComment(articleNo, commentNo, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "deleteComment Success", null), HttpStatus.OK);
         } else {

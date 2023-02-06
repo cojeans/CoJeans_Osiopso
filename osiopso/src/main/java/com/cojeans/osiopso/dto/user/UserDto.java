@@ -16,13 +16,15 @@ public class UserDto {
 
     private Gender gender;
 
+    private String password;
+
     private String imageUrl;
 
     private Boolean emailVerified;
 
-    private String password;
-
     private AuthProvider provider;
 
     private String providerId;
+
+
 }
