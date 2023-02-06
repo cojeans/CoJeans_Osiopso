@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   closet: {
-    name: "봄",
+    name: "",
     isSelected: false,
   },
 };

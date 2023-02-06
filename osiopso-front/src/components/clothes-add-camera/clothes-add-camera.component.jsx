@@ -50,15 +50,15 @@ const CameraPage = () => {
     }
 	});
 	
-	//   const capOff = () => {
-  //   let vid = document?.getElementById("vid");
-  //   if (vid) {
-  //     vid.pause();
-  //     vid.src = "";
-  //   }
-  //   localstream?.getTracks()?.forEach((x) => x.stop());
-  //   console.log("all capture devices off");
-  // };
+	  const capOff = () => {
+    let vid = document?.getElementById("vid");
+    if (vid) {
+      vid.pause();
+      vid.src = "";
+    }
+    localstream?.getTracks()?.forEach((x) => x.stop());
+    console.log("all capture devices off");
+  };
 
   const camON = () => {
     let vid = document.getElementById("vid");
@@ -84,13 +84,28 @@ const CameraPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const onCapture = () =>{
+  const onCapture = () => {
     console.log('onCapture')
     html2canvas(document.getElementById('vid')).then(canvas => {
       const captureImg = canvas.toDataURL('image/png')
+      
+      const blobBin = atob(captureImg.split(',')[1])
+      let array = []
+      for (let i = 0; i < blobBin.length; i++){
+        array.push(blobBin.charCodeAt(i))
+      }
+
+      const file = new Blob([new Uint8Array(array)], {type:'img/png'})
+      
+      console.log(file)
+      let formData = new FormData()
+      formData.append("file", file);
+      
       console.log(captureImg)  
+      console.log(formData)  
       dispatch(upload(captureImg))
     })
+    capOff()
     navigate(-1)
   }
 
