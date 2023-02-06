@@ -66,10 +66,12 @@ export const BodyContainer = styled.div`
 	width: 100%;
 	max-width:430px;
 	margin:auto;
-	min-height:100%
+	min-height:100%;
+	display:flex;
+	flex-direction:column;
 `
 
-export const PlusContainer = styled(NavLink)`
+export const PlusContainer = styled.div`
   height: 100%;
   width: 25%;
 	display:flex;

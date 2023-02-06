@@ -1,22 +1,15 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ClothesDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.cojeans.osiopso.entity.user.User;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.*;
 
 @Entity
 @Getter @Builder @NoArgsConstructor @AllArgsConstructor
+@ToString
 public class Clothes {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String category;
@@ -25,28 +18,7 @@ public class Clothes {
 
     private String storeFilename;
 
-    public ClothesDto toDto(){
-        return ClothesDto.builder()
-                .id(id)
-                .category(category)
-                .originFilename(originFilename)
-                .storeFilename(storeFilename)
-                .build();
-    }
-
-//    public ClothesDto toDto(){
-//        return ClothesDto.builder()
-//                .id(id)
-//                .category(category)
-//                .seasons(seasons.stream()
-//                        .map(Season::toDto)
-//                        .collect(Collectors.toList()))
-//                .colors(colors.stream()
-//                        .map(Color::toDto)
-//                        .collect(Collectors.toList()))
-//                .closetClothesDtos(closetClothes.stream()
-//                        .map(ClosetClothes::toDto)
-//                        .collect(Collectors.toList()))
-//                .build();
-//    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 }

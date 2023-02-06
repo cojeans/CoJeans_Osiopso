@@ -1,7 +1,10 @@
 package com.cojeans.osiopso.entity.feed;
 
 import com.cojeans.osiopso.entity.user.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,9 +26,9 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //일대 다 관계로 테이블로 만들어져야함
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-    private List<ArticlePhoto> photos;
+//    //일대 다 관계로 테이블로 만들어져야함
+//    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
+//    private List<ArticlePhoto> photos;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,8 +52,7 @@ public class Article {
     @Column(insertable = false, updatable = false)
     private String dtype;
 
-    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
-        this.photos = photos;
+    public Article(int hit, String content, String dtype, User user) {
         this.hit = hit;
         this.content = content;
         this.dtype = dtype;

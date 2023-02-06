@@ -18,6 +18,13 @@ const Join = () => {
 	const [formFields, setFormFields] = useState(defaultformFields)
 	const {displayName, email, password, confirmPassword} = formFields
 
+	// const handleSubmit = async (event) => {
+	// 	event.preventDefault();
+	
+	// 	if (password !== confirmPassword) {
+	// 	  alert('passwords do not match');
+	// 	  return;
+	// 	}
 
 	const handleChange = (event) =>{
 		const {name, value} = event.target

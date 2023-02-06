@@ -1,10 +1,6 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.SeasonDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,22 +8,10 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
+@ToString
 public class Season {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String seasonName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLOTHES_ID")
-    private Clothes clothes;
-
-    public SeasonDto toDto(){
-        return SeasonDto.builder()
-                .id(id)
-                .seasonName(seasonName)
-                .clothesDto(clothes.toDto())
-                .build();
-    }
+    private String name;
 }

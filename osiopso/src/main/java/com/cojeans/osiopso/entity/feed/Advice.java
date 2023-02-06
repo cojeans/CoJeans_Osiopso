@@ -1,7 +1,6 @@
 package com.cojeans.osiopso.entity.feed;
 
 import com.cojeans.osiopso.entity.user.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -22,8 +21,8 @@ public class Advice extends Article{
     boolean isSelected;
     String subject;
 
-    public Advice(List<ArticlePhoto> photos, int hit, String content, String dtype, User user, boolean isSelected, String subject) {
-        super(photos, hit, content, dtype, user);
+    public Advice(int hit, String content, String dtype, User user, boolean isSelected, String subject) {
+        super(hit, content, dtype, user);
         this.isSelected = isSelected;
         this.subject = subject;
     }

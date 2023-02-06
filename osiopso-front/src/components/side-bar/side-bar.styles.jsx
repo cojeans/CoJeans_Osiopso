@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 export const SidebarToggle = styled.button`
 position: fixed;
@@ -24,16 +25,35 @@ display: flex;
 flex-direction: column;
 `
 
-export const LinkContainer = styled.a`
+// export const LinkContainer = styled.a`
+// margin: 0;
+// padding: 0;
+// box-sizing: border-box;
+// display:block;
+// font-size: 1.5rem;
+// text-transform: capitalize;
+// padding: 1rem 1.5rem;
+// color: hsl(210, 22%, 49%);
+// transition: all 0.3s linear;
+// cursor: pointer;
+
+//     &:hover {
+//     background: hsl(205, 86%, 81%);
+
+//     }
+// `
+export const LinkContainer = styled(NavLink)`
 margin: 0;
 padding: 0;
 box-sizing: border-box;
 display:block;
-font-size: 1.5rem;
+font-size: 1.05rem;
 text-transform: capitalize;
 padding: 1rem 1.5rem;
 color: hsl(210, 22%, 49%);
 transition: all 0.3s linear;
+text-decoration:none;
+
 cursor: pointer;
 
     &:hover {

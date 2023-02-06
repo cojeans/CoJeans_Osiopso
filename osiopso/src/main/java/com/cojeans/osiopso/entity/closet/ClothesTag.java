@@ -1,11 +1,7 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ClothesTagDto;
 import com.cojeans.osiopso.entity.tag.Tag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 @Entity
@@ -13,9 +9,10 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ClothesTag {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,12 +22,4 @@ public class ClothesTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
-
-    public ClothesTagDto toDto(){
-        return ClothesTagDto.builder()
-                .id(id)
-                .clothesDto(clothes.toDto())
-                .tagDto(tag.toDto())
-                .build();
-    }
 }
