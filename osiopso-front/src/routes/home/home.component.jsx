@@ -56,7 +56,7 @@ const Home = () =>{
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
 			</SelectedTagContainer>
 
-			<TextToLeft><Fire/><h4>와글와글 토론장</h4></TextToLeft>
+			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
 			<HomeOotdImage>
 				{hunsuImages.map((el)=>{
 					return (

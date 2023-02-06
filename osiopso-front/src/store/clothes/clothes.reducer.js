@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-	uploadImg:''
-}
+  uploadImg: "https://pixlr.com/images/index/remove-bg.webp",
+};
 
 export const clothes = createSlice({
 	name: 'clothes',

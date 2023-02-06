@@ -71,7 +71,7 @@ export const BodyContainer = styled.div`
 	flex-direction:column;
 `
 
-export const PlusContainer = styled(NavLink)`
+export const PlusContainer = styled.div`
   height: 100%;
   width: 25%;
 	display:flex;
