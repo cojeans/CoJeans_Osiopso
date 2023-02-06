@@ -1,6 +1,7 @@
 package com.cojeans.osiopso;
 
 import com.cojeans.osiopso.config.AppProperties;
+import com.cojeans.osiopso.dto.user.Gender;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,8 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SpringBootApplication
 public class OsiopsoApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(OsiopsoApplication.class, args);
-    }
+
+    public static void main(String[] args) {SpringApplication.run(OsiopsoApplication.class, args);}
 
 }

@@ -2,6 +2,7 @@ package com.cojeans.osiopso.security;
 
 import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.entity.user.AuthProvider;
+import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,7 @@ public class UserDetail implements OAuth2User, UserDetails {
     private AuthProvider provider;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
+    private Role role;
 
     public UserDetail(Long id, String email, String name, String password,int age, Gender gender,AuthProvider provider, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -50,6 +52,7 @@ public class UserDetail implements OAuth2User, UserDetails {
                 .gender(user.getGender())
                 .authorities(authorities)
                 .provider(user.getProvider())
+                .role(Role.USER)
                 .build();
     }
 
