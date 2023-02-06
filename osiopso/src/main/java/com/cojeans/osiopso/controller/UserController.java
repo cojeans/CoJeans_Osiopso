@@ -102,8 +102,7 @@ public class UserController{
         }
         userService.saveUser(signUpRequest);
 
-        return new ResponseEntity(new ApiResponseDto(true,
-                "User registered successfully@"), HttpStatus.CREATED);
+        return new ResponseEntity(new ApiResponseDto(true, "User registered successfully@", null), HttpStatus.CREATED);
     }
 
     @Operation(summary = "비밀번호확인", description = "현재로그인되어있는 유저를 토큰에서 꺼내 입력받은 비밀번호를 인코딩해서 비교")
