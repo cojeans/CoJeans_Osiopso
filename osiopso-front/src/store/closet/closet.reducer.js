@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   closet: {
-    closetName: "Closet Create Test",
-    isSelected: "true",
+    closetName: "",
+    isSelected: false,
     email: "testId@gmail.com",
   },
 };
@@ -13,7 +13,7 @@ export const closet = createSlice({
 	initialState,
 	reducers: {
 		createCloset(state, action) {
-			state.closet.closetName = action.payload;
+			state.closet = action.payload
 		}
 	}
 })

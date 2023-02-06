@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getClosetAxios } from '../../utils/axios.utils';
+import { createClosetAxios } from '../../utils/axios.utils';
+import { createCloset } from '../../store/closet/closet.reducer';
+import { selectCloset } from '../../store/closet/closet.selector';
 
 import Button from '../button/button.component';
 import ToggleButton from '../toggle/toggle.component';
@@ -25,6 +27,8 @@ const defaultClosetFields = {
 const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
+	const closetData  = useSelector(selectCloset)
+
 	const dispatch = useDispatch()
 
 	 // 모달 끄기 
@@ -62,7 +66,18 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 
 	const handleSubmit = () => {
 		console.log('저장?')
-		getClosetAxios("testId@gmail.com")
+
+		const payload = {
+			...closetData.closet,
+		}
+		payload.closetName = closetName
+
+		console.log('payload', payload)
+
+		dispatch(createCloset(payload))
+
+		createClosetAxios(closetData.closet.closetName, closetData.closet.isSelected, closetData.closet.email)
+
 	}
 	
     return (
