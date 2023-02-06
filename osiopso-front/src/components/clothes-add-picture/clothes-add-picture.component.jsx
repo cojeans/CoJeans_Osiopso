@@ -19,6 +19,9 @@ const ClothesAddPicture = () => {
 	const onNavigateHandler = () => navigate(
 		'camera/'
 	)
+	const onNavigateHandler2 = () => navigate(
+		'selectbox/'
+	)
 	const saveData = useSelector(selectClothes)
 
 	const [imgFile, setImgFile] = useState("");
@@ -71,7 +74,7 @@ const ClothesAddPicture = () => {
 					<span>사진 촬영</span>
 				</ExampleBox>
 			</ExampleContainer>
-				<Button >선택 완료</Button>	
+				<Button onClick={onNavigateHandler2}>선택 완료</Button>	
 		</AddPictureBody>
 	)
 }
