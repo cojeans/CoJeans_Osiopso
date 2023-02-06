@@ -7,7 +7,7 @@ import {
 } from './clothes-add-picture.styles'
 
 import Button from '../button/button.component'
-import { useEffect, useRef, useState } from 'react';
+import {  useEffect, useRef,  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { upload } from '../../store/clothes/clothes.reducer';
 import { useNavigate } from 'react-router';
@@ -24,26 +24,18 @@ const ClothesAddPicture = () => {
 	)
 	const saveData = useSelector(selectClothes)
 
-	const [imgFile, setImgFile] = useState("");
 	const imgRef = useRef();
 
 	useEffect(() => {
-		dispatch(upload(''))	
+		dispatch(upload('https://pixlr.com/images/index/remove-bg.webp'))	
 	}, [])
 	
-	useEffect(() => {
-		setImgFile(saveData)
-	},[saveData])
-	
-
-
 	// 이미지 업로드 input의 onChange
 	const saveImgFile = () => {
 		const file = imgRef.current.files[0];
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-			setImgFile(reader.result);
 			dispatch(upload(reader.result))
 		};
 	};
@@ -53,7 +45,7 @@ const ClothesAddPicture = () => {
 		<	AddPictureBody>
 			<p>등록하고 싶은 옷을 업로드해주세요</p>
 			<PrevUploadImg>
-				<img src={imgFile ? imgFile :`https://pixlr.com/images/index/remove-bg.webp`} alt="" />
+				<img src={saveData} alt="" />
 			</PrevUploadImg>
 			<ExampleContainer>
 				<ExampleBox>
