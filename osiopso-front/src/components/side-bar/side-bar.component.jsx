@@ -54,11 +54,11 @@ export const SideBar = () => {
             로그아웃
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/login'>
+          {isLogin && <LinkContainer to='/changepassword'>
             비밀번호 변경
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/login'>
+          {isLogin && <LinkContainer to='/disclosurescope'>
             공개범위 설정
           </LinkContainer>}
         </ul>

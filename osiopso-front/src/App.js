@@ -10,7 +10,8 @@ import Advice from './routes/advice/advice.component';
 import OOTDPage from './routes/ootd/ootd.component'
 import PasswordCheck from './routes/passwordcheck/passwordcheck.component'
 import ChangePassword from './routes/changeuserinfo/changepassword.component'
-import PasswordChangeComplete from './routes/changeuserinfo/completechangepassword.component'
+import PwdComplete from './routes/changeuserinfo/pwdchangecomplete'
+import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 
 
 import "./App.scss";
@@ -35,7 +36,8 @@ function App() {
         <Route path="advice/*" element={<Advice />} />        
         <Route path='ootd/*' element={<OOTDPage/>}/>
         <Route path='changePassword' element={<ChangePassword/>}/>
-        <Route path='passwordchangecomplete' element={<PasswordChangeComplete/>}/>
+        <Route path='pwdchangecomplete' element={<PwdComplete/>}/>
+        <Route path='disclosurescope' element={<DisclosureScope/>}/>
         
       </Route>
     </Routes>
