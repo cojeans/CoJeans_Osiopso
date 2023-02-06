@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Multipart;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,10 @@ public class AdviceService {
 
     private final ArticleRepository articleRepository;
     private final AdviceRepository adviceRepository;
-    private final ArticlePhotoRepository photoRepository;
+    private final ArticlePhotoRepository articlePhotoRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
-    private final ArticlePhotoRepository articlePhotoRepository;
 
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long id) {
@@ -46,23 +46,21 @@ public class AdviceService {
                         .build());
 
 
+        // 사진 저장
         for (MultipartFile picture : pictures) {
             String path = System.getProperty("user.dir"); // 현재 디렉토리
             File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
 
             if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            picture.transferTo(file);
-        }
+            try {
+                picture.transferTo(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-
-
-
-        // 사진 저장
-        List<ArticlePhotoRequestDto> photos = adviceRequestDto.getPhotos();
-        for (ArticlePhotoRequestDto photo : photos) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(photo.getStoreFilename())
-                    .originFilename(photo.getOriginFilename())
+                    .storeFilename(file.getPath())
+                    .originFilename(file.getName())
                     .article(adviceSaved)
                     .build());
         }
@@ -98,7 +96,7 @@ public class AdviceService {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
-        List<ArticlePhoto> photoEntityList = photoRepository.findAllById(advice.getId());
+        List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
         for (ArticlePhoto ap : photoEntityList) {
@@ -153,7 +151,7 @@ public class AdviceService {
     }
 
 
-    public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, Long userId) {
+    public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 게시글 작성자만 수정권한이 있다.
@@ -167,16 +165,37 @@ public class AdviceService {
         // 1. 새로운 사진을 돌리면서 기존사진에 없다면 추가한다.
         // 2. 기존 사진을 돌리면서 추가할 새로운 태그에 없다면 삭제한다.
         // 나중에 사진 업로드 완성되면 할 예정
+        // 이거 유기했음 ㅋㅋ
 
-        if (articleRepository.save(Advice.builder()
+        // 기존의 게시물 사진 모두 삭제
+        articlePhotoRepository.deleteAllByArticle_Id(articleNo);
+
+        // 새로운 게시물 사진 추가
+        for (MultipartFile picture : pictures) {
+            String path = System.getProperty("user.dir"); // 현재 디렉토리
+            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+
+            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
+            try {
+                picture.transferTo(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            articlePhotoRepository.save(ArticlePhoto.builder()
+                    .storeFilename(file.getPath())
+                    .originFilename(file.getName())
+                    .article(advice)
+                    .build());
+        }
+
+        articleRepository.save(Advice.builder()
                 .id(articleNo)
                 .subject(adviceRequestDto.getSubject())
                 .isSelected(adviceRequestDto.isSelected())
                 .content(adviceRequestDto.getContent())
-                .build()) == null) {
-            return false;
-        } else {
-            return true;
-        }
+                .build());
+
+        return true;
     }
 }

@@ -49,7 +49,7 @@ public class ClothesService {
         // 옷
         String path = System.getProperty("user.dir"); // 현재 디렉토리
         File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
-
+        
         if(!file.getParentFile().exists()) file.getParentFile().mkdir();
         picture.transferTo(file);
 
