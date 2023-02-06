@@ -204,7 +204,30 @@ public class AdviceService {
 
 
     public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
-        List<Advice> adviceList = adviceRepository.findAllBySubjectLike(subject);
+        List<Advice> adviceList = adviceRepository.findAllBySubjectContaining(subject);
+        List<AdviceSearchResponseDto> list = new ArrayList<>();
+
+        for (Advice advice : adviceList) {
+            List<ArticlePhoto> articlePhotoList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
+            ArticlePhoto articlePhoto = articlePhotoList.get(0);
+
+            list.add(AdviceSearchResponseDto.builder()
+                    .subject(advice.getSubject())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .originFilename(articlePhoto.getOriginFilename())
+                            .storeFilename(articlePhoto.getStoreFilename())
+                            .build())
+                    .isSelected(advice.isSelected())
+                    .build());
+        }
+
+        return list;
+    }
+
+
+    public List<AdviceSearchResponseDto> searchAdviceByContent(String content) {
+        List<Advice> adviceList = adviceRepository.findAllByContentContaining(content);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
 
         for (Advice advice : adviceList) {

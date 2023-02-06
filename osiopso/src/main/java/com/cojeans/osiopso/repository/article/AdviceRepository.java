@@ -11,5 +11,6 @@ public interface AdviceRepository extends JpaRepository<Advice, Long> {
 
     @Query("select a from Article a where a.dtype = 'A'")
     List<Advice> findList();
-    List<Advice> findAllBySubjectLike(String subject);
+    List<Advice> findAllBySubjectContaining(String subject);
+    List<Advice> findAllByContentContaining(String content);
 }

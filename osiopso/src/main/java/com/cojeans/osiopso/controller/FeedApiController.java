@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -123,26 +124,38 @@ public class FeedApiController {
         return new ResponseEntity(new ApiResponseDto(true, "readOotdDetail Success", detail), HttpStatus.OK);
     }
 
-
     // 훈수 게시판 제목 검색
-    @GetMapping("/advice/search/{subject}")
+    @GetMapping("/advice/search/subject/{subject}")
     public ResponseEntity<?> searchAdviceBySubject(@PathVariable("subject") String subject){
         List<AdviceSearchResponseDto> result = adviceService.searchAdviceBySubject(subject);
 
-        return new ResponseEntity(new ApiResponseDto(true, "searchAdivceBySubject Success", result), HttpStatus.OK);
+        return new ResponseEntity(new ApiResponseDto(true, "searchAdviceBySubject Success", result), HttpStatus.OK);
     }
+
 
     // 훈수 게시판 내용 기준 검색
-    @GetMapping("/advice/search/{content}")
-    public ResponseEntity<List<AdviceListResponseDto>> searchAdviceByContent(@PathVariable("content") String content){
-        return null;
+    @GetMapping("/advice/search/content/{content}")
+    public ResponseEntity<?> searchAdviceByContent(@PathVariable("content") String content){
+        List<AdviceSearchResponseDto> result = adviceService.searchAdviceByContent(content);
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchAdviceByContent Success", result), HttpStatus.OK);
     }
 
-//    // Ootd 유저 검색
-//    @GetMapping("/ootd/user/")
-//
-//    // Ootd 피드 해쉬태그 기반 검색
-//    @GetMapping("/ootd/hashtag/")
+    // Ootd 유저 및 해쉬태그 검색
+    @GetMapping("/ootd/search/{input}")
+    public ResponseEntity<?> searchOotdOrUserByInput(@PathVariable("input") String input) {
+        List<OotdSearchResponseDto> list = new ArrayList<>();
+
+        if (input.toCharArray()[0] == '#') { // 해쉬태그일 경우
+            String hashtag = input.substring(1);
+            list = ootdService.searchOotdByHashtag(hashtag);
+        } else { // 유저 닉네임일 경우
+            list = ootdService.searchOotdByNickname(input);
+        }
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchOotdOrUserByInput Success", list), HttpStatus.OK);
+    }
+
 
 
     // ====================== UPDATE ========================

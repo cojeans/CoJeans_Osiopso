@@ -292,4 +292,12 @@ public class OotdService {
 
         return true;
     }
+
+    public List<OotdSearchResponseDto> searchOotdByHashtag(String input) {
+        return null;
+    }
+
+    public List<OotdSearchResponseDto> searchOotdByNickname(String input) {
+        return null;
+    }
 }
