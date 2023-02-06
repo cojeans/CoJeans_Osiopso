@@ -54,7 +54,7 @@ public class ClothesService {
         if(!file.getParentFile().exists()) file.getParentFile().mkdir();
         picture.transferTo(file);
 
-        ClothesResponseDto clothesDto = ClothesResponseDto.builder()
+        ClothesDetailResponseDto clothesDto = ClothesDetailResponseDto.builder()
                 .category(clothesRequestDto.getCategory())
                 .originFilename(file.getName())
                 .storeFilename(file.getPath())
@@ -125,7 +125,7 @@ public class ClothesService {
 
     // 2. R :  옷 조회
     // 2-1. 특정 옷 상세 조회
-    public ClothesResponseDto detailClothes(Long clothesNo){
+    public ClothesDetailResponseDto detailClothes(Long clothesNo){
         System.out.println("Detail Clothes Service : " + clothesNo);
 
         // 만약 해당 id를 가진 옷이 없는 경우 예외 처리
@@ -169,7 +169,7 @@ public class ClothesService {
                         .build())
                 .collect(Collectors.toList());
 
-        return ClothesResponseDto.builder()
+        return ClothesDetailResponseDto.builder()
                 .id(clothesNo)
                 .category(clothes.getCategory())
                 .originFilename(clothes.getOriginFilename())

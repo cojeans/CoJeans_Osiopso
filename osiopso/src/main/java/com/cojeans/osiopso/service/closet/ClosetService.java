@@ -1,11 +1,12 @@
 package com.cojeans.osiopso.service.closet;
 
 import com.cojeans.osiopso.dto.request.closet.ClosetRequestDto;
-import com.cojeans.osiopso.dto.response.closet.ClothesTagResponseDto;
 import com.cojeans.osiopso.dto.response.closet.ClosetResponseDto;
 import com.cojeans.osiopso.dto.response.closet.ClothesResponseDto;
+import com.cojeans.osiopso.dto.response.closet.ClothesTagResponseDto;
 import com.cojeans.osiopso.entity.closet.Closet;
 import com.cojeans.osiopso.entity.closet.ClosetClothes;
+import com.cojeans.osiopso.entity.closet.Clothes;
 import com.cojeans.osiopso.repository.closet.ClosetClothesRepository;
 import com.cojeans.osiopso.repository.closet.ClosetRepository;
 import com.cojeans.osiopso.repository.closet.ClothesRepository;
@@ -92,51 +93,65 @@ public class ClosetService {
         int size = tags.size();
 
         // 해당 옷장에 존재하는 모든 옷
-        List<ClothesResponseDto> ccList = closetClothesRepository.findAllByClosetIdOrderByIdDesc(id).stream()
+        List<Clothes> ccList = closetClothesRepository.findAllByClosetIdOrderByIdDesc(id).stream()
                 .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
-                .map(b -> new ClothesResponseDto().builder()
-                        .id(b.getId())
-                        .category(b.getCategory())
-                        .originFilename(b.getOriginFilename())
-                        .storeFilename(b.getStoreFilename())
-                        .build())
                 .collect(Collectors.toList());
-        List<ClothesResponseDto> result = new ArrayList<>();
+        List<Clothes> result = new ArrayList<>();
         
         if(category == null) { // 카테고리 : 전체(null)
             if(size == 0){ // 태그 사이즈 0
                 // 전체 옷
-                return ccList;
+                return ccList.stream()
+                        .map(a -> new ClothesResponseDto().builder()
+                                .id(a.getId())
+                                .category(a.getCategory())
+                                .originFilename(a.getOriginFilename())
+                                .storeFilename(a.getStoreFilename())
+                                .build())
+                        .collect(Collectors.toList());
             } else { // 태그 사이즈 1 ~
                 // 전체 옷 - 태그 : ClothesTag 컬럼이 존재하는지 확인
-                for (ClothesResponseDto clothesDto : ccList) {
+                for (Clothes clothes : ccList) {
                     for (ClothesTagResponseDto tag : tags) {
-                        if(clothesTagRepository.findByClothesIdAndTagId(clothesDto.getId(), tag.getId()) != null) {
-                            result.add(clothesDto);
+                        if(clothesTagRepository.findByClothesIdAndTagId(clothes.getId(), tag.getId()) != null) {
+                            result.add(clothes);
                             break;
                         }
                     }
                 }
-                return result;
             }
         } else { // 특정 카테고리
             ccList = ccList.stream()
                     .filter(b -> b.getCategory().equals(category))
                     .collect(Collectors.toList());
             if(size == 0){
-                return ccList;
+                return ccList.stream()
+                        .map(a -> new ClothesResponseDto().builder()
+                                .id(a.getId())
+                                .category(a.getCategory())
+                                .originFilename(a.getOriginFilename())
+                                .storeFilename(a.getStoreFilename())
+                                .build())
+                        .collect(Collectors.toList());
             } else { // 특정 카테고리 + 태그
-                for (ClothesResponseDto clothesDto : ccList) {
+                for (Clothes clothes : ccList) {
                     for (ClothesTagResponseDto tag : tags) {
-                        if(clothesTagRepository.findByClothesIdAndTagId(clothesDto.getId(), tag.getId()) != null) {
-                            result.add(clothesDto);
+                        if(clothesTagRepository.findByClothesIdAndTagId(clothes.getId(), tag.getId()) != null) {
+                            result.add(clothes);
                             break;
                         }
                     }
                 }
-                return result;
             }
         }
+        return result.stream()
+                .map(a -> new ClothesResponseDto().builder()
+                        .id(a.getId())
+                        .category(a.getCategory())
+                        .originFilename(a.getOriginFilename())
+                        .storeFilename(a.getStoreFilename())
+                        .build())
+                .collect(Collectors.toList());
     }
 
 

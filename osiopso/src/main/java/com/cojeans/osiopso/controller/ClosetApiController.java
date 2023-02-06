@@ -2,9 +2,10 @@ package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.request.closet.ClosetRequestDto;
 import com.cojeans.osiopso.dto.request.closet.ClothesRequestDto;
-import com.cojeans.osiopso.dto.response.closet.ClothesTagResponseDto;
 import com.cojeans.osiopso.dto.response.closet.ClosetResponseDto;
+import com.cojeans.osiopso.dto.response.closet.ClothesDetailResponseDto;
 import com.cojeans.osiopso.dto.response.closet.ClothesResponseDto;
+import com.cojeans.osiopso.dto.response.closet.ClothesTagResponseDto;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.closet.ClosetService;
 import com.cojeans.osiopso.service.closet.ClothesService;
@@ -125,10 +126,10 @@ public class ClosetApiController {
     // 2-1 : 옷 정보 상세 조회
     @GetMapping("/clothes/{clothesno}")
     @Operation(summary = "옷 정보 상세 조회", description = "선택한 옷의 상세 정보를 조회합니다.")
-    public ResponseEntity<ClothesResponseDto> detailClothes(@PathVariable(value = "clothesno") Long clothesNo, @AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<ClothesDetailResponseDto> detailClothes(@PathVariable(value = "clothesno") Long clothesNo, @AuthenticationPrincipal UserDetail user){
         LOGGER.info("detailCloset() 호출 : " + clothesNo);
 
-        return new ResponseEntity<ClothesResponseDto>(clothesService.detailClothes(clothesNo), HttpStatus.OK);
+        return new ResponseEntity<ClothesDetailResponseDto>(clothesService.detailClothes(clothesNo), HttpStatus.OK);
     }
 
     // 3. U : 옷 정보 수정
