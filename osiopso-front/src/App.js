@@ -31,7 +31,7 @@ function App() {
         <Route path="join" element={<Join />} />
         <Route path='passwordcheck' element={<PasswordCheck/>}/>
         <Route path="mypage/*" element={<Mypage />} />
-        <Route path='advice' element={<Advice />} />
+        <Route path="advice/*" element={<Advice />} />        
         <Route path='ootd/*' element={<OOTDPage/>}/>
         <Route path='changePassword' element={<ChangePassword/>}/>
         <Route path='passwordchangecomplete' element={<PasswordChangeComplete/>}/>

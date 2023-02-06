@@ -29,7 +29,7 @@ const Navigation = () => {
 					<HomeLogo />
 					<span>홈</span>
 				</LogoContainer>
-				<LogoContainer to='/join'>
+				<LogoContainer to='/advice'>
 					<Hand />
 					<span>훈수</span>
 				</LogoContainer>
