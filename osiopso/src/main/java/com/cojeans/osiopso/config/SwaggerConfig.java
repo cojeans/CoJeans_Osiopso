@@ -1,48 +1,42 @@
-package com.cojeans.osiopso.config;
+package com.cojeans.osiopso.config;//package com.cojeans.osiopso.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.stereotype.Component;
 
-@Configuration
-@EnableSwagger2 //swagger에 해당하는 어노테이션을 작성한다.
-public class SwaggerConfig implements WebMvcConfigurer {
-
-    //swagger 2.9.2 버전 리소스 등록
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) { //spring-security와 연결할 때 이 부분을 작성하지 않으면 404에러가 뜬다.
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
+@Component
+public class SwaggerConfig {
 
     @Bean
-    public Docket api() { //swagger를 연결하기 위한 Bean 작성
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build()
-                .pathMapping("/")
-                .apiInfo(apiInfo());
+    public OpenAPI openAPI(@Value("${springdoc.version}") String appVersion) {
+        final String securitySchemeName = "bearerAuth";
+
+        Info info = new Info().title("오시옵소").version(appVersion)
+                .description("Team Cojeans.")
+                .contact(new Contact()
+                        .name("Cojeans")
+                        .url("https://comet-sailfish-e6b.notion.site/S-076fbfa5a4bd4e27bae894063fc05392")
+                        .email("wearecojeans@gmail.com"));
+
+        return new OpenAPI()
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .components(
+                        new Components()
+                                .addSecuritySchemes(securitySchemeName,
+                                        new SecurityScheme()
+                                                .name(securitySchemeName)
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("bearer")
+                                                .bearerFormat("JWT")
+                                )
+                )
+                .info(info);
     }
 
-    private ApiInfo apiInfo() { //선택
-        return new ApiInfoBuilder()
-                .title("OSIOPSO:Cojeans") //자신에게 맞는 타이틀을 작성해준다.
-                .description("backend api document") //알맞는 description을 작성해준다.
-                .version("0.0") //알맞는 버전을 작성해준다.
-                .build();
-    }
 }

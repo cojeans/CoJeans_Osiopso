@@ -11,13 +11,4 @@ public class ArticlePhotoRequestDto {
 
     private String originFilename;
     private String storeFilename;
-    private Article article;
-
-//    public ArticlePhoto toEntity() {
-//        return ArticlePhoto.builder()
-//                .originFilename(originFilename)
-//                .storeFilename(storeFilename)
-//                .article(article)
-//                .build();
-//    }
 }

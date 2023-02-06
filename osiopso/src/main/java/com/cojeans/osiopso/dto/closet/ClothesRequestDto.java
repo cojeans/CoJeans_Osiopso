@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.dto.closet;
 
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import lombok.*;
 
 import java.util.List;
@@ -11,13 +11,12 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 public class ClothesRequestDto {
     private Long id;
+
     private String category;
 
     private String originFilename;
 
     private String storeFilename;
-
-    private String email;
 
     private List<ClosetDto> closets;
 
@@ -25,5 +24,5 @@ public class ClothesRequestDto {
 
     private List<SeasonDto> seasons;
 
-    private List<TagDto> tags;
+    private List<ArticleTagResponseDto> tags;
 }

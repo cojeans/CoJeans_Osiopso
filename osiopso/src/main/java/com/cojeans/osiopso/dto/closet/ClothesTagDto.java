@@ -1,7 +1,8 @@
 package com.cojeans.osiopso.dto.closet;
 
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.closet.ClothesTag;
+import com.cojeans.osiopso.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,15 +16,15 @@ public class ClothesTagDto {
 
     private ClothesDto clothesDto;
 
-    private TagDto tagDto;
+    private ArticleTagResponseDto articleTagResponseDto;
 
-    public ClothesTag toEntity(){
+    public ClothesTag toEntity(User user){
         System.out.println("ClothesTag toEntity");
 
         return ClothesTag.builder()
                 .id(id)
-                .clothes(clothesDto.toEntity())
-                .tag(tagDto.toEntity())
+                .clothes(clothesDto.toEntity(user))
+                .tag(articleTagResponseDto.toEntity())
                 .build();
     }
 }

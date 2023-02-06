@@ -1,17 +1,25 @@
 package com.cojeans.osiopso.controller;
 
-import com.cojeans.osiopso.dto.closet.*;
+import com.cojeans.osiopso.dto.closet.ClosetDto;
+import com.cojeans.osiopso.dto.closet.ClothesDto;
+import com.cojeans.osiopso.dto.closet.ClothesRequestDto;
+import com.cojeans.osiopso.dto.closet.ClothesResponseDto;
+import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.closet.ClosetService;
 import com.cojeans.osiopso.service.closet.ClothesService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/closet")
-@Api(tags = "옷장 관련 API")
+@Tag(name = "옷장 관련 API")
 public class ClosetApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClosetApiController.class);
 
@@ -35,19 +43,21 @@ public class ClosetApiController {
 
     // 1. C : 옷장 등록
     @PostMapping
-    public ResponseEntity<String> createCloset(@RequestBody ClosetDto closetDto){
+    @Operation(summary = "옷장 등록", description = "새로운 옷장을 등록합니다.")
+    public ResponseEntity<String> createCloset(@RequestBody ClosetDto closetDto, @AuthenticationPrincipal UserDetail user){
         LOGGER.info("createCloset() 호출 : " + closetDto);
 
-        if(closetService.createCloset(closetDto) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        if(closetService.createCloset(closetDto, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     }
 
     // 2. R : 옷장 조회
     // 2-1 : 사용자 옷장 전체 리스트 조회
     @PostMapping("/list")
-    public ResponseEntity<List<ClosetDto>> listCloset(@RequestBody Map<String, String> emailMap){
-        LOGGER.info("listCloset() 호출 : " + emailMap.get("email"));
-        List<ClosetDto> list = closetService.listCloset(emailMap.get("email"));
+    @Operation(summary = "옷장 리스트 조회", description = "현재 로그인한 사용자의 옷장 리스트를 조회합니다.")
+    public ResponseEntity<List<ClosetDto>> listCloset(@AuthenticationPrincipal UserDetail user){
+        LOGGER.info("listCloset() 호출");
+        List<ClosetDto> list = closetService.listCloset(user.getId());
 
         return new ResponseEntity<>(list, HttpStatus.OK);
 
@@ -55,7 +65,8 @@ public class ClosetApiController {
 
     // 2-2 : 최근 저장된 옷의 사진 4개
     @GetMapping("/{closetno}")
-    public ResponseEntity<List<ClothesDto>> thumbnailClothes(@PathVariable(value = "closetno") Long closetNo){
+    @Operation(summary = "옷장 썸네일 : 최근 등록된 옷의 사진4", description = "옷장의 썸네일로 쓸 사진 4개를 불러옵니다.")
+    public ResponseEntity<List<ClothesDto>> thumbnailClothes(@PathVariable(value = "closetno") Long closetNo, @AuthenticationPrincipal UserDetail user){
         LOGGER.info("thumbnailClothes() 호출 : " + closetNo);
 
         return new ResponseEntity<List<ClothesDto>>(closetService.thumbnailCloset(closetNo), HttpStatus.OK);
@@ -63,7 +74,8 @@ public class ClosetApiController {
 
     // 2-3 : 선택 카테고리별 옷 리스트(order by desc)
     @GetMapping("/{closetno}/{category}")
-    public ResponseEntity<List<ClothesDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category){
+    @Operation(summary = "카테고리별 옷 리스트", description = "선택한 카테고리에 속하는 옷 리스트를 조회합니다.")
+    public ResponseEntity<List<ClothesDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category, @AuthenticationPrincipal UserDetail user){
         LOGGER.info("categoryList() 호출 : " + closetNo + " | " + category);
 
         return new ResponseEntity<List<ClothesDto>>(closetService.categoryList(closetNo, category), HttpStatus.OK);
@@ -71,19 +83,19 @@ public class ClosetApiController {
 
     // 3. U : 옷장 정보 수정
     @PutMapping
-    public ResponseEntity<String> modifyCloset(@RequestBody ClosetDto closetDto){
-        LOGGER.info("modifyCloset() 호출");
-        LOGGER.info("수정 정보 : " + closetDto);
+    @Operation(summary = "옷장 정보 수정", description = "선택한 옷장의 이름과 공개 여부를 변경합니다.")
+    public ResponseEntity<String> editCloset(@RequestBody ClosetDto closetDto, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("editCloset() 호출 : " + closetDto);
 
-        if(closetService.modifyCloset(closetDto) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        if(closetService.editCloset(closetDto, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     }
 
     // 4. D : 옷장 삭제
     @DeleteMapping
-    public ResponseEntity<String> deleteCloset(@RequestBody Map<String, Long> idMap){
-        LOGGER.info("deleteCloset() 호출");
-        LOGGER.info("삭제 정보 : " + idMap.get("id"));
+    @Operation(summary = "옷장 삭제", description = "선택한 옷장을 삭제합니다.")
+    public ResponseEntity<String> deleteCloset(@RequestBody Map<String, Long> idMap, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("deleteCloset() 호출 : " + idMap.get("id"));
 
         closetService.deleteCloset(idMap.get("id"));
 
@@ -92,18 +104,28 @@ public class ClosetApiController {
 
     // =================================== 옷 관련 ===================================
     // 1. C : 옷 등록
+//    @PostMapping("/clothes")
+//    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다.")
+//    public ResponseEntity<String> createClothes(@RequestBody ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user){
+//        LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
+//
+//        if(clothesService.createClothes(clothesRequestDto, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+//        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
+//    }
     @PostMapping("/clothes")
-    public ResponseEntity<String> createClothes(@RequestBody ClothesRequestDto clothesRequestDto){
+    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다.")
+    public ResponseEntity<String> createClothes(@RequestPart("clothes") ClothesRequestDto clothesRequestDto, @RequestPart("picture") MultipartFile picture, @AuthenticationPrincipal UserDetail user) throws IOException {
         LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
 
-        if(clothesService.createClothes(clothesRequestDto) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        if(clothesService.createClothes(clothesRequestDto, picture, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
     }
 
     // 2. R : 옷 조회
     // 2-1 : 옷 정보 상세 조회
     @GetMapping("/clothes/{clothesno}")
-    public ResponseEntity<ClothesResponseDto> detailClothes(@PathVariable(value = "clothesno") Long clothesNo){
+    @Operation(summary = "옷 정보 상세 조회", description = "선택한 옷의 상세 정보를 조회합니다.")
+    public ResponseEntity<ClothesResponseDto> detailClothes(@PathVariable(value = "clothesno") Long clothesNo, @AuthenticationPrincipal UserDetail user){
         LOGGER.info("detailCloset() 호출 : " + clothesNo);
 
         return new ResponseEntity<ClothesResponseDto>(clothesService.detailClothes(clothesNo), HttpStatus.OK);
@@ -111,17 +133,19 @@ public class ClosetApiController {
 
     // 3. U : 옷 정보 수정
     @PutMapping("/clothes")
-    public ResponseEntity<String> modifyClothes(@RequestBody ClothesRequestDto clothesRequestDto){
-        LOGGER.info("modifyClothes() 호출 : " + clothesRequestDto);
+    @Operation(summary = "옷 정보 수정", description = "선택한 옷의 정보를 수정합니다.")
+    public ResponseEntity<String> editClothes(@RequestBody ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("editClothes() 호출 : " + clothesRequestDto);
 
-        clothesService.modifyClothes(clothesRequestDto);
+        clothesService.editClothes(clothesRequestDto, user.getId());
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
 
 
     // 4. D : 옷 삭제
     @DeleteMapping("/clothes/{clothno}")
-    public ResponseEntity<String> deleteClothes(@PathVariable (value = "clothno") Long clothesNo){
+    @Operation(summary = "옷 삭제", description = "선택한 옷을 삭제합니다.")
+    public ResponseEntity<String> deleteClothes(@PathVariable (value = "clothno") Long clothesNo, @AuthenticationPrincipal UserDetail user){
         LOGGER.info("deleteClothes() 호출 : " + clothesNo);
 
         clothesService.deleteClothes(clothesNo);

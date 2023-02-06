@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagDto {
+public class ArticleTagResponseDto {
     private Long id;
     private String keyword;
     private String type;

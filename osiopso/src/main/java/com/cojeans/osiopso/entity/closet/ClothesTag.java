@@ -16,11 +16,11 @@ public class ClothesTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")
     private Clothes clothes;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
@@ -28,7 +28,7 @@ public class ClothesTag {
         return ClothesTagDto.builder()
                 .id(id)
                 .clothesDto(clothes.toDto())
-                .tagDto(tag.toDto())
+                .articleTagResponseDto(tag.toDto())
                 .build();
     }
 }

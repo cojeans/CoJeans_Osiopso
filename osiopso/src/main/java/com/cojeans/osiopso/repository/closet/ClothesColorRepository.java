@@ -9,4 +9,8 @@ public interface ClothesColorRepository  extends JpaRepository<ClothesColor, Lon
     public List<ClothesColor> findAllByClothesId(Long id);
 
     void deleteByClothesIdAndColorId(Long clothesId, Long colorId);
+
+    void deleteAllByClothesId(Long id);
+
+    ClothesColor findByClothesIdAndColorId(Long id, Long id1);
 }

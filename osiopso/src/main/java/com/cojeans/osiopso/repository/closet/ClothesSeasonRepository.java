@@ -9,4 +9,6 @@ public interface ClothesSeasonRepository extends JpaRepository<ClothesSeason, Lo
     public List<ClothesSeason> findAllByClothesId(Long id);
 
     void deleteByClothesIdAndSeasonId(Long clothesId, Long seasonId);
+
+    void deleteAllByClothesId(Long id);
 }
