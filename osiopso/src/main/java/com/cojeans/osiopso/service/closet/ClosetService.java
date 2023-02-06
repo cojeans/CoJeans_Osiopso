@@ -2,18 +2,19 @@ package com.cojeans.osiopso.service.closet;
 
 import com.cojeans.osiopso.dto.closet.ClosetDto;
 import com.cojeans.osiopso.dto.closet.ClothesDto;
+import com.cojeans.osiopso.dto.request.closet.ClothesTagRequestDto;
 import com.cojeans.osiopso.entity.closet.Closet;
 import com.cojeans.osiopso.entity.closet.ClosetClothes;
-import com.cojeans.osiopso.entity.closet.Clothes;
 import com.cojeans.osiopso.repository.closet.ClosetClothesRepository;
 import com.cojeans.osiopso.repository.closet.ClosetRepository;
 import com.cojeans.osiopso.repository.closet.ClothesRepository;
+import com.cojeans.osiopso.repository.closet.ClothesTagRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class ClosetService {
     private final UserRepository userRepository;
     private final ClothesRepository clothesRepository;
     private final ClosetClothesRepository closetClothesRepository;
+    private final ClothesTagRepository clothesTagRepository;
 
     // 연관 Service
     private final ClothesService clothesService;
@@ -70,15 +72,57 @@ public class ClosetService {
     }
 
     // 2-3 : 선택 카테고리별 옷 리스트(최신순)
-    public List<ClothesDto> categoryList(Long id, String category) {
-        System.out.println("Category List Service : " + id + " | " + category);
+    public List<ClothesDto> categoryList(Long id, String category, List<ClothesTagRequestDto> tags) {
+        System.out.println("Category List Service : " + id + " | " + category + tags);
+        int size = tags.size();
 
-        List<ClosetClothes> result = closetClothesRepository.findAllByClosetIdOrderByIdDesc(id);
-
-        return result.stream()
+        // 해당 옷장에 존재하는 모든 옷
+        List<ClothesDto> ccList = closetClothesRepository.findAllByClosetIdOrderByIdDesc(id).stream()
                 .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow().toDto())
-                .filter(b -> b.getCategory().equals(category))
                 .collect(Collectors.toList());
+        List<ClothesDto> result = new ArrayList<>();
+        
+        if(category == null) { // 카테고리 : 전체(null)
+            if(size == 0){ // 태그 사이즈 0
+                // 전체 옷
+                return ccList;
+            } else { // 태그 사이즈 1 ~
+                // 전체 옷 - 태그 : ClothesTag 컬럼이 존재하는지 확인
+                for (ClothesDto clothesDto : ccList) {
+                    for (ClothesTagRequestDto tag : tags) {
+                        if(clothesTagRepository.findByClothesIdAndTagId(clothesDto.getId(), tag.getId()) != null) {
+                            result.add(clothesDto);
+                            break;
+                        }
+                    }
+                }
+                return result;
+            }
+        } else { // 특정 카테고리
+            ccList = ccList.stream()
+                    .filter(b -> b.getCategory().equals(category))
+                    .collect(Collectors.toList());
+            if(size == 0){
+                return ccList;
+            } else { // 특정 카테고리 + 태그
+                for (ClothesDto clothesDto : ccList) {
+                    for (ClothesTagRequestDto tag : tags) {
+                        if(clothesTagRepository.findByClothesIdAndTagId(clothesDto.getId(), tag.getId()) != null) {
+                            result.add(clothesDto);
+                            break;
+                        }
+                    }
+                }
+                return result;
+            }
+        }
+
+//        List<ClosetClothes> result = closetClothesRepository.findAllByClosetIdOrderByIdDesc(id);
+
+//        return result.stream()
+//                .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow().toDto())
+//                .filter(b -> b.getCategory().equals(category))
+//                .collect(Collectors.toList());
     }
 
 
