@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 
 import ClothesAddBody from "../clothes-add-body/clothes-add-body.component"
 
@@ -12,23 +12,33 @@ import { ReactComponent as BrowserLogo } from '../../assets/browser.svg'
 import { ReactComponent as GallaryLogo } from '../../assets/gallary.svg'
 
 const ClothesAdd = () => {
+	const [page, setPage] = useState('album')
+	
+	const pageHandler = () => {
+		if (page === 'album') {
+			setPage('shop')
+		} else {
+			setPage('album')
+		}
+	}
+
 	return (
 		<Fragment>
 			<AddClothesTopContainer>
-				<LogoButtonBox>
+				<LogoButtonBox onClick={pageHandler}>
 					<LogoContainer3>
 						<GallaryLogo/>
 					</LogoContainer3>
 					<span>앨범에서 찾기</span>
 				</LogoButtonBox>
-				<LogoButtonBox>
+				<LogoButtonBox onClick={pageHandler}>
 					<LogoContainer3>
 						<BrowserLogo/>
 					</LogoContainer3>
 					<span>쇼핑몰에서 찾기</span>
 				</LogoButtonBox>
 			</AddClothesTopContainer>
-			<ClothesAddBody/>
+			<ClothesAddBody page={page} />
 		</Fragment>
 	)
 }

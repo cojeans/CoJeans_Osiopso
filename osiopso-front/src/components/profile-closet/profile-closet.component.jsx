@@ -62,7 +62,6 @@ const ProfileCloset = () => {
 		window.scrollTo(0, 0);
 		setModalOpen(true);
 		lockScroll();
-
 	};
 	// const navigate = useNavigate()
 
