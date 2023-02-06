@@ -76,7 +76,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 
 		dispatch(createCloset(payload))
 
-		createClosetAxios(closetData.closet.closetName, closetData.closet.isSelected, closetData.closet.email)
+		createClosetAxios(closetData.closet.closetName, closetData.closet.isSelected)
 
 	}
 	

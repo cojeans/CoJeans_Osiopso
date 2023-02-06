@@ -2,9 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   closet: {
-    closetName: "",
+    name: "봄",
     isSelected: false,
-    email: "testId@gmail.com",
   },
 };
 
