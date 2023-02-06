@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.entity.closet;
 
-import com.cojeans.osiopso.dto.closet.ClosetClothesDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,12 +22,4 @@ public class ClosetClothes {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLOTHES_ID")
     private Clothes clothes;
-
-    public ClosetClothesDto toDto(){
-        return ClosetClothesDto.builder()
-                .id(id)
-                .closetDto(closet.toDto())
-                .clothesDto(clothes.toDto())
-                .build();
-    }
 }
