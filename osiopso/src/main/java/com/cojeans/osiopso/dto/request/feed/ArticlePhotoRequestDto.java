@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.dto.request.feed;
 
-import com.cojeans.osiopso.entity.feed.Article;
 import lombok.Builder;
 import lombok.Data;
 

@@ -4,19 +4,14 @@ import lombok.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 @ToString
 @Getter @Setter @Builder
-public class ApiResponseDto {
-    public boolean success;
-    public String message;
+@AllArgsConstructor
+@NoArgsConstructor
+public class ApiResponseDto<T> {
+    private boolean success;
+    private String message;
 
-    public ApiResponseDto(@DefaultValue("true") boolean success, @DefaultValue("success")String message) {
-        this.success = success;
-        this.message = message;
-    }
+    private T responseData;
 
-    public ApiResponseDto() {
-        this.success = true;
-        this.message = "success";
-    }
 
     public boolean isSuccess() {
         return success;

@@ -11,7 +11,10 @@ import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +32,9 @@ public class AdviceService {
     private final ArticlePhotoRepository articlePhotoRepository;
 
 
-    public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
+    public boolean createAdvice(AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long id) {
         User user = userRepository.findById(id).orElseThrow();
+
 
         // 게시물 저장
         Advice adviceSaved = adviceRepository.save(Advice.builder()
@@ -40,6 +44,17 @@ public class AdviceService {
                         .subject(adviceRequestDto.getSubject())
                         .isSelected(adviceRequestDto.isSelected())
                         .build());
+
+
+        for (MultipartFile picture : pictures) {
+            String path = System.getProperty("user.dir"); // 현재 디렉토리
+            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+
+            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
+            picture.transferTo(file);
+        }
+
+
 
 
         // 사진 저장
