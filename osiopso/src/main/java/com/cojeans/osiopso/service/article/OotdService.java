@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = false)
@@ -33,6 +35,7 @@ public class OotdService {
     private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -293,11 +296,52 @@ public class OotdService {
         return true;
     }
 
-    public List<OotdSearchResponseDto> searchOotdByHashtag(String input) {
-        return null;
+    public OotdSearchByHashtagResponseDto searchOotdByHashtag(String input) {
+        // 해당 검색 해쉬태그를 contain("input%")한 태그들을 모두 찾아온다.
+        List<Tag> tags = tagRepository.findAllByKeywordStartingWith(input);
+        List<OotdSearchResponseDto> ootdSearchResponseDtoList = new ArrayList<>();
+
+        HashMap<String, Long> tagMap = new HashMap<>();
+
+
+        for (Tag tag : tags) {
+            // 태그가 없다면?
+            if (tagMap.get(tag.getKeyword()) == null) {
+                tagMap.put(tag.getKeyword(), 1L);
+            } else {
+                // 이미 있는 태그라면 개수 + 1
+                tagMap.replace(tag.getKeyword(),tagMap.get(tag.getKeyword()) + 1);
+            }
+
+            // tag와 article의 연관정보를 담고 있는 articleTag를 tag_id를 통해 조회합니다.
+            List<ArticleTag> articleTagList = articleTagRepository.findAllByTag_Id(tag.getId());
+
+
+            for (ArticleTag articleTag : articleTagList) {
+                // articleTag를 통해 해당 태그가 등록된 게시물의 Id를 통해 게시물을 찾아옵니다.
+                Ootd ootd = ootdRepository.findById(articleTag.getArticle().getId()).orElseThrow();
+
+                // 해당 게시물의 Id를 통해 대표사진으로 사용할 사진을 찾아옵니다. (사진 배열의 가장 첫 번째 인덱스)
+                ArticlePhoto articlePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId()).get(0);
+
+                // 프론트 단에 넘겨줄 ootdSearchResponseDto를 생성합니다. (사진, 댓글 수, 좋아요 수
+                ootdSearchResponseDtoList.add(OotdSearchResponseDto.builder()
+                        .photo(ArticlePhotoResponseDto.builder()
+                                .storeFilename(articlePhoto.getStoreFilename())
+                                .originFilename(articlePhoto.getOriginFilename())
+                                .build())
+                        .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                        .likeCnt((long) articleLikeRepository.findAllByArticle_Id(ootd.getId()).size())
+                        .build());
+            }
+        }
+
+        // 프론트에 넘어가야 할 정보
+        // 태그들의 종류, 종류당 개수 / 검색 결과로 보여줄 게시물 정보
+        return  OotdSearchByHashtagResponseDto.builder()
+                .ootdSearchResponseDtoList(ootdSearchResponseDtoList)
+                .tagInfo(tagMap)
+                .build();
     }
 
-    public List<OotdSearchResponseDto> searchOotdByNickname(String input) {
-        return null;
-    }
 }
