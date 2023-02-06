@@ -5,12 +5,14 @@ import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -25,13 +27,18 @@ public class UserService {
     private TokenProvider tokenProvider;
 
     public User saveUser(SignUpRequestDto signUpRequest){
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User result = userRepository.save(user);
+        User result = userRepository.save(User.builder()
+                        .name(signUpRequest.getName())
+                        .email(signUpRequest.getEmail())
+                        .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                        .age(signUpRequest.getAge())
+                        .gender(signUpRequest.getGender())
+                        .provider(AuthProvider.local)
+                        .imageUrl(signUpRequest.getImageUrl())
+                        .emailVerified(false)
+                        .build()
+        );
+        log.info("result : {}", result);
 
         return result;
     }

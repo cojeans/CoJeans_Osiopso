@@ -96,10 +96,8 @@ public class UserController{
     @Operation(summary = "회원가입")
     @PostMapping("/signUp")
     public ResponseEntity<ApiResponseDto> registerUser(@RequestBody SignUpRequestDto signUpRequest) {
-        //중복된 Email로 등록을하면
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BadRequestException("이미 사용중인 Email입니다.");
-        }
+        log.info("signUpRequest: {}",signUpRequest);
+
         userService.saveUser(signUpRequest);
 
         return new ResponseEntity(new ApiResponseDto(true, "User registered successfully@", null), HttpStatus.CREATED);

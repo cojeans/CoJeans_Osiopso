@@ -3,18 +3,19 @@ package com.cojeans.osiopso.entity.user;
 import com.cojeans.osiopso.dto.user.Gender;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+
 
 @Entity
 @AllArgsConstructor @NoArgsConstructor
 @ToString
 @Getter
 @Builder
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
-
+@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@DynamicInsert @DynamicUpdate
 public class User {
 
     @Id
@@ -28,11 +29,9 @@ public class User {
     private String email;
 
     @Column(nullable = true)
-    @ColumnDefault("0")
     private int age;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("INDEFINITE")
     private Gender gender;
 
     private String imageUrl;

@@ -20,8 +20,10 @@ public class SignUpRequestDto {
 
     private String password;
 
-    private int age;
+    private int age = 0;
 
-    private Gender gender;
+    private Gender gender = Gender.UNKNOWN;
+
+    private String imageUrl = "UNKNOWN";
 
 }

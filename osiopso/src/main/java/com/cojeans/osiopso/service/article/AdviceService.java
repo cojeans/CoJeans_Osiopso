@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Multipart;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,31 +39,29 @@ public class AdviceService {
 
         // 게시물 저장
         Advice adviceSaved = adviceRepository.save(Advice.builder()
-                        .user(user)
-                        .hit(0)
-                        .content(adviceRequestDto.getContent())
-                        .subject(adviceRequestDto.getSubject())
-                        .isSelected(adviceRequestDto.isSelected())
-                        .build());
+                .user(user)
+                .hit(0)
+                .content(adviceRequestDto.getContent())
+                .subject(adviceRequestDto.getSubject())
+                .isSelected(adviceRequestDto.isSelected())
+                .build());
 
 
+        // 사진 저장
         for (MultipartFile picture : pictures) {
             String path = System.getProperty("user.dir"); // 현재 디렉토리
             File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
 
             if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            picture.transferTo(file);
-        }
+            try {
+                picture.transferTo(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-
-
-
-        // 사진 저장
-        List<ArticlePhotoRequestDto> photos = adviceRequestDto.getPhotos();
-        for (ArticlePhotoRequestDto photo : photos) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(photo.getStoreFilename())
-                    .originFilename(photo.getOriginFilename())
+                    .storeFilename(file.getPath())
+                    .originFilename(file.getName())
                     .article(adviceSaved)
                     .build());
         }
@@ -98,7 +97,7 @@ public class AdviceService {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
-        List<ArticlePhoto> photoEntityList = photoRepository.findAllById(advice.getId());
+        List<ArticlePhoto> photoEntityList = photoRepository.findAllByArticle_Id(advice.getId());
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
         for (ArticlePhoto ap : photoEntityList) {
