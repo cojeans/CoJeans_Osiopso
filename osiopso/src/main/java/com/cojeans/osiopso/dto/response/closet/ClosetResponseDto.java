@@ -15,4 +15,6 @@ public class ClosetResponseDto {
     private String name;
 
     private Boolean isSelected;
+
+    private Long count;
 }
