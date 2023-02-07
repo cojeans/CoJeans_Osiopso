@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PasswordCheck from "../passwordcheck/passwordcheck.component";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import {
   UpperBox,
   Box,
@@ -12,6 +13,18 @@ import {
   ButtonBox,
   TextBox,
 } from "./changepassword.styles";
+
+export const AlertHandler = ()=> {
+  Swal.fire({
+    icon:'success',
+    confirmButtonColor: "DD6B55",
+    html: `
+    비밀번호 변경이 완료되었습니다.`,
+    showCancelButton: false,
+    confirmButtonText: "확인",
+  
+  })
+}
 
 const ChangePassword = () => {
   const [inputPassword1, setInputPassword1] = useState("");
@@ -31,6 +44,7 @@ const ChangePassword = () => {
 
   const [confirm, setConfirm] = useState(false);
   const ChangeConfirm=()=>{
+    AlertHandler()
     setConfirm(false)
     navigate('/')
 
