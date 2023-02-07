@@ -21,7 +21,7 @@ import {ReactComponent as Alert} from "../../assets/alert.svg"
 const OotdDetail = () => {
   return (
     <div>
-      <hr />
+      <hr/>
       <UpperProfile>
         <ProfileImageBox />
         MyNameIsMr.Umm
