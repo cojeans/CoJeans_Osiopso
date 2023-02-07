@@ -45,6 +45,7 @@ public class OotdService {
                 .user(user)
                 .hit(0)
                 .content(ootdRequestDto.getContent())
+                .report(0L)
                 .build());
 
 
@@ -88,18 +89,18 @@ public class OotdService {
 
 
     public List<OotdListResponseDto> listOotd() {
-        List<Ootd> Ootds = ootdRepository.findList();
+        List<Article> Ootds = articleRepository.findAllByDtype("O");
         List<OotdListResponseDto> list = new ArrayList<>();
 
 
         // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Ootd ootd : Ootds) {
+        for (Article ootd : Ootds) {
             OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
 //                    .createTime(ootd.getCreateTime())
-                    .dtype(ootd.getDtype())
+//                    .dtype(ootd.getDtype())
 //                    .modifyTime(ootd.getModifyTime())
                     .userId(ootd.getUser().getId())
                     .build();

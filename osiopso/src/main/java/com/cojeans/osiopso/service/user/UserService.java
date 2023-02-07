@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.service.user;
 
-import com.cojeans.osiopso.dto.response.feed.UserPhotoResponseDto;
 import com.cojeans.osiopso.dto.response.feed.UserSearchResponseDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
 import com.cojeans.osiopso.dto.user.UserDto;
@@ -97,10 +96,7 @@ public class UserService {
         for (User user : users) {
             userList.add(UserSearchResponseDto.builder()
                     .userName(user.getName())
-                    .profilePhoto(UserPhotoResponseDto.builder()
-                            .originFilename("originProfileFileName")
-                            .storeFilename("storeProfileFileName")
-                            .build())
+                    .imageUrl(user.getImageUrl())
                     .build());
         }
 
