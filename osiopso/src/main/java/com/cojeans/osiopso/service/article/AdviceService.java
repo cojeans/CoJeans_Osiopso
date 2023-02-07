@@ -1,12 +1,17 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
+import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.entity.comment.Cocomment;
+import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
@@ -27,7 +32,7 @@ public class AdviceService {
     private final ArticleRepository articleRepository;
     private final AdviceRepository adviceRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final CommentLikeRepository commentLikeRepository;
+    private final CocommentRepository cocommentRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
@@ -99,7 +104,6 @@ public class AdviceService {
 
         // 사진 가져오기
         List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
-
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
         for (ArticlePhoto ap : photoEntityList) {
@@ -122,18 +126,43 @@ public class AdviceService {
         }
 
 
-        // 댓글 좋아요 가져오기
-        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
-        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
+//        // 댓글 좋아요 가져오기
+//        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
+//        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
+//
+//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
+//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+//
+//        for (CommentLike cl : commentLikeList) {
+//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+//                    .id(cl.getId())
+//                    .userId(cl.getUser().getId())
+//                    .commentId(cl.getComment().getId())
+//                    .build());
+//        }
 
-        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+        // 댓글 가져오기
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-        for (CommentLike cl : commentLikeList) {
-            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-                    .id(cl.getId())
-                    .userId(cl.getUser().getId())
-                    .commentId(cl.getComment().getId())
+        for (Comment comment : commentList) {
+            List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
+            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
+
+            for (Cocomment cocomment : cocomentList) {
+                cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .depth(cocomment.getDepth())
+                        .rootId(cocomment.getRootId())
+                        .mentionId(cocomment.getMentionId())
+                        .build());
+            }
+
+            commentResponseDtoList.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .userId(comment.getUser().getId())
+                    .report(comment.getReport())
+                    .cocoments(cocommentResponseDtoList)
                     .build());
         }
 
@@ -145,7 +174,7 @@ public class AdviceService {
                 .modifyTime(advice.getModifyTime())
                 .photos(photoResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
-                .commentLikes(commentLikeResponseDtoList)
+                .comments(commentResponseDtoList)
                 .hit(advice.getHit())
                 .content(advice.getContent())
                 .isSelected(advice.isSelected())

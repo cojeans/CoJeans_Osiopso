@@ -2,12 +2,17 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
+import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
+import com.cojeans.osiopso.entity.comment.Cocomment;
+import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
@@ -35,6 +40,7 @@ public class OotdService {
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final CocommentRepository cocommentRepository;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -138,23 +144,30 @@ public class OotdService {
         }
 
 
-        // 댓글 좋아요 가져오기
-        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
-        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
-
-//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
-//
-//        for (CommentLike cl : commentLikeList) {
-//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-//                    .id(cl.getId())
-//                    .userId(cl.getUser().getId())
-//                    .commentId(cl.getComment().getId())
-//                    .build());
-//        }
-
-
         // 댓글 가져오기
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for (Comment comment : commentList) {
+            List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
+            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
+
+            for (Cocomment cocomment : cocomentList) {
+                cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .depth(cocomment.getDepth())
+                        .rootId(cocomment.getRootId())
+                        .mentionId(cocomment.getMentionId())
+                        .build());
+            }
+
+            commentResponseDtoList.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .userId(comment.getUser().getId())
+                    .report(comment.getReport())
+                    .cocoments(cocommentResponseDtoList)
+                    .build());
+        }
 
 
         // 태그 가져오기
@@ -184,7 +197,7 @@ public class OotdService {
                 .photos(photoResponseDtoList)
                 .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
-//                .commentLikes(commentLikeResponseDtoList)
+                .comments(commentResponseDtoList)
                 .hit(ootd.getHit())
                 .content(ootd.getContent())
                 .build();
