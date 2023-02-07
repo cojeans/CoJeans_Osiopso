@@ -41,5 +41,13 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifyTime;
 
-    private int report;
+    private Long report;
+
+    private Long depth;
+
+    // 대댓글 중, 최상위 원본 댓글 작성댓글의 pk
+    private Long rootId;
+
+    // 대댓글 중, 최상위 원본 댓글을 제외한 작성자를 멘션할 경우 그 댓글의 pk
+    private Long mentionId;
 }

@@ -15,4 +15,4 @@ export const clothes = createSlice({
 })
 
 export const { upload } = clothes.actions;
-export default clothes.reducer
+export default clothes.reducer;

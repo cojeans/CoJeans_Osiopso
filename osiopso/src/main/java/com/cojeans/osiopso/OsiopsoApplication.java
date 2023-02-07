@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @EnableConfigurationProperties(AppProperties.class)
-@SpringBootApplication
-public class OsiopsoApplication {
+    @SpringBootApplication
+    public class OsiopsoApplication {
 
 
-    public static void main(String[] args) {SpringApplication.run(OsiopsoApplication.class, args);}
+        public static void main(String[] args) {SpringApplication.run(OsiopsoApplication.class, args);}
 
 }

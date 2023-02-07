@@ -1,7 +1,13 @@
+import axios from 'axios'
+
 import Closet from "../closet/closet.component"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+
+import { selectUser } from '../../store/user/user.selector';
+
 
 import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
@@ -54,7 +60,28 @@ const initialList = [
 ]
 
 const ProfileCloset = () => {
+	const Token = useSelector(selectUser)
+	console.log(Token.token)
+	
 	const [closetList, setClosetList] = useState(initialList)
+
+	const [closetList1, setClosetList1] = useState(() => {
+		axios({
+			method: "post",
+			url: "http://localhost:8080/closet/mylist",
+			headers: {
+			Authorization: `Bearer ${Token.token}`,
+			},
+		})
+			.then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+	})
+
+
 	const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock();
 
@@ -63,11 +90,7 @@ const ProfileCloset = () => {
 		setModalOpen(true);
 		lockScroll();
 	};
-	// const navigate = useNavigate()
 
-	// const goToCheckoutHandler = () => {
-	// 	navigate('closet-create')
-  // }
 	
 	return (
 		<ClosetBodyContainer>
@@ -75,7 +98,7 @@ const ProfileCloset = () => {
 				<LogoContainer2>
 					<PlusCloset/>
 				</LogoContainer2>
-				<p> 옷장 만들기 </p>
+				<p> 옷장 만들기</p>
 			</ClosetItem>
 			{
 				closetList.map((closet, idx) => {
@@ -83,7 +106,13 @@ const ProfileCloset = () => {
 				})
 			}
 			{
-				modalOpen && <ClosetCreateModal setModalOpen={setModalOpen} openScroll={ openScroll} />
+				modalOpen
+				&&
+				<ClosetCreateModal
+					setModalOpen={setModalOpen}
+					openScroll={openScroll}
+					setClosetList1={ setClosetList1 }
+				/>
 			}
 
 		</ClosetBodyContainer>
