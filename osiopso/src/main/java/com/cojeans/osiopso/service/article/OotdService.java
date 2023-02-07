@@ -151,12 +151,12 @@ public class OotdService {
             List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+            if (cocommentResponseDtoList.size() == 3) {
+                break;
+            }
+
             for (Cocomment cocomment : cocomentList) {
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
-                if (cocommentResponseDtoList.size() == 3) {
-                    break;
-                }
-
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())

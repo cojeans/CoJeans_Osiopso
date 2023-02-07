@@ -1,18 +1,22 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
+import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
+import com.cojeans.osiopso.repository.comment.CocommentRepositoryImpl;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +27,7 @@ public class CommentService {
     private final CocommentRepository cocommentRepository;
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final CocommentRepositoryImpl cocommentRepositoryImpl;
 
     public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -165,24 +170,51 @@ public class CommentService {
     }
 
 
-    public void loadMoreComment(Long rootId, Long cnt) {
-        Long start = 3 * (10 * cnt - 1);
-        Long end = 3 + (10 * cnt);
+    public List<CommentResponseDto> loadMoreComment(Long rootId, Long cnt) {
+        Long size = Long.valueOf(cocommentRepository.findAllByRootId(rootId).size());
 
-//        List<Cocomment> cocommentList = cocommentRepository.findByRootId(rootId, start, end);
+        System.out.println(size);
 
-//        int cnt = 0;
-        // 3 -> 13 -> 23
+        Long start = 4 + (10 * (cnt - 1));
+        Long end = 4 + (10 * cnt);
 
-        // 만약 추가로 불러올 대댓글의 개수가 대댓글의 수 보다 많은경우에는..
-//        if (13 + (cnt * 10) > cocommentList.size()) {
-//            for (int i = 3 + (cnt * 10); i < cocommentList.size(); i++) {
-//                cocommentList.get(i);
-//            }
-//        }
-//
-//        for (int i = 3 + (cnt * 10); i < 13 + (cnt * 10); i++) {
-//            cocommentList.get(i);
-//        }
+        // 만약 end 가 태그들의 개수보다 크다면..?
+        if (size < end) {
+            end = size;
+        }
+
+        System.out.println(start + ", " + end);
+
+        // 대댓글 중, rootId가 일치하는 row들 start - end 까지 가져온다.
+        List<Cocomment> cocommentList = cocommentRepositoryImpl.findByRootId(rootId, start, end);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+
+        for (Cocomment cocomment : cocommentList) {
+            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
+
+            // 대댓글 rootId를 통해 댓글을 가져온다.
+            Comment comment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+
+            // 대댓글 DTO 생성
+            cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                    .depth(cocomment.getDepth())
+                    .rootId(cocomment.getRootId())
+                    .mentionId(cocomment.getMentionId())
+                    .build());
+
+
+            commentResponseDtoList.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .userId(comment.getUser().getId())
+                    .report(comment.getReport())
+                    .cocoments(cocommentResponseDtoList)
+                    .build());
+        }
+
+        System.out.println(commentResponseDtoList.size());
+
+        return commentResponseDtoList;
     }
 }
