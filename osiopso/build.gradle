@@ -1,3 +1,10 @@
+buildscript {
+    ext {
+        queryDslVersion = "4.4.0"
+    }
+}
+
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.5.0'
@@ -13,8 +20,6 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-
-def querydslVersion = '4.3.1'
 
 repositories {
     mavenCentral()
@@ -32,7 +37,6 @@ dependencies {
     implementation 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-//    runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -41,8 +45,13 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
-//    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-//    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor(
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.10'
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-security
