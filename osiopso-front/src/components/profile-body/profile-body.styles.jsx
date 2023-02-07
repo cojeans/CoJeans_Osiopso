@@ -7,13 +7,13 @@ export const TabMenue = styled.div`
 		p{
 			text-align:center;
 		}
-	margin:auto;
+	margin:0 auto;
 	padding-bottom:15px;
 `
 
 export const TabBody = styled.div`
 	width: 80%;
-	margin:auto
+	margin:0 auto
 `
 
 

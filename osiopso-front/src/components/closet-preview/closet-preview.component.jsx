@@ -5,11 +5,12 @@ import {
 	PrevContainer
 } from "./closet-preview.styles"
 
-const ClosetPreview = ({ closetPev }) => {
+const ClosetPreview = ({ thumbnails }) => {
+	console.log(thumbnails)
 	return (
 		<PrevContainer>
 				{
-					closetPev.map((prev, i) => {
+					thumbnails.map((prev, i) => {
 						return <PrevBox key={i}>
 						<img src={prev} onError={({ currentTarget }) => {
 						currentTarget.onerror = null; 

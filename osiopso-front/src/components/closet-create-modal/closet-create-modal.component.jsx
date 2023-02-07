@@ -44,7 +44,7 @@ export const AlertHandler = () => {
 }
 
 
-const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
+const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
 
@@ -120,6 +120,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
 		
 		AlertHandler() // alert창 띄우기
 
+		getClosetList() // 리스트 갱신
 	}
 	
     return (

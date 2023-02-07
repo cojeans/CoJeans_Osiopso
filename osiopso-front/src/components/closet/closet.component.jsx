@@ -10,7 +10,7 @@ import {
 
 
 const Closet = ({ closet }) => {
-	const { name } = closet
+	const { name, count, thumbnails, isSelected } = closet
 	const navigate = useNavigate()
 	
 	const onNavigateHandler = () => navigate(
@@ -22,12 +22,12 @@ const Closet = ({ closet }) => {
 	return (
 		<ItemContainer onClick={onNavigateHandler}>
 			<ClosetItem>
-				{/* <ClosetPreview closetPev={ url } /> */}
+				<ClosetPreview thumbnails={ thumbnails } />
 			</ClosetItem>
 			<ItemInfo>
 				<p>
 					{ name }<br/>
-					{/* <span>{count}</span> */}
+					<span>{count}</span>
 				</p>
 			</ItemInfo>
 		</ItemContainer>
