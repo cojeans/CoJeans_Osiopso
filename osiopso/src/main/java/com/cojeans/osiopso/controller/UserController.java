@@ -86,9 +86,9 @@ public class UserController{
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String token = tokenProvider.createToken(authentication);
-        return ResponseEntity.ok(new AuthResponseDto(token));
+
+        return ResponseEntity.ok(AuthResponseDto.builder().success(true).message("로그인 성공").accessToken(token).build());
     }
 
 

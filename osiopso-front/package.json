@@ -21,6 +21,7 @@
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
     "styled-components": "^5.3.6",
+    "sweetalert2": "^11.7.1",
     "swiper": "^6.8.4",
     "web-vitals": "^2.1.4"
   },

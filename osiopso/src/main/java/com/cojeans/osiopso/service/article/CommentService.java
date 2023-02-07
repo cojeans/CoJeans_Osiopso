@@ -19,19 +19,57 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
-    public boolean createComment(CommentRequestDto dto, Long articleno, Long id) {
+    public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
-        Article article = articleRepository.findById(articleno).orElseThrow();
+        Article article = articleRepository.findById(articleNo).orElseThrow();
 
+        // 일반 댓글은 depth 가 0이며, rootId와 mentionId가 null이다.
         Comment build = Comment.builder()
                 .user(user)
                 .content(dto.getContent())
                 .article(article)
+                .depth(0L)
+                .report(0L)
                 .build();
 
         commentRepository.save(build);
         return true;
     }
+
+
+    public void createCocomment(CommentRequestDto dto, Long articleNo, Long commentNo, Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        Article article = articleRepository.findById(articleNo).orElseThrow();
+
+        // commentNo번 댓글에 대한 대댓글을 달겠다!
+        // 내가 멘션한 사람이  rootComment 인지 알아야한다.
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        // 만약 rootComment 라면?
+        if (comment.getDepth() == 0L) {
+            commentRepository.save(Comment.builder()
+                    .user(user)
+                    .content(dto.getContent())
+                    .article(article)
+                    .depth(1L)
+                    .report(0L)
+                    .rootId(commentNo)
+                    .mentionId(commentNo)
+                    .build());
+        } else { // 대댓글에 다는 대대댓글일 경우..
+            commentRepository.save(Comment.builder()
+                    .user(user)
+                    .content(dto.getContent())
+                    .article(article)
+                    .depth(1L)
+                    .report(0L)
+                    .rootId(comment.getRootId()) // 대댓글에 대한 rootId를 rootId로..
+                    .mentionId(commentNo)
+                    .build());
+        }
+    }
+
+
 
     public boolean editComment(Long articleno, Long commentno, CommentRequestDto dto, Long userId) {
         Article article = articleRepository.findById(articleno).orElseThrow();
@@ -72,4 +110,6 @@ public class CommentService {
             return false;
         }
     }
+
+
 }

@@ -78,6 +78,18 @@ public class FeedApiController {
     }
 
 
+    @PostMapping("/{articleno}/comment/{commentno}")
+    public ResponseEntity<?> createCocomment(@RequestBody CommentRequestDto commentRequestDto,
+                                             @PathVariable("articleno") Long articleNo,
+                                             @PathVariable("commentno") Long commentNo,
+                                             @AuthenticationPrincipal UserDetail user){
+
+        commentService.createCocomment(commentRequestDto, articleNo, commentNo, user.getId());
+        return new ResponseEntity(new ApiResponseDto(true, "createCocomment Success", null), HttpStatus.OK);
+    }
+
+
+
     @PostMapping("/{articleno}/likearticle")
     public ResponseEntity<?> createArticleLike(@PathVariable("articleno") Long articleNo,
                                                @AuthenticationPrincipal UserDetail user){
@@ -97,6 +109,9 @@ public class FeedApiController {
             return new ResponseEntity(new ApiResponseDto(false, "createCommentLike Fail", null), HttpStatus.NOT_ACCEPTABLE);
         }
     }
+
+
+
 
 
 

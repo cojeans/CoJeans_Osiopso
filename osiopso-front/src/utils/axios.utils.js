@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const Token = `eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc1NjcxNTQ1LCJleHAiOjE2NzY1MzU1NDV9.jgmCKjiFNLorIuPM7J9sqk4k9_5G6oRGRcQqpGQsdcHSRZwniovjVu7P8McagBnE4EPwaBZ1E_mzDP1EULMZ3w`;
+const Token = `eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc1NzMxNzQxLCJleHAiOjE2NzY1OTU3NDF9.VUDbUYImf5FnpX-AhhbvFLx00TyWmSUGtFssppFbhncLMozmg5K_S4kgttU5xS2OD0DmBsOLyNLgv8Vw-shXzA`;
 
 export const createClosetAxios = (closetName, isSelected) => {
   axios({
@@ -22,12 +22,12 @@ export const createClosetAxios = (closetName, isSelected) => {
     });
 };
 
-export const getClosetAxios = (email) => {
+export const getClosetAxios = () => {
   axios({
     method: "post",
     url: "http://localhost:8080/closet/list",
-    data: {
-      email,
+    headers: {
+      Authorization: `Bearer ${Token}`,
     },
   })
     .then((res) => {
@@ -37,7 +37,6 @@ export const getClosetAxios = (email) => {
       console.log(err);
     });
 };
-
 
 export const postClothesAxios = () => {
   axios({
@@ -71,4 +70,5 @@ export const postClothesAxios = () => {
       Authorization: `Bearer ${Token}`,
     },
   });
-}
+};
+

@@ -14,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 public class Ootd extends Article {
 
-    public Ootd(int hit, String content, String dtype, User user) {
-        super(hit, content, dtype, user);
+    public Ootd(int hit, String content, User user) {
+        super(hit, content, user);
     }
 }
