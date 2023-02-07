@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.repository.article;
+package com.cojeans.osiopso.repository.comment;
 
 import com.cojeans.osiopso.entity.comment.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;

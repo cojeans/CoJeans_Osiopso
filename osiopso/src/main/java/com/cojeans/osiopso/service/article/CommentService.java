@@ -1,11 +1,13 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
+import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
-import com.cojeans.osiopso.repository.article.CommentRepository;
+import com.cojeans.osiopso.repository.comment.CocommentRepository;
+import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final CocommentRepository cocommentRepository;
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
@@ -28,7 +31,6 @@ public class CommentService {
                 .user(user)
                 .content(dto.getContent())
                 .article(article)
-                .depth(0L)
                 .report(0L)
                 .build();
 
@@ -37,36 +39,76 @@ public class CommentService {
     }
 
 
-    public void createCocomment(CommentRequestDto dto, Long articleNo, Long commentNo, Long id) {
+    public boolean createCocomment(CommentRequestDto dto, Long articleNo, Long commentNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
         // commentNo번 댓글에 대한 대댓글을 달겠다!
         // 내가 멘션한 사람이  rootComment 인지 알아야한다.
-        Comment comment = commentRepository.findById(commentNo).orElseThrow();
 
-        // 만약 rootComment 라면?
-        if (comment.getDepth() == 0L) {
-            commentRepository.save(Comment.builder()
+        // 대댓글을 작성하려는 commentNo 가 있는지 먼저 확인한다!
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+        Cocomment cocomment = cocommentRepository.findByComment_Id(commentNo);
+
+        // 대댓글을 달려는 댓글 번호가 comment DB에 등록되어 있지 않다면, 대댓글을 달 수 없다.
+        if (comment == null) {
+            return false;
+        }
+
+        // 대댓글을 달려는 댓글 번호가 cocomment DB에 등록되어 있지 않다면, 그 댓글은 rootComment 이다.
+        if (cocomment == null) {
+            Comment savedComment = commentRepository.save(Comment.builder()
                     .user(user)
                     .content(dto.getContent())
                     .article(article)
-                    .depth(1L)
                     .report(0L)
+                    .build());
+
+            cocommentRepository.save(Cocomment.builder()
+                    .comment(savedComment)
+                    .depth(1L)
                     .rootId(commentNo)
                     .mentionId(commentNo)
                     .build());
-        } else { // 대댓글에 다는 대대댓글일 경우..
-            commentRepository.save(Comment.builder()
+            
+        } else { // 댓글을 달려는 댓글 번호가 cocoment DB에 등록되어 있다면, 그 댓글은 CoComment 이다.
+            Comment savedComment = commentRepository.save(Comment.builder()
                     .user(user)
                     .content(dto.getContent())
                     .article(article)
-                    .depth(1L)
                     .report(0L)
-                    .rootId(comment.getRootId()) // 대댓글에 대한 rootId를 rootId로..
+                    .build());
+
+            cocommentRepository.save(Cocomment.builder()
+                    .comment(savedComment)
+                    .depth(1L)
+                    .rootId(cocomment.getRootId()) // 대댓글에 대한 rootId를 rootId로..
                     .mentionId(commentNo)
                     .build());
         }
+        return true;
+//        // 만약 rootComment 라면?
+//        if (comment.getDepth() == 0L) {
+//            commentRepository.save(Comment.builder()
+//                    .user(user)
+//                    .content(dto.getContent())
+//                    .article(article)
+//                    .depth(1L)
+//                    .report(0L)
+//                    .rootId(commentNo)
+//                    .mentionId(commentNo)
+//                    .build());
+//        } else { // 대댓글에 다는 대대댓글일 경우..
+//            commentRepository.save(Comment.builder()
+//                    .user(user)
+//                    .content(dto.getContent())
+//                    .article(article)
+//                    .depth(1L)
+//                    .report(0L)
+//                    .rootId(comment.getRootId()) // 대댓글에 대한 rootId를 rootId로..
+//                    .mentionId(commentNo)
+//                    .build());
+//        }
     }
 
 
@@ -86,9 +128,6 @@ public class CommentService {
                 .content(dto.getContent())
                 .article(article)
                 .user(comment.getUser())
-                .mentionId(comment.getMentionId())
-                .rootId(comment.getRootId())
-                .depth(comment.getDepth())
                 .report(comment.getReport())
                 .build());
 
@@ -107,11 +146,12 @@ public class CommentService {
         // 삭제하려는 comment의 번호와 article의 번호가 일치하는 comment를 삭제한다.
         commentRepository.deleteByIdAndArticle_Id(commentno, articleno);
 
+
         // 최상위 rootComment 일 경우..
-        if (comment.getRootId() == null) {
+        if (cocommentRepository.findByComment_Id(comment.getId()) == null) {
             // 최상위 commnet의 Pk를 root_id로 사용하는 모든 게시물을 삭제한다.
-            commentRepository.deleteAllByRootId(commentno);
-        }
+            cocommentRepository.deleteAllByRootId(commentno);
+        } // 원석게이야
 
 
         // 제대로 지워졌다면?
