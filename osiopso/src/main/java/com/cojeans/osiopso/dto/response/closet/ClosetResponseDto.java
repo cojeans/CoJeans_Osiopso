@@ -20,5 +20,5 @@ public class ClosetResponseDto {
 
     private Long count;
 
-    private List<String> thumbnails;
+    private String[] thumbnails;
 }

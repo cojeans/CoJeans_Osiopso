@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,11 +74,13 @@ public class ClosetService {
             result.get(i).setCount(closetClothesRepository.countByClosetId(list.get(i).getId()));
 
             // 썸네일 리스트 설정
-            List<String> thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
+            String[] thumbnails = new String[4];
+            Arrays.fill(thumbnails, "null");
+            thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
                     .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
-                            .map(b -> b.getStoreFilename())
-                            .limit(4)
-                            .collect(Collectors.toList());
+                    .map(b -> b.getStoreFilename())
+                    .limit(4)
+                    .toArray(String[]::new);
 
             result.get(i).setThumbnails(thumbnails);
         }
@@ -100,15 +103,16 @@ public class ClosetService {
                         .build())
                 .collect(Collectors.toList());
 
+        String[] thumbnails = new String[4];
         for (int i = 0; i < list.size(); i++) {
             result.get(i).setCount(closetClothesRepository.countByClosetId(list.get(i).getId()));
 
             // 썸네일 리스트 설정
-            List<String> thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
+            thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
                     .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
                     .map(b -> b.getStoreFilename())
                     .limit(4)
-                    .collect(Collectors.toList());
+                    .toArray(String[]::new);
 
             result.get(i).setThumbnails(thumbnails);
         }
