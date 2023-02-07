@@ -1,11 +1,13 @@
-import { Box, TopBox } from "./disclosure-scope.styles";
+import { Box, TopBox, Words } from "./disclosure-scope.styles";
 import { useState } from "react";
 import styled from "styled-components";
 
 const ToggleContainer = styled.div`
+  display: flex;
   position: relative;
+  justify-content: center;
   // margin-top: 8rem;
-  left: 47%;
+  left: -40%;
   cursor: pointer;
 
   .toggle-container {
@@ -42,31 +44,37 @@ const Desc = styled.div`
 `;
 
 const DisclosureScope = () => {
-  const [isOn, setisOn] = useState(false);
+  const [myCloset, setMyCloset] = useState(false);
   const toggleHandler = () => {
     // isOn의 상태를 변경하는 메소드를 구현
-    setisOn(!isOn);
+    setMyCloset(!myCloset);
   };
 
+  const [myProfile, setMyProfile] = useState(false);
+  const profileHandler = ()=> {
+    setMyProfile(!myProfile)
+  }
+
+
   return (
-    <div>
-      <div>
+    
+      <TopBox>
         <Box>
-          <span>내 옷장</span>
+          <Words>내 옷장</Words>
           <div>
             <ToggleContainer
-              // 클릭하면 토글이 켜진 상태(isOn)를 boolean 타입으로 변경하는 메소드가 실행
+              // 클릭하면 토글이 켜진 상태(myCloset)를 boolean 타입으로 변경하는 메소드가 실행
               onClick={toggleHandler}
             >
               {/* 아래에 div 엘리먼트 2개가 있다. 각각의 클래스를 'toggle-container', 'toggle-circle' 로 지정 */}
               {/* Toggle Switch가 ON인 상태일 경우에만 toggle--checked 클래스를 div 엘리먼트 2개에 모두 추가. 조건부 스타일링을 활용*/}
               <div
                 className={`toggle-container ${
-                  isOn ? "toggle--checked" : null
+                  myCloset ? "toggle--checked" : null
                 }`}
               />
               <div
-                className={`toggle-circle ${isOn ? "toggle--checked" : null}`}
+                className={`toggle-circle ${myCloset ? "toggle--checked" : null}`}
               />
             </ToggleContainer>
             {/* Desc 컴포넌트를 활용*/}
@@ -78,22 +86,22 @@ const DisclosureScope = () => {
         </Box>
 
         <Box>
-          <span>공개범위 설정</span>
+          <Words>내 프로필</Words>
           <div>
-            <ToggleContainer onClick={toggleHandler}>
+            <ToggleContainer onClick={profileHandler}>
               <div
                 className={`toggle-container ${
-                  isOn ? "toggle--checked" : null
+                  myProfile ? "toggle--checked" : null
                 }`}
               />
               <div
-                className={`toggle-circle ${isOn ? "toggle--checked" : null}`}
+                className={`toggle-circle ${myProfile ? "toggle--checked" : null}`}
               />
             </ToggleContainer>
           </div>
         </Box>
 
-        <Box>
+        {/* <Box>
           <span>내 옷장</span>
           <div>
             <ToggleContainer onClick={toggleHandler}>
@@ -123,9 +131,9 @@ const DisclosureScope = () => {
               />
             </ToggleContainer>
           </div>
-        </Box>
-      </div>
-    </div>
+        </Box> */}
+      </TopBox>
+  
   );
 };
 

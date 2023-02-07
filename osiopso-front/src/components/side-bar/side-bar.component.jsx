@@ -46,7 +46,7 @@ export const SideBar = () => {
             로그인
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/login'>
+          {isLogin && <LinkContainer to='/membershipwithdrawal'>
             회원탈퇴
           </LinkContainer>}
           
@@ -54,7 +54,7 @@ export const SideBar = () => {
             로그아웃
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/changepassword'>
+          {isLogin && <LinkContainer to='/passwordcheck'>
             비밀번호 변경
           </LinkContainer>}
 
