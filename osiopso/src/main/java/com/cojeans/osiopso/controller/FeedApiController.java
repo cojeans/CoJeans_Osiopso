@@ -7,6 +7,7 @@ import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.*;
+import com.cojeans.osiopso.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class FeedApiController {
     private final ArticleService articleService;
     private final CommentService commentService;
     private final LikeService likeService;
+    private final UserService userService;
 
 
 
@@ -142,18 +144,18 @@ public class FeedApiController {
     }
 
     // Ootd 유저 및 해쉬태그 검색
-    @GetMapping("/ootd/search/{input}")
+    @GetMapping("/ootd/search/data/{input}")
     public ResponseEntity<?> searchOotdOrUserByInput(@PathVariable("input") String input) {
-        List<OotdSearchResponseDto> list = new ArrayList<>();
+        List<OotdSearchByUserResponseDto> searchByUser;
 
         if (input.toCharArray()[0] == '#') { // 해쉬태그일 경우
-            String hashtag = input.substring(1);
-            list = ootdService.searchOotdByHashtag(hashtag);
+            System.out.println("해쉬태그 발견!");
+            OotdSearchByHashtagResponseDto searchByHashtag = ootdService.searchOotdByHashtag(input);
+            return new ResponseEntity(new ApiResponseDto(true, "ootdSearchByHashtag Success", searchByHashtag), HttpStatus.OK);
         } else { // 유저 닉네임일 경우
-            list = ootdService.searchOotdByNickname(input);
+            List<UserSearchResponseDto> userList = userService.searchUserByNickname(input);
+            return new ResponseEntity(new ApiResponseDto(true, "searchUserByInput Success", userList), HttpStatus.OK);
         }
-
-        return new ResponseEntity(new ApiResponseDto(true, "searchOotdOrUserByInput Success", list), HttpStatus.OK);
     }
 
 

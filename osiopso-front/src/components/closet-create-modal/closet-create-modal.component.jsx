@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getClosetAxios } from '../../utils/axios.utils';
+// import {
+// 	createClosetAxios,
+// 	postClothesAxios
+// } from '../../utils/axios.utils';
+
+import { createCloset } from '../../store/closet/closet.reducer';
+import { selectCloset } from '../../store/closet/closet.selector';
 
 import Button from '../button/button.component';
-import ToggleButton from '../toggle/toggle.component';
+// import ToggleButton from '../toggle/toggle.component';
+import ToggleButton2 from '../toggle/toggle2.component';
 
 import {
 	ModaContainer,
@@ -25,6 +32,9 @@ const defaultClosetFields = {
 const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
+
+	const closetData  = useSelector(selectCloset)
+
 	const dispatch = useDispatch()
 
 	 // 모달 끄기 
@@ -60,9 +70,16 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 		setClosetField({ ...closetField, [name]: value })
 	}
 
-	const handleSubmit = () => {
+
+	const handleSubmit = async () => {
 		console.log('저장?')
-		getClosetAxios("testId@gmail.com")
+		console.log(closetField)
+		const payload = { ...closetData.closet }
+		payload.name = closetName
+		console.log(payload)
+
+		dispatch(createCloset(payload))
+
 	}
 	
     return (
@@ -86,7 +103,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 						/>
 						<ToggleContainer>
 							<p>공개 설정</p>
-							<ToggleButton
+							<ToggleButton2
 							/>
 						</ToggleContainer>
 					</ClosetContent>

@@ -12,6 +12,7 @@ class ToggleButton extends React.Component {
     this.handleChange1 = this.handleChange1.bind(this);
   }
 
+
   handleChange(checked) {
     this.setState({ checked: checked });
     this.setState({ check: !checked });
@@ -21,7 +22,7 @@ class ToggleButton extends React.Component {
     this.setState({ checked: !check });
     this.setState({ check: check });
   }
-  render() {
+  render() {    
     return (
       <Fragment>
         <Sample>
@@ -55,5 +56,6 @@ class ToggleButton extends React.Component {
     );
   }
 }
+
 
 export default ToggleButton

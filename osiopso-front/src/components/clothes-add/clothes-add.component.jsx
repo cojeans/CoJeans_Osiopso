@@ -13,25 +13,17 @@ import { ReactComponent as GallaryLogo } from '../../assets/gallary.svg'
 
 const ClothesAdd = () => {
 	const [page, setPage] = useState('album')
-	
-	const pageHandler = () => {
-		if (page === 'album') {
-			setPage('shop')
-		} else {
-			setPage('album')
-		}
-	}
 
 	return (
 		<Fragment>
 			<AddClothesTopContainer>
-				<LogoButtonBox onClick={pageHandler}>
+				<LogoButtonBox id={'album'} onClick={() => setPage('album')}>
 					<LogoContainer3>
 						<GallaryLogo/>
 					</LogoContainer3>
 					<span>앨범에서 찾기</span>
 				</LogoButtonBox>
-				<LogoButtonBox onClick={pageHandler}>
+				<LogoButtonBox id={'shop'} onClick={() => setPage('shop')}>
 					<LogoContainer3>
 						<BrowserLogo/>
 					</LogoContainer3>
