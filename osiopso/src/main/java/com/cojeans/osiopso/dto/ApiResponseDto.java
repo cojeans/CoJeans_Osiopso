@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @Getter @Setter @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiResponseDto<T> {
+public class ApiResponseDto {
     private boolean success;
     private String message;
-    private T responseData;
+    private Object responseData;
 }

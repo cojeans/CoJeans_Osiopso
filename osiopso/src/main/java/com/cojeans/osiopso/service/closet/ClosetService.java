@@ -54,9 +54,11 @@ public class ClosetService {
     // 2-1 : 현재 로그인한 사용자의 옷장 리스트 조회
     public List<ClosetResponseDto> mylistCloset(Long uid){
         System.out.println("MyList Closet Service");
-
+        
+        // 유저의 옷장 리스트
         List<Closet> list = closetRepository.findAllByUserId(uid);
-
+        
+        // Resonse 객체 빌드
         List<ClosetResponseDto> result = list.stream()
                 .map(c -> new ClosetResponseDto().builder()
                         .id(c.getId())
@@ -65,8 +67,19 @@ public class ClosetService {
                         .build())
                 .collect(Collectors.toList());
 
+        // 결과 리스트 만들기 ~ 옷 가지 수 설정, 썸네일 리스트 설정
         for (int i = 0; i < list.size(); i++) {
+            // 옷 가지 수 설정
             result.get(i).setCount(closetClothesRepository.countByClosetId(list.get(i).getId()));
+
+            // 썸네일 리스트 설정
+            List<String> thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
+                    .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
+                            .map(b -> b.getStoreFilename())
+                            .limit(4)
+                            .collect(Collectors.toList());
+
+            result.get(i).setThumbnails(thumbnails);
         }
 
         return result;
@@ -89,6 +102,15 @@ public class ClosetService {
 
         for (int i = 0; i < list.size(); i++) {
             result.get(i).setCount(closetClothesRepository.countByClosetId(list.get(i).getId()));
+
+            // 썸네일 리스트 설정
+            List<String> thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
+                    .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
+                    .map(b -> b.getStoreFilename())
+                    .limit(4)
+                    .collect(Collectors.toList());
+
+            result.get(i).setThumbnails(thumbnails);
         }
 
         return result;

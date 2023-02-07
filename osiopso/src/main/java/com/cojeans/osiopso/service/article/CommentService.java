@@ -2,7 +2,7 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.entity.feed.Comment;
+import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.article.CommentRepository;
@@ -81,27 +81,38 @@ public class CommentService {
 
         Comment comment = commentRepository.findByIdAndArticle_Id(commentno, articleno);
 
-        if (commentRepository.save(comment.builder()
+        commentRepository.save(comment.builder()
                 .id(comment.getId())
                 .content(dto.getContent())
                 .article(article)
                 .user(comment.getUser())
-                .build()) == null) {
-            return false;
-        } else {
-            return true;
-        }
+                .mentionId(comment.getMentionId())
+                .rootId(comment.getRootId())
+                .depth(comment.getDepth())
+                .report(comment.getReport())
+                .build());
+
+        return true;
     }
 
     public boolean deleteComment(Long commentno, Long articleno, Long userId) {
         Article article = articleRepository.findById(userId).orElseThrow();
+        Comment comment = commentRepository.findById(commentno).orElseThrow();
 
         // 게시글 작성자만 삭제권한이 있다.
         if (userId != article.getUser().getId()) {
             return false;
         }
 
+        // 삭제하려는 comment의 번호와 article의 번호가 일치하는 comment를 삭제한다.
         commentRepository.deleteByIdAndArticle_Id(commentno, articleno);
+
+        // 최상위 rootComment 일 경우..
+        if (comment.getRootId() == null) {
+            // 최상위 commnet의 Pk를 root_id로 사용하는 모든 게시물을 삭제한다.
+            commentRepository.deleteAllByRootId(commentno);
+        }
+
 
         // 제대로 지워졌다면?
         if (commentRepository.findByIdAndArticle_Id(articleno, commentno) == null) {
