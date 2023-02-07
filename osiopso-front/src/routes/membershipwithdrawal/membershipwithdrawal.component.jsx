@@ -5,6 +5,18 @@ import Home from '../home/home.component'
 import { H1Container, Message, AgreeMessage, ButtonBox } from './membershipwithdrawal.styles'
 import { Route, Routes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import Swal from "sweetalert2"
+
+export const AlertHandler = ()=> {
+    Swal.fire({
+        icon: 'success',
+        confirmButtonColor: '#DD6B55',
+        html: `
+        회원탈퇴가 완료되었습니다.`,
+        showCancelButton: false,
+        confirmButtonText: '확인',
+    })
+}
 
 const MembershipWithdrawal = () => {
     const navigate = useNavigate()
@@ -14,10 +26,12 @@ const MembershipWithdrawal = () => {
         // <Routes>
         //     <Route path='/' element={<Home/>}/>
         // </Routes>
+        AlertHandler()
         setConfirm(false)
         navigate('/')
-
     }
+
+    
     
     return (
         <div>
