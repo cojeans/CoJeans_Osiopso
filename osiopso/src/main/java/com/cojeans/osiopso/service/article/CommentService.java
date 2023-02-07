@@ -28,7 +28,7 @@ public class CommentService {
         User user = userRepository.findById(id).orElseThrow();
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
-        // 일반 댓글은 depth 가 0이며, rootId와 mentionId가 null이다.
+        // 일반 댓글은 depth 가 0이며, rootId와 mentionId가 null 이다.
         Comment build = Comment.builder()
                 .user(user)
                 .content(dto.getContent())
@@ -165,21 +165,24 @@ public class CommentService {
     }
 
 
-    public void loadMoreComment(Long rootId) {
-        List<Cocomment> cocommentList = cocommentRepository. findTop3ByRootId(rootId);
+    public void loadMoreComment(Long rootId, Long cnt) {
+        Long start = 3 * (10 * cnt - 1);
+        Long end = 3 + (10 * cnt);
 
-        int cnt = 0;
+//        List<Cocomment> cocommentList = cocommentRepository.findByRootId(rootId, start, end);
+
+//        int cnt = 0;
         // 3 -> 13 -> 23
 
         // 만약 추가로 불러올 대댓글의 개수가 대댓글의 수 보다 많은경우에는..
-        if (13 + (cnt * 10) > cocommentList.size()) {
-            for (int i = 3 + (cnt * 10); i < cocommentList.size(); i++) {
-                cocommentList.get(i);
-            }
-        }
-
-        for (int i = 3 + (cnt * 10); i < 13 + (cnt * 10); i++) {
-            cocommentList.get(i);
-        }
+//        if (13 + (cnt * 10) > cocommentList.size()) {
+//            for (int i = 3 + (cnt * 10); i < cocommentList.size(); i++) {
+//                cocommentList.get(i);
+//            }
+//        }
+//
+//        for (int i = 3 + (cnt * 10); i < 13 + (cnt * 10); i++) {
+//            cocommentList.get(i);
+//        }
     }
 }

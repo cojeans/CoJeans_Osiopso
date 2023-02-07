@@ -69,8 +69,8 @@ public class CommentApiController {
 
     // rootId comment 를 기준으로 더 불러오기 버튼을 누르면, 4 ~ 10 번째 댓글까지 가져온다. 그 후로는 +10 개의 댓글씩 추가로 로딩
     @GetMapping("loadmore/{rootid}")
-    public ResponseEntity<?> loadMoreComment(@PathVariable("rootid") Long rootId){
-        commentService.loadMoreComment(rootId);
+    public ResponseEntity<?> loadMoreComment(@PathVariable("rootid") Long rootId, Long cnt){
+        commentService.loadMoreComment(rootId, cnt);
 
         return null;
     }
