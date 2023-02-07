@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PasswordCheck from "../passwordcheck/passwordcheck.component";
+import { useNavigate } from "react-router";
 import {
   UpperBox,
   Box,
@@ -15,17 +16,26 @@ import {
 const ChangePassword = () => {
   const [inputPassword1, setInputPassword1] = useState("");
   const [inputPassword2, setInputPassword2] = useState("");
+
   const handleInput1 = (event) => {
     const { value } = event.target;
     setInputPassword1(value);
     console.log(value);
   };
+
   const handleInput2 = (event) => {
     const { value } = event.target;
     setInputPassword2(value);
   };
+  const navigate = useNavigate();
 
   const [confirm, setConfirm] = useState(false);
+  const ChangeConfirm=()=>{
+    setConfirm(false)
+    navigate('/')
+
+
+  }
 
   return (
     <div>
@@ -84,7 +94,7 @@ const ChangePassword = () => {
             {inputPassword1 === inputPassword2 &&
             inputPassword1 > 7 &&
             inputPassword2 > 7 ? (
-              <button>저장</button>
+              <button onClick={ChangeConfirm}>저장</button>
             ) : (
               ""
             )}

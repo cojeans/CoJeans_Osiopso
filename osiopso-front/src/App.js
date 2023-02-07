@@ -39,7 +39,7 @@ function App() {
         <Route path='changePassword' element={<ChangePassword/>}/>
         <Route path='pwdchangecomplete' element={<PwdComplete/>}/>
         <Route path='disclosurescope' element={<DisclosureScope/>}/>
-        <Route path='membershipwithdrawal' element={<MembershipWithdrawal/>}/>
+        <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
         
       </Route>
     </Routes>

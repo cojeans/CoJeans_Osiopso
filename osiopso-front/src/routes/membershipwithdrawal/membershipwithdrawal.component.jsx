@@ -1,18 +1,22 @@
 import { useState } from 'react'
 import PasswordCheck from '../passwordcheck/passwordcheck.component'
+
 import Home from '../home/home.component'
 import { H1Container, Message, AgreeMessage, ButtonBox } from './membershipwithdrawal.styles'
 import { Route, Routes } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom'
 
 const MembershipWithdrawal = () => {
+    const navigate = useNavigate()
+
     const [confirm, setConfirm ] = useState(false)
     const ChangeConfirm= ()=>{
-        <Routes>
-            <Route path='/' element={<Home/>}/>
-        </Routes>
-
+        // <Routes>
+        //     <Route path='/' element={<Home/>}/>
+        // </Routes>
         setConfirm(false)
+        navigate('/')
+
     }
     
     return (
