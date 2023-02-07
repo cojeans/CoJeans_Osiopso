@@ -62,7 +62,7 @@ export const SideBar = () => {
             로그인
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/login'>
+          {isLogin && <LinkContainer to='/membershipwithdrawal'>
             회원탈퇴
           </LinkContainer>}
           
@@ -70,11 +70,11 @@ export const SideBar = () => {
             로그아웃
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/login'>
+          {isLogin && <LinkContainer to='/changePassword'>
             비밀번호 변경
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/login'>
+          {isLogin && <LinkContainer to='/disclosurescope'>
             공개범위 설정
           </LinkContainer>}
           <button onClick={signOut}>토큰삭제</button>

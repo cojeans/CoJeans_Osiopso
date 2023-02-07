@@ -2,8 +2,8 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticleLike;
-import com.cojeans.osiopso.entity.feed.Comment;
-import com.cojeans.osiopso.entity.feed.CommentLike;
+import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleLikeRepository;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
@@ -13,8 +13,6 @@ import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = false)

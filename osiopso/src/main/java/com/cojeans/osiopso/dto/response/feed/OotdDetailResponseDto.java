@@ -1,6 +1,5 @@
 package com.cojeans.osiopso.dto.response.feed;
 
-import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,8 @@ public class OotdDetailResponseDto {
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleTagResponseDto> tags;
     private List<ArticleLikeResponseDto> articleLikes;
-    private List<CommentLikeResponseDto> commentLikes;
+//    private List<CommentLikeResponseDto> commentLikes;
+//    private List<CommentResponseDto> comments;
     private int hit;
     private String content;
 }

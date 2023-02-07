@@ -45,11 +45,12 @@ export const ProfileImageBox = styled.img.attrs({
   `
   export const LikeContainer = styled.div`
   display: flex;
-    width:70px;
+    width: 30%;
     height:70px;
     svg{
       width:100%;
       height:100%;
+  
 
     }
   `

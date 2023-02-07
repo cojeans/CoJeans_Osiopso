@@ -143,16 +143,19 @@ public class OotdService {
         // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
         // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
 
-        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
+//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+//
+//        for (CommentLike cl : commentLikeList) {
+//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+//                    .id(cl.getId())
+//                    .userId(cl.getUser().getId())
+//                    .commentId(cl.getComment().getId())
+//                    .build());
+//        }
 
-        for (CommentLike cl : commentLikeList) {
-            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-                    .id(cl.getId())
-                    .userId(cl.getUser().getId())
-                    .commentId(cl.getComment().getId())
-                    .build());
-        }
+
+        // 댓글 가져오기
 
 
         // 태그 가져오기
@@ -182,7 +185,7 @@ public class OotdService {
                 .photos(photoResponseDtoList)
                 .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
-                .commentLikes(commentLikeResponseDtoList)
+//                .commentLikes(commentLikeResponseDtoList)
                 .hit(ootd.getHit())
                 .content(ootd.getContent())
                 .build();
