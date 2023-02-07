@@ -5,7 +5,6 @@ import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignUpContainer } from './join.stlyes'
 import axios from 'axios';
-
 import './join.stlyes'
 
 const defaultformFields = {
