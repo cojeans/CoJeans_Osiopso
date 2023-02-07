@@ -20,4 +20,6 @@ public interface ClosetClothesRepository extends JpaRepository<ClosetClothes, Lo
     void deleteByClothesIdAndClosetId(Long clothesId, Long closetId);
 
     void deleteAllByClosetId(Long id);
+
+    Long countByClosetId(Long id);
 }

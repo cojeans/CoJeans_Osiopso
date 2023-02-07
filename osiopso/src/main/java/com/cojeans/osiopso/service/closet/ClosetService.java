@@ -57,29 +57,41 @@ public class ClosetService {
 
         List<Closet> list = closetRepository.findAllByUserId(uid);
 
-        return list.stream()
+        List<ClosetResponseDto> result = list.stream()
                 .map(c -> new ClosetResponseDto().builder()
                         .id(c.getId())
                         .name(c.getName())
                         .isSelected(c.getIsSelected())
                         .build())
                 .collect(Collectors.toList());
+
+        for (int i = 0; i < list.size(); i++) {
+            result.get(i).setCount(closetClothesRepository.countByClosetId(list.get(i).getId()));
+        }
+
+        return result;
     }
 
     // 2-2 : 선택된 사용자의 옷장 리스트 조회
     public List<ClosetResponseDto> listCloset(String email){
-        System.out.println("List Closet Service");
+        System.out.println("List Closet Service : " + email);
 
         Long uid = userRepository.findByEmail(email).orElseThrow().getId();
         List<Closet> list = closetRepository.findAllByUserId(uid);
 
-        return list.stream()
+        List<ClosetResponseDto> result = list.stream()
                 .map(c -> new ClosetResponseDto().builder()
                         .id(c.getId())
                         .name(c.getName())
                         .isSelected(c.getIsSelected())
                         .build())
                 .collect(Collectors.toList());
+
+        for (int i = 0; i < list.size(); i++) {
+            result.get(i).setCount(closetClothesRepository.countByClosetId(list.get(i).getId()));
+        }
+
+        return result;
     }
 
     // 2-2 : 최근 저장된 옷의 사진 4개
