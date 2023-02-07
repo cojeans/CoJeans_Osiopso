@@ -51,12 +51,26 @@ public class ClosetService {
     }
 
     // 2. R : 옷장 조회
-    // 2-1 :사용자 옷장 전체 리스트 조회
-    // 파라미터 : 사용자
-    // return List<ClosetDto>
-    public List<ClosetResponseDto> listCloset(Long uid){
+    // 2-1 : 현재 로그인한 사용자의 옷장 리스트 조회
+    public List<ClosetResponseDto> mylistCloset(Long uid){
+        System.out.println("MyList Closet Service");
+
+        List<Closet> list = closetRepository.findAllByUserId(uid);
+
+        return list.stream()
+                .map(c -> new ClosetResponseDto().builder()
+                        .id(c.getId())
+                        .name(c.getName())
+                        .isSelected(c.getIsSelected())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    // 2-2 : 선택된 사용자의 옷장 리스트 조회
+    public List<ClosetResponseDto> listCloset(String email){
         System.out.println("List Closet Service");
 
+        Long uid = userRepository.findByEmail(email).orElseThrow().getId();
         List<Closet> list = closetRepository.findAllByUserId(uid);
 
         return list.stream()

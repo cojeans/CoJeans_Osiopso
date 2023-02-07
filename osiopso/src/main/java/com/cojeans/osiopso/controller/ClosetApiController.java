@@ -54,14 +54,23 @@ public class ClosetApiController {
 
     // 2. R : 옷장 조회
     // 2-1 : 사용자 옷장 전체 리스트 조회
-    @PostMapping("/list")
-    @Operation(summary = "옷장 리스트 조회", description = "현재 로그인한 사용자의 옷장 리스트를 조회합니다.")
-    public ResponseEntity<List<ClosetResponseDto>> listCloset(@AuthenticationPrincipal UserDetail user){
-        LOGGER.info("listCloset() 호출");
-        List<ClosetResponseDto> list = closetService.listCloset(user.getId());
+    @PostMapping("/mylist")
+    @Operation(summary = "내 옷장 리스트 조회", description = "현재 로그인한 사용자의 옷장 리스트를 조회합니다.")
+    public ResponseEntity<List<ClosetResponseDto>> mylistCloset(@AuthenticationPrincipal UserDetail user){
+        LOGGER.info("mylistCloset() 호출");
+        List<ClosetResponseDto> list = closetService.mylistCloset(user.getId());
 
         return new ResponseEntity<>(list, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/list")
+    @Operation(summary = "다른 사용자의 옷장 리스트 조회", description = "선택한 사용자의 옷장 리스트를 조회합니다.")
+    public ResponseEntity<List<ClosetResponseDto>> listCloset(@RequestParam String email, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("listCloset() 호출 : " + email);
+        List<ClosetResponseDto> list = closetService.listCloset(email);
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     // 2-2 : 최근 저장된 옷의 사진 4개
