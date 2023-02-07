@@ -1,5 +1,7 @@
 import axios from 'axios'
+import { useSelector } from 'react-redux';
 
+import { selectUser } from '../../store/user/user.selector';
 import {
   useState,
   useEffect,
@@ -16,12 +18,19 @@ import {
   StyleTagButton
 } from "./ootd-create.styles";
 
-
+const defaultOotdForm = {
+  content: '',
+  picture: '',
+  tags :[]
+}
 
 const OotdCreate = () => {
-
+  const Token = useSelector(selectUser)
+  
   const [ootdImg, setOotdImg] = useState('')
+  const [ootdFormData, setOotdFormData] = useState(defaultOotdForm)
 
+  const { content, picture, tags }= ootdFormData
   const imgRef = useRef();
 
   	const saveImgFile = () => {
@@ -29,9 +38,45 @@ const OotdCreate = () => {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
       reader.onloadend = () => {
-      setOotdImg(reader.result)
+        setOotdImg(reader.result)
+        setOotdFormData({...ootdFormData, picture:file})
 		};
-	};
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setOotdFormData({...ootdFormData, [name]:value})
+  }
+  
+  const submitOotdCreate = (e) => {
+    e.preventDefault();
+    console.log(content, picture, tags, Token)
+    const formData = new FormData()
+    const ootd = {
+      tags,content
+    }
+
+    const json = JSON.stringify(ootd)
+    const blob = new Blob([json], { type: "application/json" })
+    
+    formData.append("picture", picture)
+    formData.append("ootd", blob)
+
+
+    axios({
+      method: "post",
+      url: "http://localhost:8080/feed/ootd",
+      data: formData,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+        "Content-Type": "multipart/form-data",
+			},
+    })
+      .then((res) => {
+         console.log(res.data)
+      }).catch((err) => {
+        console.log(err)
+    })
+  }
 
   return (
     <div>
@@ -64,10 +109,18 @@ const OotdCreate = () => {
           <StyleTagButton>+ 스타일 태그 추가하기</StyleTagButton>
         </MarginDiv>
         <MarginDiv>
-          <textarea name="" id="" cols="30" rows="10" placeholder='문구를 입력하세요.'>
+          <textarea
+            name="content"
+            value={ content }
+            id=""
+            cols="30"
+            rows="10" 
+            placeholder='문구를 입력하세요.'
+            onChange={handleChange}
+          >
           </textarea>
         </MarginDiv>
-        <button>저장하기</button>
+        <button onClick={submitOotdCreate}>저장하기</button>
       </BottomContainer>
     </div>
   );
