@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 public class OotdRequestDto {
 
-    private List<ArticlePhotoRequestDto> photos;
     private List<ArticleTagRequestDto> tags;
     private String content;
 }
