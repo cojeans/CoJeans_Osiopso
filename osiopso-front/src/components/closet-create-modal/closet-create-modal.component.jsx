@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import {
-// 	createClosetAxios,
-// 	postClothesAxios
-// } from '../../utils/axios.utils';
+import {
+	createClosetAxios,
+	postClothesAxios
+} from '../../utils/axios.utils';
 
-import { createCloset } from '../../store/closet/closet.reducer';
+import {
+	createCloset,
+	resetCloset,
+} from '../../store/closet/closet.reducer';
 import { selectCloset } from '../../store/closet/closet.selector';
 
 import Button from '../button/button.component';
@@ -23,9 +26,23 @@ import {
 	ToggleContainer
 } from "./closet-create-modal.styles";
 
+import Swal from "sweetalert2";
+
 
 const defaultClosetFields = {
 	closetName: '',
+}
+
+export const AlertHandler = () => {
+	Swal.fire({
+		icon: 'success',
+		confirmButtonColor: "#DD6B55", 
+		html: `
+		새 옷장이 생성되었습니다.
+		`,
+		showCancelButton: false,
+		confirmButtonText: "확인",
+	})
 }
 
 
@@ -80,6 +97,13 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 
 		dispatch(createCloset(payload))
 
+		console.log(closetData)
+
+		createClosetAxios(closetData.closet.name, closetData.closet.isSelected) 
+		
+		dispatch(resetCloset()) // redux 옷장 정보 초기화
+		
+		AlertHandler() // alert창 띄우기 
 	}
 	
     return (
