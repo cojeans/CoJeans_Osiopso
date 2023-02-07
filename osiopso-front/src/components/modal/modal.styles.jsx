@@ -6,7 +6,7 @@ export const ModalPage = styled.div`
   align-items: flex-end;
   width:100%;
   height:100%;
-	padding-bottom:60px;
+	padding-bottom: ${({page})=> page === 'plus' ? '60px' : 0};
   /* 최상단 위치 */
   z-index: 999;
   

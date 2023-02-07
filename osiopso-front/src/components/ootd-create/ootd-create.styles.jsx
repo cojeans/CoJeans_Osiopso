@@ -21,7 +21,7 @@ textarea{
     outline:none;
     resize:none;
     width:350px;
-    height:120px;
+    height:100px;
     padding:10px;
     border-bottom:solid 1px gray;
 }
@@ -44,17 +44,22 @@ export const OotdImgContainer = styled.div`
     display:flex;
     justify-content: center;
     align-items: center;
+    border:1px solid gray;
 
     img{
         width:100%;
         height:100%;
+    }
+    span{
+        font-size:100px;        
     }
 `
 
 export const StyleTagButton = styled.button`
     border:none;
     height:40px;
+    width:80px;
     border-radius:4px;
     background-color:#e7e2ff;
+    cursor:pointer;
 `
-

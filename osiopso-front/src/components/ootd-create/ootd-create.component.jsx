@@ -18,6 +18,9 @@ import {
   StyleTagButton
 } from "./ootd-create.styles";
 
+import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
+import Modal from '../modal/modal.component';
+
 const defaultOotdForm = {
   content: '',
   picture: '',
@@ -55,6 +58,9 @@ const OotdCreate = () => {
       tags,content
     }
 
+  //formdata형식의 value는 무조건 스트링으로 변환된다.
+  // blob객체와 텍스트 형식 데이터만 append할 수 있는 것 같다. (File도 blob객체에 속합)
+  // 그렇기에 formdata 타입으로 json타입 데이터를 보낼 때에는 blob함수로 감싸고, 두번째 인자로type: 'application/json'을 같이 넣어줘야 한다.
     const json = JSON.stringify(ootd)
     const blob = new Blob([json], { type: "application/json" })
     
@@ -78,6 +84,15 @@ const OotdCreate = () => {
     })
   }
 
+  const [modalOpen, setModalOpen] = useState(false);
+	const { lockScroll, openScroll } = useBodyScrollLock()
+
+	const showModal = () => {
+	window.scrollTo(0, 0);
+	setModalOpen(true);
+	lockScroll();
+	};
+
   return (
     <div>
       <TopContainer>
@@ -92,8 +107,8 @@ const OotdCreate = () => {
             <OotdImgContainer>
             {
               ootdImg 
-                ? <img src={ootdImg} alt="" />
-                : <span>+</span>
+                  ? <img src={ootdImg} alt="" />
+                : <div><span>+</span></div>
             }
             </OotdImgContainer>
           </label>
@@ -106,7 +121,7 @@ const OotdCreate = () => {
           />
         </OotdImgContainer>
         <MarginDiv>
-          <StyleTagButton>+ 스타일 태그 추가하기</StyleTagButton>
+          <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
         </MarginDiv>
         <MarginDiv>
           <textarea
@@ -115,13 +130,16 @@ const OotdCreate = () => {
             id=""
             cols="30"
             rows="10" 
-            placeholder='문구를 입력하세요.'
+            placeholder='#코딩이 #힘들다'
             onChange={handleChange}
           >
           </textarea>
         </MarginDiv>
-        <button onClick={submitOotdCreate}>저장하기</button>
+        <button onClick={submitOotdCreate}>저장</button>
       </BottomContainer>
+      {
+        modalOpen && <Modal setModalOpen={setModalOpen} openScroll={openScroll} page={"category"} ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
+			}
     </div>
   );
 };
