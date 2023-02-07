@@ -12,9 +12,21 @@ import { ReactComponent as Clothes } from '../../assets/clothes.svg'
 
 const PlusModal = ({ closeModal }) => {
 	const navigate = useNavigate()
-	const onNavigateHandler = () => {
+	const onNavigateHandler1 = () => {
 		navigate(
 			'mypage/add-clothes'
+		)
+		closeModal()
+	}
+	const onNavigateHandler2 = () => {
+		navigate(
+			'advice/create'
+		)
+		closeModal()
+	}
+	const onNavigateHandler3 = ()=> {
+		navigate(
+			'ootd/create'
 		)
 		closeModal()
 	}
@@ -22,7 +34,7 @@ const PlusModal = ({ closeModal }) => {
 	return (
 		<PlusModalContainer>
 			{/* <button onClick={closeModal}>닫기</button> */}
-			<PlusContent onClick={onNavigateHandler}>
+			<PlusContent onClick={onNavigateHandler1}>
 				<PlusLogoContainer>
 					<Clothes/>
 				</PlusLogoContainer>
@@ -31,7 +43,7 @@ const PlusModal = ({ closeModal }) => {
 				</span>
 			</PlusContent>
 			
-			<PlusContent>
+			<PlusContent  onClick={onNavigateHandler3}>
 				<PlusLogoContainer>
 					<OOTD/>
 				</PlusLogoContainer>
@@ -40,7 +52,7 @@ const PlusModal = ({ closeModal }) => {
 				</span>
 			</PlusContent>
 
-			<PlusContent>
+			<PlusContent onClick={onNavigateHandler2}>
 				<PlusLogoContainer>
 					<Hand/>
 				</PlusLogoContainer>

@@ -12,7 +12,7 @@ import {
 } from "./passwordcheck.styles";
 
 
-const PasswordCheck = () => {
+const PasswordCheck = ({setConfirm}) => {
    
   const [inputPassword, setInputPassword] = useState('')
   const handleInput = (event) => {
@@ -50,7 +50,7 @@ const PasswordCheck = () => {
       <ButtonBox>
         {
           inputPassword.length>8
-          ? <button>확인</button>
+          ? <button onClick={()=>setConfirm(true)}>확인</button>
           : ''
         }
         

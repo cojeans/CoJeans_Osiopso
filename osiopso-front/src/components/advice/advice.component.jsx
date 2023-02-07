@@ -25,7 +25,6 @@ const Advice = () => {
         <TopTag>
           <h4>채택 중</h4> <h4>채택완료</h4>
         </TopTag>
-          <button key={''} onClick={goToCheckoutHandler}>만들기</button>
       </TextToLeft>
 
       <HunsuImages>
