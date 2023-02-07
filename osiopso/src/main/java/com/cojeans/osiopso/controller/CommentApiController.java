@@ -44,8 +44,11 @@ public class CommentApiController {
                                              @PathVariable("commentno") Long commentNo,
                                              @AuthenticationPrincipal UserDetail user){
 
-        commentService.createCocomment(commentRequestDto, articleNo, commentNo, user.getId());
-        return new ResponseEntity(new ApiResponseDto(true, "createCocomment Success", null), HttpStatus.OK);
+        if (commentService.createCocomment(commentRequestDto, articleNo, commentNo, user.getId())) {
+            return new ResponseEntity(new ApiResponseDto(true, "createCocomment Success", null), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new ApiResponseDto(true, "createCocomment Fail", null), HttpStatus.NO_CONTENT);
+        }
     }
 
     @PostMapping("likecomment/{commentno}")
