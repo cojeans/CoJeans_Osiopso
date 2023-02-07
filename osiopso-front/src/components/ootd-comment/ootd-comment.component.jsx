@@ -67,10 +67,9 @@ const OotdComment=()=>{
 
       <UpperComment>
         <CommentProfileImage></CommentProfileImage>
-        <form>
-        <ClosetInput type="text" autoFocus maxLength={50} v-model/>
+
+        <ClosetInput type="text" autoFocus maxLength={50}/>
         <button onClick={Oncreate}>저장</button>
-        </form>
       </UpperComment>
         </div>
     )
