@@ -4,9 +4,11 @@ import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface CocommentRepository extends JpaRepository<Cocomment, Long> {
     Cocomment findByComment_Id(Long commentNo);
 

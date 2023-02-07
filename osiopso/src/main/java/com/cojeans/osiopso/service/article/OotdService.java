@@ -36,7 +36,6 @@ public class OotdService {
     private final ArticleRepository articleRepository;
     private final OotdRepository ootdRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
