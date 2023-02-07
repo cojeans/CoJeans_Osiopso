@@ -18,8 +18,8 @@ export const CameraContainer = styled.div`
 `
 
 export const Video = styled.video`
-	width:90%;
-	height:500px;
+	width:400px;
+	height:400px;
 	object-fit:fill ;
 	
 `

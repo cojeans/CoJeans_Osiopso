@@ -1,5 +1,7 @@
 package com.cojeans.osiopso.service.user;
 
+import com.cojeans.osiopso.dto.response.feed.UserPhotoResponseDto;
+import com.cojeans.osiopso.dto.response.feed.UserSearchResponseDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
 import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
@@ -14,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,5 +86,24 @@ public class UserService {
                         .providerId(userDto.getProviderId())
                         .emailVerified(userDto.getEmailVerified())
                 .build());
+    }
+
+    public List<UserSearchResponseDto> searchUserByNickname(String input) {
+
+        // 유저의 아이디가 포함되어 시작되는 유저들 목록 가져오기
+        List<User> users = userRepository.findAllByNameStartingWith(input);
+        List<UserSearchResponseDto> userList = new ArrayList<>();
+
+        for (User user : users) {
+            userList.add(UserSearchResponseDto.builder()
+                    .userName(user.getName())
+                    .profilePhoto(UserPhotoResponseDto.builder()
+                            .originFilename("originProfileFileName")
+                            .storeFilename("storeProfileFileName")
+                            .build())
+                    .build());
+        }
+
+        return userList;
     }
 }

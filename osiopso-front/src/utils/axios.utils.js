@@ -1,14 +1,17 @@
 import axios from "axios";
-<<<<<<< HEAD
 
-export const createClosetAxios = (closetName, isSelected, email) => {
+const Token = `eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjc1NzMxNzQxLCJleHAiOjE2NzY1OTU3NDF9.VUDbUYImf5FnpX-AhhbvFLx00TyWmSUGtFssppFbhncLMozmg5K_S4kgttU5xS2OD0DmBsOLyNLgv8Vw-shXzA`;
+
+export const createClosetAxios = (closetName, isSelected) => {
   axios({
     method: "post",
     url: "http://localhost:8080/closet",
     data: {
-      closetName,
-      email,
-      isSelected,
+      name: closetName,
+      isSelected: isSelected,
+    },
+    headers: {
+      Authorization: `Bearer ${Token}`,
     },
   })
     .then((res) => {
@@ -19,12 +22,12 @@ export const createClosetAxios = (closetName, isSelected, email) => {
     });
 };
 
-export const getClosetAxios = (email) => {
+export const getClosetAxios = () => {
   axios({
     method: "post",
     url: "http://localhost:8080/closet/list",
-    data: {
-      email,
+    headers: {
+      Authorization: `Bearer ${Token}`,
     },
   })
     .then((res) => {
@@ -34,26 +37,38 @@ export const getClosetAxios = (email) => {
       console.log(err);
     });
 };
-=======
-import { useNavigate } from "react-router-dom";
-// export const createClosetAxios = (closetName, isSelected) => {
-//   axios({
-//     method: "post",
-//     url: "http://localhost:8080/closet",
-//     data: {
-//       name: closetName,
-//       isSelected: isSelected,
-//     },
-//     headers: {
-//       Authorization: `Bearer ${Token}`,
-//     },
-//   })
-//     .then((res) => {
-//       console.log(res);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
 
->>>>>>> Feature/S08P12C106-185-FE-토큰-axios-요청
+export const postClothesAxios = () => {
+  axios({
+    method: "post",
+    url: "http://localhost:8080/closet/clothes",
+    data: {
+      category: "Top",
+      originFilename: "originFilename",
+      storeFilename: "storeFilename",
+      closets: [
+        {
+          id: 1,
+          name: "",
+          isSelected: false,
+        },
+      ],
+      colors: [
+        { id: 1, colorName: "RED" },
+        { id: 3, colorName: "BLACK" },
+      ],
+      seasons: [
+        { id: 1, seasonName: "Spring" },
+        { id: 4, seasonName: "Winter" },
+      ],
+      tags: [
+        { dtype: "S", id: 1, keyword: "Modern" },
+        { dtype: "T", id: 3, keyword: "Wedding" },
+      ],
+    },
+    headers: {
+      Authorization: `Bearer ${Token}`,
+    },
+  });
+};
+

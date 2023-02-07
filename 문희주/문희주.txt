@@ -72,3 +72,12 @@
 - Swagger 된다 !
 - 옷장 FE와 연결 테스트 - 성공적 ^_^
 - 주말 : 삭제 기능, 파일 업로드, 배포 살짝
+
+2023-02-06(월)
+- 옷장 마무리 완료
+- 이미지 파일 업로드 구현 완료
+- request/response Dto 분리
+- toEntity, toDto -> builder로 변경 완료
+- apiResponse로 감싸기는 나중에
+- swagger 설명 추가
+- 젠킨스 시작중 ... 초기 설정 완료

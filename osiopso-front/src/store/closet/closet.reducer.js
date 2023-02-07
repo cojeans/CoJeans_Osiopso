@@ -2,21 +2,23 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   closet: {
-    closetName: "Closet Create Test",
-    isSelected: "true",
-    email: "testId@gmail.com",
+    name: "",
+    isSelected: false,
   },
 };
 
 export const closet = createSlice({
-	name: 'closet',
-	initialState,
-	reducers: {
-		createCloset(state, action) {
-			state.closet.closetName = action.payload;
-		}
-	}
-})
+  name: "closet",
+  initialState,
+  reducers: {
+    createCloset(state, action) {
+      state.closet = action.payload;
+    },
+    resetCloset(state) {
+      Object.assign(state, initialState);
+    },
+  },
+});
 
-export const { createCloset } = closet.actions;
+export const { createCloset, resetCloset } = closet.actions;
 export default closet.reducer
