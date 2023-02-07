@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
@@ -163,4 +165,21 @@ public class CommentService {
     }
 
 
+    public void loadMoreComment(Long rootId) {
+        List<Cocomment> cocommentList = cocommentRepository. findTop3ByRootId(rootId);
+
+        int cnt = 0;
+        // 3 -> 13 -> 23
+
+        // 만약 추가로 불러올 대댓글의 개수가 대댓글의 수 보다 많은경우에는..
+        if (13 + (cnt * 10) > cocommentList.size()) {
+            for (int i = 3 + (cnt * 10); i < cocommentList.size(); i++) {
+                cocommentList.get(i);
+            }
+        }
+
+        for (int i = 3 + (cnt * 10); i < 13 + (cnt * 10); i++) {
+            cocommentList.get(i);
+        }
+    }
 }
