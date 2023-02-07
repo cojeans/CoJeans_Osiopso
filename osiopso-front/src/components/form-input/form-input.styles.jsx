@@ -48,5 +48,9 @@ export const Group = styled.div`
   input[type='password'] {
     letter-spacing: 0.3em;
   }
+<<<<<<< HEAD
   // z-index: -0.5;
+=======
+  // z-index: -1;
+>>>>>>> Feature/S08P12C106-185-FE-토큰-axios-요청
 `

@@ -1,9 +1,10 @@
 import { useState } from 'react'
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux'
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignUpContainer } from './join.stlyes'
-
+import axios from 'axios';
 import './join.stlyes'
 
 const defaultformFields = {
@@ -14,6 +15,7 @@ const defaultformFields = {
 }
 
 const Join = () => {
+  const navigate = useNavigate();
 
 	const [formFields, setFormFields] = useState(defaultformFields)
 	const {displayName, email, password, confirmPassword} = formFields
@@ -21,17 +23,44 @@ const Join = () => {
 	// const handleSubmit = async (event) => {
 	// 	event.preventDefault();
 	
-	// 	if (password !== confirmPassword) {
-	// 	  alert('passwords do not match');
-	// 	  return;
-	// 	}
+		// if (password !== confirmPassword) {
+		//   alert('passwords do not match');
+		//   return;
+		// }
 
 	const handleChange = (event) =>{
 		const {name, value} = event.target
 
 		setFormFields({...formFields, [name]:value})
 }
+  // const dispatch = useDispatch();
+  const JoinFunc = (e) => {
+    e.preventDefault();
+      axios({
+        method: "post",
+        url: 'http://localhost:8080/user/signUp',
+        data: {
+          email: email,
+          name: displayName,
+          password: password,
+        }
+      })
+      .then((res)=>{
+        console.log(res)
+        // localStorage.clear()
+        // localStorage.setItem('token', res.data.accessToken)
+        // localStorage.setItem('email', email)
+        
+        // const value = {email, token: res.data.accessToken}
+        // dispatch(login(value))
+        navigate("/login")
+      })
+      .catch((err) => {
+        console.log(err)
+        navigate("/join")
+      })
 
+  }
 	return (
 		<SignUpContainer>
 			<form>
@@ -67,6 +96,9 @@ const Join = () => {
 				onChange={handleChange}name="confirmPassword" 
 				value={confirmPassword}/>
 				<Button>가입하기</Button>
+				<button onClick={JoinFunc}>
+            test
+          </button>
 			</form>
 		</SignUpContainer>
 	)
