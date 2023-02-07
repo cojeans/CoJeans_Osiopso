@@ -1,5 +1,6 @@
-package com.cojeans.osiopso.entity.feed;
+package com.cojeans.osiopso.entity.comment;
 
+import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

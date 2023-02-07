@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,4 +17,8 @@ public class ClosetResponseDto {
     private String name;
 
     private Boolean isSelected;
+
+    private Long count;
+
+    private List<String> thumbnails;
 }

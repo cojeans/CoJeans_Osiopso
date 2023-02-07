@@ -1,31 +1,14 @@
 package com.cojeans.osiopso.dto;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 @ToString
-@Getter @Setter @Builder
+@Getter @Setter @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiResponseDto<T> {
+public class ApiResponseDto {
     private boolean success;
     private String message;
-
-    private T responseData;
-
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    private Object responseData;
 }

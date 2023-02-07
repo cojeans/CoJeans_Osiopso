@@ -1,9 +1,9 @@
 package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
-import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Multipart;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +96,6 @@ public class AdviceService {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
-
         List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
 
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
