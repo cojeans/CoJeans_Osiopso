@@ -44,6 +44,7 @@ public class AdviceService {
                 .content(adviceRequestDto.getContent())
                 .subject(adviceRequestDto.getSubject())
                 .isSelected(adviceRequestDto.isSelected())
+                .report(0L)
                 .build());
 
 
@@ -70,12 +71,12 @@ public class AdviceService {
     }
 
     public List<AdviceListResponseDto> listAdvice() {
-        List<Advice> Advices = adviceRepository.findList();
+        List<Article> Advices = articleRepository.findAllByDtype("A");
         List<AdviceListResponseDto> list = new ArrayList<>();
 
 
         // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Advice advice : Advices) {
+        for (Article advice : Advices) {
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
                     .build();
             list.add(dto);
