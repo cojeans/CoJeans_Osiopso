@@ -1,16 +1,14 @@
+import axios from 'axios'
+
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import {
-	createClosetAxios,
-	postClothesAxios
-} from '../../utils/axios.utils';
 
 import {
 	createCloset,
 	resetCloset,
 } from '../../store/closet/closet.reducer';
 import { selectCloset } from '../../store/closet/closet.selector';
+import { selectUser } from '../../store/user/user.selector';
 
 import Button from '../button/button.component';
 // import ToggleButton from '../toggle/toggle.component';
@@ -46,10 +44,11 @@ export const AlertHandler = () => {
 }
 
 
-const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
+const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
 
+	const Token = useSelector(selectUser)
 	const closetData  = useSelector(selectCloset)
 
 	const dispatch = useDispatch()
@@ -88,7 +87,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 	}
 
 
-	const handleSubmit = async () => {
+	const handleSubmit = () => {
 		console.log('저장?')
 		console.log(closetField)
 		const payload = { ...closetData.closet }
@@ -97,10 +96,26 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 
 		dispatch(createCloset(payload))
 
-		console.log(closetData)
+		console.log(Token)
 
-		createClosetAxios(closetData.closet.name, closetData.closet.isSelected) 
-		
+		axios({
+			method: "post",
+			url: "http://localhost:8080/closet",
+			data: {
+				name: payload.name,
+				isSelected:payload.isSelected,
+			},
+			headers: {
+     	 Authorization: `Bearer ${Token.token}`,
+			}
+		})
+		 .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
 		dispatch(resetCloset()) // redux 옷장 정보 초기화
 		
 		AlertHandler() // alert창 띄우기 
