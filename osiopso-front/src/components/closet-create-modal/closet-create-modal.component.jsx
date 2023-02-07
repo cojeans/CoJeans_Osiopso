@@ -118,7 +118,8 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
 
 		dispatch(resetCloset()) // redux 옷장 정보 초기화
 		
-		AlertHandler() // alert창 띄우기 
+		AlertHandler() // alert창 띄우기
+
 	}
 	
     return (

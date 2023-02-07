@@ -3,11 +3,9 @@ import axios from 'axios'
 import Closet from "../closet/closet.component"
 
 import { useState, useCallback, useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
 import { selectUser } from '../../store/user/user.selector';
-
 
 import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
@@ -30,43 +28,14 @@ export function useBodyScrollLock() {
   return { lockScroll, openScroll };
 }
 
-const initialList = [
-	{
-		closetName: '봄',
-		url:
-			['https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg',
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3F0T-vHn_FrpqKg6DH2Hst2cMN0ptOBMYYcI988bJ0CdwwVzbNbSRFH5ERWevleor69M&usqp=CAU',
-				'https://image.msscdn.net/images/goods_img/20210202/1773705/1773705_1_500.jpg',
-				'https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg',
-			],
-		
-		count: 1,
-	},
-	{
-		closetName: '여름',
-		url: ['https://static.discovery-expedition.com/images/goods/ec/X22FDXHD17024BGL/thnail/C760DBC2144C4F99A0FA7476C4B07851.png/dims/resize/828x1104','','',''],
-		count: 5
-	},
-	{
-		closetName: '가을',
-		url: ['https://m.ilsanghabo.com/web/upload/NNEditor/20200206/9c4ecbc1d0514f4c6ce4b1052480b5ba.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg',''],
-		count: 192
-	},
-	{
-		closetName: '겨울',
-		url: ['https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg','https://m.snipershop.co.kr/web/product/tiny/202111/55bb8ef3031d3e502c576af1d19c1d09.jpg',''],
-		count: 19
-	},
-]
 
 const ProfileCloset = () => {
 	const Token = useSelector(selectUser)
-	console.log(Token.token)
 	
-	const [closetList, setClosetList] = useState(initialList)
+	const [closetList, setClosetList] = useState([])
 
-	const [closetList1, setClosetList1] = useState(() => {
-		axios({
+	useEffect(() => {
+			axios({
 			method: "post",
 			url: "http://localhost:8080/closet/mylist",
 			headers: {
@@ -74,13 +43,12 @@ const ProfileCloset = () => {
 			},
 		})
 			.then((res) => {
-      console.log(res.data);
+				setClosetList(res.data)
     })
     .catch((err) => {
       console.log(err);
     });
-	})
-
+	},[])
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock();
@@ -111,7 +79,6 @@ const ProfileCloset = () => {
 				<ClosetCreateModal
 					setModalOpen={setModalOpen}
 					openScroll={openScroll}
-					setClosetList1={ setClosetList1 }
 				/>
 			}
 
