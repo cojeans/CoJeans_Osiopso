@@ -29,6 +29,6 @@ ENTRYPOINT [                                                \
     "-jar",                                                 \
     "-Djava.security.egd=file:/dev/./urandom",              \
     "-Dsun.net.inetaddr.ttl=0",                             \
-    "stackers-0.0.1-SNAPSHOT.jar"              \
+    "osiopso-0.0.1-SNAPSHOT.jar"              \
 ]
 
