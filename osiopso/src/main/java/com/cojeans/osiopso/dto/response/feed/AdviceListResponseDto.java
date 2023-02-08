@@ -13,10 +13,10 @@ public class AdviceListResponseDto {
 
     // 지금 시간 - createdTime
     private Long time;
-    private ArticlePhotoRequestDto photo;
+    private ArticlePhotoResponseDto photo;
     private int hit;
     private String content;
     private boolean isSelected;
     private String subject;
-    private String dtype;
+    private Long commentCnt;
 }

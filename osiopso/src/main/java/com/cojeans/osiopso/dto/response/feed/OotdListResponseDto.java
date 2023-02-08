@@ -12,15 +12,9 @@ public class OotdListResponseDto {
 
     private Long id;
     private Long userId;
-
-    // 지금 시간 - createdTime
-    private Date createTime;
     private Long time;
     private ArticlePhotoResponseDto photo;
     private Long commentCnt;
     private int hit;
     private String content;
-    private boolean isSelected;
-    private String subject;
-    private String dtype;
 }

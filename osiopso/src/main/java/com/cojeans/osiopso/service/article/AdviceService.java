@@ -71,13 +71,24 @@ public class AdviceService {
     }
 
     public List<AdviceListResponseDto> listAdvice() {
-        List<Article> Advices = articleRepository.findAllByDtype("A");
+        List<Advice> Advices = adviceRepository.findAllByDtype("A");
         List<AdviceListResponseDto> list = new ArrayList<>();
 
+        for (Advice advice : Advices) {
+            List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(advice.getId());
 
-        // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Article advice : Advices) {
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
+                    .id(advice.getId())
+                    .hit(advice.getHit())
+                    .content(advice.getContent())
+                    .subject(advice.getSubject())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .imageUrl(responsePhoto.get(0).getImageUrl())
+                            .build())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                    .userId(advice.getUser().getId())
+                    .isSelected(advice.isSelected())
+                    .time(0L)
                     .build();
             list.add(dto);
         }
@@ -238,6 +249,7 @@ public class AdviceService {
             ArticlePhoto articlePhoto = articlePhotoList.get(0);
 
             list.add(AdviceSearchResponseDto.builder()
+                    .articleNo(advice.getId())
                     .subject(advice.getSubject())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .photo(ArticlePhotoResponseDto.builder()
@@ -260,6 +272,7 @@ public class AdviceService {
             ArticlePhoto articlePhoto = articlePhotoList.get(0);
 
             list.add(AdviceSearchResponseDto.builder()
+                    .articleNo(advice.getId())
                     .subject(advice.getSubject())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .photo(ArticlePhotoResponseDto.builder()

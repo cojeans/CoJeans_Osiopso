@@ -89,12 +89,11 @@ public class OotdService {
 
 
     public List<OotdListResponseDto> listOotd() {
-        List<Article> Ootds = articleRepository.findAllByDtype("O");
+        List<Ootd> Ootds = ootdRepository.findAllByDtype("O");
         List<OotdListResponseDto> list = new ArrayList<>();
         Date date = new Date();
 
-        // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Article ootd : Ootds) {
+        for (Ootd ootd : Ootds) {
 
 //            Date createTime = ootd.getCreateTime();
 //            long time = createTime.getTime();
@@ -107,17 +106,15 @@ public class OotdService {
 //            System.out.println();
 //            System.out.println();
 //            System.out.println(createTime.toString());
-
-            ArticlePhoto articlePhoto = articlePhotoRepository.findById(ootd.getId()).orElseThrow();
+            System.out.println(Ootds);
+            List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
 
             OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-                    .createTime(ootd.getCreateTime())
-                    .dtype(ootd.getDtype())
                     .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(articlePhoto.getImageUrl())
+                            .imageUrl(responsePhoto.get(0).getImageUrl())
                             .build())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                     .userId(ootd.getUser().getId())
