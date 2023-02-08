@@ -1,129 +1,96 @@
-import { 
-    RoundProfileImage, 
-    ProfileImageBox,
-    UpperProfile, 
-    OotdDetailImage, 
-    UpperImage, 
-    UpperLikeContainer,
-    LikeContainer,
-    AlertContainer,
-    CommentProfileImage,
-    UpperComment,
-    ClosetInput,
-} from './ootd-comment.styles'
+import {
 
+  ProfileImageBox,
+  UpperProfile,
+
+  UpperLikeContainer,
+  LikeContainer,
+  AlertContainer,
+
+} from "./ootd-comment.styles";
+
+import OotdCommentList from "../ootd-comment-list/ootd-comment-list.component";
 import { ReactComponent as Like } from "../../assets/like.svg";
-import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
-import {ReactComponent as Alert} from "../../assets/alert.svg"
-import { useState, useRef } from 'react'
-import { data } from 'dom7';
-import Swal from 'sweetalert2';
-import { useCallback } from 'react';
+import { ReactComponent as DetailComment } from "../../assets/detail-comment.svg";
+import { ReactComponent as Alert } from "../../assets/alert.svg";
+import { useState, useRef } from "react";
+import { data } from "dom7";
+import Swal from "sweetalert2";
+import { useCallback } from "react";
+import OotdCommentCreate from "../ootd-comment-create/ootd-comment-create.component";
 
-const OotdComment=()=>{
-    const [value, setValue] = useState({
-        content:''
-    })
-    
-    const onChange = useCallback(
-        (e) => {
-            setValue(e.target.value)
-        },
-        [value]
-    )
+const OotdComment = () => {
+  const [data, setData] = useState([])
 
-    // const onSubmit = useCallback(
-    //     e=>{
-    //         onInsert(value.name, value.content);
-    //         setValue({
-    //             content: ''
-    //         })
-    //         e.preventDefault();
-    //     },
-    //     [onInsert, value],
-    // )
+  const dataId = useRef(0);
 
-    
-    
+  const OnCreate = (content)=> {
+    const created_date = new Date().getTime();
+    const newItem ={
+      content,
+      created_date,
+      id: dataId.current
+    }
+    dataId.current += 1
+    setData([newItem, ...data])
+  }
 
-    
 
-    const dataId = useRef(0)
-    
-    // const Oncreate = (content)=> {
-    //     const created_date = new Date().getTime();
-    //     const newItem= {
-    //         // author,
-    //         content,
-    //         created_date,
-    //         id: dataId.current
-    //     }
-    //     dataId.current += 1; 
-    //     setCommentData([newItem, ...data ])
-    //     content.preventDefault();
-    // }
 
-    // const handleSubmit = ()=> {
-    //     if (commentData.content.length < 3) {
-    //         alert("저장 성공")
-    //         setCommentData({
-    //             // author:"",
-    //             content:"",
-    //         })                   
-    //     }
-    // }
 
-    const Report = ()=>{
-        Swal.fire({
-          title:'신고',
-          text: "해당 댓글을 신고하시겠습니까?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: '신고하기'    
-        }).then((result)=>{
-          if (result.isConfirmed) {
-            Swal.fire(
-              "신고하였습니다."
-            )
-          }
-        })
+  
+  const Report = () => {
+    Swal.fire({
+      title: "신고",
+      text: "해당 댓글을 신고하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "신고하기",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("신고하였습니다.");
       }
+    });
+  };
 
-    return (
-        <div>
-            <h1>OOTD 댓글 페이지</h1>
-            <hr/>
+  return (
+    <div>
+      <h1>OOTD 댓글 페이지</h1>
+      <hr />
       <UpperProfile>
         <ProfileImageBox />
         MyNameIsMr.Umm
-      
-            <UpperLikeContainer>
-                <LikeContainer>
-                  <Like />
-                  <DetailComment/>             
-                </LikeContainer>
-                <AlertContainer>
-                    <Alert onClick={Report}/>
-                </AlertContainer>
-            </UpperLikeContainer>
+        <UpperLikeContainer>
+          <LikeContainer>
+            <Like />
+            <DetailComment />
+          </LikeContainer>
+          <AlertContainer>
+            <Alert onClick={Report} />
+          </AlertContainer>
+        </UpperLikeContainer>
       </UpperProfile>
 
-      <UpperComment>
+    <OotdCommentList commentList={data}/>
+    <OotdCommentCreate onCreate={OnCreate}/>
+     
+      {/* <UpperComment>
         <CommentProfileImage></CommentProfileImage>
 
-        <ClosetInput 
-        type="text"
-        autoFocus maxLength={50} 
-        placeholder="댓글 달기..."
-        value={value.content}
-        onChange={onChange}
+        <ClosetInput
+          type="text"
+          autoFocus
+          maxLength={50}
+          placeholder="댓글 달기..."
+          value={value.content}
+          onChange={onChange}
         />
         <button type="submit">저장</button>
-      </UpperComment>
-        </div>
-    )
-}
+      </UpperComment> */}
+    </div>
+  );
+};
 
-export default OotdComment
+export default OotdComment;
