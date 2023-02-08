@@ -55,7 +55,7 @@ const Login = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: 'http://localhost:8080/user/login',
+        url: 'http://localhost:8080/api/user/login',
         data: {
           email,
           password,

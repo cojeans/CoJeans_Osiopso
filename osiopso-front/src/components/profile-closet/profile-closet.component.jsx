@@ -37,7 +37,7 @@ const ProfileCloset = () => {
 	const getClosetList = () => {
 		axios({
 					method: "post",
-					url: "http://localhost:8080/closet/mylist",
+					url: "http://localhost:8080/api/closet/mylist",
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},
