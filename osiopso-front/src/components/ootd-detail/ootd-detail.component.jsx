@@ -16,15 +16,54 @@ import { ReactComponent as Like } from "../../assets/like.svg";
 import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
 import {ReactComponent as Alert} from "../../assets/alert.svg"
 import Swal from "sweetalert2";
-// const ootdDetail = [
-//     'https://www.kdfnews.com/news/photo/202202/87406_87382_2149.jpg'
-// ]
+
+import axios from "axios";
+
+import { useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../store/user/user.selector';
+import { useEffect, useState } from "react";
+
+const defaultData = {
+  comments: [],
+  content: '',
+  
+}
+
 
 const OotdDetail = () => {
   const navigate = useNavigate();
   const goToOotdComment = ()=>{
     navigate("/ootd/comment")
   }
+
+  const location = useLocation();
+  const id = location.state.id;
+
+  const Token = useSelector(selectUser)
+  const [ootdDetail, setOotdDetail]= useState(defaultData)
+
+  const getDetailOotd = () => {
+    axios({
+      method: "get",
+      url: `http://localhost:8080/api/feed/ootd/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data.responseData)
+        setOotdDetail(res.data.responseData)
+      })
+      .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  useEffect(() => {
+    getDetailOotd()
+  },[])
+
   const Report = ()=>{
     Swal.fire({
       title:'신고',
@@ -55,17 +94,21 @@ const OotdDetail = () => {
             <UpperLikeContainer>
                 <LikeContainer>
                   <Like />
-                  <DetailComment onClick={goToOotdComment}/>             
+                <DetailComment onClick={goToOotdComment} />  
+            <span>{ ootdDetail.comments.length}</span>
                 </LikeContainer>
                 <AlertContainer>
                     <Alert onClick={Report}/>
                 </AlertContainer>
-            </UpperLikeContainer>
+        </UpperLikeContainer>
+        <div>
+          { ootdDetail.content}
+        </div>
       </UpperImage>
 
       <UpperComment>
         <CommentProfileImage></CommentProfileImage>
-        <ClosetInput type="text" autoFocus maxLength={50} value="댓글 입력하기.."/>
+        <ClosetInput type="text" autoFocus maxLength={50} />
       </UpperComment>
     </div>
   );

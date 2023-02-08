@@ -28,25 +28,31 @@ const Ootd = () => {
   const navigate = useNavigate();
   const Token = useSelector(selectUser)
 
-  const goToOotdDetail = () => {
-    navigate("detail");
+  const goToOotdDetail = (id) => {
+    console.log(id)
+    navigate("detail/" + id, {
+      state: {
+        id:id
+      }
+    });
   };
 
   const [ootdArticle, setOotdArticle] = useState([])
   const getOotdAxios = () => {
     axios({
       method: "get",
-      url: "http://localhost:8080/feed/ootd",
+      url: "http://localhost:8080/api/feed/ootd",
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
     })
       .then((res) => {
         console.log(res.data.responseData)
-        setOotdArticle(res.data.responseData)
+        setOotdArticle(res.data.responseData.reverse())
       })
       .catch((err) => {
       console.log(err)
+      
     })
   }
   
@@ -70,16 +76,16 @@ const Ootd = () => {
       <OotdList>
         {ootdArticle.map((el, idx) => {
           return (
-            <Container key={idx} onClick={goToOotdDetail}>
-              <img src={el} alt="" />
+            <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
+              <img src={`${el.photo.storeFilename}`}alt="" />
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>
                     <Comment />
                   </CommentContainer>
-                  <p>182</p>
+                  <p>{ el.commentCnt}</p>
                 </UpperCommentContainer>
-                <p>11h</p>
+                <p>{ el.createTime }</p>
               </UpperupperCommentContainer>
             </Container>
           );

@@ -83,7 +83,7 @@ const OotdCreate = () => {
 
     axios({
       method: "post",
-      url: "http://localhost:8080/feed/ootd",
+      url: "http://localhost:8080/api/feed/ootd",
       data: formData,
       headers: {
         Authorization: `Bearer ${Token.token}`,
