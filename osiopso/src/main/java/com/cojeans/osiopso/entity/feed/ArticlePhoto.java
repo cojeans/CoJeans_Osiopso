@@ -15,10 +15,8 @@ public class ArticlePhoto {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(name = "origin_filename")
-    private String originFilename;
-    @Column(name = "store_filename")
-    private String storeFilename;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ARTICLE_ID")

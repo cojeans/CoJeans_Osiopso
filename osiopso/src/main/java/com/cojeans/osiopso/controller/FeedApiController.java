@@ -53,11 +53,11 @@ public class FeedApiController {
     }
 
     @PostMapping("/ootd")
-    public ResponseEntity<?> createOotd(@RequestPart("ootd") OotdRequestDto ootdRequestDto,
-                                        @RequestPart("picture") List<MultipartFile> pictures,
+    public ResponseEntity<?> createOotd(@RequestBody OotdRequestDto ootdRequestDto,
                                         @AuthenticationPrincipal UserDetail user) {
 
-        if (ootdService.createOotd(ootdRequestDto, pictures, user.getId())) {
+
+        if (ootdService.createOotd(ootdRequestDto, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createArticle Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -140,10 +140,9 @@ public class FeedApiController {
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
     public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo,
-                                      @RequestPart("ootd") OotdRequestDto ootdRequestDto,
-                                      @RequestPart("picture") List<MultipartFile> pictures,
+                                      @RequestBody OotdRequestDto ootdRequestDto,
                                       @AuthenticationPrincipal UserDetail user) {
-        if (ootdService.editOotd(articleNo, ootdRequestDto, pictures, user.getId())){
+        if (ootdService.editOotd(articleNo, ootdRequestDto, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "editOotd Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editOotd Fail", null), HttpStatus.NOT_ACCEPTABLE);

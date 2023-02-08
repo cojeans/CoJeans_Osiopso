@@ -2,7 +2,6 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
-import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.entity.comment.Cocomment;
@@ -36,7 +35,7 @@ public class AdviceService {
     private final CommentRepository commentRepository;
 
 
-    public boolean createAdvice(AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long id) {
+    public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
 
 

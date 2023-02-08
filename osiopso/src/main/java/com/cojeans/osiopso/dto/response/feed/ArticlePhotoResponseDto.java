@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ArticlePhotoResponseDto {
-    private String originFilename;
-    private String storeFilename;
+    private String imageUrl;
 
 }

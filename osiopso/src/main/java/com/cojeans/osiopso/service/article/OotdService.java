@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.service.article;
 
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
@@ -22,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class OotdService {
     private final CommentRepository commentRepository;
     private final CocommentRepository cocommentRepository;
 
-    public boolean createOotd(OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long id) {
+    public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
 
         // 게시물 저장
@@ -54,23 +57,16 @@ public class OotdService {
 
 
         // 사진 저장
-        for (MultipartFile picture : pictures) {
-            String path = System.getProperty("user.dir"); // 현재 디렉토리
-            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+        List<ArticlePhotoRequestDto> urls = ootdRequestDto.getUrls();
 
-            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            try {
-                picture.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        for (ArticlePhotoRequestDto url : urls) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(file.getPath())
-                    .originFilename(file.getName())
+                    .imageUrl(url.getImageUrl())
                     .article(ootdSaved)
                     .build());
         }
+
+
 
         // 태그 저장
         List<ArticleTagRequestDto> tags = ootdRequestDto.getTags();
@@ -95,9 +91,22 @@ public class OotdService {
     public List<OotdListResponseDto> listOotd() {
         List<Article> Ootds = articleRepository.findAllByDtype("O");
         List<OotdListResponseDto> list = new ArrayList<>();
+        Date date = new Date();
 
         // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
         for (Article ootd : Ootds) {
+
+            Date createTime = ootd.getCreateTime();
+            long time = createTime.getTime();
+            long time1 = date.getTime();
+
+//            System.out.println(createTime.);
+            System.out.println(date);
+            System.out.println(time1 - time);
+
+            System.out.println();
+            System.out.println();
+            System.out.println(createTime.toString());
 
             ArticlePhoto articlePhoto = articlePhotoRepository.findById(ootd.getId()).orElseThrow();
 
@@ -108,8 +117,7 @@ public class OotdService {
                     .createTime(ootd.getCreateTime())
                     .dtype(ootd.getDtype())
                     .photo(ArticlePhotoResponseDto.builder()
-                            .storeFilename(articlePhoto.getStoreFilename())
-                            .originFilename(articlePhoto.getOriginFilename())
+                            .imageUrl(articlePhoto.getImageUrl())
                             .build())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                     .userId(ootd.getUser().getId())
@@ -131,8 +139,7 @@ public class OotdService {
 
         for (ArticlePhoto ap : photoEntityList) {
             photoResponseDtoList.add(ArticlePhotoResponseDto.builder()
-                    .originFilename(ap.getOriginFilename())
-                    .storeFilename(ap.getStoreFilename())
+                    .imageUrl(ap.getImageUrl())
                     .build());
         }
 
@@ -229,7 +236,7 @@ public class OotdService {
     }
 
 
-    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long userId) {
+    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, Long userId) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         // 게시글 작성자만 수정권한이 있다.
@@ -310,23 +317,17 @@ public class OotdService {
         articlePhotoRepository.deleteAllByArticle_Id(articleNo);
 
         // 새로운 게시물 사진 추가
-        for (MultipartFile picture : pictures) {
-            String path = System.getProperty("user.dir"); // 현재 디렉토리
-            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+        List<ArticlePhotoRequestDto> urls = ootdRequestDto.getUrls();
 
-            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            try {
-                picture.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        for (ArticlePhotoRequestDto url : urls) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(file.getPath())
-                    .originFilename(file.getName())
+                    .imageUrl(url.getImageUrl())
                     .article(ootd)
                     .build());
         }
+
+
+
 
 
         articleRepository.save(Ootd.builder()
@@ -369,8 +370,7 @@ public class OotdService {
                 ootdSearchResponseDtoList.add(OotdSearchResponseDto.builder()
                                 .articleNo(articleTag.getArticle().getId())
                         .photo(ArticlePhotoResponseDto.builder()
-                                .storeFilename(articlePhoto.getStoreFilename())
-                                .originFilename(articlePhoto.getOriginFilename())
+                                .imageUrl(articlePhoto.getImageUrl())
                                 .build())
                         .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                         .likeCnt((long) articleLikeRepository.findAllByArticle_Id(ootd.getId()).size())

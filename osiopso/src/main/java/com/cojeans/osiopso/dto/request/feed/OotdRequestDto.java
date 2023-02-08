@@ -13,4 +13,5 @@ public class OotdRequestDto {
 
     private List<ArticleTagRequestDto> tags;
     private String content;
+    private List<ArticlePhotoRequestDto> urls;
 }
