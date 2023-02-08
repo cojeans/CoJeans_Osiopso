@@ -4,6 +4,8 @@ import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @Builder
 public class OotdListResponseDto {
@@ -12,8 +14,10 @@ public class OotdListResponseDto {
     private Long userId;
 
     // 지금 시간 - createdTime
+    private Date createTime;
     private Long time;
-    private ArticlePhotoRequestDto photo;
+    private ArticlePhotoResponseDto photo;
+    private Long commentCnt;
     private int hit;
     private String content;
     private boolean isSelected;
