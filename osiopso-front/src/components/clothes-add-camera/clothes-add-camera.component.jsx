@@ -151,7 +151,7 @@ const CameraPage = () => {
     })
     // capOff()
 
-      }
+  }
       const onNavigateHandler = () => {
         dispatch(upload(imgData))
         navigate(-1)
