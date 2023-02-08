@@ -27,6 +27,9 @@ import {
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
 import Modal from '../modal/modal.component';
 
+import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../utils/utils';
+
 const defaultOotdForm = {
   content: '',
   picture: '',
@@ -43,14 +46,22 @@ const OotdCreate = () => {
   const { content, picture, tags }= ootdFormData
   const imgRef = useRef();
 
-  	const saveImgFile = () => {
-		const file = imgRef.current.files[0];
+  	const saveImgFile = async () => {
+    const file = imgRef.current.files[0];
+    const uploaded_file = await uploadBytes(
+                fref(storage, `images/${file}`),
+                file,
+      );
+    console.log(uploaded_file ,'testing')
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
       reader.onloadend = () => {
         setOotdImg(reader.result)
-        setOotdFormData({...ootdFormData, picture:file})
-		};
+      };
+      const file_url = await getDownloadURL(uploaded_file.ref)
+      console.log(file_url)
+      setOotdFormData({...ootdFormData, picture:file_url})
+
   };
   const handleChange = (e) => {
     const { name, value } = e.target
