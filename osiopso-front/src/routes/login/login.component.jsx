@@ -102,10 +102,10 @@ const Login = () => {
         />
         
         <ButtonsContainer>
-          <Button type='submit'>Sign In</Button>
-          <button onClick={LoginFunc}>
+          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
+          {/* <button onClick={LoginFunc}>
             test
-          </button>
+          </button> */}
         </ButtonsContainer>
     </SignInContainer>
   );

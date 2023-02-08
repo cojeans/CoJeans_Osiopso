@@ -22,8 +22,9 @@ const ClothesAddPicture = () => {
 	const onNavigateHandler2 = () => navigate(
 		'selectbox/'
 	)
+	//////////////////////////////////////////////////////////////
 	const saveData = useSelector(selectClothes)
-
+	//////////////////////////////////////////////////////////////
 	const imgRef = useRef();
 
 	useEffect(() => {
