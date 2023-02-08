@@ -1,7 +1,16 @@
 import styled from "styled-components";
 
+export const TotalContentBox = styled.div`
+margin: 20px 0px 20px;
+`
+export const WearLikeThisBox = styled.div`
+img{
+  width: 150px; 
+  height: 150px;
+}
+margin: 10px;
+`
 export const RoundProfileImage = styled.div`
-
 width: 150px;
 height: 150px;
 border-radius: 70%;
@@ -19,7 +28,27 @@ export const ProfileImageBox = styled.img.attrs({
 
   export const UpperProfile = styled.div`
   display: flex;
-  align-items: center;
+  `
+  export const ProfileAndName = styled.div`
+  display: flex;
+  width: 20%;
+  `
+  export const ProfileName = styled.div`
+  display:flex;
+  margin-top: 20px;
+  `
+  export const LikeDislikeBox = styled.div`
+  display:flex;
+  margin: 0px 5px 0px;
+  `
+  export const AdviceBox = styled.div`
+  display:flex;
+  margin-top: 12%; 
+  flex-direction: column;
+  align-items: flex-start;
+  `
+  export const AdviceContent = styled.div`
+  display: flex;
   `
 
   export const OotdDetailImage = styled.img.attrs({
@@ -41,26 +70,31 @@ export const ProfileImageBox = styled.img.attrs({
   height: 100%;
   padding-left: 70px;
   padding-right: 70px;
-  justify-content: space-around;
+  justify-content: space-between;
   `
   export const LikeContainer = styled.div`
-    display: flex;
-    width: 30%;
-    // height:70px;    
+  display: flex;
+    width: 70px;
+    height:70px;
+    margin-top: 7%;
+    align-items: flex-start;
     svg{
-      width:100%;
+      width:70%;
       height:100%;
     }
   `
-  export const EachIcon = styled.div`
+  export const Box = styled.div`
+  display: flex;
+  width: 130px;
 
-  margin: 0px 5px 0px;
   `
+
   export const AlertContainer = styled.div`
   display:flex;
   width: 20px;
   height:20px;
   align-items: center;
+  margin-top: 5%;
   `
 
   export const CommentProfileImage = styled.img.attrs({
@@ -88,4 +122,17 @@ export const ProfileImageBox = styled.img.attrs({
   export const HunsuButton = styled.div`
   display: flex;
   justify-content: center;
+  `
+  export const BottomBox = styled.div`
+  display:flex;
+  height: 100px;
+  border: 1px solid black;
+  background-color: #FFE3EE;
+  `
+  export const AdviceClothes = styled.div`
+  img{
+    margin: 0px 8px 0px;
+    width: 90px; 
+    height: 90px;
+  }
   `
