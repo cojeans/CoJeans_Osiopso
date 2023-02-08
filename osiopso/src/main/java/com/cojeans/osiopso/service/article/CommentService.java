@@ -64,6 +64,7 @@ public class CommentService {
 
         // 대댓글을 달려는 댓글 번호가 cocomment DB에 등록되어 있지 않다면, 그 댓글은 rootComment 이다.
         if (cocomment == null) {
+            System.out.println("commentNo: " + commentNo);
             Comment savedComment = commentRepository.save(Comment.builder()
                     .user(user)
                     .content(dto.getContent())
@@ -94,28 +95,6 @@ public class CommentService {
                     .build());
         }
         return true;
-//        // 만약 rootComment 라면?
-//        if (comment.getDepth() == 0L) {
-//            commentRepository.save(Comment.builder()
-//                    .user(user)
-//                    .content(dto.getContent())
-//                    .article(article)
-//                    .depth(1L)
-//                    .report(0L)
-//                    .rootId(commentNo)
-//                    .mentionId(commentNo)
-//                    .build());
-//        } else { // 대댓글에 다는 대대댓글일 경우..
-//            commentRepository.save(Comment.builder()
-//                    .user(user)
-//                    .content(dto.getContent())
-//                    .article(article)
-//                    .depth(1L)
-//                    .report(0L)
-//                    .rootId(comment.getRootId()) // 대댓글에 대한 rootId를 rootId로..
-//                    .mentionId(commentNo)
-//                    .build());
-//        }
     }
 
 
@@ -141,12 +120,13 @@ public class CommentService {
         return true;
     }
 
-    public boolean deleteComment(Long commentno, Long articleno, Long userId) {
+    public boolean deleteComment(Long articleno, Long commentno, Long userId) {
         Article article = articleRepository.findById(userId).orElseThrow();
         Comment comment = commentRepository.findById(commentno).orElseThrow();
 
         // 게시글 작성자만 삭제권한이 있다.
         if (userId != article.getUser().getId()) {
+            System.out.println(userId + ", " + article.getUser().getId());
             return false;
         }
 
@@ -183,38 +163,36 @@ public class CommentService {
             end = size;
         }
 
-        System.out.println(start + ", " + end);
+        System.out.println(start + ", " + end + ", " + rootId);
 
         // 대댓글 중, rootId가 일치하는 row들 start - end 까지 가져온다.
         List<Cocomment> cocommentList = cocommentRepositoryImpl.findByRootId(rootId, start, end);
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
+        System.out.println(cocommentList.size());
+
+        List<CommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
         for (Cocomment cocomment : cocommentList) {
-            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
-            // 대댓글 rootId를 통해 댓글을 가져온다.
+            // 대댓글 commentId 통해 댓글을 가져온다.
             Comment comment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+
+            System.out.println(comment.getId());
 
             // 대댓글 DTO 생성
             cocommentResponseDtoList.add(CocommentResponseDto.builder()
-                    .depth(cocomment.getDepth())
-                    .rootId(cocomment.getRootId())
-                    .mentionId(cocomment.getMentionId())
-                    .build());
-
-
-            commentResponseDtoList.add(CommentResponseDto.builder()
                     .commentId(comment.getId())
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
-                    .cocoments(cocommentResponseDtoList)
+                    .depth(cocomment.getDepth())
+                    .rootId(cocomment.getRootId())
+                    .mentionId(cocomment.getMentionId())
                     .build());
         }
 
-        System.out.println(commentResponseDtoList.size());
+        System.out.println(cocommentResponseDtoList.size());
 
-        return commentResponseDtoList;
+        return cocommentResponseDtoList;
     }
 }

@@ -13,4 +13,6 @@ public interface CocommentRepository extends JpaRepository<Cocomment, Long> {
     List<Cocomment> findAllByComment_Id(Long id);
     void deleteAllByRootId(Long commentno);
     List<Cocomment> findAllByRootId(Long rootId);
+
+    List<Cocomment> findAllByMentionId(Long id);
 }

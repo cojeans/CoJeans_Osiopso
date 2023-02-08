@@ -130,6 +130,7 @@ public class OotdService {
                     .build());
         }
 
+
         // 게시물 좋아요 가져오기
         // DataFormat) x 유저가 좋아요를 눌렀다.
         List<ArticleLike> articleLikeList = articleLikeRepository.findAllByArticle_Id(articleNo);
@@ -148,16 +149,30 @@ public class OotdService {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         for (Comment comment : commentList) {
-            List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
-            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
-
-            if (cocommentResponseDtoList.size() == 3) {
-                break;
+            // 대댓글인 경우에는 continue
+            if (cocommentRepository.findByComment_Id(comment.getId()) != null){
+                continue;
             }
 
-            for (Cocomment cocomment : cocomentList) {
+            List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
+
+
+            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
+
+            for (Cocomment cocomment : cocommentList) {
+                System.out.println(cocommentResponseDtoList.size());
+                if (cocommentResponseDtoList.size() == 3) {
+                    break;
+                }
+
+                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .commentId(getComment.getId())
+                        .content(getComment.getContent())
+                        .userId(getComment.getUser().getId())
+                        .report(getComment.getReport())
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
