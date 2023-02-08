@@ -11,8 +11,8 @@ import java.util.List;
 public interface CocommentRepository extends JpaRepository<Cocomment, Long> {
     Cocomment findByComment_Id(Long commentNo);
     List<Cocomment> findAllByComment_Id(Long id);
-
-
     void deleteAllByRootId(Long commentno);
+    List<Cocomment> findAllByRootId(Long rootId);
 
+    List<Cocomment> findAllByMentionId(Long id);
 }

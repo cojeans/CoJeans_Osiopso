@@ -100,7 +100,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 
 		axios({
 			method: "post",
-			url: "http://localhost:8080/closet",
+			url: "http://localhost:8080/api/closet",
 			data: {
 				name: payload.name,
 				isSelected:payload.isSelected,

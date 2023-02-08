@@ -143,16 +143,19 @@ public class AdviceService {
         List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
+        // 해당 게시물에 달린 모든 댓글 리스트
         for (Comment comment : commentList) {
+            // 해당 댓글에 달린 대댓글 리스트
             List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+
             for (Cocomment cocomment : cocomentList) {
-                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
+                System.out.println(cocommentResponseDtoList.size());
                 if (cocommentResponseDtoList.size() == 3) {
                     break;
                 }
-
+                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())

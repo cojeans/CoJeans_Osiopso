@@ -96,16 +96,22 @@ public class OotdService {
         List<Article> Ootds = articleRepository.findAllByDtype("O");
         List<OotdListResponseDto> list = new ArrayList<>();
 
-
         // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
         for (Article ootd : Ootds) {
+
+            ArticlePhoto articlePhoto = articlePhotoRepository.findById(ootd.getId()).orElseThrow();
+
             OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-//                    .createTime(ootd.getCreateTime())
-//                    .dtype(ootd.getDtype())
-//                    .modifyTime(ootd.getModifyTime())
+                    .createTime(ootd.getCreateTime())
+                    .dtype(ootd.getDtype())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .storeFilename(articlePhoto.getStoreFilename())
+                            .originFilename(articlePhoto.getOriginFilename())
+                            .build())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                     .userId(ootd.getUser().getId())
                     .build();
 
@@ -130,6 +136,7 @@ public class OotdService {
                     .build());
         }
 
+
         // 게시물 좋아요 가져오기
         // DataFormat) x 유저가 좋아요를 눌렀다.
         List<ArticleLike> articleLikeList = articleLikeRepository.findAllByArticle_Id(articleNo);
@@ -148,16 +155,30 @@ public class OotdService {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         for (Comment comment : commentList) {
-            List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
+            // 대댓글인 경우에는 continue
+            if (cocommentRepository.findByComment_Id(comment.getId()) != null){
+                continue;
+            }
+
+            List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
+
+
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
-            for (Cocomment cocomment : cocomentList) {
-                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
+            for (Cocomment cocomment : cocommentList) {
+                System.out.println(cocommentResponseDtoList.size());
                 if (cocommentResponseDtoList.size() == 3) {
                     break;
                 }
 
+                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+
+                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .commentId(getComment.getId())
+                        .content(getComment.getContent())
+                        .userId(getComment.getUser().getId())
+                        .report(getComment.getReport())
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
