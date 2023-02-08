@@ -27,9 +27,9 @@ const ClothesAddPicture = () => {
 	//////////////////////////////////////////////////////////////
 	const imgRef = useRef();
 
-	useEffect(() => {
-		dispatch(upload('https://pixlr.com/images/index/remove-bg.webp'))	
-	}, [])
+	// useEffect(() => {
+	// 	dispatch(upload('https://pixlr.com/images/index/remove-bg.webp'))	
+	// }, [])
 	
 	// 이미지 업로드 input의 onChange
 	const saveImgFile = () => {
@@ -46,7 +46,7 @@ const ClothesAddPicture = () => {
 		<	AddPictureBody>
 			<p>등록하고 싶은 옷을 업로드해주세요</p>
 			<PrevUploadImg>
-				<img src={saveData} alt="" />
+				<img src={saveData} alt="https://pixlr.com/images/index/remove-bg.webp" />
 			</PrevUploadImg>
 			<ExampleContainer>
 				<ExampleBox>

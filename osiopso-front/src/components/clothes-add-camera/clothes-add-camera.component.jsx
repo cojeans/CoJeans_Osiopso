@@ -111,7 +111,7 @@ const CameraPage = () => {
       setIsLoading(true);
       const callAxios = () => {
 
-        const res = axios({
+          axios({
           // url: `${process.env.REACT_APP_BASE_URL}/v1.0/removebg`,
           url: "https://api.remove.bg/v1.0/removebg",
           method: "post",
@@ -125,22 +125,20 @@ const CameraPage = () => {
         headers: {
           // "X-Api-Key": process.env.REACT_APP_XAPIKEY,
           // "X-Api-Key":  'PnDSvC4k3ngFj8ToFfvgsEkw',
-          "X-Api-Key":  'pq1tqANSxrre5Ew6kLmHDy9z',
+          // "X-Api-Key":  'pq1tqANSxrre5Ew6kLmHDy9z',
+          "X-Api-Key":  'PzbMyVS4F5y7n1kg9TP2eMau',
         },
         responseType: "blob",
         encoding: null,
       })
       .then((response) => {
         setImgData(URL.createObjectURL(response.data));
-        dispatch(upload(imgData))
-        console.log('imgData', imgData)
-        setTimeout(5000)
-        navigate(-1)
+        // setTimeout(5000)
+        // navigate(-1)
         
       })
       .catch((e) => console.log(e, "something missing"));
       // setImgData(URL.createObjectURL(res))
-      console.log(imgData)
       // navigate(-1)
     }
     
@@ -169,34 +167,42 @@ const CameraPage = () => {
       // dispatch(upload(imgData))
       //////////////////////////////////////////////
       callAxios()
+      dispatch(upload(imgData))
+
+
       // (async () => {
       //   let aa = await callAxios();
       //   let bb = await navigate(-1);
       // })
     })
     capOff()
-
     // console.log(imgData)
-
+    
     // const saveData = useSelector(selectClothes)
     // console.log(saveData)
     // if (isLoading === true) {
       //   console.log('--------------------------------------------')
       //   dispatch(upload(imgData))
-    // }
-    // navigate(-1)
-    // setTimeout(function() {
-      //   navigate(-1)
-      // }, 3000)
-    }
-    
+      // }
+      // navigate(-1)
+      // setTimeout(function() {
+        //   navigate(-1)
+        // }, 3000)
+      }
+      const onNavigateHandler = () => {
+        navigate(-1)
+        dispatch(upload(imgData))
+      }
+      
     return (
       <CameraContainer>
 			<Video id="vid" autoPlay></Video>
       {/* <img src="imgData" alt="bgremoved" /> */}
-			<button onClick={onCapture}>촬영</button>
       <img alt="bgremoved" src={imgData} />
-
+			<button onClick={onCapture}>촬영</button>
+      {imgData && <button id='my-btn' onClick={onNavigateHandler} >
+        이동
+      </button>}
 			{/* <br /> */}
 			{/* <button onClick={capOff}>Turn Capture Off</button> */}
 			{/* <button onClick={camON}>Turn Capture ON</button> */}
