@@ -113,17 +113,9 @@ public class ClosetApiController {
 
     // =================================== 옷 관련 ===================================
     // 1. C : 옷 등록
-//    @PostMapping("/clothes")
-//    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다.")
-//    public ResponseEntity<String> createClothes(@RequestBody ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user){
-//        LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
-//
-//        if(clothesService.createClothes(clothesRequestDto, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//        return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
-//    }
     @PostMapping("/clothes")
-    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다.")
-    public ResponseEntity<String> createClothes(@RequestPart("clothes") ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user) throws IOException {
+    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다. closets, colors, seasons, tags 모두 id만 보내도 됨")
+    public ResponseEntity<String> createClothes(@RequestBody ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user) throws IOException {
         LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
 
         if(clothesService.createClothes(clothesRequestDto, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
