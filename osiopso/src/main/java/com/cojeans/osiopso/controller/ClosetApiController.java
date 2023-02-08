@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -124,10 +123,10 @@ public class ClosetApiController {
 //    }
     @PostMapping("/clothes")
     @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다.")
-    public ResponseEntity<String> createClothes(@RequestPart("clothes") ClothesRequestDto clothesRequestDto, @RequestPart("picture") MultipartFile picture, @AuthenticationPrincipal UserDetail user) throws IOException {
+    public ResponseEntity<String> createClothes(@RequestPart("clothes") ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user) throws IOException {
         LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
 
-        if(clothesService.createClothes(clothesRequestDto, picture, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        if(clothesService.createClothes(clothesRequestDto, user.getId()) != null) return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
     }
 

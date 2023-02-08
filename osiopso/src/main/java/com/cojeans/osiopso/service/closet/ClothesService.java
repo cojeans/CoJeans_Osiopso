@@ -43,29 +43,16 @@ public class ClothesService {
     // 파라미터 : 카테고리, 사진1, 누구? / 옷장, 색깔, 스타일태그, TPO태그
     // 카테고리를 제외한 파라미터는 각각 repo.save 작업 필요
     // return pk
-    public Long createClothes(ClothesRequestDto clothesRequestDto, MultipartFile picture, Long uid) throws IOException {
+    public Long createClothes(ClothesRequestDto clothesRequestDto, Long uid) throws IOException {
         System.out.println("Create Clothes Service : " + clothesRequestDto);
 
         User user = userRepository.getById(uid);
-        // 옷
-        String path = System.getProperty("user.dir"); // 현재 디렉토리
-        File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
-        
-        if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-        picture.transferTo(file);
-
-        ClothesDetailResponseDto clothesDto = ClothesDetailResponseDto.builder()
-                .category(clothesRequestDto.getCategory())
-                .originFilename(file.getName())
-                .storeFilename(file.getPath())
-                .build();
 
         Clothes clothes = clothesRepository.save(new Clothes().builder()
-                        .category(clothesDto.getCategory())
-                        .originFilename(file.getName())
-                        .storeFilename(file.getPath())
-                        .user(user)
-                        .build());
+                .category(clothesRequestDto.getCategory())
+                .originImgUrl(clothesRequestDto.getOriginImgUrl())
+                .user(user)
+                .build());
 
         Long clothesId = clothes.getId();
 
@@ -172,8 +159,7 @@ public class ClothesService {
         return ClothesDetailResponseDto.builder()
                 .id(clothesNo)
                 .category(clothes.getCategory())
-                .originFilename(clothes.getOriginFilename())
-                .storeFilename(clothes.getStoreFilename())
+                .originImgUrl(clothes.getOriginImgUrl())
                 .closets(closets)
                 .colors(colors)
                 .seasons(seasons)
@@ -190,8 +176,7 @@ public class ClothesService {
         Clothes clothes = new Clothes().builder()
                 .id(id)
                 .category(clothesRequestDto.getCategory())
-                .originFilename(clothesRequestDto.getOriginFilename())
-                .storeFilename(clothesRequestDto.getStoreFilename())
+                .originImgUrl(clothesRequestDto.getOriginImgUrl())
                 .user(user)
                 .build();
 
