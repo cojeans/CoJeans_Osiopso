@@ -8,7 +8,7 @@ const OOTDPage = () => {
     return (
         <Routes>
             <Route index element={<Ootd/>} />
-            <Route path="/detail" element={<OotdDetail/>} />
+            <Route path="/detail/*" element={<OotdDetail/>} />
             <Route path="/create" element={<OotdCreate/>}/>
             <Route path="/comment" element={<OotdComment/>}/>
 
