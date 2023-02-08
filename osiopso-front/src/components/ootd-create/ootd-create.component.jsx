@@ -62,6 +62,11 @@ const OotdCreate = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const goToMain = ()=>{
+    navigate("/")
+  }
+
+
   const submitOotdCreate = (e) => {
     e.preventDefault();
     const formData = new FormData()
@@ -128,7 +133,7 @@ const OotdCreate = () => {
     <div>
       <TopContainer>
         <Xcontainer>
-          <img src={require("../../assets/X.png")} alt="" />
+          <img src={require("../../assets/X.png")} alt="" onClick={goToMain}/>
         </Xcontainer>
         <h3>새 게시물</h3>
       </TopContainer>
