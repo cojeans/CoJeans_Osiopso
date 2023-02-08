@@ -13,6 +13,9 @@ import {
 } from "./ootd.styles";
 import { ReactComponent as Filter } from "../../assets/filter.svg";
 import { ReactComponent as Comment } from "../../assets/comment.svg";
+
+import axios from 'axios'
+import { useState } from "react";
 // import {
 // 	LogoContainer,
 // } from "./navigation.styles"
@@ -32,6 +35,9 @@ const Ootd = () => {
   const goToCheckoutHandler = () => {
     navigate("detail");
   };
+
+  const [ootdArticle, setOotdArticle] = useState([])
+
   return (
     <TopDiv>
       <OotdTopBar>

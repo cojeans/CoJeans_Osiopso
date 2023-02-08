@@ -65,7 +65,7 @@ const Navigation = () => {
 				<Link to='/mypage'>My page</Link> */}
 			</NavigationContainer>
 			{
-				modalOpen && <Modal setModalOpen={setModalOpen} openScroll={ openScroll} />
+				modalOpen && <Modal setModalOpen={setModalOpen} openScroll={openScroll} page={ true } />
 			}
 		</Container>
 	)
