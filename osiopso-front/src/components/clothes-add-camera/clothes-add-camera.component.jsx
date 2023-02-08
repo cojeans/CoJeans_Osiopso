@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { useDispatch } from 'react-redux';
-import { upload } from '../../store/clothes/clothes.reducer';
+import { upload, checkLocal } from '../../store/clothes/clothes.reducer';
 import { useNavigate } from 'react-router';
 
 
@@ -107,7 +107,10 @@ const CameraPage = () => {
           // "X-Api-Key":  'pq1tqANSxrre5Ew6kLmHDy9z',
           // "X-Api-Key":  'PzbMyVS4F5y7n1kg9TP2eMau',
           // "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
-          "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s',
+          // "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s',
+          // "X-Api-Key":  'RPeTWv3UMQeYg9ZSWfqdJPwC',
+          "X-Api-Key":  'xCJE6CPZJE3bM8DeC8CpUcrb'
+
           
         },
         responseType: "blob",
@@ -140,6 +143,8 @@ const CameraPage = () => {
 
       callAxios()
       dispatch(upload(imgData))
+      dispatch(checkLocal(false))
+
 
 
 

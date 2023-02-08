@@ -9,7 +9,7 @@ import {
 import Button from '../button/button.component'
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { upload, checkLocal } from '../../store/clothes/clothes.reducer';
+import { upload } from '../../store/clothes/clothes.reducer';
 import { useNavigate } from 'react-router';
 import { selectClothes, localPhoto } from '../../store/clothes/clothes.selector';
 import axios from "axios";
@@ -28,9 +28,6 @@ const ClothesAddPicture = () => {
 	)
 	const [rawData, setRawData] = useState("");
 	const [imgData, setImgData] = useState("");
-	// useEffect(() => {
-	// 	callAxios()
-	// }, [rawData])
 	//////////////////////////////////////////////////////////////
 	// const saveData = useSelector(selectClothes)
 	const isGallery = useSelector(localPhoto)
@@ -50,22 +47,20 @@ const ClothesAddPicture = () => {
 		const file = imgRef.current.files[0];
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
-		// navigate("after_add")
 		reader.onloadend = () => {
 			// dispatch(upload(reader.result))
 			setRawData(reader.result)
 		};
 		// setGallery(true);
-		console.log(rawData)
+		// callAxios()
 		console.log('success')
-		setImgData('')
-		callAxios()
 	};
 	const saveData = useSelector(selectClothes)
 	// console.log(imgData)
 	// console.log(saveData)
 	const callAxios = () => {
-		// dispatch(upload(''))
+		dispatch(upload(''))
+
 		console.log(rawData)
 		axios({
 			// url: `${process.env.REACT_APP_BASE_URL}/v1.0/removebg`,
@@ -86,20 +81,18 @@ const ClothesAddPicture = () => {
 				// "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
 				// "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s'
 				"X-Api-Key":  'RPeTWv3UMQeYg9ZSWfqdJPwC'
-				// "X-Api-Key":  'xCJE6CPZJE3bM8DeC8CpUcrb'
 			},
 	  responseType: "blob",
 	  encoding: null,
 	})
 	.then((response) => {
-		// setImgData(URL.createObjectURL(response.data));
+		setImgData(URL.createObjectURL(response.data));
 		// setGallery(true);
-		dispatch(upload(URL.createObjectURL(response.data)));
+		// dispatch(upload(URL.createObjectURL(response.data)));
 		
 		
 	})
 	.catch((e) => console.log(e, "something missing"));
-	console.log('success')
 	// console.log(imgData, 'imgData')
 	
 	// console.log(saveData)
@@ -113,7 +106,6 @@ const ClothesAddPicture = () => {
 			<PrevUploadImg>
 				{ !isGallery && saveData && <img src={saveData} alt="https://pixlr.com/images/index/remove-bg.webp" />}
 				{ isGallery && rawData && <img src={rawData} alt="https://pixlr.com/images/index/remove-bg.webp" />}
-				{/* { isGallery && rawData && <img src={rawData} alt="https://pixlr.com/images/index/remove-bg.webp" />} */}
 				{/* {isGallery? (<img src={imgData} alt="https://pixlr.com/images/index/remove-bg.webp" />) :(<img src={saveData} alt="https://pixlr.com/images/index/remove-bg.webp" />)} */}
 			</PrevUploadImg>
 			<ExampleContainer>
@@ -121,7 +113,6 @@ const ClothesAddPicture = () => {
 					<label htmlFor="profileImg">
 						<img src={require('../../assets/upload-image.png')} alt="" />
 						<span>사진 선택</span>
-						
 					</label>
 					<ImageInput
 					type="file"
@@ -134,9 +125,6 @@ const ClothesAddPicture = () => {
 				<ExampleBox onClick={onNavigateHandler}>
 					<img src={require('../../assets/upload-camera.png')} alt="" />
 					<span>사진 촬영</span>
-				</ExampleBox>
-				<ExampleBox onClick={callAxios}>
-					<span>배경 제거</span>
 				</ExampleBox>
 			</ExampleContainer>
 				<Button onClick={onNavigateHandler2}>선택 완료</Button>	
