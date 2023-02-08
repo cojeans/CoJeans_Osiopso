@@ -28,12 +28,14 @@ import {
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
 import Modal from '../modal/modal.component';
 
+
 const defaultOotdForm = {
   content: '',
   picture: '',
   tags :[]
 }
 const AdviceCreate = ()=> {
+
     const Token = useSelector(selectUser)
   
     const [ootdImg, setOotdImg] = useState('')
@@ -60,6 +62,10 @@ const AdviceCreate = ()=> {
   
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const goToHome = ()=> {
+        navigate('/')
+    }
   
     const submitOotdCreate = (e) => {
       e.preventDefault();
@@ -127,7 +133,7 @@ const AdviceCreate = ()=> {
         <div>
         <TopContainer>
           <Xcontainer>
-            <img src={require("../../assets/X.png")} alt="" />
+            <img src={require("../../assets/X.png")} alt="" onClick={goToHome}/>
           </Xcontainer>
           <h3>새 게시물</h3>
         </TopContainer>
@@ -160,7 +166,7 @@ const AdviceCreate = ()=> {
               id=""
               cols="30"
               rows="10" 
-              placeholder='#코딩이 #힘들다'
+              placeholder='글을 작성해주세요'
               onChange={handleChange}
             >
             </textarea>
