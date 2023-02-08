@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.ApiResponseDto;
+import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.security.UserDetail;
@@ -38,18 +39,16 @@ public class FeedApiController {
 
 
     // ====================== CREATE ========================
-    /*@PostMapping("/advice")
-    public ResponseEntity<?> createAdvice(@RequestPart("advice") AdviceRequestDto adviceRequestDto,
-                                          @RequestPart("picture") List<MultipartFile> pictures,
-                                          @AuthenticationPrincipal UserDetail user
-                                          ) {
+    @PostMapping("/advice")
+    public ResponseEntity<?> createAdvice(@RequestBody AdviceRequestDto adviceRequestDto,
+                                          @AuthenticationPrincipal UserDetail user) {
 
-        if (adviceService.createAdvice(adviceRequestDto, pictures, user.getId())) {
+        if (adviceService.createAdvice(adviceRequestDto, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createArticle Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail", null), HttpStatus.NOT_ACCEPTABLE);
         }
-    }*/
+    }
 
     @PostMapping("/ootd")
     public ResponseEntity<?> createOotd(@RequestBody OotdRequestDto ootdRequestDto,
@@ -83,11 +82,11 @@ public class FeedApiController {
     }
 
 
-   /* @GetMapping("/advice/{articleno}")
+    @GetMapping("/advice/{articleno}")
     public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
         AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo);
         return new ResponseEntity(new ApiResponseDto(true, "readAdviceDetail Success", detail), HttpStatus.OK);
-    }*/
+    }
 
 
     @GetMapping("/ootd")
@@ -103,21 +102,22 @@ public class FeedApiController {
     }
 
     // 훈수 게시판 제목 검색
-    /*@GetMapping("/advice/search/subject/{subject}")
+    @GetMapping("/advice/search/subject/{subject}")
     public ResponseEntity<?> searchAdviceBySubject(@PathVariable("subject") String subject){
         List<AdviceSearchResponseDto> result = adviceService.searchAdviceBySubject(subject);
 
         return new ResponseEntity(new ApiResponseDto(true, "searchAdviceBySubject Success", result), HttpStatus.OK);
-    }*/
+    }
 
 
     // 훈수 게시판 내용 기준 검색
-    /*@GetMapping("/advice/search/content/{content}")
+    @GetMapping("/advice/search/content/{content}")
     public ResponseEntity<?> searchAdviceByContent(@PathVariable("content") String content){
         List<AdviceSearchResponseDto> result = adviceService.searchAdviceByContent(content);
 
         return new ResponseEntity(new ApiResponseDto(true, "searchAdviceByContent Success", result), HttpStatus.OK);
-    }*/
+    }
+
 
     // Ootd 유저 및 해쉬태그 검색
     @GetMapping("/ootd/search/data/{input}")
@@ -148,17 +148,16 @@ public class FeedApiController {
         }
     }
 
-    /*@PutMapping("/advice/{articleno}")
+    @PutMapping("/advice/{articleno}")
     public ResponseEntity<?> editAdvice(@PathVariable("articleno") Long articleNo,
-                                        @RequestPart("advice") AdviceRequestDto adviceRequestDto,
-                                        @RequestPart("picture") List<MultipartFile> pictures,
+                                        @RequestBody AdviceRequestDto adviceRequestDto,
                                         @AuthenticationPrincipal UserDetail user) {
-        if (adviceService.editAdvice(articleNo, adviceRequestDto, pictures, user.getId())){
+        if (adviceService.editAdvice(articleNo, adviceRequestDto, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "editAdvice Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editAdvice Fail", null), HttpStatus.NOT_ACCEPTABLE);
         }
-    }*/
+    }
 
 
     // ====================== DELETE ========================

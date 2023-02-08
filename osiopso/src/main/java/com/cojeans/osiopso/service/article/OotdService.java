@@ -96,17 +96,17 @@ public class OotdService {
         // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
         for (Article ootd : Ootds) {
 
-            Date createTime = ootd.getCreateTime();
-            long time = createTime.getTime();
-            long time1 = date.getTime();
+//            Date createTime = ootd.getCreateTime();
+//            long time = createTime.getTime();
+//            long time1 = date.getTime();
 
 //            System.out.println(createTime.);
-            System.out.println(date);
-            System.out.println(time1 - time);
-
-            System.out.println();
-            System.out.println();
-            System.out.println(createTime.toString());
+//            System.out.println(date);
+//            System.out.println(time1 - time);
+//
+//            System.out.println();
+//            System.out.println();
+//            System.out.println(createTime.toString());
 
             ArticlePhoto articlePhoto = articlePhotoRepository.findById(ootd.getId()).orElseThrow();
 
@@ -327,16 +327,15 @@ public class OotdService {
         }
 
 
-
-
-
         articleRepository.save(Ootd.builder()
                 .id(articleNo)
+                .user(userRepository.getById(userId))
                 .content(ootdRequestDto.getContent())
                 .build());
 
         return true;
     }
+
 
     public OotdSearchByHashtagResponseDto searchOotdByHashtag(String input) {
         // 해당 검색 해쉬태그를 contain("input%")한 태그들을 모두 찾아온다.

@@ -13,4 +13,5 @@ public class AdviceRequestDto {
     private boolean isSelected;
     private String content;
     private String subject;
+    private List<ArticlePhotoRequestDto> urls;
 }
