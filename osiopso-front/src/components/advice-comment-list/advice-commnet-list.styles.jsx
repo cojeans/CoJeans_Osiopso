@@ -1,7 +1,16 @@
 import styled from "styled-components";
 
+export const TotalContentBox = styled.div`
+margin: 20px 0px 20px;
+`
+export const WearLikeThisBox = styled.div`
+img{
+  width: 150px; 
+  height: 150px;
+}
+margin: 10px;
+`
 export const RoundProfileImage = styled.div`
-
 width: 150px;
 height: 150px;
 border-radius: 70%;
@@ -115,7 +124,15 @@ export const ProfileImageBox = styled.img.attrs({
   justify-content: center;
   `
   export const BottomBox = styled.div`
+  display:flex;
   height: 100px;
   border: 1px solid black;
   background-color: #FFE3EE;
+  `
+  export const AdviceClothes = styled.div`
+  img{
+    margin: 0px 8px 0px;
+    width: 90px; 
+    height: 90px;
+  }
   `

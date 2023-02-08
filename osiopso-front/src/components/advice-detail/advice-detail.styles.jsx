@@ -41,18 +41,20 @@ export const ProfileImageBox = styled.img.attrs({
   height: 100%;
   padding-left: 70px;
   padding-right: 70px;
-  justify-content: space-between;
+  justify-content: space-around;
   `
   export const LikeContainer = styled.div`
-  display: flex;
+    display: flex;
     width: 30%;
-    height:70px;
+    // height:70px;    
     svg{
       width:100%;
       height:100%;
-  
-
     }
+  `
+  export const EachIcon = styled.div`
+
+  margin: 0px 5px 0px;
   `
   export const AlertContainer = styled.div`
   display:flex;
