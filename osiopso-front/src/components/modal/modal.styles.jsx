@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled,  {css} from "styled-components";
+
+export const modalStyle = css`
+  padding-bottom:60px;
+`
 
 export const ModalPage = styled.div`
  	display:flex;
@@ -6,7 +10,7 @@ export const ModalPage = styled.div`
   align-items: flex-end;
   width:100%;
   height:100%;
-	padding-bottom:60px;
+	${({page})=> page && modalStyle};
   /* 최상단 위치 */
   z-index: 999;
   
@@ -19,5 +23,6 @@ export const ModalPage = styled.div`
   transform: translate(-50%, -50%);
   /* 모달창 디자인 */
   background: rgba(0, 0, 0, 0.4);
+  overflow:hidden;
 
 `

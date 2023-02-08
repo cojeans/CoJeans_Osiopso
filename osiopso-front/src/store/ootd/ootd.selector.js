@@ -1,0 +1,1 @@
+export const selectorOotdCategory = (state) => state.ootd.ootdCategory;

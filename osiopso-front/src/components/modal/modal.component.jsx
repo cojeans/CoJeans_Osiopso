@@ -3,9 +3,10 @@ import { useEffect, useRef } from 'react';
 import { ModalPage } from "./modal.styles"
 
 import PlusModal from '../plus-content/plus-content.component';
+import CategoryModal from '../category-modal/category-modal.component';
 
-const Modal = ({ setModalOpen, openScroll }) => {
-	 
+const Modal = ({ setModalOpen, openScroll, page }) => {
+	 console.log(page)
 	// 모달 끄기
 	const closeModal = () => {
 		setModalOpen(false);
@@ -36,11 +37,14 @@ const Modal = ({ setModalOpen, openScroll }) => {
 	});
 
 	return (
-		<ModalPage >
+		<ModalPage page={ page }>
 			<div ref={modalRef}>
-				<PlusModal
-				closeModal={closeModal}
-				/>
+				{
+					page
+						? <PlusModal closeModal={closeModal} />
+						: <CategoryModal closeModal={closeModal}/>
+				}
+				
 			</div>
 
 		</ModalPage>

@@ -69,3 +69,4 @@ export const PrevUploadImg = styled.div`
 export const ImageInput = styled.input`
 	display:none;
 `
+
