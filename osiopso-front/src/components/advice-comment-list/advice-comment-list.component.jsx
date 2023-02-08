@@ -110,7 +110,7 @@ const AdviceCommentList = () => {
                 </LikeDislikeBox>
               </LikeContainer>
               <AlertContainer>
-                <Pink_alert />
+                <Pink_alert onClick={Report}/>
               </AlertContainer>
             </Box>
             <AdviceContent>여기에 글이 옵니다.</AdviceContent>

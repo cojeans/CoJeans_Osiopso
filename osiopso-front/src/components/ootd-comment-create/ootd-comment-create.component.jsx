@@ -1,56 +1,59 @@
+import axios from 'axios';
 import { useRef, useState } from 'react';
 import {
   CommentProfileImage,
   UpperComment,
   ClosetInput,
 } from './ootd-comment-create.styles'
+import { selectUser } from '../../store/user/user.selector';
+import { useSelector } from 'react-redux';
+
+
 const OotdCommentCreate = ({onCreate}) => {
 
   const [content, setContent] = useState("")
 
 
-  // const [state, setState] = useState({
-  //   content:""
-  // })
-
-  const contentInput = useRef()
-
   const handleChangeState = (e)=> {
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
+    console.log(e.target.value)
+    setContent(e.target.value)
+  }
+  const Token = useSelector(selectUser)
+
+  const createComment = () => {
+    axios({
+      method:"post",
+      url: "http://localhost:8080/api/comment/1",
+      data:{
+        content:content
+      },
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+			},
+    })
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
     })
   }
 
-  const handleSubmit = ()=> {
-    if (state.content.length < 1) {
-      contentInput.current.focus();
-      return      
-    }
-    onCreate(state.content)
-    alert('저장 성공')
+  const getComment = () =>{
+    axios({
+      
+    })
   }
+
+  const handleSubmit = () => {
+    createComment()
+  }
+
 
 
   return (
     <div>
       <h1>댓글 생성페이지</h1>
-
-      <div>
-        <input 
-        name="comment"
-        value={content} 
-        onChange={(e)=>{
-          setContent(e.target.value)
-        }}/>
-
-      <div>
-      </div>
-
-      </div>
-
-
-
 
 
       <UpperComment>
@@ -61,8 +64,10 @@ const OotdCommentCreate = ({onCreate}) => {
           autoFocus
           maxLength={50}
           placeholder="댓글 달기..."
+          onChange={handleChangeState}
+          value={content}
         />
-        <button type="submit">저장</button>
+        <button onClick={handleSubmit}>저장</button>
       </UpperComment>
     </div>
   );
