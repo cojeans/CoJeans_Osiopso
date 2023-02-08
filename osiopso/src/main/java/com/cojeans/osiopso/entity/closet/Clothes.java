@@ -14,9 +14,7 @@ public class Clothes {
 
     private String category;
 
-    private String originFilename;
-
-    private String storeFilename;
+    private String originImgUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")

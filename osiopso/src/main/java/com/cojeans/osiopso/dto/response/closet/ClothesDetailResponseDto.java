@@ -14,8 +14,7 @@ import java.util.List;
 public class ClothesDetailResponseDto {
     private Long id;
     private String category;
-    private String originFilename;
-    private String storeFilename;
+    private String originImgUrl;
     private List<ClosetResponseDto> closets;
     private List<ColorResponseDto> colors;
     private List<SeasonResponseDto> seasons;

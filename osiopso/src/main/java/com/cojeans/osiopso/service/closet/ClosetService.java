@@ -78,7 +78,7 @@ public class ClosetService {
             Arrays.fill(thumbnails, "null");
             thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
                     .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
-                    .map(b -> b.getStoreFilename())
+                    .map(b -> b.getOriginImgUrl())
                     .limit(4)
                     .toArray(String[]::new);
 
@@ -110,7 +110,7 @@ public class ClosetService {
             // 썸네일 리스트 설정
             thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
                     .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
-                    .map(b -> b.getStoreFilename())
+                    .map(b -> b.getOriginImgUrl())
                     .limit(4)
                     .toArray(String[]::new);
 
@@ -132,8 +132,7 @@ public class ClosetService {
                 .map(b -> new ClothesResponseDto().builder()
                         .id(b.getId())
                         .category(b.getCategory())
-                        .originFilename(b.getOriginFilename())
-                        .storeFilename(b.getStoreFilename())
+                        .originImgUrl(b.getOriginImgUrl())
                         .build())
                 .limit(4)
                 .collect(Collectors.toList());
@@ -157,8 +156,7 @@ public class ClosetService {
                         .map(a -> new ClothesResponseDto().builder()
                                 .id(a.getId())
                                 .category(a.getCategory())
-                                .originFilename(a.getOriginFilename())
-                                .storeFilename(a.getStoreFilename())
+                                .originImgUrl(a.getOriginImgUrl())
                                 .build())
                         .collect(Collectors.toList());
             } else { // 태그 사이즈 1 ~
@@ -181,8 +179,7 @@ public class ClosetService {
                         .map(a -> new ClothesResponseDto().builder()
                                 .id(a.getId())
                                 .category(a.getCategory())
-                                .originFilename(a.getOriginFilename())
-                                .storeFilename(a.getStoreFilename())
+                                .originImgUrl(a.getOriginImgUrl())
                                 .build())
                         .collect(Collectors.toList());
             } else { // 특정 카테고리 + 태그
@@ -200,8 +197,7 @@ public class ClosetService {
                 .map(a -> new ClothesResponseDto().builder()
                         .id(a.getId())
                         .category(a.getCategory())
-                        .originFilename(a.getOriginFilename())
-                        .storeFilename(a.getStoreFilename())
+                        .originImgUrl(a.getOriginImgUrl())
                         .build())
                 .collect(Collectors.toList());
     }
