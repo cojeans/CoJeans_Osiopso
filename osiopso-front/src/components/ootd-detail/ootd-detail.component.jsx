@@ -12,9 +12,9 @@ import {
   AlertContainer
 } from "./ootd-detail.styles";
 
-import { ReactComponent as Like } from "../../assets/like.svg";
-import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
-import {ReactComponent as Alert} from "../../assets/alert.svg"
+// import { ReactComponent as Like } from "../../assets/like.svg";
+// import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
+// import {ReactComponent as Alert} from "../../assets/alert.svg"
 import Swal from "sweetalert2";
 
 import axios from "axios";
@@ -23,6 +23,9 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
+
+import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+
 
 const defaultData = {
   comments: [],
@@ -91,16 +94,13 @@ const OotdDetail = () => {
 
       <UpperImage>
         <OotdDetailImage />
-            <UpperLikeContainer>
-                <LikeContainer>
-                  <Like />
-                <DetailComment onClick={goToOotdComment} />  
-            <span>{ ootdDetail.comments.length}</span>
-                </LikeContainer>
-                <AlertContainer>
-                    <Alert onClick={Report}/>
-                </AlertContainer>
-        </UpperLikeContainer>
+        <div>
+          <VscHeart size="24" />
+          <VscComment onClick={goToOotdComment}  size="24"  />  
+          <span>{ ootdDetail.comments.length}</span>
+          <VscWarning size="24" onClick={Report} />
+          <VscTrash size="24"/>
+        </div>
         <div>
           { ootdDetail.content}
         </div>

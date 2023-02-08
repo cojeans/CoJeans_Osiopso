@@ -19,10 +19,6 @@ import { selectUser } from '../../store/user/user.selector';
 import axios from 'axios'
 
 import { useEffect, useState } from "react";
-// import {
-// 	LogoContainer,
-// } from "./navigation.styles"
-
 
 const Ootd = () => {
   const navigate = useNavigate();
