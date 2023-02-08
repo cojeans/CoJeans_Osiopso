@@ -1,23 +1,18 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
-import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
-import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
-import com.cojeans.osiopso.dto.response.feed.*;
-import com.cojeans.osiopso.entity.comment.Cocomment;
-import com.cojeans.osiopso.entity.comment.Comment;
-import com.cojeans.osiopso.entity.feed.*;
-import com.cojeans.osiopso.entity.user.User;
-import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.repository.article.AdviceRepository;
+import com.cojeans.osiopso.repository.article.ArticleLikeRepository;
+import com.cojeans.osiopso.repository.article.ArticlePhotoRepository;
+import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +30,7 @@ public class AdviceService {
     private final CommentRepository commentRepository;
 
 
-    public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
+    /*public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
 
 
@@ -70,7 +65,7 @@ public class AdviceService {
         }
 
         return true;
-    }
+    }*/
 
     public List<AdviceListResponseDto> listAdvice() {
         List<Article> Advices = articleRepository.findAllByDtype("A");
@@ -96,7 +91,7 @@ public class AdviceService {
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    public AdviceDetailResponseDto detailAdvice(Long articleNo) {
+    /*public AdviceDetailResponseDto detailAdvice(Long articleNo) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
@@ -120,7 +115,7 @@ public class AdviceService {
                     .id(al.getId())
                     .userId(al.getUser().getId())
                     .build());
-        }
+        }*/
 
 
 //        // 댓글 좋아요 가져오기
@@ -139,11 +134,11 @@ public class AdviceService {
 //        }
 
         // 댓글 가져오기
-        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        /*List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();*/
 
         // 해당 게시물에 달린 모든 댓글 리스트
-        for (Comment comment : commentList) {
+        /*for (Comment comment : commentList) {
             // 해당 댓글에 달린 대댓글 리스트
             List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
@@ -185,10 +180,10 @@ public class AdviceService {
                 .isSelected(advice.isSelected())
                 .subject(advice.getSubject())
                 .build();
-    }
+    }*/
 
 
-    public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long userId) {
+    /*public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 게시글 작성자만 수정권한이 있다.
@@ -234,10 +229,10 @@ public class AdviceService {
                 .build());
 
         return true;
-    }
+    }*/
 
 
-    public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
+    /*public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
         List<Advice> adviceList = adviceRepository.findAllBySubjectContaining(subject);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
 
@@ -257,10 +252,10 @@ public class AdviceService {
         }
 
         return list;
-    }
+    }*/
 
 
-    public List<AdviceSearchResponseDto> searchAdviceByContent(String content) {
+    /*public List<AdviceSearchResponseDto> searchAdviceByContent(String content) {
         List<Advice> adviceList = adviceRepository.findAllByContentContaining(content);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
 
@@ -280,5 +275,5 @@ public class AdviceService {
         }
 
         return list;
-    }
+    }*/
 }
