@@ -5,7 +5,7 @@ import { ModalPage } from "./modal.styles"
 import PlusModal from '../plus-content/plus-content.component';
 import CategoryModal from '../category-modal/category-modal.component';
 
-const Modal = ({ setModalOpen, openScroll, page, ootdFormData, setOotdFormData }) => {
+const Modal = ({ setModalOpen, openScroll, page }) => {
 	 console.log(page)
 	// 모달 끄기
 	const closeModal = () => {
@@ -40,9 +40,9 @@ const Modal = ({ setModalOpen, openScroll, page, ootdFormData, setOotdFormData }
 		<ModalPage page={ page }>
 			<div ref={modalRef}>
 				{
-					page === 'plus'
+					page
 						? <PlusModal closeModal={closeModal} />
-						: <CategoryModal closeModal={closeModal} ootdFormData={ootdFormData} setOotdFormData={ setOotdFormData } />
+						: <CategoryModal closeModal={closeModal}/>
 				}
 				
 			</div>

@@ -1,7 +1,13 @@
 import axios from 'axios'
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
+import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+
+import Swal from "sweetalert2";
+
 import {
   useState,
   useEffect,
@@ -27,6 +33,7 @@ const defaultOotdForm = {
   tags :[]
 }
 
+
 const OotdCreate = () => {
   const Token = useSelector(selectUser)
   
@@ -50,13 +57,19 @@ const OotdCreate = () => {
     setOotdFormData({...ootdFormData, [name]:value})
   }
   
+  const ootdTags = useSelector(selectorOotdCategory)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const submitOotdCreate = (e) => {
     e.preventDefault();
-    console.log(content, picture, tags, Token)
     const formData = new FormData()
     const ootd = {
-      tags,content
+      tags:ootdTags
+      , content
     }
+    console.log(ootd)
 
   //formdata형식의 value는 무조건 스트링으로 변환된다.
   // blob객체와 텍스트 형식 데이터만 append할 수 있는 것 같다. (File도 blob객체에 속합)
@@ -81,8 +94,26 @@ const OotdCreate = () => {
          console.log(res.data)
       }).catch((err) => {
         console.log(err)
-    })
+      })
+    dispatch(resetOotdCategory())
+    AlertCreateOotd()
   }
+
+  const AlertCreateOotd = () => {
+
+  Swal.fire({
+    icon: 'success',
+    confirmButtonColor: "#DD6B55", 
+    html: `
+      OOTD 게시물이 작성되었습니다.
+    `,
+		showCancelButton: false,
+		confirmButtonText: "확인",
+  }).then(() => {
+    navigate('/ootd')
+  })
+}
+
 
   const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock()
@@ -138,7 +169,7 @@ const OotdCreate = () => {
         <button onClick={submitOotdCreate}>저장</button>
       </BottomContainer>
       {
-        modalOpen && <Modal setModalOpen={setModalOpen} openScroll={openScroll} page={"category"} ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
+        modalOpen && <Modal page={ false} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
 			}
     </div>
   );
