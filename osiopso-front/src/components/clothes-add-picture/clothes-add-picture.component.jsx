@@ -7,11 +7,12 @@ import {
 } from './clothes-add-picture.styles'
 
 import Button from '../button/button.component'
-import {  useEffect, useRef,  } from 'react';
+import {  useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { upload } from '../../store/clothes/clothes.reducer';
 import { useNavigate } from 'react-router';
 import { selectClothes } from '../../store/clothes/clothes.selector';
+import axios from "axios";
 
 const ClothesAddPicture = () => {
 	const dispatch = useDispatch()
@@ -22,6 +23,8 @@ const ClothesAddPicture = () => {
 	const onNavigateHandler2 = () => navigate(
 		'selectbox/'
 	)
+	const [imgData, setImgData] = useState("");
+	const [isGallery, setGallery] = useState(false);
 	//////////////////////////////////////////////////////////////
 	const saveData = useSelector(selectClothes)
 	//////////////////////////////////////////////////////////////
@@ -39,14 +42,51 @@ const ClothesAddPicture = () => {
 		reader.onloadend = () => {
 			dispatch(upload(reader.result))
 		};
+		callAxios()
+		console.log('succes')
 	};
+	const callAxios = () => {
 
-
+		axios({
+			// url: `${process.env.REACT_APP_BASE_URL}/v1.0/removebg`,
+			url: "https://api.remove.bg/v1.0/removebg",
+			method: "post",
+			data: {
+				// image_url: imgUrl,
+				image_file_b64: saveData,
+				size: "auto",
+				format: "auto",
+				type: "auto",
+			},
+			headers: {
+				// "X-Api-Key": process.env.REACT_APP_XAPIKEY,
+				// "X-Api-Key":  'PnDSvC4k3ngFj8ToFfvgsEkw',
+				// "X-Api-Key":  'pq1tqANSxrre5Ew6kLmHDy9z',
+				// "X-Api-Key":  'PzbMyVS4F5y7n1kg9TP2eMau',
+				// "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
+				"X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s'
+			},
+	  responseType: "blob",
+	  encoding: null,
+	})
+	.then((response) => {
+		setImgData(URL.createObjectURL(response.data));
+		setGallery(true);
+		// dispatch(upload(URL.createObjectURL(response.data)));
+		
+		
+	})
+	.catch((e) => console.log(e, "something missing"));
+	// console.log(imgData, 'imgData')
+}
+	// callAxios()
 	return (
-		<	AddPictureBody>
+		<AddPictureBody>
 			<p>등록하고 싶은 옷을 업로드해주세요</p>
 			<PrevUploadImg>
-				<img src={saveData} alt="https://pixlr.com/images/index/remove-bg.webp" />
+				{/* {saveData && <img src={saveData} alt="https://pixlr.com/images/index/remove-bg.webp" />} */}
+				{/* {imgData && <img src={imgData} alt="https://pixlr.com/images/index/remove-bg.webp" />} */}
+				{isGallery? (<img src={imgData} alt="https://pixlr.com/images/index/remove-bg.webp" />) :( <img src={saveData} alt="https://pixlr.com/images/index/remove-bg.webp" />)}
 			</PrevUploadImg>
 			<ExampleContainer>
 				<ExampleBox>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { upload } from '../../store/clothes/clothes.reducer';
 import { useNavigate } from 'react-router';
-import { selectClothes } from '../../store/clothes/clothes.selector';
+
 
 import {
 	CameraContainer,
@@ -13,36 +13,16 @@ import {
 import html2canvas from 'html2canvas'
 import axios from "axios";
 
-// const onSaveAs = (uri, filename) => {
-// 	console.log('onSave')
-// 	let link = document.createElement('a')
-// 	document.body.appendChild(link)
-// 	link.href = uri
-// 	link.download = filename
-// 	link.click()
-// 	document.body.removeChild(link)
-// }
 
 const CameraPage = () => {
   const [imgData, setImgData] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-	// const [newImg, setNewImg] = useState("");
-	// const saveData = useSelector(selectClothes)
+
 
 	let localstream;
 	useEffect(() => {
 		camON()
 	},[])
-	// useEffect(()=> {
-  //   dispatch(upload(imgData))
-  //   navigate(-1)
-  //   console.log('------------------------')
-  //   console.log(imgData.length)
-  // }, [imgData.length !== 0])
 
-  // useEffect(() => {
-  //   console.log(saveData)
-  // }, [saveData])
 	
   useEffect(() => {
     let vid = document.getElementById("vid");
@@ -108,7 +88,6 @@ const CameraPage = () => {
 
 
 
-      setIsLoading(true);
       const callAxios = () => {
 
           axios({
@@ -126,27 +105,24 @@ const CameraPage = () => {
           // "X-Api-Key": process.env.REACT_APP_XAPIKEY,
           // "X-Api-Key":  'PnDSvC4k3ngFj8ToFfvgsEkw',
           // "X-Api-Key":  'pq1tqANSxrre5Ew6kLmHDy9z',
-          "X-Api-Key":  'PzbMyVS4F5y7n1kg9TP2eMau',
+          // "X-Api-Key":  'PzbMyVS4F5y7n1kg9TP2eMau',
+          // "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
+          "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s',
+          
         },
         responseType: "blob",
         encoding: null,
       })
       .then((response) => {
         setImgData(URL.createObjectURL(response.data));
-        // setTimeout(5000)
-        // navigate(-1)
+
         
       })
       .catch((e) => console.log(e, "something missing"));
-      // setImgData(URL.createObjectURL(res))
-      // navigate(-1)
+
     }
     
-    // console.log('captureImg', captureImg)
 
-      // console.log('imgData', imgData)
-      
-      // console.log('imgData', imgData)
 
       const blobBin = atob(captureImg.split(',')[1])
       let array = []
@@ -161,45 +137,29 @@ const CameraPage = () => {
       formData.append("file", file);
       
       
-      // console.log('target', captureImg)  
-      // console.log(formData)
-      //////////////////////////////////////////////
-      // dispatch(upload(imgData))
-      //////////////////////////////////////////////
+
       callAxios()
       dispatch(upload(imgData))
 
 
-      // (async () => {
-      //   let aa = await callAxios();
-      //   let bb = await navigate(-1);
-      // })
+
     })
-    capOff()
-    // console.log(imgData)
-    
-    // const saveData = useSelector(selectClothes)
-    // console.log(saveData)
-    // if (isLoading === true) {
-      //   console.log('--------------------------------------------')
-      //   dispatch(upload(imgData))
-      // }
-      // navigate(-1)
-      // setTimeout(function() {
-        //   navigate(-1)
-        // }, 3000)
+    // capOff()
+
       }
       const onNavigateHandler = () => {
-        navigate(-1)
         dispatch(upload(imgData))
+        navigate(-1)
       }
       
     return (
       <CameraContainer>
-			<Video id="vid" autoPlay></Video>
+			{/* {!imgData && <Video id="vid" autoPlay></Video>} */}
+			{<Video id="vid" autoPlay></Video>}
       {/* <img src="imgData" alt="bgremoved" /> */}
-      <img alt="bgremoved" src={imgData} />
-			<button onClick={onCapture}>촬영</button>
+      <img src={imgData} />
+			{!imgData ? (<button onClick={onCapture}>촬영</button>) 
+      :(<button onClick={onCapture}>재촬영</button>)}
       {imgData && <button id='my-btn' onClick={onNavigateHandler} >
         이동
       </button>}
