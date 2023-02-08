@@ -77,7 +77,7 @@ const Ootd = () => {
         {ootdArticle.map((el, idx) => {
           return (
             <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
-              <img src={`${el.photo.storeFilename}`}alt="" />
+              <img src='' alt="" />
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>
