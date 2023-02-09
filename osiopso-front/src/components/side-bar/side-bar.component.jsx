@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router";
 import {
 	SidebarToggle,
   NavbarContainer,
@@ -13,17 +13,19 @@ import { ReactComponent as Category } from '../../assets/category.svg'
 // 로그인 상황 가정
 // const isLogin = true;
 const isLogin = localStorage.getItem('token')
+// const navigate = useNavigate();
 
 const signOut = () => {
   const isToken = localStorage.getItem('token')
   if (isToken) {
     alert("로그아웃되었습니다.")
+    // navigate('/')
+
     localStorage.clear();
   }
 }
 
 export const SideBar = () => {
-  // const navigate = useNavigate();
   const [isSideOpen, setIsSideOpen] = useState(false);
   
   useEffect(()=>{

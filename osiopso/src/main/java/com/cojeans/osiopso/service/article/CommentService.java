@@ -113,6 +113,7 @@ public class CommentService {
                 .id(comment.getId())
                 .content(dto.getContent())
                 .article(article)
+                .createTime(comment.getCreateTime())
                 .user(comment.getUser())
                 .report(comment.getReport())
                 .build());
