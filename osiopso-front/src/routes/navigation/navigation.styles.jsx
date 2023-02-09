@@ -7,7 +7,6 @@ export const Container = styled.div`
 	height:100%;
 	margin:auto;
 	position:relative;
-
 `
 
 export const NavigationContainer = styled.div`
@@ -16,7 +15,6 @@ export const NavigationContainer = styled.div`
 	max-width:430px;
   display: flex;
   justify-content: space-between;
-	color: #e7e2ff;
 	background-color: white;
 	margin:auto;
 	position: fixed;
@@ -39,24 +37,19 @@ export const LogoContainer = styled(NavLink)`
 		width:45%;
 		height:45%;
 		margin:auto;
-	}
+		color:black;
+		}
 	span{
 		font-size:0.7em;
 		// font-weight:bold;
 		color:black;
 	}
-
-	svg{
-		stroke:black;
-		fill:black;
-	}
-	path{
-		stroke:black;
-		
-	}
 	
   &.active {
-		background-color:#e7e2ff
+		svg{
+			fill:#8A689A;
+			stroke:#8A689A
+		}
   }
 	
 `
@@ -92,12 +85,5 @@ export const PlusContainer = styled.div`
 		color:black;
 	}
 
-	svg{
-		stroke:black;
-		fill:black;
-	}
-	path{
-		stroke:black;
-		
-	}
+
 `
