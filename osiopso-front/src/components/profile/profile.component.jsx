@@ -7,11 +7,13 @@ import {
 	Intro
 } from "./profile.styles"
 
+import axios from 'axios';
 
 const Profile = () => {
 	const [followingNum, setFollowingNum] = useState(0)
 	const [followerNum, setFollowerNum] = useState(0)
 
+	
 
 	return (
 		<ProfileBox>

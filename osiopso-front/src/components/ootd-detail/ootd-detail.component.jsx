@@ -7,9 +7,9 @@ import {
   CommentProfileImage,
   UpperComment,
   ClosetInput,
-  LikeContainer,
-  UpperLikeContainer,
-  AlertContainer
+  IconBox,
+  IconMessageBox,
+  DetailContainer
 } from "./ootd-detail.styles";
 
 // import { ReactComponent as Like } from "../../assets/like.svg";
@@ -26,14 +26,10 @@ import { useEffect, useState } from "react";
 
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
 
-
-const defaultData = {
-  comments: [],
-  content: '',
-  
+const defaultForm = {
+  cnt: 0,
+  list : []
 }
-
-
 const OotdDetail = () => {
   const navigate = useNavigate();
   const goToOotdComment = ()=>{
@@ -42,9 +38,14 @@ const OotdDetail = () => {
 
   const location = useLocation();
   const id = location.state.id;
+  const {cnt, list} = defaultForm
 
   const Token = useSelector(selectUser)
-  const [ootdDetail, setOotdDetail]= useState(defaultData)
+  const [ootdDetail, setOotdDetail]= useState('')
+  const [phtoUrl, setPhotoUrl] = useState('')
+  const [userData, setUserData] = useState()
+  const [likeData, setLikeData] = useState(defaultForm)
+  const [commentData, setCommentData] = useState(defaultForm)
 
   const getDetailOotd = () => {
     axios({
@@ -56,15 +57,40 @@ const OotdDetail = () => {
     })
       .then((res) => {
         console.log(res.data.responseData)
-        setOotdDetail(res.data.responseData)
+        const result = res.data.responseData
+        setOotdDetail(result)
+        setPhotoUrl(result.photos[0].imageUrl)
+        setCommentData({cnt : result.comments.length , list: result.comments})
+        setLikeData({cnt : result.articleLikes.length , list: result.articleLikes})
       })
       .catch((err) => {
       console.log(err)
+      })
+    
+  }
+
+  const deleteOotd = () => {
+    axios({
+      method: "delete",
+      url: `http://localhost:8080/api/feed/article/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
     })
+      .then((res) => {
+        console.log(res.data)
+         Delete()
+        
+      })
+      .catch((err) => {
+      console.log(err)
+      })
+    
   }
 
   useEffect(() => {
     getDetailOotd()
+
   },[])
 
   const Report = ()=>{
@@ -84,31 +110,57 @@ const OotdDetail = () => {
       }
     })
   }
+
+  const Delete = () => {
+      Swal.fire({
+      icon: 'success',
+       html: `
+        OOTD 게시물이 삭제되었습니다.
+      `,
+      confirmButtonColor: "#DD6B55", 
+    })
+      .then(() => {
+        navigate("/ootd")
+    })
+  }
+
+
   return (
     <div>
       <hr/>
-      <UpperProfile>
+      <UpperProfile
+      >
         <ProfileImageBox />
         MyNameIsMr.Umm
       </UpperProfile>
 
       <UpperImage>
-        <OotdDetailImage />
-        <div>
-          <VscHeart size="24" />
-          <VscComment onClick={goToOotdComment}  size="24"  />  
-          <span>{ ootdDetail.comments.length}</span>
-          <VscWarning size="24" onClick={Report} />
-          <VscTrash size="24"/>
-        </div>
-        <div>
-          { ootdDetail.content}
-        </div>
+        <OotdDetailImage>
+          <img src={phtoUrl } alt="" />
+        </OotdDetailImage>
+        <DetailContainer>
+          <IconMessageBox>
+            <VscHeart size="30" />
+            <span>{ likeData.cnt }</span>
+            <VscComment onClick={goToOotdComment}  size="30"  />  
+            <span>{ commentData.cnt }</span>
+          </IconMessageBox>
+          <IconBox>
+            <VscWarning size="30" onClick={Report} />
+            <VscTrash size="30" onClick={deleteOotd}/>
+          </IconBox>
+        </DetailContainer>
+        <DetailContainer>
+          <span>
+          {ootdDetail.content}
+          </span>
+        </DetailContainer>
       </UpperImage>
 
       <UpperComment>
         <CommentProfileImage></CommentProfileImage>
         <ClosetInput type="text" autoFocus maxLength={50} />
+        <button>게시</button>
       </UpperComment>
     </div>
   );
