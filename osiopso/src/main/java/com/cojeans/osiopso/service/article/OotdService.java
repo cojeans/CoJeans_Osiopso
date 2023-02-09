@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.service.article;
 
+import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
@@ -193,6 +194,7 @@ public class OotdService {
         // 댓글 가져오기
         List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        Date date = new Date();
 
         for (Comment comment : commentList) {
             // 대댓글인 경우에는 continue
@@ -200,9 +202,9 @@ public class OotdService {
                 continue;
             }
 
+            GapTimeVo commentGapTime = getGapTime(comment, date);
+
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
-
-
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
             for (Cocomment cocomment : cocommentList) {
@@ -213,12 +215,16 @@ public class OotdService {
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
 
+                GapTimeVo cocommentGapTime = getGapTime(getComment, date);
+
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .commentId(getComment.getId())
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .time(cocommentGapTime.getTimeGapToString())
+                        .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
@@ -230,6 +236,8 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .time(commentGapTime.getTimeGapToString())
+                    .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
                     .build());
         }
@@ -269,8 +277,10 @@ public class OotdService {
     }
 
 
+
     public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, Long userId) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
+        Date createTime = ootd.getCreateTime();
 
         // 게시글 작성자만 수정권한이 있다.
         if (userId != ootd.getUser().getId()) {
@@ -364,6 +374,7 @@ public class OotdService {
                 .id(articleNo)
                 .user(userRepository.getById(userId))
                 .content(ootdRequestDto.getContent())
+                .createTime(createTime)
                 .build());
 
         return true;
@@ -416,18 +427,11 @@ public class OotdService {
         List<SearchTagResponseDto> searchTagResponseDtoList = new ArrayList<>();
 
         for(String key : keySetList) {
-//            System.out.println("key : " + key + " / " + "value : " + tagMap.get(key));
-
             searchTagResponseDtoList.add(SearchTagResponseDto.builder()
                     .keyword(key)
                     .cnt(tagMap.get(key))
                     .build());
-
-//            returnTagMap.put(key, tagMap.get(key));
         }
-
-        // a 태그가 4개 가 있을 떄..
-        // dto에 담아야할 정보 => keword와  cnt
 
 
         // 프론트에 넘어가야 할 정보
@@ -438,4 +442,31 @@ public class OotdService {
                 .build();
     }
 
+
+    public GapTimeVo getGapTime(Comment comment, Date date) {
+        Date createTime = comment.getCreateTime();
+
+        long createT = createTime.getTime();
+        long nowT = date.getTime();
+        long timeGap = (nowT - createT) / 1000;
+        float pastTime = timeGap / 1000;
+        String timeGapToString = "";
+
+        // l/1000 는 초 단위
+        if (timeGap < 60) {
+            timeGapToString = Long.toString(timeGap) + "s";
+        } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
+            timeGapToString = Long.toString(timeGap / 60) + "m";
+        } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
+            timeGapToString = Long.toString(timeGap / 3600) + "h";
+        } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
+            timeGapToString = Long.toString(timeGap / 84000) + "d";
+        }
+
+
+        return GapTimeVo.builder()
+                .pastTime(pastTime)
+                .timeGapToString(timeGapToString)
+                .build();
+    }
 }

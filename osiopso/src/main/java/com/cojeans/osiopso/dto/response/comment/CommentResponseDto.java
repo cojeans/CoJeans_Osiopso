@@ -9,6 +9,8 @@ import java.util.List;
 @SuperBuilder
 public class CommentResponseDto {
 
+    private Float pastTime;
+    private String time;
     private Long commentId;
     private String content;
     private Long userId;

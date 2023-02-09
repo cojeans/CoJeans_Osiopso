@@ -2,6 +2,7 @@ package com.cojeans.osiopso.dto.request.feed;
 
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
