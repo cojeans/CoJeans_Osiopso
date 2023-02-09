@@ -11,6 +11,7 @@ import java.util.Date;
 public class OotdListResponseDto {
 
     private Long id;
+    private Float pastTime;
     private Long userId;
     private String time;
     private ArticlePhotoResponseDto photo;
