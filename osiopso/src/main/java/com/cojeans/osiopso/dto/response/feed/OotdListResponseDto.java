@@ -12,7 +12,7 @@ public class OotdListResponseDto {
 
     private Long id;
     private Long userId;
-    private Long time;
+    private String time;
     private ArticlePhotoResponseDto photo;
     private Long commentCnt;
     private int hit;
