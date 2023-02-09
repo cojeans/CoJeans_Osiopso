@@ -447,28 +447,77 @@ public class OotdService {
     }
 
 
-//    public void filterOotd(FilterOotdRequestDto filter) {
-//        List<FilterStyleTagRequestDto> styleTag = filter.getStyleTag();
-//        List<FilterTpoRequestDto> tpo = filter.getTpo();
-//        Long age = filter.getAge();
-//        Gender gender = filter.getGender();
-//
-//        List<OotdListResponseDto> ootdListResponseDtos = listOotd();
-//
-//        for (OotdListResponseDto ootdListResponseDto : ootdListResponseDtos) {
-//            Long id = ootdListResponseDto.getId();
-//            articleTagRepository.findAllId();
-//        }
-//
-//
-//        for (FilterStyleTagRequestDto filterStyleTagRequestDto : styleTag) {
-//            filterStyleTagRequestDto.getKeyword();
-//        }
-//
-//        for (FilterTpoRequestDto filterTpoRequestDto : tpo) {
-//
-//        }
-//    }
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter) {
+        List<String> styleTag = filter.getStyleTag();
+        List<String> tpoTag = filter.getTpo();
+        Long age = filter.getAge();
+        Gender gender = filter.getGender();
+
+        
+        List<OotdListResponseDto> listOotd = listOotd();
+        List<OotdListResponseDto> responseOotdList = new ArrayList<>();
+
+        // 아무 필터도 적용되지 않은 경우
+        if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
+            return null;
+        }
+
+
+        // 전체 게시물 목록을 뒤져보자
+        for (OotdListResponseDto dto : listOotd) {
+            // 태그가 존재할 때에만..
+            if (styleTag != null || tpoTag != null) {
+                // 해당 게시물에 등록된 태그들을 가져오자
+                List<ArticleTag> articleTagList = articleTagRepository.findAllByArticle_Id(dto.getId());
+                List<String> tagList = new ArrayList<>();
+                int styleCnt = 0, tpoCnt = 0;
+
+
+                // 게시물에 등록된 태그들의 모든 keyword 들을 가져온다.
+                for (ArticleTag articleTag : articleTagList) {
+                    String keyword = tagRepository.findById(articleTag.getTag().getId()).orElseThrow().getKeyword();
+                    tagList.add(keyword);
+                }
+
+                // style 태그가 존재할 때에만..
+                if (styleTag != null) {
+                    // 필터링 할 스타일 태그가 기존 태그들에 포함되어있다면 cnt ++
+                    for (String keyword : styleTag) {
+                        if (tagList.contains(keyword)) styleCnt++;
+                    }
+                }
+
+
+                if (tpoTag != null) {
+                    // 필터링 할 tpo 태그가 기존 태그들에 포함되어있다면 cnt ++
+                    for (String keyword : tpoTag) {
+                        if (tagList.contains(keyword)) tpoCnt++;
+                    }
+                }
+
+                User user = userRepository.findById(dto.getUserId()).orElseThrow();
+
+                // 성별을 선택하지 않은경우
+                if (gender == null) {
+                    gender = user.getGender();
+                }
+
+                // 나이를 선택하지 않은경우
+                if (age == null) {
+                    age = (long) (user.getAge() / 10);
+                }
+
+                // 스타일, tpo 태그들 모두 다 찾고, 성별과 나이대도 일치할 경우..
+                if (styleTag.size() == styleCnt &&
+                        tpoTag.size() == tpoCnt &&
+                        user.getGender() == gender &&
+                        user.getAge() / 10 == age) {
+                    responseOotdList.add(dto);
+                }
+            }
+        }
+        return responseOotdList;
+    }
 
 
 

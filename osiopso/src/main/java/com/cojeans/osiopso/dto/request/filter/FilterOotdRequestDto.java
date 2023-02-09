@@ -15,9 +15,9 @@ import java.util.List;
 public class FilterOotdRequestDto {
 
     // keyword 받아야함
-    private List<Long> styleTag;
+    private List<String> styleTag;
     // keyword 받아야함
-    private List<Long> tpo;
+    private List<String> tpo;
     private Gender gender;
     private Long age;
 }
