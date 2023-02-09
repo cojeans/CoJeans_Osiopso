@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 
 export const Container = styled.div`
   width: 100%;
@@ -20,36 +21,8 @@ export const NavigationContainer = styled.div`
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	bottom: 0; 
 	
-	.hash{
-		height: 100%;
-  width: 25%;
-	display:flex;
-	flex-direction:column;
-	text-align:center;
-	text-decoration:none;
-	border-radius:5px;
-
-	
-	svg{
-		width:45%;
-		height:45%;
-		margin:auto;
-		color:black;
-		}
-	span{
-		font-size:0.7em;
-		// font-weight:bold;
-		color:black;
-	}
-	
-  :active {
-		svg{
-			fill:#8A689A;
-			stroke:#8A689A
-		}
-  }
 	}
 `
 
@@ -150,4 +123,35 @@ export const HashContainer = styled.div`
 			stroke:#8A689A
 		}
   }
+`
+
+export const HashLinkContainer = styled(HashLink)`
+  height: 100%;
+  width: 25%;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+	text-decoration:none;
+	border-radius:5px;
+
+	
+	svg{
+		width:45%;
+		height:45%;
+		margin:auto;
+		color:black;
+		}
+	span{
+		font-size:0.7em;
+		// font-weight:bold;
+		color:black;
+	}
+	
+  &.active {
+		svg{
+			fill:#8A689A;
+			stroke:#8A689A
+		}
+  }
+	
 `

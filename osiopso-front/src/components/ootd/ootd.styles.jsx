@@ -5,6 +5,7 @@ export const TopDiv = styled.div`
   h1{
     text-align: center;
   }
+  min-height:50vh;
 `
 
 export const OotdTopBar = styled.div`

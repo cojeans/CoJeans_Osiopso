@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom"
-// import { Link } from 'react-router-dom'
-import { HashLink, NavHashLink  } from 'react-router-hash-link';
 
 import { useState } from "react"
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
+import { useLocation } from "react-router-dom"
 
 import {
 	NavigationContainer,
@@ -11,7 +10,7 @@ import {
 	BodyContainer,
 	Container,
 	PlusContainer,
-	HashContainer
+	HashLinkContainer
 } from "./navigation.styles"
 
 import TopBar from "../../components/top-bar/top-bar.component"
@@ -28,6 +27,8 @@ import { ReactComponent as Plus } from '../../assets/plusNav.svg'
 const Navigation = () => {
 	const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock()
+	 let location = useLocation();
+
 
 	const showModal = () => {
 	window.scrollTo(0, 0);
@@ -42,10 +43,14 @@ const Navigation = () => {
 				<Outlet />
 			</BodyContainer>
 			<NavigationContainer>
-				<HashLink className="hash" smooth to="/#top">	
+				<HashLinkContainer
+					smooth
+					to="/#top"
+					className={`${location.pathname}${location.hash}` === '/#top' ? "active" : ""}
+				>	
 					<TfiHome />
 					<span>홈</span>
-				</HashLink>	
+				</HashLinkContainer>	
 				<LogoContainer to='/advice'>
 					<IoHandRightOutline/>
 					<span>훈수</span>
@@ -57,10 +62,14 @@ const Navigation = () => {
 					<Plus />
 				</PlusContainer>
 				{/* <LogoContainer to='/ootd'> */}
-				<HashLink className="hash" smooth to="/#OOTD">
+				<HashLinkContainer
+					smooth
+					to="/#OOTD"
+				 className={`${location.pathname}${location.hash}` === '/#OOTD' ? "active" : ""}
+				>
 					<GiMirrorMirror />
 					<span>OOTD</span>
-				</HashLink>
+				</HashLinkContainer>
 				{/* </LogoContainer> */}
 				<LogoContainer  to='/mypage'>
 					<FaUserCircle />

@@ -9,7 +9,7 @@ import { store, persistor } from "./store/store";
 import "./index.scss";
 
 import App from "./App";
-// import ScrollToTop from "./components/scroll-up/scroll-up.component";
+import ScrollToTop from "./components/scroll-up/scroll-up.component";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,7 +17,7 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
-          {/* <ScrollToTop /> */}
+          <ScrollToTop />
           <App />
         </BrowserRouter>
       </PersistGate>
