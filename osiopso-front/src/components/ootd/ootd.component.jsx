@@ -81,7 +81,7 @@ const Ootd = () => {
                   </CommentContainer>
                   <p>{ el.commentCnt}</p>
                 </UpperCommentContainer>
-                <p>시간 들어갈 자리입니다.</p>
+                <p>{ el.time }</p>
               </UpperupperCommentContainer>
             </Container>
           );

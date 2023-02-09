@@ -7,9 +7,9 @@ import {
   CommentProfileImage,
   UpperComment,
   ClosetInput,
-  LikeContainer,
-  UpperLikeContainer,
-  AlertContainer
+  IconBox,
+  IconMessageBox,
+  DetailContainer
 } from "./ootd-detail.styles";
 
 // import { ReactComponent as Like } from "../../assets/like.svg";
@@ -25,15 +25,11 @@ import { selectUser } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
 
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
-import { ootd } from "../../store/ootd/ootd.reducer";
 
-const defaultData = {
-  comments: [],
-  content: '',
-  
+const defaultForm = {
+  cnt: 0,
+  list : []
 }
-
-
 const OotdDetail = () => {
   const navigate = useNavigate();
   const goToOotdComment = ()=>{
@@ -42,11 +38,14 @@ const OotdDetail = () => {
 
   const location = useLocation();
   const id = location.state.id;
+  const {cnt, list} = defaultForm
 
   const Token = useSelector(selectUser)
-  const [ootdDetail, setOotdDetail]= useState(defaultData)
+  const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
-  const [userData, setUserData] = useState('')
+  const [userData, setUserData] = useState()
+  const [likeData, setLikeData] = useState(defaultForm)
+  const [commentData, setCommentData] = useState(defaultForm)
 
   const getDetailOotd = () => {
     axios({
@@ -58,16 +57,16 @@ const OotdDetail = () => {
     })
       .then((res) => {
         console.log(res.data.responseData)
-        setOotdDetail(res.data.responseData)
-        setPhotoUrl(res.data.responseData.photos[0].imageUrl)
+        const result = res.data.responseData
+        setOotdDetail(result)
+        setPhotoUrl(result.photos[0].imageUrl)
+        setCommentData({cnt : result.comments.length , list: result.comments})
+        setLikeData({cnt : result.articleLikes.length , list: result.articleLikes})
       })
       .catch((err) => {
       console.log(err)
       })
     
-    axios({
-      method:""
-    })
   }
 
   const deleteOotd = () => {
@@ -139,16 +138,23 @@ const OotdDetail = () => {
         <OotdDetailImage>
           <img src={phtoUrl } alt="" />
         </OotdDetailImage>
-        <div>
-          <VscHeart size="24" />
-          <VscComment onClick={goToOotdComment}  size="24"  />  
-          <span>{ ootdDetail.comments.length}</span>
-          <VscWarning size="24" onClick={Report} />
-          <VscTrash size="24" onClick={deleteOotd}/>
-        </div>
-        <div>
+        <DetailContainer>
+          <IconMessageBox>
+            <VscHeart size="30" />
+            <span>{ likeData.cnt }</span>
+            <VscComment onClick={goToOotdComment}  size="30"  />  
+            <span>{ commentData.cnt }</span>
+          </IconMessageBox>
+          <IconBox>
+            <VscWarning size="30" onClick={Report} />
+            <VscTrash size="30" onClick={deleteOotd}/>
+          </IconBox>
+        </DetailContainer>
+        <DetailContainer>
+          <span>
           {ootdDetail.content}
-        </div>
+          </span>
+        </DetailContainer>
       </UpperImage>
 
       <UpperComment>
