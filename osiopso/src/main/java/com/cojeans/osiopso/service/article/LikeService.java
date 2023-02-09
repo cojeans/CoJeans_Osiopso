@@ -47,7 +47,6 @@ public class LikeService {
 
     public boolean createCommentLike(Long commentNo, Long userId) {
         // 현재 게시물과 유저 그리고 댓글을 기준으로 좋아요를 추가한다.
-
         Comment comment = commentRepository.findById(commentNo).orElseThrow();
         Article article = comment.getArticle();
 

@@ -144,16 +144,16 @@ public class AdviceService {
         // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
         // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
 
-//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
-//
-//        for (CommentLike cl : commentLikeList) {
-//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-//                    .id(cl.getId())
-//                    .userId(cl.getUser().getId())
-//                    .commentId(cl.getComment().getId())
-//                    .build());
-//        }
+        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
+        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+
+        for (CommentLike cl : commentLikeList) {
+            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                    .id(cl.getId())
+                    .userId(cl.getUser().getId())
+                    .commentId(cl.getComment().getId())
+                    .build());
+        }
 
 
         // 댓글 가져오기
@@ -163,9 +163,18 @@ public class AdviceService {
 
         // 해당 게시물에 달린 모든 댓글 리스트
         for (Comment comment : commentList) {
+            boolean likeCo;
+
             // 대댓글인 경우에는 continue
             if (cocommentRepository.findByComment_Id(comment.getId()) != null){
                 continue;
+            }
+
+            // 좋아요가 눌려있다면
+            if (commentLikeRepository.findByComment_Id(comment.getId()) != null) {
+                likeCo = true;
+            } else {
+                likeCo = false;
             }
 
             GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
@@ -175,9 +184,18 @@ public class AdviceService {
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
             for (Cocomment cocomment : cocommentList) {
+                boolean likeCoco;
+
                 System.out.println(cocommentResponseDtoList.size());
                 if (cocommentResponseDtoList.size() == 3) {
                     break;
+                }
+
+                // 좋아요가 눌려있다면
+                if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
+                    likeCoco = true;
+                } else {
+                    likeCoco = false;
                 }
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
@@ -190,6 +208,7 @@ public class AdviceService {
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .like(likeCoco)
                         .time(cocommentGapTime.getTimeGapToString())
                         .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
@@ -203,6 +222,7 @@ public class AdviceService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .like(likeCo)
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)

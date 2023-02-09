@@ -9,13 +9,14 @@ import java.util.List;
 @SuperBuilder
 public class CommentResponseDto {
 
-    private String imageUrl;
-    private Float pastTime;
-    private String time;
     private Long commentId;
-    private String content;
     private Long userId;
     private String userName;
-    private Long report;
+    private String imageUrl;
+    private Float pastTime;
     private List<CocommentResponseDto> cocoments;
+    private boolean like;
+    private String time;
+    private String content;
+    private Long report;
 }

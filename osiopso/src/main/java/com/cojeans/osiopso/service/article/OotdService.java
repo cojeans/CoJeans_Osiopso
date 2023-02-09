@@ -49,6 +49,7 @@ public class OotdService {
     private final CommentRepository commentRepository;
     private final CocommentRepository cocommentRepository;
     private final ArticleService articleService;
+    private final CommentLikeRepository commentLikeRepository;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -177,9 +178,19 @@ public class OotdService {
         Date date = new Date();
 
         for (Comment comment : commentList) {
+            boolean likeCo;
+
             // 대댓글인 경우에는 continue
             if (cocommentRepository.findByComment_Id(comment.getId()) != null){
                 continue;
+            }
+
+
+            // 좋아요가 눌려있다면
+            if (commentLikeRepository.findByComment_Id(comment.getId()) != null) {
+                likeCo = true;
+            } else {
+                likeCo = false;
             }
 
             GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
@@ -189,13 +200,19 @@ public class OotdService {
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
             for (Cocomment cocomment : cocommentList) {
-                System.out.println(cocommentResponseDtoList.size());
+                boolean likeCoco;
                 if (cocommentResponseDtoList.size() == 3) {
                     break;
                 }
 
-                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+                // 좋아요가 눌려있다면
+                if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
+                    likeCoco = true;
+                } else {
+                    likeCoco = false;
+                }
 
+                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
                 GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
 
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
@@ -204,6 +221,7 @@ public class OotdService {
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .like(likeCoco)
                         .imageUrl(comment.getUser().getImageUrl())
                         .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
@@ -219,6 +237,7 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .like(likeCo)
                     .imageUrl(comment.getUser().getImageUrl())
                     .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
