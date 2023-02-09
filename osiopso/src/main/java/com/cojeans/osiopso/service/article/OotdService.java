@@ -7,6 +7,7 @@ import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
+import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.*;
@@ -24,10 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -412,11 +410,31 @@ public class OotdService {
             }
         }
 
+        List<String> keySetList = new ArrayList<>(tagMap.keySet());
+        Collections.sort(keySetList, (o1, o2) -> (tagMap.get(o2).compareTo(tagMap.get(o1))));
+
+        List<SearchTagResponseDto> searchTagResponseDtoList = new ArrayList<>();
+
+        for(String key : keySetList) {
+//            System.out.println("key : " + key + " / " + "value : " + tagMap.get(key));
+
+            searchTagResponseDtoList.add(SearchTagResponseDto.builder()
+                    .keyword(key)
+                    .cnt(tagMap.get(key))
+                    .build());
+
+//            returnTagMap.put(key, tagMap.get(key));
+        }
+
+        // a 태그가 4개 가 있을 떄..
+        // dto에 담아야할 정보 => keword와  cnt
+
+
         // 프론트에 넘어가야 할 정보
         // 태그들의 종류, 종류당 개수 / 검색 결과로 보여줄 게시물 정보
         return  OotdSearchByHashtagResponseDto.builder()
                 .ootdSearchResponseDtoList(ootdSearchResponseDtoList)
-                .tagInfo(tagMap)
+                .tagInfo(searchTagResponseDtoList)
                 .build();
     }
 
