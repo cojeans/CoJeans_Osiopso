@@ -3,6 +3,8 @@ import { TextToCenter, TextToLeft, Category, HomeOotdImage, SelectedTagContainer
 import { ReactComponent as Fire } from "../../assets/fire.svg"
 import { ReactComponent as User2 } from "../../assets/userFashion.svg"
 // import DoSwiper from '../../components/swiper/swiper.component'
+import { ootd } from '../../store/ootd/ootd.reducer'
+import Ootd from '../../components/ootd/ootd.component'
 
 const Home = () =>{
 	const mainList = [
@@ -68,15 +70,15 @@ const Home = () =>{
 
 			<hr/>
 			<Category><h4>최신순</h4> <h4>인기순</h4> <h4>논란순</h4></Category>
-			<UserUploadList>
+			{/* <UserUploadList>
 				{userUpLoadImg.map((el)=> {
 					return (
 						<img src={el}/>
 					)
 				})}
 			</UserUploadList>
-			
-
+			 */}
+			<Ootd/>
 
 		</div>
 	)
