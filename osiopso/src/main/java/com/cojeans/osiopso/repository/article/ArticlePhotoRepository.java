@@ -12,4 +12,5 @@ public interface ArticlePhotoRepository extends JpaRepository<ArticlePhoto, Long
     List<ArticlePhoto> findAllByArticle_Id(Long id);
     void deleteAllByArticle_Id(Long userId);
 
+    ArticlePhoto findTopByArticleId(Long id);
 }

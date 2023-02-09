@@ -47,7 +47,7 @@ const Ootd = () => {
 
   const goToOotdDetail = (id) => {
     console.log(id)
-    navigate("detail/" + id, {
+    navigate("ootd/detail/" + id, {
       state: {
         id:id
       }

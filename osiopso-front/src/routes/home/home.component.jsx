@@ -1,5 +1,14 @@
 import './home.styles'
-import { TextToCenter, TextToLeft, Category, HomeOotdImage, SelectedTagContainer, SelectedTag, UserUploadList  } from './home.styles'
+import {
+	TextToCenter,
+	TextToLeft,
+	Category,
+	HomeOotdImage,
+	SelectedTagContainer,
+	SelectedTag,
+	UserUploadList,
+	OotdTagDiv
+} from './home.styles'
 import { ReactComponent as Fire } from "../../assets/fire.svg"
 import { ReactComponent as User2 } from "../../assets/userFashion.svg"
 // import DoSwiper from '../../components/swiper/swiper.component'
@@ -35,7 +44,6 @@ const Home = () =>{
 
 	return (
 		<div>
-			<TextToCenter><h2>Home</h2></TextToCenter>
 			<TextToLeft>
 				{tags.map((el)=>{
 					return (
@@ -68,17 +76,11 @@ const Home = () =>{
 			</HomeOotdImage>
 
 
-			<hr/>
-			<Category><h4>최신순</h4> <h4>인기순</h4> <h4>논란순</h4></Category>
-			{/* <UserUploadList>
-				{userUpLoadImg.map((el)=> {
-					return (
-						<img src={el}/>
-					)
-				})}
-			</UserUploadList>
-			 */}
-			<Ootd/>
+			{/* <Category ><h4>최신순</h4> <h4>인기순</h4> <h4>논란순</h4></Category> */}
+			<OotdTagDiv  id="OOTD">
+				<Ootd />
+
+			</OotdTagDiv>
 
 		</div>
 	)

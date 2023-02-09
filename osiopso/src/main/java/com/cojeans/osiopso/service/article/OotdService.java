@@ -499,4 +499,8 @@ public class OotdService {
                 .build();
     }
 
+    public List hotIssue() {
+
+        return null;
+    }
 }

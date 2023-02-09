@@ -11,10 +11,54 @@ import {
 } from "./advice.styles";
 import { TextToLeft } from "../../routes/home/home.styles";
 import { useNavigate } from "react-router-dom";
+import { useSelector} from 'react-redux'
 import { ReactComponent as Comment } from "../../assets/comment.svg";
+import { selectUser } from '../../store/user/user.selector'
 import { VscHeart, VscComment } from "react-icons/vsc";
 
+
+import axios from 'axios'
+import { useEffect, useState } from "react";
+
+
+
 const Advice = () => {
+  const Token = useSelector(selectUser)
+
+  const [adviceArticle, setAdviceArticle] = useState([])
+
+  const getAdviceAxios = ()=> {
+    axios({
+      method:'get',
+      url: "http://localhost:8080/api/feed/advice",
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+    .then((res)=>{
+      console.log(res)
+      setAdviceArticle(res.data.responseData.reverse())
+      console.log(res.data.responseData)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  useEffect(()=>{
+    getAdviceAxios()
+  },[])
+
+  const goToAdviceDetail= (id)=>{
+    console.log(id)
+    navigate("detail/"+ id, {
+      state:{
+        id:id
+      }
+    })
+  }
+
+
   const navigate = useNavigate();
   const goToCheckoutHandler = () => {
     navigate("create");
@@ -39,89 +83,22 @@ const Advice = () => {
       </TextToLeft>
 
       <HunsuImages>
-        <EachBox>
-          <img
-            src={require("../../assets/Mr_Umm.png")}
-            alt=""
-            onClick={goToDetail}
-          />
-          {/* <IconBigBox> */}
+       
+          {adviceArticle.map((el,idx)=>{
+            return(
+              <div>
+              <EachBox key={idx} onClick={()=>goToAdviceDetail(el.id)}>
+              <img src={el.photo.imageUrl} alt="" />
+              </EachBox>
           <CommentContainer>
             <VscHeart size="30" />
             <VscComment size="30" />
           </CommentContainer>
-          {/* </IconBigBox> */}
-        </EachBox>
+          </div>
+            )
+          })}
 
-        <EachBox>
-          <img
-            src={require("../../assets/shit1.png")}
-            alt=""
-            onClick={goToDetail}
-          />
-          {/* <IconBigBox> */}
-          <CommentContainer>
-            <VscHeart size="30" />
-            <VscComment size="30" />
-          </CommentContainer>
-          {/* </IconBigBox> */}
-        </EachBox>
 
-        <EachBox>
-        <img
-          src={require("../../assets/shit2.png")}
-          alt=""
-          onClick={goToDetail}
-        />
-          {/* <IconBigBox> */}
-          <CommentContainer>
-            <VscHeart size="30" />
-            <VscComment size="30" />
-          </CommentContainer>
-          {/* </IconBigBox> */}
-        </EachBox>
-
-        <EachBox>
-        <img
-          src={require("../../assets/shit3.png")}
-          alt=""
-          onClick={goToDetail}
-        />
-          {/* <IconBigBox> */}
-          <CommentContainer>
-            <VscHeart size="30" />
-            <VscComment size="30" />
-          </CommentContainer>
-          {/* </IconBigBox> */}
-        </EachBox>
-
-        <EachBox>
-        <img
-          src={require("../../assets/shit4.png")}
-          alt=""
-          onClick={goToDetail}
-        />
-          {/* <IconBigBox> */}
-          <CommentContainer>
-            <VscHeart size="30" />
-            <VscComment size="30" />
-          </CommentContainer>
-          {/* </IconBigBox> */}
-        </EachBox>
-        
-        <EachBox>
-        <img
-          src={require("../../assets/shit5.png")}
-          alt=""
-          onClick={goToDetail}
-        />
-          {/* <IconBigBox> */}
-          <CommentContainer>
-            <VscHeart size="30" />
-            <VscComment size="30" />
-          </CommentContainer>
-          {/* </IconBigBox> */}
-        </EachBox>
         
       </HunsuImages>
     </div>
