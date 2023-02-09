@@ -6,7 +6,8 @@ import {
 	CategoryModalContainer,
 	CategoryBox,
 	Title,
-	Tag
+	Tag,
+	SaveBox,
 } from "./category-modal.styles"
 
 const tags = {
@@ -89,7 +90,10 @@ const CategoryModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
-			<button onClick={submitHandler}>저장</button>
+			
+			<SaveBox>
+				<button onClick={submitHandler}>저장</button>
+			</SaveBox>
 		</CategoryModalContainer>
 	)
 }

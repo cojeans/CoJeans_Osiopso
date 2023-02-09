@@ -17,10 +17,31 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 
 import axios from 'axios'
+import Modal from '../modal/modal.component'
 
 import { useEffect, useState } from "react";
+import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
+
+const defaultOotdForm = {
+  content: '',
+  imageUrl: '',
+  tags: []
+}
 
 const Ootd = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const { lockScroll, openScroll } = useBodyScrollLock()
+  const [ootdFormData, setOotdFormData] = useState(defaultOotdForm)
+
+
+
+  const showModal = ()=> {
+    window.scrollTo(0,0);
+    setModalOpen(true);
+    lockScroll();
+  }
+
+
   const navigate = useNavigate();
   const Token = useSelector(selectUser)
 
@@ -65,7 +86,7 @@ const Ootd = () => {
           <h3>팔로잉</h3>
         </OotdCategory>
         <FilterContainer>
-          <Filter />
+          <Filter onClick={showModal}/>
         </FilterContainer>
       </OotdTopBar>
 
@@ -87,6 +108,9 @@ const Ootd = () => {
           );
         })}
       </OotdList>
+      {
+        modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll} ootdFormData={ootdFormData} setOotdFormData={setOotdFormData} />
+      }
     </TopDiv>
   );
 };

@@ -4,9 +4,7 @@ import {
   UpperProfile,
   OotdDetailImage,
   UpperImage,
-  CommentProfileImage,
   UpperComment,
-  ClosetInput,
   IconBox,
   IconMessageBox,
   DetailContainer
@@ -26,14 +24,21 @@ import { useEffect, useState } from "react";
 
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
 
+import OotdCommentCreate from "../ootd-comment-create/ootd-comment-create.component";
+
 const defaultForm = {
   cnt: 0,
   list : []
 }
 const OotdDetail = () => {
   const navigate = useNavigate();
+ 
   const goToOotdComment = ()=>{
-    navigate("/ootd/comment")
+    navigate("/ootd/comment", {
+      state: {
+        id: id
+      }
+      })
   }
 
   const location = useLocation();
@@ -88,6 +93,8 @@ const OotdDetail = () => {
     
   }
 
+
+
   useEffect(() => {
     getDetailOotd()
 
@@ -127,7 +134,6 @@ const OotdDetail = () => {
 
   return (
     <div>
-      <hr/>
       <UpperProfile
       >
         <ProfileImageBox />
@@ -157,11 +163,11 @@ const OotdDetail = () => {
         </DetailContainer>
       </UpperImage>
 
-      <UpperComment>
-        <CommentProfileImage></CommentProfileImage>
-        <ClosetInput type="text" autoFocus maxLength={50} />
-        <button>게시</button>
-      </UpperComment>
+      <OotdCommentCreate
+        articleId={ id }
+        commentData= {commentData}
+        setCommentData={setCommentData}
+      />
     </div>
   );
 };
