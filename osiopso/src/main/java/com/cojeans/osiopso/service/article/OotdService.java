@@ -94,28 +94,29 @@ public class OotdService {
         Date date = new Date();
 
         for (Ootd ootd : Ootds) {
-
             Date createTime = ootd.getCreateTime();
+
             long createT = createTime.getTime();
             long nowT = date.getTime();
             long time_gap = (nowT - createT) / 1000;
 
-//            System.out.println(createTime);
-//            System.out.println(date);
-//            System.out.println(createTime.getTime());
-//            System.out.println(date.getTime());
-//            System.out.println(nowT - createT);
+            System.out.println(createTime);
+            System.out.println(date);
+            System.out.println(createTime.getTime());
+            System.out.println(date.getTime());
+            System.out.println(nowT - createT);
+            System.out.println("================");
             String timeGapToString = "";
 
             // l/1000 는 초 단위
             if (time_gap < 60) {
-                 timeGapToString = Long.toString(time_gap) + "초전";
+                 timeGapToString = Long.toString(time_gap) + "s";
             } else if (time_gap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-                timeGapToString = Long.toString(time_gap / 60) + "초전";
+                timeGapToString = Long.toString(time_gap / 60) + "m";
             } else if (time_gap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-                timeGapToString = Long.toString(time_gap / 3600) + "초전";
+                timeGapToString = Long.toString(time_gap / 3600) + "h";
             } else if (time_gap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-                timeGapToString = Long.toString(time_gap / 84000) + "초전";
+                timeGapToString = Long.toString(time_gap / 84000) + "d";
             }
 
 
