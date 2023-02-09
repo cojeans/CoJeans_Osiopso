@@ -27,7 +27,6 @@ import { useEffect, useState } from "react";
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
 import { ootd } from "../../store/ootd/ootd.reducer";
 
-
 const defaultData = {
   comments: [],
   content: '',
@@ -74,19 +73,20 @@ const OotdDetail = () => {
   const deleteOotd = () => {
     axios({
       method: "delete",
-      url: `http://localhost:8080/api/feed/ootd/${id}`,
+      url: `http://localhost:8080/api/feed/article/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
     })
       .then((res) => {
-      console.log(res.data)
+        console.log(res.data)
+         Delete()
+        
       })
       .catch((err) => {
       console.log(err)
       })
     
-    alert('삭제되었습니다.')
   }
 
   useEffect(() => {
@@ -111,6 +111,21 @@ const OotdDetail = () => {
       }
     })
   }
+
+  const Delete = () => {
+      Swal.fire({
+      icon: 'success',
+       html: `
+        OOTD 게시물이 작성되었습니다.
+      `,
+      confirmButtonColor: "#DD6B55", 
+    })
+      .then(() => {
+        navigate("/ootd")
+    })
+  }
+
+
   return (
     <div>
       <hr/>
