@@ -74,13 +74,21 @@ export const ProfileImageBox = styled.img.attrs({
   justify-content: center;
   width:100%;
   align-items:center;
+  justify-content: space-between;
+  button{
+    background-color:white;
+    color:#4D184C;
+    border:none;
+    height:40px;
+  }
   `
 
   export const ClosetInput = styled.input`
-  width: 90%;
+  width: 80%;
   height:40px;
   border:none;
   border-bottom:solid 1px gray;
+  padding: 0  10px 0 10px;
   &:focus{
     outline:none;
   }

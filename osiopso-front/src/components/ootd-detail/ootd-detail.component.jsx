@@ -115,7 +115,7 @@ const OotdDetail = () => {
       Swal.fire({
       icon: 'success',
        html: `
-        OOTD 게시물이 작성되었습니다.
+        OOTD 게시물이 삭제되었습니다.
       `,
       confirmButtonColor: "#DD6B55", 
     })
@@ -160,6 +160,7 @@ const OotdDetail = () => {
       <UpperComment>
         <CommentProfileImage></CommentProfileImage>
         <ClosetInput type="text" autoFocus maxLength={50} />
+        <button>게시</button>
       </UpperComment>
     </div>
   );

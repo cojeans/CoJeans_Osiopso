@@ -15,11 +15,13 @@ import {
 import TopBar from "../../components/top-bar/top-bar.component"
 import Modal from "../../components/modal/modal.component"
 
-import { ReactComponent as HomeLogo } from '../../assets/home.svg'
-import { ReactComponent as Hand } from '../../assets/hand.svg'
-import { ReactComponent as OOTD } from '../../assets/ootd.svg'
+import { GiMirrorMirror } from "react-icons/gi";
+import { IoHandRightOutline } from "react-icons/io5";
+import { FaUserCircle } from "react-icons/fa";
+import { TfiHome } from "react-icons/tfi";
+
 import { ReactComponent as Plus } from '../../assets/plusNav.svg'
-import { ReactComponent as User } from '../../assets/user.svg'
+
 
 const Navigation = () => {
 	const [modalOpen, setModalOpen] = useState(false);
@@ -39,11 +41,11 @@ const Navigation = () => {
 			</BodyContainer>
 			<NavigationContainer>
 				<LogoContainer to='/'>
-					<HomeLogo />
+					<TfiHome />
 					<span>홈</span>
 				</LogoContainer>
 				<LogoContainer to='/advice'>
-					<Hand />
+					<IoHandRightOutline/>
 					<span>훈수</span>
 				</LogoContainer>
 				<PlusContainer
@@ -53,11 +55,11 @@ const Navigation = () => {
 					<Plus />
 				</PlusContainer>
 				<LogoContainer to='/ootd'>
-					<OOTD />
+					<GiMirrorMirror />
 					<span>OOTD</span>
 				</LogoContainer>
 				<LogoContainer to='/mypage'>
-					<User />
+					<FaUserCircle />
 					<span>프로필</span>
 				</LogoContainer>
 				{/* <Link to='/login'>Login</Link> 
