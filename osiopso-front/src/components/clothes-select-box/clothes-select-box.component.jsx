@@ -7,18 +7,30 @@ import {
   ImageInput,
   ImgContainer,
   CategoryContainer,
+  StyleTagButton,
 } from "./clothes-select-box.styles";
+import { useNavigate } from 'react-router-dom';
+import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
+
+import { selectUser } from '../../store/user/user.selector';
+import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
 
 import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { upload } from "../../store/clothes/clothes.reducer";
-import { useNavigate } from "react-router";
 import {
   selectClothes,
   localPhoto,
 } from "../../store/clothes/clothes.selector";
-import axios from "axios";
+import Modal from '../modal/modal.component';
+
+const defaultOotdForm = {
+  content: '',
+  picture: '',
+  tags :[]
+}
 
 const ClosetSelectBox = () => {
   const navigate = useNavigate();
@@ -28,6 +40,18 @@ const ClosetSelectBox = () => {
   const onNavigateHandler = () => {
     navigate("update/");
   };
+  const [ootdFormData, setOotdFormData] = useState(defaultOotdForm)
+
+  const [modalOpen, setModalOpen] = useState(false);
+	const { lockScroll, openScroll } = useBodyScrollLock()
+
+	const showModal = () => {
+	window.scrollTo(0, 0);
+	setModalOpen(true);
+	lockScroll();
+	};
+
+
   return (
     <>
 	<EditContainer>
@@ -46,7 +70,10 @@ const ClosetSelectBox = () => {
           )}
         </PrevUploadImg>
       </ImgContainer>
-      <span></span>
+      <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+      {
+        modalOpen && <Modal page={ false} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
+			}
     </>
   );
 };
