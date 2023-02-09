@@ -4,6 +4,7 @@ import com.cojeans.osiopso.entity.comment.QCocomment;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
