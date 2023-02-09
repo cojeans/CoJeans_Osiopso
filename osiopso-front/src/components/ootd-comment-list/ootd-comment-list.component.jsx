@@ -1,20 +1,39 @@
-const OotdCommentList = ({commentList})=> {
+import {
+    CommentContainer,
+    UserPorfileBox,
+    CommentBox,
+    ContentBox,
+    UpperContent,
+    HeartIconBox
+} from "./ootd-comment-list.styles"
+import { BsHeart } from "react-icons/bs";
+
+const OotdCommentList = ({ commentData }) => {
+    
     return (
-        <div className="CommentList">
-            <h1>댓글 리스트들</h1>
+        <CommentContainer>
+                {commentData.list.map((comment)=>(
+                    <CommentBox key={comment.id}>
+                        <UserPorfileBox>
+                            <div className="imgBox">
+                                <img src={  comment.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.imageUrl} alt="" />
+                            </div>
+                        </UserPorfileBox>
+                        <ContentBox>
+                            <UpperContent>
+                                <div >{ comment.userName}</div>
+                                <div className="time"> { comment.time} </div>
+                            </UpperContent>
+                            <div>{comment.content}</div>
+                        </ContentBox>
+                        <HeartIconBox>
+                            <BsHeart />
+                            <div className="heartCount">4</div>
+                        </HeartIconBox>
 
-            <div>
-                {commentList.map((it)=>(
-                    <div>
-                        <div>내용: {it.content}</div>
-                        <div>작성 시간(ms): {it.created_date}</div>
-
-                    </div>
+                    </CommentBox>
                 ))}
-            </div>
-
-
-        </div>
+        </CommentContainer>
     )
 }
 

@@ -23,10 +23,9 @@ import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
 
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
-import { HiOutlineUserCircle } from "react-icons/hi";
 
 import OotdCommentCreate from "../ootd-comment-create/ootd-comment-create.component";
-
+import OotdCommentList from "../ootd-comment-list/ootd-comment-list.component"
 
 const defaultForm = {
   cnt: 0,
@@ -35,13 +34,6 @@ const defaultForm = {
 const OotdDetail = () => {
   const navigate = useNavigate();
  
-  const goToOotdComment = ()=>{
-    navigate("/ootd/comment", {
-      state: {
-        id: id
-      }
-      })
-  }
 
   const location = useLocation();
   const id = location.state.id;
@@ -67,7 +59,7 @@ const OotdDetail = () => {
         const result = res.data.responseData
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
-        setCommentData({cnt : result.comments.length , list: result.comments})
+        setCommentData({cnt : result.comments.length , list: result.comments.reverse()})
         setLikeData({cnt : result.articleLikes.length , list: result.articleLikes})
       })
       .catch((err) => {
@@ -152,7 +144,7 @@ const OotdDetail = () => {
           <IconMessageBox>
             <VscHeart size="25" />
             <span>{ likeData.cnt }</span>
-            <VscComment onClick={goToOotdComment}  size="25"  />  
+            <VscComment size="25"  />  
             <span>{ commentData.cnt }</span>
           </IconMessageBox>
           <IconBox>
@@ -171,6 +163,9 @@ const OotdDetail = () => {
         articleId={ id }
         commentData= {commentData}
         setCommentData={setCommentData}
+      />
+      <OotdCommentList
+        commentData={ commentData}
       />
     </div>
   );
