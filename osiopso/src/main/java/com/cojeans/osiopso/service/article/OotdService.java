@@ -204,6 +204,8 @@ public class OotdService {
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .imageUrl(comment.getUser().getImageUrl())
+                        .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
                         .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
@@ -217,10 +219,11 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .imageUrl(comment.getUser().getImageUrl())
+                    .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
-                    .report(ootd.getReport())
                     .build());
         }
 
