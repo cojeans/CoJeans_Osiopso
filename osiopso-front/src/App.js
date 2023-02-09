@@ -13,7 +13,7 @@ import ChangePassword from './routes/changeuserinfo/changepassword.component'
 import PwdComplete from './routes/changeuserinfo/pwdchangecomplete'
 import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
-import Logout from "./routes/logout/logout.component"
+
 
 
 import "./App.scss";
@@ -41,7 +41,7 @@ function App() {
         <Route path='pwdchangecomplete' element={<PwdComplete/>}/>
         <Route path='disclosurescope' element={<DisclosureScope/>}/>
         <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
-        <Route path='logout' element={<Logout/>}/>
+
         
       </Route>
     </Routes>

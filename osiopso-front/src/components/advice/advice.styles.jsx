@@ -9,11 +9,43 @@ margin: auto;
 img{
     width: 110px;
     height: 167px;
-    margin: 10px 10px 10px;
+    // margin: 10px 10px 10px;
 }
 `
 export const TopTag = styled.div`
 width: 30%;
 display:flex;
 justify-content: space-around;
+`
+export const Container = styled.div`
+width: 150px;
+margin-top: 30px;
+display:flex;
+// flex-direction: column;
+justify-content: center;
+align-items:center;
+`
+export const UpperupperCommentContainer = styled.div`
+display: flex;
+width:100%;
+justify-content: space-between
+`
+export const UpperCommentContainer = styled.div`
+display: flex;
+justify-content: start;
+align-items: center;
+`
+export const CommentContainer = styled.div`
+display:flex;
+justify-content: flex-start;
+margin-bottom: 20px;
+
+svg{
+  width: 18px;
+  height: 18px;
+}
+`
+export const EachBox = styled.div`
+display:flex;
+flex-direction: column;
 `
