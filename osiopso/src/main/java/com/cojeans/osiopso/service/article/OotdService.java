@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = false)
@@ -46,6 +48,9 @@ public class OotdService {
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
+        Pattern pattern = Pattern.compile("#[^\\s#]+");
+        Matcher matcher = pattern.matcher(ootdRequestDto.getContent());
+
 
         // 게시물 저장
         Ootd ootdSaved = ootdRepository.save(Ootd.builder()
@@ -84,6 +89,23 @@ public class OotdService {
             articleTagRepository.save(articleTagE);
         }
 
+        while (matcher.find()) {
+            String hashTag = matcher.group();
+
+            Tag tagSaved = tagRepository.save(Tag.builder()
+                    .keyword(hashTag)
+                    .type("H")
+                    .build());
+
+            ArticleTag articleTagE = ArticleTag.builder()
+                    .article(ootdSaved)
+                    .tag(tagSaved)
+                    .build();
+
+            articleTagRepository.save(articleTagE);
+        }
+
+
         return true;
     }
 
@@ -98,25 +120,26 @@ public class OotdService {
 
             long createT = createTime.getTime();
             long nowT = date.getTime();
-            long time_gap = (nowT - createT) / 1000;
+            long timeGap = (nowT - createT) / 1000;
+            float pastTime = timeGap / 1000;
 
-            System.out.println(createTime);
-            System.out.println(date);
-            System.out.println(createTime.getTime());
-            System.out.println(date.getTime());
-            System.out.println(nowT - createT);
-            System.out.println("================");
+//            System.out.println(createTime);
+//            System.out.println(date);
+//            System.out.println(createTime.getTime());
+//            System.out.println(date.getTime());
+//            System.out.println(nowT - createT);
+//            System.out.println("================");
             String timeGapToString = "";
 
             // l/1000 는 초 단위
-            if (time_gap < 60) {
-                 timeGapToString = Long.toString(time_gap) + "s";
-            } else if (time_gap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-                timeGapToString = Long.toString(time_gap / 60) + "m";
-            } else if (time_gap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-                timeGapToString = Long.toString(time_gap / 3600) + "h";
-            } else if (time_gap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-                timeGapToString = Long.toString(time_gap / 84000) + "d";
+            if (timeGap < 60) {
+                 timeGapToString = Long.toString(timeGap) + "s";
+            } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
+                timeGapToString = Long.toString(timeGap / 60) + "m";
+            } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
+                timeGapToString = Long.toString(timeGap / 3600) + "h";
+            } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
+                timeGapToString = Long.toString(timeGap / 84000) + "d";
             }
 
 
@@ -131,6 +154,7 @@ public class OotdService {
                             .build())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                     .time(timeGapToString)
+                    .pastTime(pastTime)
                     .userId(ootd.getUser().getId())
                     .build();
 
