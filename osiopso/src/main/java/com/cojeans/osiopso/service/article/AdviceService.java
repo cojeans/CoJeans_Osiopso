@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.service.article;
 
+import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,7 @@ public class AdviceService {
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final CommentRepositoryImpl commentRepositoryImpl;
+    private final ArticleService articleService;
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -78,8 +81,11 @@ public class AdviceService {
     public List<AdviceListResponseDto> listAdvice() {
         List<Advice> Advices = adviceRepository.findAllByDtype("A");
         List<AdviceListResponseDto> list = new ArrayList<>();
+        Date date = new Date();
 
         for (Advice advice : Advices) {
+            GapTimeVo gapTime = articleService.getGapTime(advice, date);
+
             List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(advice.getId());
 
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
@@ -93,13 +99,10 @@ public class AdviceService {
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .userId(advice.getUser().getId())
                     .isSelected(advice.isSelected())
-                    .time(0L)
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
                     .build();
             list.add(dto);
-        }
-
-        for (AdviceListResponseDto response : list) {
-            System.out.println(response.toString());
         }
 
         return list;
@@ -156,22 +159,39 @@ public class AdviceService {
         // 댓글 가져오기
         List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-
+        Date date = new Date();
 
         // 해당 게시물에 달린 모든 댓글 리스트
         for (Comment comment : commentList) {
+            // 대댓글인 경우에는 continue
+            if (cocommentRepository.findByComment_Id(comment.getId()) != null){
+                continue;
+            }
+
+            GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
+
             // 해당 댓글에 달린 대댓글 리스트
-            List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
+            List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
-
-            for (Cocomment cocomment : cocomentList) {
+            for (Cocomment cocomment : cocommentList) {
                 System.out.println(cocommentResponseDtoList.size());
                 if (cocommentResponseDtoList.size() == 3) {
                     break;
                 }
+
+                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+
+                GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
+
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .commentId(getComment.getId())
+                        .content(getComment.getContent())
+                        .userId(getComment.getUser().getId())
+                        .report(getComment.getReport())
+                        .time(cocommentGapTime.getTimeGapToString())
+                        .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
@@ -183,6 +203,8 @@ public class AdviceService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .time(commentGapTime.getTimeGapToString())
+                    .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
                     .build());
         }
@@ -206,6 +228,7 @@ public class AdviceService {
 
     public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
+        Date createTime = advice.getCreateTime();
 
         // 게시글 작성자만 수정권한이 있다.
         if (userId != advice.getUser().getId()) {
@@ -239,6 +262,8 @@ public class AdviceService {
                 .subject(adviceRequestDto.getSubject())
                 .isSelected(adviceRequestDto.isSelected())
                 .content(adviceRequestDto.getContent())
+                .createTime(createTime)
+                .report(advice.getReport())
                 .build());
 
         return true;

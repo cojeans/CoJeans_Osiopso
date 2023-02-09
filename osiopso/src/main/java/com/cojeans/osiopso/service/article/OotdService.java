@@ -48,6 +48,7 @@ public class OotdService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CocommentRepository cocommentRepository;
+    private final ArticleService articleService;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -119,32 +120,7 @@ public class OotdService {
         Date date = new Date();
 
         for (Ootd ootd : Ootds) {
-            Date createTime = ootd.getCreateTime();
-
-            long createT = createTime.getTime();
-            long nowT = date.getTime();
-            long timeGap = (nowT - createT) / 1000;
-            float pastTime = timeGap / 1000;
-
-//            System.out.println(createTime);
-//            System.out.println(date);
-//            System.out.println(createTime.getTime());
-//            System.out.println(date.getTime());
-//            System.out.println(nowT - createT);
-//            System.out.println("================");
-            String timeGapToString = "";
-
-            // l/1000 는 초 단위
-            if (timeGap < 60) {
-                 timeGapToString = Long.toString(timeGap) + "s";
-            } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-                timeGapToString = Long.toString(timeGap / 60) + "m";
-            } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-                timeGapToString = Long.toString(timeGap / 3600) + "h";
-            } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-                timeGapToString = Long.toString(timeGap / 84000) + "d";
-            }
-
+            GapTimeVo gapTime = articleService.getGapTime(ootd, date);
 
             List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
 
@@ -156,8 +132,8 @@ public class OotdService {
                             .imageUrl(responsePhoto.get(0).getImageUrl())
                             .build())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
-                    .time(timeGapToString)
-                    .pastTime(pastTime)
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
                     .userId(ootd.getUser().getId())
                     .build();
 
@@ -206,8 +182,9 @@ public class OotdService {
                 continue;
             }
 
-            GapTimeVo commentGapTime = getGapTime(comment, date);
+            GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
 
+            // 해당 댓글에 달린 대댓글 리스트
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
@@ -219,7 +196,7 @@ public class OotdService {
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
 
-                GapTimeVo cocommentGapTime = getGapTime(getComment, date);
+                GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
 
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
@@ -243,6 +220,7 @@ public class OotdService {
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
+                    .report(ootd.getReport())
                     .build());
         }
 
@@ -453,7 +431,7 @@ public class OotdService {
         Long age = filter.getAge();
         Gender gender = filter.getGender();
 
-        
+
         List<OotdListResponseDto> listOotd = listOotd();
         List<OotdListResponseDto> responseOotdList = new ArrayList<>();
 
@@ -517,35 +495,6 @@ public class OotdService {
             }
         }
         return responseOotdList;
-    }
-
-
-
-    public GapTimeVo getGapTime(Comment comment, Date date) {
-        Date createTime = comment.getCreateTime();
-
-        long createT = createTime.getTime();
-        long nowT = date.getTime();
-        long timeGap = (nowT - createT) / 1000;
-        float pastTime = timeGap / 1000;
-        String timeGapToString = "";
-
-        // l/1000 는 초 단위
-        if (timeGap < 60) {
-            timeGapToString = Long.toString(timeGap) + "s";
-        } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-            timeGapToString = Long.toString(timeGap / 60) + "m";
-        } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-            timeGapToString = Long.toString(timeGap / 3600) + "h";
-        } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-            timeGapToString = Long.toString(timeGap / 84000) + "d";
-        }
-
-
-        return GapTimeVo.builder()
-                .pastTime(pastTime)
-                .timeGapToString(timeGapToString)
-                .build();
     }
 
     public List hotIssue() {
