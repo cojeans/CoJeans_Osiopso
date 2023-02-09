@@ -48,6 +48,7 @@ public class OotdService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CocommentRepository cocommentRepository;
+    private final ArticleService articleService;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -119,32 +120,7 @@ public class OotdService {
         Date date = new Date();
 
         for (Ootd ootd : Ootds) {
-            Date createTime = ootd.getCreateTime();
-
-            long createT = createTime.getTime();
-            long nowT = date.getTime();
-            long timeGap = (nowT - createT) / 1000;
-            float pastTime = timeGap / 1000;
-
-//            System.out.println(createTime);
-//            System.out.println(date);
-//            System.out.println(createTime.getTime());
-//            System.out.println(date.getTime());
-//            System.out.println(nowT - createT);
-//            System.out.println("================");
-            String timeGapToString = "";
-
-            // l/1000 는 초 단위
-            if (timeGap < 60) {
-                 timeGapToString = Long.toString(timeGap) + "s";
-            } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-                timeGapToString = Long.toString(timeGap / 60) + "m";
-            } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-                timeGapToString = Long.toString(timeGap / 3600) + "h";
-            } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-                timeGapToString = Long.toString(timeGap / 84000) + "d";
-            }
-
+            GapTimeVo gapTime = articleService.getGapTime(ootd, date);
 
             List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
 
@@ -156,8 +132,8 @@ public class OotdService {
                             .imageUrl(responsePhoto.get(0).getImageUrl())
                             .build())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
-                    .time(timeGapToString)
-                    .pastTime(pastTime)
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
                     .userId(ootd.getUser().getId())
                     .build();
 
@@ -206,8 +182,9 @@ public class OotdService {
                 continue;
             }
 
-            GapTimeVo commentGapTime = getGapTime(comment, date);
+            GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
 
+            // 해당 댓글에 달린 대댓글 리스트
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
@@ -219,7 +196,7 @@ public class OotdService {
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
 
-                GapTimeVo cocommentGapTime = getGapTime(getComment, date);
+                GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
 
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
@@ -227,6 +204,8 @@ public class OotdService {
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .imageUrl(comment.getUser().getImageUrl())
+                        .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
                         .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
@@ -240,6 +219,8 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .imageUrl(comment.getUser().getImageUrl())
+                    .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
@@ -447,56 +428,76 @@ public class OotdService {
     }
 
 
-//    public void filterOotd(FilterOotdRequestDto filter) {
-//        List<FilterStyleTagRequestDto> styleTag = filter.getStyleTag();
-//        List<FilterTpoRequestDto> tpo = filter.getTpo();
-//        Long age = filter.getAge();
-//        Gender gender = filter.getGender();
-//
-//        List<OotdListResponseDto> ootdListResponseDtos = listOotd();
-//
-//        for (OotdListResponseDto ootdListResponseDto : ootdListResponseDtos) {
-//            Long id = ootdListResponseDto.getId();
-//            articleTagRepository.findAllId();
-//        }
-//
-//
-//        for (FilterStyleTagRequestDto filterStyleTagRequestDto : styleTag) {
-//            filterStyleTagRequestDto.getKeyword();
-//        }
-//
-//        for (FilterTpoRequestDto filterTpoRequestDto : tpo) {
-//
-//        }
-//    }
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter) {
+        List<String> styleTag = filter.getStyleTag();
+        List<String> tpoTag = filter.getTpo();
+        Long age = filter.getAge();
+        Gender gender = filter.getGender();
 
 
+        List<OotdListResponseDto> listOotd = listOotd();
+        List<OotdListResponseDto> responseOotdList = new ArrayList<>();
 
-    public GapTimeVo getGapTime(Comment comment, Date date) {
-        Date createTime = comment.getCreateTime();
-
-        long createT = createTime.getTime();
-        long nowT = date.getTime();
-        long timeGap = (nowT - createT) / 1000;
-        float pastTime = timeGap / 1000;
-        String timeGapToString = "";
-
-        // l/1000 는 초 단위
-        if (timeGap < 60) {
-            timeGapToString = Long.toString(timeGap) + "s";
-        } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-            timeGapToString = Long.toString(timeGap / 60) + "m";
-        } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-            timeGapToString = Long.toString(timeGap / 3600) + "h";
-        } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-            timeGapToString = Long.toString(timeGap / 84000) + "d";
+        // 아무 필터도 적용되지 않은 경우
+        if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
+            return null;
         }
 
 
-        return GapTimeVo.builder()
-                .pastTime(pastTime)
-                .timeGapToString(timeGapToString)
-                .build();
+        // 전체 게시물 목록을 뒤져보자
+        for (OotdListResponseDto dto : listOotd) {
+            // 태그가 존재할 때에만..
+            if (styleTag != null || tpoTag != null) {
+                // 해당 게시물에 등록된 태그들을 가져오자
+                List<ArticleTag> articleTagList = articleTagRepository.findAllByArticle_Id(dto.getId());
+                List<String> tagList = new ArrayList<>();
+                int styleCnt = 0, tpoCnt = 0;
+
+
+                // 게시물에 등록된 태그들의 모든 keyword 들을 가져온다.
+                for (ArticleTag articleTag : articleTagList) {
+                    String keyword = tagRepository.findById(articleTag.getTag().getId()).orElseThrow().getKeyword();
+                    tagList.add(keyword);
+                }
+
+                // style 태그가 존재할 때에만..
+                if (styleTag != null) {
+                    // 필터링 할 스타일 태그가 기존 태그들에 포함되어있다면 cnt ++
+                    for (String keyword : styleTag) {
+                        if (tagList.contains(keyword)) styleCnt++;
+                    }
+                }
+
+
+                if (tpoTag != null) {
+                    // 필터링 할 tpo 태그가 기존 태그들에 포함되어있다면 cnt ++
+                    for (String keyword : tpoTag) {
+                        if (tagList.contains(keyword)) tpoCnt++;
+                    }
+                }
+
+                User user = userRepository.findById(dto.getUserId()).orElseThrow();
+
+                // 성별을 선택하지 않은경우
+                if (gender == null) {
+                    gender = user.getGender();
+                }
+
+                // 나이를 선택하지 않은경우
+                if (age == null) {
+                    age = (long) (user.getAge() / 10);
+                }
+
+                // 스타일, tpo 태그들 모두 다 찾고, 성별과 나이대도 일치할 경우..
+                if (styleTag.size() == styleCnt &&
+                        tpoTag.size() == tpoCnt &&
+                        user.getGender() == gender &&
+                        user.getAge() / 10 == age) {
+                    responseOotdList.add(dto);
+                }
+            }
+        }
+        return responseOotdList;
     }
 
     public List hotIssue() {
