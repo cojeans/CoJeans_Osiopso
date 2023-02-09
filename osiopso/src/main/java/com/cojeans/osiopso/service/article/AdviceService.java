@@ -19,13 +19,16 @@ import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
+import com.cojeans.osiopso.repository.comment.CommentRepositoryImpl;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = false)
@@ -40,7 +43,7 @@ public class AdviceService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
-
+    private final CommentRepositoryImpl commentRepositoryImpl;
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -283,5 +286,44 @@ public class AdviceService {
         }
 
         return list;
+    }
+
+    public List<BurningAdviceResponseDto> burnList() {
+        // 현재 날짜를 기준으로 1개월 내에 쓰여진 훈수 글
+        // List<Advice> adviceList = adviceRepository.findAllByCreateTimeGreaterThanEqualAndCreateTimeLessThanEqual(before, now);
+
+        // 해당 글들의 댓글 수를 기준으로 내림차순 정렬
+        // count gruopby를 생각 -> QueryDSL 이용해야 함
+        // select article_id, count(*) as count from comment
+        // where article_id
+        // in (select id from article where create_time >= date_sub(now(), interval 1 month) and create_time <= now())
+        // group by article_id
+        // order by count desc;
+
+        List<Long> list = commentRepositoryImpl.findByArticleId(LocalDate.now());
+
+        for (Long aLong : list) {
+            System.out.println(aLong + " ====================");
+        }
+        List<BurningAdviceResponseDto> result = new ArrayList<>();
+
+        for (Long id : list) {
+            System.out.println("id : ---- " + id);
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
+            Advice advice = adviceRepository.findById(id).orElseThrow();
+            BurningAdviceResponseDto responseDto = BurningAdviceResponseDto.builder()
+                    .id(advice.getId())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .imageUrl(ap.getImageUrl())
+                            .build())
+                    .hit(advice.getHit())
+                    .subject(advice.getSubject())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                    .build();
+
+            result.add(responseDto);
+        }
+
+        return result;
     }
 }
