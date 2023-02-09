@@ -22,11 +22,13 @@ export const ProfileImageBox = styled.img.attrs({
   align-items: center;
   `
 
-  export const OotdDetailImage = styled.img.attrs({
-    src:'https://www.kdfnews.com/news/photo/202202/87406_87382_2149.jpg'
-  })`
-  width: 300px;
+  export const OotdDetailImage = styled.div`
+  width: 100%;
   height: 450px;  
+  img{
+    width:100%;
+    height:100%
+  }
   `
 
   export const UpperImage = styled.div`

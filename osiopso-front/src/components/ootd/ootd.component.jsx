@@ -73,7 +73,7 @@ const Ootd = () => {
         {ootdArticle.map((el, idx) => {
           return (
             <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
-              <img src='' alt="" />
+              <img src={el.photo.imageUrl} alt="" />
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>
@@ -81,7 +81,7 @@ const Ootd = () => {
                   </CommentContainer>
                   <p>{ el.commentCnt}</p>
                 </UpperCommentContainer>
-                <p>{ el.createTime }</p>
+                <p>시간 들어갈 자리입니다.</p>
               </UpperupperCommentContainer>
             </Container>
           );

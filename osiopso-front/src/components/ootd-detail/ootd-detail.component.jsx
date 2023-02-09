@@ -25,6 +25,7 @@ import { selectUser } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
 
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+import { ootd } from "../../store/ootd/ootd.reducer";
 
 
 const defaultData = {
@@ -45,6 +46,8 @@ const OotdDetail = () => {
 
   const Token = useSelector(selectUser)
   const [ootdDetail, setOotdDetail]= useState(defaultData)
+  const [phtoUrl, setPhotoUrl] = useState('')
+  const [userData, setUserData] = useState('')
 
   const getDetailOotd = () => {
     axios({
@@ -57,14 +60,38 @@ const OotdDetail = () => {
       .then((res) => {
         console.log(res.data.responseData)
         setOotdDetail(res.data.responseData)
+        setPhotoUrl(res.data.responseData.photos[0].imageUrl)
       })
       .catch((err) => {
       console.log(err)
+      })
+    
+    axios({
+      method:""
     })
+  }
+
+  const deleteOotd = () => {
+    axios({
+      method: "delete",
+      url: `http://localhost:8080/api/feed/ootd/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+      console.log(res.data)
+      })
+      .catch((err) => {
+      console.log(err)
+      })
+    
+    alert('삭제되었습니다.')
   }
 
   useEffect(() => {
     getDetailOotd()
+
   },[])
 
   const Report = ()=>{
@@ -87,22 +114,25 @@ const OotdDetail = () => {
   return (
     <div>
       <hr/>
-      <UpperProfile>
+      <UpperProfile
+      >
         <ProfileImageBox />
         MyNameIsMr.Umm
       </UpperProfile>
 
       <UpperImage>
-        <OotdDetailImage />
+        <OotdDetailImage>
+          <img src={phtoUrl } alt="" />
+        </OotdDetailImage>
         <div>
           <VscHeart size="24" />
           <VscComment onClick={goToOotdComment}  size="24"  />  
           <span>{ ootdDetail.comments.length}</span>
           <VscWarning size="24" onClick={Report} />
-          <VscTrash size="24"/>
+          <VscTrash size="24" onClick={deleteOotd}/>
         </div>
         <div>
-          { ootdDetail.content}
+          {ootdDetail.content}
         </div>
       </UpperImage>
 
