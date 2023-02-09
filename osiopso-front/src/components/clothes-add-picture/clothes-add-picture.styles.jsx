@@ -19,12 +19,14 @@ export const ExampleContainer = styled.div`
 `
 
 export const ExampleBox = styled.div`
+
 	display:flex;
 	flex-direction:column;
 	justify-content: center;	
 	align-items: center;
 	width:100px;
 	height:120px;
+	margin-inline:25px;
 	img{
 		width:70px;
 		height:70px;
