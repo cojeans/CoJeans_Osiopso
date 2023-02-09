@@ -23,8 +23,8 @@ export const ProfileImageBox = styled.img.attrs({
   `
 
   export const OotdDetailImage = styled.div`
-  width: 100%;
-  height: 450px;  
+  width: 90%;
+  height: auto;  
   img{
     width:100%;
     height:100%

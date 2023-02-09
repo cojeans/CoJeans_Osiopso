@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CommentProfileImage,
   UpperComment,
@@ -7,10 +7,10 @@ import {
 } from './ootd-comment-create.styles'
 import { selectUser } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
-
-const OotdCommentCreate = ({onCreate}) => {
-
+const OotdCommentCreate = ({ articleId, setCommentData, commentData }) => {
+  const {cnt, list} = commentData
   const [content, setContent] = useState("")
 
 
@@ -21,9 +21,10 @@ const OotdCommentCreate = ({onCreate}) => {
   const Token = useSelector(selectUser)
 
   const createComment = () => {
+    console.log(articleId)
     axios({
       method:"post",
-      url: "http://localhost:8080/api/comment/1",
+      url: `http://localhost:8080/api/comment/${articleId}`,
       data:{
         content:content
       },
@@ -33,15 +34,11 @@ const OotdCommentCreate = ({onCreate}) => {
     })
     .then((res)=>{
       console.log(res.data)
+      setCommentData({ ...commentData, cnt: commentData.cnt + 1 })
+      console.log(commentData)
     })
     .catch((err)=>{
       console.log(err)
-    })
-  }
-
-  const getComment = () =>{
-    axios({
-      
     })
   }
 
@@ -53,9 +50,6 @@ const OotdCommentCreate = ({onCreate}) => {
 
   return (
     <div>
-      <h1>댓글 생성페이지</h1>
-
-
       <UpperComment>
         <CommentProfileImage></CommentProfileImage>
 
