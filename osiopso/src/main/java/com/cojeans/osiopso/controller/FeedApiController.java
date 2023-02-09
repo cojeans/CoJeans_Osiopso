@@ -1,12 +1,14 @@
 package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.ApiResponseDto;
-import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.security.UserDetail;
-import com.cojeans.osiopso.service.article.*;
+import com.cojeans.osiopso.service.article.AdviceService;
+import com.cojeans.osiopso.service.article.ArticleService;
+import com.cojeans.osiopso.service.article.LikeService;
+import com.cojeans.osiopso.service.article.OotdService;
 import com.cojeans.osiopso.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,12 +40,10 @@ public class FeedApiController {
 
     // ====================== CREATE ========================
     @PostMapping("/advice")
-    public ResponseEntity<?> createAdvice(@RequestPart("advice") AdviceRequestDto adviceRequestDto,
-                                          @RequestPart("picture") List<MultipartFile> pictures,
-                                          @AuthenticationPrincipal UserDetail user
-                                          ) {
+    public ResponseEntity<?> createAdvice(@RequestBody AdviceRequestDto adviceRequestDto,
+                                          @AuthenticationPrincipal UserDetail user) {
 
-        if (adviceService.createAdvice(adviceRequestDto, pictures, user.getId())) {
+        if (adviceService.createAdvice(adviceRequestDto, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createArticle Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -53,11 +51,11 @@ public class FeedApiController {
     }
 
     @PostMapping("/ootd")
-    public ResponseEntity<?> createOotd(@RequestPart("ootd") OotdRequestDto ootdRequestDto,
-                                        @RequestPart("picture") List<MultipartFile> pictures,
+    public ResponseEntity<?> createOotd(@RequestBody OotdRequestDto ootdRequestDto,
                                         @AuthenticationPrincipal UserDetail user) {
 
-        if (ootdService.createOotd(ootdRequestDto, pictures, user.getId())) {
+
+        if (ootdService.createOotd(ootdRequestDto, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "createArticle Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "createArticle Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -120,6 +118,7 @@ public class FeedApiController {
         return new ResponseEntity(new ApiResponseDto(true, "searchAdviceByContent Success", result), HttpStatus.OK);
     }
 
+
     // Ootd 유저 및 해쉬태그 검색
     @GetMapping("/ootd/search/data/{input}")
     public ResponseEntity<?> searchOotdOrUserByInput(@PathVariable("input") String input) {
@@ -140,10 +139,9 @@ public class FeedApiController {
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
     public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo,
-                                      @RequestPart("ootd") OotdRequestDto ootdRequestDto,
-                                      @RequestPart("picture") List<MultipartFile> pictures,
+                                      @RequestBody OotdRequestDto ootdRequestDto,
                                       @AuthenticationPrincipal UserDetail user) {
-        if (ootdService.editOotd(articleNo, ootdRequestDto, pictures, user.getId())){
+        if (ootdService.editOotd(articleNo, ootdRequestDto, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "editOotd Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editOotd Fail", null), HttpStatus.NOT_ACCEPTABLE);
@@ -152,10 +150,9 @@ public class FeedApiController {
 
     @PutMapping("/advice/{articleno}")
     public ResponseEntity<?> editAdvice(@PathVariable("articleno") Long articleNo,
-                                        @RequestPart("advice") AdviceRequestDto adviceRequestDto,
-                                        @RequestPart("picture") List<MultipartFile> pictures,
+                                        @RequestBody AdviceRequestDto adviceRequestDto,
                                         @AuthenticationPrincipal UserDetail user) {
-        if (adviceService.editAdvice(articleNo, adviceRequestDto, pictures, user.getId())){
+        if (adviceService.editAdvice(articleNo, adviceRequestDto, user.getId())){
             return new ResponseEntity(new ApiResponseDto(true, "editAdvice Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editAdvice Fail", null), HttpStatus.NOT_ACCEPTABLE);

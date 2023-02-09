@@ -5,7 +5,7 @@ export const ProfileBox = styled.div`
 	flex-direction:column;
 	border-bottom:solid 1px black;
 	width: 80%;
-	margin:auto;
+	margin:0 auto;
 `
 export const IntroBox = styled.div`
 	display:flex;

@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+
+export const ClosetDetailPage = styled.div`
+text-align:center;
+	
+`
+
 export const ClothesContainer = styled.div`
 	display:grid;
 	grid-template-columns:1fr 1fr 1fr;

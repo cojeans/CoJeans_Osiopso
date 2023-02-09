@@ -50,7 +50,7 @@ public class UserController{
     private UserService userService;
 
     @GetMapping("")
-    @Operation(summary = "회원조회")
+    @Operation(summary = "내정보조회")
     public ResponseEntity<User> getCurrentUser(Authentication authentication) {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 
@@ -58,6 +58,14 @@ public class UserController{
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userEmail}")
+    @Operation(summary = "다른회원조회")
+    public ResponseEntity<UserDto> getUser(@PathVariable String userEmail) {
+        UserDto userDto = userRepository.findByEmail(userEmail).orElse(null).toDto();
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     /*

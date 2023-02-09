@@ -1,10 +1,17 @@
 package com.cojeans.osiopso.dto.response.comment;
 
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
+
+import java.util.List;
+
+@Data
+@SuperBuilder
 public class CommentResponseDto {
 
+    private Long commentId;
     private String content;
+    private Long userId;
     private Long report;
-    private Long depth;
-    private Long rootId;
-    private Long mentionId;
+    private List<CocommentResponseDto> cocoments;
 }

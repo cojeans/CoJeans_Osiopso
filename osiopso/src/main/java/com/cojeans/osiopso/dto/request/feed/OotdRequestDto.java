@@ -1,17 +1,17 @@
 package com.cojeans.osiopso.dto.request.feed;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OotdRequestDto {
 
-    private List<ArticlePhotoRequestDto> photos;
     private List<ArticleTagRequestDto> tags;
     private String content;
+    private List<ArticlePhotoRequestDto> urls;
 }

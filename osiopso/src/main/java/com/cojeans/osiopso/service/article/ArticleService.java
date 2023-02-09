@@ -1,15 +1,11 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 //import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.entity.feed.Article;
-import com.cojeans.osiopso.entity.feed.ArticlePhoto;
-import com.cojeans.osiopso.entity.feed.ArticleTag;
-import com.cojeans.osiopso.entity.tag.Tag;
-import com.cojeans.osiopso.repository.article.*;
-import com.cojeans.osiopso.repository.user.UserRepository;
-import lombok.RequiredArgsConstructor;
+        import com.cojeans.osiopso.entity.feed.ArticleTag;
+        import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.comment.CommentRepository;
+        import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

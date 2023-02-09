@@ -6,6 +6,7 @@ import { useState, useCallback, useEffect } from "react"
 import { useSelector } from 'react-redux';
 
 import { selectUser } from '../../store/user/user.selector';
+import { selectCloset } from '../../store/closet/closet.selector';
 
 import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
@@ -31,24 +32,29 @@ export function useBodyScrollLock() {
 
 const ProfileCloset = () => {
 	const Token = useSelector(selectUser)
-	
 	const [closetList, setClosetList] = useState([])
 
+	const getClosetList = () => {
+		axios({
+					method: "post",
+					url: "http://localhost:8080/api/closet/mylist",
+					headers: {
+					Authorization: `Bearer ${Token.token}`,
+					},
+				})
+					.then((res) => {
+						setClosetList(res.data.reverse())
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+	}
+	
 	useEffect(() => {
-			axios({
-			method: "post",
-			url: "http://localhost:8080/closet/mylist",
-			headers: {
-			Authorization: `Bearer ${Token.token}`,
-			},
-		})
-			.then((res) => {
-				setClosetList(res.data)
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-	},[])
+			getClosetList()
+	}, [])
+	
+	console.log(closetList)
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock();
@@ -79,6 +85,7 @@ const ProfileCloset = () => {
 				<ClosetCreateModal
 					setModalOpen={setModalOpen}
 					openScroll={openScroll}
+					getClosetList={getClosetList}
 				/>
 			}
 

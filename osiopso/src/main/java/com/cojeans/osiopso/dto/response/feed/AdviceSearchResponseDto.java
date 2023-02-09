@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class AdviceSearchResponseDto {
 
+    private Long articleNo;
     private String subject;
     private boolean isSelected;
     private ArticlePhotoResponseDto photo;

@@ -38,7 +38,7 @@ const Join = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: 'http://localhost:8080/user/signUp',
+        url: 'http://localhost:8080/api/user/signUp',
         data: {
           email: email,
           name: displayName,

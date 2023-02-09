@@ -3,13 +3,19 @@ package com.cojeans.osiopso.service.article;
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
-import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
+import com.cojeans.osiopso.entity.comment.Cocomment;
+import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.comment.CocommentRepository;
+import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
+import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = false)
@@ -32,13 +41,16 @@ public class OotdService {
     private final ArticleRepository articleRepository;
     private final OotdRepository ootdRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final CommentLikeRepository commentLikeRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final CocommentRepository cocommentRepository;
 
-    public boolean createOotd(OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long id) {
+    public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
+        Pattern pattern = Pattern.compile("#[^\\s#]+");
+        Matcher matcher = pattern.matcher(ootdRequestDto.getContent());
+
 
         // 게시물 저장
         Ootd ootdSaved = ootdRepository.save(Ootd.builder()
@@ -50,23 +62,16 @@ public class OotdService {
 
 
         // 사진 저장
-        for (MultipartFile picture : pictures) {
-            String path = System.getProperty("user.dir"); // 현재 디렉토리
-            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+        List<ArticlePhotoRequestDto> urls = ootdRequestDto.getUrls();
 
-            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            try {
-                picture.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        for (ArticlePhotoRequestDto url : urls) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(file.getPath())
-                    .originFilename(file.getName())
+                    .imageUrl(url.getImageUrl())
                     .article(ootdSaved)
                     .build());
         }
+
+
 
         // 태그 저장
         List<ArticleTagRequestDto> tags = ootdRequestDto.getTags();
@@ -84,24 +89,72 @@ public class OotdService {
             articleTagRepository.save(articleTagE);
         }
 
+        while (matcher.find()) {
+            String hashTag = matcher.group();
+
+            Tag tagSaved = tagRepository.save(Tag.builder()
+                    .keyword(hashTag)
+                    .type("H")
+                    .build());
+
+            ArticleTag articleTagE = ArticleTag.builder()
+                    .article(ootdSaved)
+                    .tag(tagSaved)
+                    .build();
+
+            articleTagRepository.save(articleTagE);
+        }
+
+
         return true;
     }
 
 
     public List<OotdListResponseDto> listOotd() {
-        List<Article> Ootds = articleRepository.findAllByDtype("O");
+        List<Ootd> Ootds = ootdRepository.findAllByDtype("O");
         List<OotdListResponseDto> list = new ArrayList<>();
+        Date date = new Date();
+
+        for (Ootd ootd : Ootds) {
+            Date createTime = ootd.getCreateTime();
+
+            long createT = createTime.getTime();
+            long nowT = date.getTime();
+            long timeGap = (nowT - createT) / 1000;
+            float pastTime = timeGap / 1000;
+
+//            System.out.println(createTime);
+//            System.out.println(date);
+//            System.out.println(createTime.getTime());
+//            System.out.println(date.getTime());
+//            System.out.println(nowT - createT);
+//            System.out.println("================");
+            String timeGapToString = "";
+
+            // l/1000 는 초 단위
+            if (timeGap < 60) {
+                 timeGapToString = Long.toString(timeGap) + "s";
+            } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
+                timeGapToString = Long.toString(timeGap / 60) + "m";
+            } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
+                timeGapToString = Long.toString(timeGap / 3600) + "h";
+            } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
+                timeGapToString = Long.toString(timeGap / 84000) + "d";
+            }
 
 
-        // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Article ootd : Ootds) {
+            List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
+
             OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-//                    .createTime(ootd.getCreateTime())
-//                    .dtype(ootd.getDtype())
-//                    .modifyTime(ootd.getModifyTime())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .imageUrl(responsePhoto.get(0).getImageUrl())
+                            .build())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                    .time(timeGapToString)
+                    .pastTime(pastTime)
                     .userId(ootd.getUser().getId())
                     .build();
 
@@ -121,10 +174,10 @@ public class OotdService {
 
         for (ArticlePhoto ap : photoEntityList) {
             photoResponseDtoList.add(ArticlePhotoResponseDto.builder()
-                    .originFilename(ap.getOriginFilename())
-                    .storeFilename(ap.getStoreFilename())
+                    .imageUrl(ap.getImageUrl())
                     .build());
         }
+
 
         // 게시물 좋아요 가져오기
         // DataFormat) x 유저가 좋아요를 눌렀다.
@@ -139,23 +192,49 @@ public class OotdService {
         }
 
 
-        // 댓글 좋아요 가져오기
-        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
-        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
-
-//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
-//
-//        for (CommentLike cl : commentLikeList) {
-//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-//                    .id(cl.getId())
-//                    .userId(cl.getUser().getId())
-//                    .commentId(cl.getComment().getId())
-//                    .build());
-//        }
-
-
         // 댓글 가져오기
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for (Comment comment : commentList) {
+            // 대댓글인 경우에는 continue
+            if (cocommentRepository.findByComment_Id(comment.getId()) != null){
+                continue;
+            }
+
+            List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
+
+
+            List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
+
+            for (Cocomment cocomment : cocommentList) {
+                System.out.println(cocommentResponseDtoList.size());
+                if (cocommentResponseDtoList.size() == 3) {
+                    break;
+                }
+
+                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+
+                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
+                cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .commentId(getComment.getId())
+                        .content(getComment.getContent())
+                        .userId(getComment.getUser().getId())
+                        .report(getComment.getReport())
+                        .depth(cocomment.getDepth())
+                        .rootId(cocomment.getRootId())
+                        .mentionId(cocomment.getMentionId())
+                        .build());
+            }
+
+            commentResponseDtoList.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .userId(comment.getUser().getId())
+                    .report(comment.getReport())
+                    .cocoments(cocommentResponseDtoList)
+                    .build());
+        }
 
 
         // 태그 가져오기
@@ -185,14 +264,14 @@ public class OotdService {
                 .photos(photoResponseDtoList)
                 .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
-//                .commentLikes(commentLikeResponseDtoList)
+                .comments(commentResponseDtoList)
                 .hit(ootd.getHit())
                 .content(ootd.getContent())
                 .build();
     }
 
 
-    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, List<MultipartFile> pictures, Long userId) {
+    public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, Long userId) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
 
         // 게시글 작성자만 수정권한이 있다.
@@ -273,20 +352,11 @@ public class OotdService {
         articlePhotoRepository.deleteAllByArticle_Id(articleNo);
 
         // 새로운 게시물 사진 추가
-        for (MultipartFile picture : pictures) {
-            String path = System.getProperty("user.dir"); // 현재 디렉토리
-            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+        List<ArticlePhotoRequestDto> urls = ootdRequestDto.getUrls();
 
-            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            try {
-                picture.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        for (ArticlePhotoRequestDto url : urls) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(file.getPath())
-                    .originFilename(file.getName())
+                    .imageUrl(url.getImageUrl())
                     .article(ootd)
                     .build());
         }
@@ -294,11 +364,13 @@ public class OotdService {
 
         articleRepository.save(Ootd.builder()
                 .id(articleNo)
+                .user(userRepository.getById(userId))
                 .content(ootdRequestDto.getContent())
                 .build());
 
         return true;
     }
+
 
     public OotdSearchByHashtagResponseDto searchOotdByHashtag(String input) {
         // 해당 검색 해쉬태그를 contain("input%")한 태그들을 모두 찾아온다.
@@ -332,8 +404,7 @@ public class OotdService {
                 ootdSearchResponseDtoList.add(OotdSearchResponseDto.builder()
                                 .articleNo(articleTag.getArticle().getId())
                         .photo(ArticlePhotoResponseDto.builder()
-                                .storeFilename(articlePhoto.getStoreFilename())
-                                .originFilename(articlePhoto.getOriginFilename())
+                                .imageUrl(articlePhoto.getImageUrl())
                                 .build())
                         .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                         .likeCnt((long) articleLikeRepository.findAllByArticle_Id(ootd.getId()).size())

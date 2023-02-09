@@ -17,6 +17,7 @@ const isLogin = localStorage.getItem('token')
 const signOut = () => {
   const isToken = localStorage.getItem('token')
   if (isToken) {
+    alert("로그아웃되었습니다.")
     localStorage.clear();
   }
 }
@@ -66,7 +67,7 @@ export const SideBar = () => {
             회원탈퇴
           </LinkContainer>}
           
-          {isLogin && <LinkContainer onClick={signOut} to='/login'>
+          {isLogin && <LinkContainer onClick={signOut}to='/login'>
             로그아웃
           </LinkContainer>}
 

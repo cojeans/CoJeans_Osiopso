@@ -10,8 +10,8 @@ import java.util.List;
 @Getter
 public class AdviceRequestDto {
 
-    private List<ArticlePhotoRequestDto> photos;
     private boolean isSelected;
     private String content;
     private String subject;
+    private List<ArticlePhotoRequestDto> urls;
 }

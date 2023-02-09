@@ -44,7 +44,7 @@ export const AlertHandler = () => {
 }
 
 
-const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
+const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
 
@@ -100,7 +100,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
 
 		axios({
 			method: "post",
-			url: "http://localhost:8080/closet",
+			url: "http://localhost:8080/api/closet",
 			data: {
 				name: payload.name,
 				isSelected:payload.isSelected,
@@ -120,6 +120,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList1 }) => {
 		
 		AlertHandler() // alert창 띄우기
 
+		getClosetList() // 리스트 갱신
 	}
 	
     return (
