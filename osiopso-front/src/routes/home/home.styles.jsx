@@ -58,3 +58,6 @@ border: 4px solid black;
 
 `
 
+export const OotdTagDiv = styled.div`
+    padding-top:60px;
+`
