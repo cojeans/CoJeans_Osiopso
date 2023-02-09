@@ -21,7 +21,8 @@ import {
   MarginDiv,
   OotdInput,
   OotdImgContainer,
-  StyleTagButton
+  StyleTagButton,
+  TagBox
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -168,6 +169,13 @@ const OotdCreate = () => {
         </OotdImgContainer>
         <MarginDiv>
           <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+          <TagBox>
+            {
+              ootdTags.map((tag) => {
+                return <div>#{tag.type}</div>
+              })
+            }
+          </TagBox>
         </MarginDiv>
         <MarginDiv>
           <textarea
