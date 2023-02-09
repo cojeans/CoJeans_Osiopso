@@ -4,6 +4,7 @@ import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
@@ -443,6 +444,11 @@ public class OotdService {
     }
 
 
+    public void filterOotd(List<FilterOotdRequestDto> filter) {
+    }
+
+
+
     public GapTimeVo getGapTime(Comment comment, Date date) {
         Date createTime = comment.getCreateTime();
 
@@ -469,4 +475,5 @@ public class OotdService {
                 .timeGapToString(timeGapToString)
                 .build();
     }
+
 }
