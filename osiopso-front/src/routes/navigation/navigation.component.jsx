@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom"
 // import { Link } from 'react-router-dom'
-import { useState } from "react"
+import { HashLink, NavHashLink  } from 'react-router-hash-link';
 
+import { useState } from "react"
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
 
 import {
@@ -9,7 +10,8 @@ import {
 	LogoContainer,
 	BodyContainer,
 	Container,
-	PlusContainer
+	PlusContainer,
+	HashContainer
 } from "./navigation.styles"
 
 import TopBar from "../../components/top-bar/top-bar.component"
@@ -40,10 +42,10 @@ const Navigation = () => {
 				<Outlet />
 			</BodyContainer>
 			<NavigationContainer>
-				<LogoContainer to='/'>
+				<HashLink className="hash" smooth to="/#top">	
 					<TfiHome />
 					<span>홈</span>
-				</LogoContainer>
+				</HashLink>	
 				<LogoContainer to='/advice'>
 					<IoHandRightOutline/>
 					<span>훈수</span>
@@ -54,11 +56,13 @@ const Navigation = () => {
 				>
 					<Plus />
 				</PlusContainer>
-				<LogoContainer to='/ootd'>
+				{/* <LogoContainer to='/ootd'> */}
+				<HashLink className="hash" smooth to="/#OOTD">
 					<GiMirrorMirror />
 					<span>OOTD</span>
-				</LogoContainer>
-				<LogoContainer to='/mypage'>
+				</HashLink>
+				{/* </LogoContainer> */}
+				<LogoContainer  to='/mypage'>
 					<FaUserCircle />
 					<span>프로필</span>
 				</LogoContainer>
