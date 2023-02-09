@@ -110,12 +110,12 @@ const AdviceCreate = ()=> {
       icon: 'success',
       confirmButtonColor: "#DD6B55", 
       html: `
-        OOTD 게시물이 작성되었습니다.
+        훈수 게시물이 작성되었습니다.
       `,
           showCancelButton: false,
           confirmButtonText: "확인",
     }).then(() => {
-      navigate('/ootd')
+      navigate('/advice/commentlist')
     })
   }
   

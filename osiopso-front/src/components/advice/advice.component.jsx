@@ -1,19 +1,27 @@
-import { HunsuImages, TopTag, Container, UpperupperCommentContainer, UpperCommentContainer, CommentContainer, EachBox  } from "./advice.styles";
+import {
+  HunsuImages,
+  TopTag,
+  Container,
+  UpperupperCommentContainer,
+  UpperCommentContainer,
+  CommentContainer,
+  EachBox,
+  TrashcanContainer,
+  IconBigBox,
+} from "./advice.styles";
 import { TextToLeft } from "../../routes/home/home.styles";
-import { useNavigate } from "react-router-dom"
-import { ReactComponent as Comment} from "../../assets/comment.svg"
-import { FaRegComment } from "react-icons/fa"
-import { BiHeart } from "react-icons/bi";
-
+import { useNavigate } from "react-router-dom";
+import { ReactComponent as Comment } from "../../assets/comment.svg";
+import { VscHeart, VscComment } from "react-icons/vsc";
 
 const Advice = () => {
   const navigate = useNavigate();
-  const goToCheckoutHandler = ()=>{
+  const goToCheckoutHandler = () => {
     navigate("create");
-  }
-  const goToDetail = ()=> {
+  };
+  const goToDetail = () => {
     navigate("detail");
-  }
+  };
 
   return (
     <div>
@@ -31,26 +39,91 @@ const Advice = () => {
       </TextToLeft>
 
       <HunsuImages>
-        {/* <Container> */}
-          {/* <UpperupperCommentContainer> */}
-            {/* <UpperCommentContainer> */}
-            <EachBox>
-            <img src={require('../../assets/Mr_Umm.png')} alt="" onClick={goToDetail}/> 
-              <CommentContainer>
-            <FaRegComment color="black"/>
-            <BiHeart/>
-              </CommentContainer>
-            </EachBox>
-            <img src={require('../../assets/shit1.png')} alt="" onClick={goToDetail}/>  
-            <img src={require('../../assets/shit2.png')} alt="" onClick={goToDetail}/> 
-            <img src={require('../../assets/shit3.png')} alt="" onClick={goToDetail}/> 
-            <img src={require('../../assets/shit4.png')} alt="" onClick={goToDetail}/> 
-            <img src={require('../../assets/shit5.png')} alt="" onClick={goToDetail}/> 
-            {/* </UpperCommentContainer> */}
-          {/* </UpperupperCommentContainer> */}
-        {/* </Container> */}
-      </HunsuImages>
+        <EachBox>
+          <img
+            src={require("../../assets/Mr_Umm.png")}
+            alt=""
+            onClick={goToDetail}
+          />
+          {/* <IconBigBox> */}
+          <CommentContainer>
+            <VscHeart size="30" />
+            <VscComment size="30" />
+          </CommentContainer>
+          {/* </IconBigBox> */}
+        </EachBox>
 
+        <EachBox>
+          <img
+            src={require("../../assets/shit1.png")}
+            alt=""
+            onClick={goToDetail}
+          />
+          {/* <IconBigBox> */}
+          <CommentContainer>
+            <VscHeart size="30" />
+            <VscComment size="30" />
+          </CommentContainer>
+          {/* </IconBigBox> */}
+        </EachBox>
+
+        <EachBox>
+        <img
+          src={require("../../assets/shit2.png")}
+          alt=""
+          onClick={goToDetail}
+        />
+          {/* <IconBigBox> */}
+          <CommentContainer>
+            <VscHeart size="30" />
+            <VscComment size="30" />
+          </CommentContainer>
+          {/* </IconBigBox> */}
+        </EachBox>
+
+        <EachBox>
+        <img
+          src={require("../../assets/shit3.png")}
+          alt=""
+          onClick={goToDetail}
+        />
+          {/* <IconBigBox> */}
+          <CommentContainer>
+            <VscHeart size="30" />
+            <VscComment size="30" />
+          </CommentContainer>
+          {/* </IconBigBox> */}
+        </EachBox>
+
+        <EachBox>
+        <img
+          src={require("../../assets/shit4.png")}
+          alt=""
+          onClick={goToDetail}
+        />
+          {/* <IconBigBox> */}
+          <CommentContainer>
+            <VscHeart size="30" />
+            <VscComment size="30" />
+          </CommentContainer>
+          {/* </IconBigBox> */}
+        </EachBox>
+        
+        <EachBox>
+        <img
+          src={require("../../assets/shit5.png")}
+          alt=""
+          onClick={goToDetail}
+        />
+          {/* <IconBigBox> */}
+          <CommentContainer>
+            <VscHeart size="30" />
+            <VscComment size="30" />
+          </CommentContainer>
+          {/* </IconBigBox> */}
+        </EachBox>
+        
+      </HunsuImages>
     </div>
   );
 };

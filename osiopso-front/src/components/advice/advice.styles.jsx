@@ -39,7 +39,6 @@ export const CommentContainer = styled.div`
 display:flex;
 justify-content: flex-start;
 margin-bottom: 20px;
-
 svg{
   width: 18px;
   height: 18px;
@@ -48,4 +47,15 @@ svg{
 export const EachBox = styled.div`
 display:flex;
 flex-direction: column;
+`
+export const TrashcanContainer = styled.div`
+display:flex;
+jusyify-content: flex-end;
+svg{
+    width: 18px;
+    height: 18px;
+}
+`
+export const IconBigBox = styled.div`
+display:flex;
 `

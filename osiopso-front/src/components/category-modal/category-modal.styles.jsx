@@ -41,7 +41,8 @@ export const Tag = styled.div`
 		color:rgba(0,0,0,0.5);
 		cursor:pointer;
 		font-size:13px;
-		${({select})=> select && selectStyle};
-
-		
+		${({select})=> select && selectStyle};		
+`
+export const SaveBox = styled.div`
+margin-top: 30px;
 `
