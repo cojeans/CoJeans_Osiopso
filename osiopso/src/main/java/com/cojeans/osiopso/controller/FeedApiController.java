@@ -137,11 +137,11 @@ public class FeedApiController {
 
 
     // Ootd (스타일 태그, TPO ,나이, 성별) 별 분류
-    @GetMapping("/ootd/filter/")
-    public ResponseEntity<?> filterOotd(@RequestBody List<FilterOotdRequestDto> filter) {
-        ootdService.filterOotd(filter);
-
-    }
+//    @GetMapping("/ootd/filter/{filter}")
+//    public ResponseEntity<?> filterOotd(@RequestBody List<FilterOotdRequestDto> filter) {
+//        ootdService.filterOotd(filter);
+//
+//    }
 
 
     // ====================== UPDATE ========================

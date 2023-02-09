@@ -5,11 +5,14 @@ import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterStyleTagRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterTpoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
+import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.*;
@@ -444,8 +447,28 @@ public class OotdService {
     }
 
 
-    public void filterOotd(List<FilterOotdRequestDto> filter) {
-    }
+//    public void filterOotd(FilterOotdRequestDto filter) {
+//        List<FilterStyleTagRequestDto> styleTag = filter.getStyleTag();
+//        List<FilterTpoRequestDto> tpo = filter.getTpo();
+//        Long age = filter.getAge();
+//        Gender gender = filter.getGender();
+//
+//        List<OotdListResponseDto> ootdListResponseDtos = listOotd();
+//
+//        for (OotdListResponseDto ootdListResponseDto : ootdListResponseDtos) {
+//            Long id = ootdListResponseDto.getId();
+//            articleTagRepository.findAllId();
+//        }
+//
+//
+//        for (FilterStyleTagRequestDto filterStyleTagRequestDto : styleTag) {
+//            filterStyleTagRequestDto.getKeyword();
+//        }
+//
+//        for (FilterTpoRequestDto filterTpoRequestDto : tpo) {
+//
+//        }
+//    }
 
 
 
