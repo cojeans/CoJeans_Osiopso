@@ -26,10 +26,13 @@ export const FollowBox = styled.div`
 	}
 `
 
-export const ProfileImageBox = styled.img.attrs({
-  src: `https://pixlr.com/images/index/remove-bg.webp`,
-})`
+export const ProfileImageBox = styled.div`
 	border-radius:50%;
 	width:5em;
 	height:5em;
+	overflow:hidden;
+	img{
+		width:100%;
+		height:100%;
+	}
 `;

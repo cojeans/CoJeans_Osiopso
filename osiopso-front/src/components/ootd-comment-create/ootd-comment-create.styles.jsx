@@ -67,10 +67,11 @@ export const ProfileImageBox = styled.img.attrs({
   height: 40px;
   border-radius: 70%;
   `
-  export const UpperComment = styled.div`
+export const UpperComment = styled.div`
+  margin: auto;
   display: flex; 
   justify-content: center;
-  width:100%;
+  width:95%;
   align-items:center;
   justify-content: space-between;
   button{
@@ -82,7 +83,7 @@ export const ProfileImageBox = styled.img.attrs({
   `
 
   export const ClosetInput = styled.input`
-  width: 80%;
+  width:75%;
   height:40px;
   border:none;
   border-bottom:solid 1px gray;

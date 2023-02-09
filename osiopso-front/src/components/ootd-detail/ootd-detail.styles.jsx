@@ -8,13 +8,17 @@ border-radius: 70%;
 overflow: hidden;
 `
 
-export const ProfileImageBox = styled.img.attrs({
-    src: `https://pixlr.com/images/index/remove-bg.webp`,
-  })`
+export const ProfileImageBox = styled.div`
       border-radius:70%;
       width:3em;
       height:3em;
       margin:10px;
+      overflow: hidden;
+
+       img{
+          width:100%;
+          height:100%
+        }
   `;
 
   export const UpperProfile = styled.div`
@@ -24,7 +28,7 @@ export const ProfileImageBox = styled.img.attrs({
 
   export const OotdDetailImage = styled.div`
   width: 90%;
-  height: auto;  
+  height: 50vh;  
   img{
     width:100%;
     height:100%
@@ -97,7 +101,7 @@ export const ProfileImageBox = styled.img.attrs({
 
 export const DetailContainer = styled.div`
   display:flex;
-  width:100%;
+  width:90%;
   justify-content: space-between;
   height:30px;
   align-items:center;

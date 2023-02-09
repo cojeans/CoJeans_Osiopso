@@ -1,4 +1,11 @@
+import { useSelector, useDispatch } from 'react-redux'
+
+import { selectUser } from '../../store/user/user.selector'
+import { userInfo } from '../../store/user/user.reducer'
+
+import axios from 'axios'
 import './home.styles'
+
 import {
 	TextToCenter,
 	TextToLeft,
@@ -14,6 +21,7 @@ import { ReactComponent as User2 } from "../../assets/userFashion.svg"
 // import DoSwiper from '../../components/swiper/swiper.component'
 import { ootd } from '../../store/ootd/ootd.reducer'
 import Ootd from '../../components/ootd/ootd.component'
+import { useEffect } from 'react'
 
 const Home = () =>{
 	const mainList = [
@@ -41,6 +49,38 @@ const Home = () =>{
 		'https://images.soco.id/877-157520981_886592098801448_5005490940673514409_n.jpg.jpeg',
 
 	]
+
+	const Token = useSelector(selectUser)
+
+	const dispatch = useDispatch()
+
+	// 로그인 하고 홈에 들어오면 현재 유저 정보를 전역 상태로 저장합니다.
+	const getCurrentUser = () => {
+    axios({
+      method: "get", 
+      url: 'http://localhost:8080/api/user',
+      headers: {
+          Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+				console.log(res.data)
+				const payload = {
+					name: res.data.name,
+					age: res.data.age,
+					gender: res.data.gender,
+					imageUrl: res.data.imageUrl,
+				}
+				dispatch(userInfo(payload))
+      })
+    .catch((err)=>{
+      console.log(err)
+    })
+	}
+
+	useEffect(() => {
+		getCurrentUser()
+	},[])
 
 	return (
 		<div>

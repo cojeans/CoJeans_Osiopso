@@ -125,7 +125,7 @@ const OotdCreate = () => {
 		showCancelButton: false,
 		confirmButtonText: "확인",
   }).then(() => {
-    navigate('/ootd')
+    navigate('/#OOTD')
   })
 }
 

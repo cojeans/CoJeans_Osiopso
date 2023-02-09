@@ -19,12 +19,14 @@ import axios from "axios";
 
 import { useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../store/user/user.selector';
+import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
 
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+import { HiOutlineUserCircle } from "react-icons/hi";
 
 import OotdCommentCreate from "../ootd-comment-create/ootd-comment-create.component";
+
 
 const defaultForm = {
   cnt: 0,
@@ -48,9 +50,9 @@ const OotdDetail = () => {
   const Token = useSelector(selectUser)
   const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
-  const [userData, setUserData] = useState()
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
+  const userInfo = useSelector(selectUserInfo)
 
   const getDetailOotd = () => {
     axios({
@@ -136,8 +138,10 @@ const OotdDetail = () => {
     <div>
       <UpperProfile
       >
-        <ProfileImageBox />
-        MyNameIsMr.Umm
+        <ProfileImageBox >
+          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+        </ProfileImageBox >
+        {userInfo.name}
       </UpperProfile>
 
       <UpperImage>
@@ -146,14 +150,14 @@ const OotdDetail = () => {
         </OotdDetailImage>
         <DetailContainer>
           <IconMessageBox>
-            <VscHeart size="30" />
+            <VscHeart size="25" />
             <span>{ likeData.cnt }</span>
-            <VscComment onClick={goToOotdComment}  size="30"  />  
+            <VscComment onClick={goToOotdComment}  size="25"  />  
             <span>{ commentData.cnt }</span>
           </IconMessageBox>
           <IconBox>
-            <VscWarning size="30" onClick={Report} />
-            <VscTrash size="30" onClick={deleteOotd}/>
+            <VscWarning size="25" onClick={Report} />
+            <VscTrash size="25" onClick={deleteOotd}/>
           </IconBox>
         </DetailContainer>
         <DetailContainer>
