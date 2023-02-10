@@ -176,14 +176,13 @@ const OotdDetail = () => {
                   ? <AiFillHeart size="23" color="red"/>
                   : <AiOutlineHeart size="23" />
               }
-              
               <div>{likeData.cnt}</div>
             </IconContainer>
             <IconContainer
               onClick={()=> openComment? setOpenComment(false): setOpenComment(true)}
             >
               <VscComment size="23"/>  
-              <div>{ commentData.cnt }</div>
+              <div>{ ootdDetail.commentCnt }</div>
             </IconContainer>
           </IconMessageBox>
           <IconBox>
@@ -197,7 +196,6 @@ const OotdDetail = () => {
           </span>
         </DetailContainer>
       </UpperImage>
-
         {
           openComment 
           ? <OotdCommentList
@@ -205,7 +203,6 @@ const OotdDetail = () => {
             setIsCocomment={setIsCocomment}
             />
           : ''
-            
         }
       <div id="commentId">
         <OotdCommentCreate
