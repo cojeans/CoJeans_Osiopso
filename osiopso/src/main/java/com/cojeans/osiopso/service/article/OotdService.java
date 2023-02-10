@@ -8,6 +8,7 @@ import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterStyleTagRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterTpoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
@@ -15,6 +16,7 @@ import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
 import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
@@ -182,6 +184,8 @@ public class OotdService {
         }
 
 
+
+
         // 댓글 가져오기
         List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
@@ -209,6 +213,19 @@ public class OotdService {
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+
+            // 댓글 좋아요 가져오기
+            List<CommentLike> commentLikeList = commentLikeRepository.findAllByComment_Id(comment.getId());
+            List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+            System.out.println(comment.getId());
+            for (CommentLike cl : commentLikeList) {
+                commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                        .userId(cl.getUser().getId())
+                        .commentId(cl.getComment().getId())
+                        .build());
+            }
+
+
             for (Cocomment cocomment : cocommentList) {
                 boolean likeCoco;
                 if (cocommentResponseDtoList.size() == 3) {
@@ -225,6 +242,18 @@ public class OotdService {
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
                 GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
 
+
+                // 대댓글 좋아요 가져오기
+                List<CommentLike> cocommentLikeList = commentLikeRepository.findAllByComment_Id(cocomment.getComment().getId());
+                List<CommentLikeResponseDto> cocommentLikeResponseDtoList = new ArrayList<>();
+                System.out.println(cocomment.getId());
+                for (CommentLike cl : cocommentLikeList) {
+                    cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                            .userId(cl.getUser().getId())
+                            .commentId(cl.getComment().getId())
+                            .build());
+                }
+
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .commentId(getComment.getId())
@@ -232,6 +261,7 @@ public class OotdService {
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
                         .like(likeCoco)
+                        .commentLikes(cocommentLikeResponseDtoList)
                         .imageUrl(comment.getUser().getImageUrl())
                         .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
@@ -247,7 +277,9 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .cocommentCnt((long) cocommentRepository.findAllByRootId(comment.getUser().getId()).size())
                     .like(likeCo)
+                    .commentLikes(commentLikeResponseDtoList)
                     .imageUrl(comment.getUser().getImageUrl())
                     .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())

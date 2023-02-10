@@ -152,22 +152,6 @@ public class AdviceService {
         }
 
 
-        // 댓글 좋아요 가져오기
-        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
-        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
-
-        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
-
-        for (CommentLike cl : commentLikeList) {
-            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-                    .id(cl.getId())
-                    .userId(cl.getUser().getId())
-                    .commentId(cl.getComment().getId())
-                    .build());
-        }
-
-
         // 댓글 가져오기
         List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
@@ -195,6 +179,17 @@ public class AdviceService {
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+            // 댓글 좋아요 가져오기
+            List<CommentLike> commentLikeList = commentLikeRepository.findAllByComment_Id(comment.getId());
+            List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+            System.out.println(comment.getId());
+            for (CommentLike cl : commentLikeList) {
+                commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                        .userId(cl.getUser().getId())
+                        .commentId(cl.getComment().getId())
+                        .build());
+            }
+
             for (Cocomment cocomment : cocommentList) {
                 boolean likeCoco;
 
@@ -211,8 +206,19 @@ public class AdviceService {
                 }
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
-
                 GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
+
+
+                // 대댓글 좋아요 가져오기
+                List<CommentLike> cocommentLikeList = commentLikeRepository.findAllByComment_Id(cocomment.getComment().getId());
+                List<CommentLikeResponseDto> cocommentLikeResponseDtoList = new ArrayList<>();
+                System.out.println(cocomment.getId());
+                for (CommentLike cl : cocommentLikeList) {
+                    cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                            .userId(cl.getUser().getId())
+                            .commentId(cl.getComment().getId())
+                            .build());
+                }
 
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
@@ -221,6 +227,9 @@ public class AdviceService {
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
                         .like(likeCoco)
+                        .commentLikes(cocommentLikeResponseDtoList)
+                        .imageUrl(comment.getUser().getImageUrl())
+                        .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
                         .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
@@ -234,7 +243,11 @@ public class AdviceService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .cocommentCnt((long) cocommentRepository.findAllByRootId(comment.getUser().getId()).size())
                     .like(likeCo)
+                    .commentLikes(commentLikeResponseDtoList)
+                    .imageUrl(comment.getUser().getImageUrl())
+                    .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
