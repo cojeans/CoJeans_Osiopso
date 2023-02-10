@@ -12,7 +12,7 @@ import { ProfileImageBox } from '../ootd-detail/ootd-detail.styles';
 import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
 
-const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd, isCocomment }) => {
+const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd, isCocomment,setOpenCoco }) => {
   
   const [content, setContent] = useState("")
   const [cocoment, setCocoment] = useState("")
@@ -30,7 +30,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
   }
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
-  const placeholer = `${isCocomment.selectCommentId}에 답글 달기`
+  const placeholer = `${isCocomment.selectCommentName}에 답글 달기`
 
   const createComment = () => {
     console.log(articleId)
@@ -72,7 +72,8 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
       .then((res) => {
         console.log(res.data)
         getDetailOotd()
-      setCocoment('')
+        setCocoment('')
+        setOpenCoco(true)
       }).catch((err) => {
       console.log(err)
     })

@@ -8,9 +8,10 @@ import {
 
  import { BsHeart } from "react-icons/bs";
 
- const Comment = ({comment}) => {
+const Comment = ({ comment, select }) => {
 	return (
-		<CommentBox>
+		<CommentBox
+			select={ select}>
 			<UserPorfileBox>
 					<div className="imgBox">
 							<img  src={  comment.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.imageUrl} alt="" />

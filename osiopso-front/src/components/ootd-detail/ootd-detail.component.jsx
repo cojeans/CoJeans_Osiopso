@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import {
   ProfileImageBox,
   UpperProfile,
@@ -7,14 +8,15 @@ import {
   IconContainer,
   IconBox,
   IconMessageBox,
-  DetailContainer
+  DetailContainer,
+  CommentListWrapper
 } from "./ootd-detail.styles";
 
 // import { ReactComponent as Like } from "../../assets/like.svg";
 // import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
 // import {ReactComponent as Alert} from "../../assets/alert.svg"
 import Swal from "sweetalert2";
-
+  
 import axios from "axios";
 
 import { useLocation } from "react-router-dom";
@@ -35,7 +37,8 @@ const defaultForm = {
 
 const isCocomentDefaultData = {
   check: false,
-  selectCommentId : ''
+  selectCommentId: '',
+  selectCommentName: '',
 }
 
 const OotdDetail = () => {
@@ -50,9 +53,37 @@ const OotdDetail = () => {
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
   const [openComment, setOpenComment] = useState(false)
+  // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
+  const [ootdUserUrl, setOordUserUrl] = useState(require('../../assets/defaultuser.png'))
+  const [openCoco, setOpenCoco] = useState(false)
+
   
   const userInfo = useSelector(selectUserInfo)
+  const curRef1 = useRef(null); 
+
+  const commentRef = useRef(null)
+
+  	useEffect(() => {
+		// 이벤트 핸들러 함수
+		const handler = (event) => {
+				// mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+				if (commentRef.current && !commentRef.current.contains(event.target)) {
+					setIsCocomment(isCocomentDefaultData)
+          console.log('다른곳 클릭..')
+      }
+		};
+		
+		// 이벤트 핸들러 등록
+		document.addEventListener('mousedown', handler);
+		// document.addEventListener('touchstart', handler); // 모바일 대응
+		
+		return () => {
+				// 이벤트 핸들러 해제
+				document.removeEventListener('mousedown', handler);
+				// document.removeEventListener('touchstart', handler); // 모바일 대응
+		};
+	});
 
   const getDetailOotd = () => {
     axios({
@@ -68,7 +99,7 @@ const OotdDetail = () => {
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
-        setLikeData({cnt : result.articleLikes.length , list: result.articleLikes, check:false})
+        setLikeData({ cnt: result.articleLikes.length, list: result.articleLikes, check: false })
       })
       .catch((err) => {
       console.log(err)
@@ -150,6 +181,19 @@ const OotdDetail = () => {
         navigate("/#ootd")
     })
   }
+  const sccurRef1 = () => curRef1.current.scrollIntoView({ behavior: 'smooth' }); 
+
+  const clickCommentIcon = () => {
+    if (openComment) {
+      setOpenComment(false)
+    } else {
+      setOpenComment(true)
+    }
+  }
+  
+  useEffect(() => {
+    sccurRef1()
+  },[openComment])
 
 
   return (
@@ -157,9 +201,9 @@ const OotdDetail = () => {
       <UpperProfile
       >
         <ProfileImageBox >
-          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+          <img src={  ootdUserUrl} alt="" />
         </ProfileImageBox >
-        {userInfo.name}
+        {ootdDetail.userName}
       </UpperProfile>
 
       <UpperImage>
@@ -179,7 +223,11 @@ const OotdDetail = () => {
               <div>{likeData.cnt}</div>
             </IconContainer>
             <IconContainer
-              onClick={()=> openComment? setOpenComment(false): setOpenComment(true)}
+              // onClick={() => openComment ? setOpenComment(false) : setOpenComment(true)}
+              onClick={() => {
+                clickCommentIcon()
+              }
+              }
             >
               <VscComment size="23"/>  
               <div>{ ootdDetail.commentCnt }</div>
@@ -196,23 +244,40 @@ const OotdDetail = () => {
           </span>
         </DetailContainer>
       </UpperImage>
+      {/* 댓글 아이콘 클릭시 리스트가 열리고 리스트 섹션으로 이동 */}
         {
-          openComment 
-          ? <OotdCommentList
-            commentData={commentData}
-            setIsCocomment={setIsCocomment}
-            />
+        openComment 
+          ?<CommentListWrapper>
+            <div onClick={()=>setOpenComment(false)}>접기</div>
+            <OotdCommentList
+              commentData={commentData}
+              setIsCocomment={setIsCocomment}
+              isCocomment={isCocomment}
+              setOpenCoco={setOpenCoco}
+              openCoco={ openCoco}
+              />
+          </CommentListWrapper>
           : ''
         }
-      <div id="commentId">
+      
+      <div
+      ref={commentRef}
+      >  
         <OotdCommentCreate
-          articleId={ id }
-          commentData= {commentData}
-          setCommentData={setCommentData}
-          setOpenComment={setOpenComment}
-          getDetailOotd={getDetailOotd}
-          isCocomment={isCocomment}
+        articleId={id}
+        commentData={commentData}
+        setCommentData={setCommentData}
+        setOpenComment={setOpenComment}
+        getDetailOotd={getDetailOotd}
+        isCocomment={isCocomment}
+        setOpenCoco={setOpenCoco}
+
         />
+      </div>
+
+      <div
+        ref={curRef1}
+      >
       </div>
     </div>
   );
