@@ -15,8 +15,10 @@ public class OotdDetailResponseDto {
 
     private Long id;
     private Long userId;
+    private String userName;
     private Date createTime;
     private Date modifyTime;
+    private Long commentCnt;
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleTagResponseDto> tags;
     private List<ArticleLikeResponseDto> articleLikes;
