@@ -19,25 +19,23 @@ justify-content: space-around;
 `
 export const Container = styled.div`
 width: 150px;
-margin-top: 30px;
 display:flex;
 // flex-direction: column;
-justify-content: center;
+justify-content: space-between;
 align-items:center;
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;
-width:100%;
-justify-content: space-between
 `
-export const UpperCommentContainer = styled.div`
+export const EachIcon = styled.div`
 display: flex;
-justify-content: start;
-align-items: center;
+margin-right: 3px;
+// margin: 0px 2px 0px
+
 `
 export const CommentContainer = styled.div`
 display:flex;
-justify-content: flex-start;
+justify-content: space-between;
 margin-bottom: 20px;
 svg{
   width: 18px;
@@ -56,6 +54,10 @@ svg{
     height: 18px;
 }
 `
-export const IconBigBox = styled.div`
+export const ThumbBox = styled.div`
 display:flex;
+`
+export const TimeBox = styled.div`
+display: flex;
+
 `
