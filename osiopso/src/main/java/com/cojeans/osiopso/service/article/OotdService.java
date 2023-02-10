@@ -313,6 +313,7 @@ public class OotdService {
                 .userId(ootd.getUser().getId())
                 .createTime(ootd.getCreateTime())
                 .modifyTime(ootd.getModifyTime())
+                .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                 .photos(photoResponseDtoList)
                 .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)

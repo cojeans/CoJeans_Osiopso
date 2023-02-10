@@ -16,6 +16,7 @@ public class AdviceDetailResponseDto {
     private Long userId;
     private Date createTime;
     private Date modifyTime;
+    private Long commentCnt;
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleLikeResponseDto> articleLikes;
     private List<CommentResponseDto> comments;
