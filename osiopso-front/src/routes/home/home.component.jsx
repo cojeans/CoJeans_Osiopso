@@ -66,6 +66,7 @@ const Home = () =>{
       .then((res) => {
 				console.log(res.data)
 				const payload = {
+					id: res.data.id,
 					name: res.data.name,
 					age: res.data.age,
 					gender: res.data.gender,

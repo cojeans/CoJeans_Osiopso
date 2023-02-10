@@ -9,6 +9,7 @@ export const user = createSlice({
             token: ""
         },
         user: {
+            id:'',
             name: '',
             age: '',
             gender: '',

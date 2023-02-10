@@ -41,6 +41,12 @@ const isCocomentDefaultData = {
   selectCommentName: '',
 }
 
+const likeDefaultData = {
+  check: false,
+  cnt: 0,
+  lst:[]
+}
+
 const OotdDetail = () => {
   const navigate = useNavigate();
  
@@ -50,7 +56,7 @@ const OotdDetail = () => {
   const Token = useSelector(selectUser)
   const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
-  const [likeData, setLikeData] = useState(defaultForm)
+  const [likeData, setLikeData] = useState(likeDefaultData)
   const [commentData, setCommentData] = useState(defaultForm)
   const [openComment, setOpenComment] = useState(false)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
@@ -99,7 +105,19 @@ const OotdDetail = () => {
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
-        setLikeData({ cnt: result.articleLikes.length, list: result.articleLikes, check: false })
+        const likeList = result.articleLikes
+        console.log(likeList, userInfo.id)
+        if (likeList.length) {
+          likeList.forEach((like) => {
+            if (like.userId === userInfo.id) {
+              setLikeData({ cnt: likeList.length, check: true, lst: likeList })
+            } else{
+              setLikeData({ cnt: likeList.length, check: false, lst: likeList})
+            }
+          })
+        } else {
+          setLikeData({ cnt: likeList.length, check: false, lst: likeList})
+        }
       })
       .catch((err) => {
       console.log(err)
@@ -134,12 +152,8 @@ const OotdDetail = () => {
       }
     })
       .then((res) => {
-        if (! likeData.check) {
-          setLikeData({ ...likeData, cnt: likeData.cnt + 1, check:true })
-        } else {
-          setLikeData({ ...likeData, cnt: likeData.cnt - 1, check:false })
+        getDetailOotd()
 
-        }
       })
       .catch((err) => {
       console.log(err)
@@ -223,7 +237,6 @@ const OotdDetail = () => {
               <div>{likeData.cnt}</div>
             </IconContainer>
             <IconContainer
-              // onClick={() => openComment ? setOpenComment(false) : setOpenComment(true)}
               onClick={() => {
                 clickCommentIcon()
               }

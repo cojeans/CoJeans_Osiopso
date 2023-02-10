@@ -19,7 +19,7 @@ export const CommentLargeBox = styled.div`
 	div{
 		font-size: 12px;
 	}
-${({select})=>select && selectComment}
+/* ${({select})=>select && selectComment} */
 `
 
 export const CommentBox = styled.div`
