@@ -11,6 +11,7 @@ import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.dto.response.tag.HotTagResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
 import com.cojeans.osiopso.dto.user.Gender;
@@ -569,24 +570,17 @@ public class OotdService {
     // 내림차순 정렬 ~ 4등까지 -> 해시태그 탭 선택지로 만들기
     // + 이후 ? 해당 탭을 누르면 좋아요를 기준으로 인기글 5개 뽑기
 
-    public List hotIssue() {
+    public List<HotTagResponseDto> hotIssue() {
         List<Long> list = articleTagRepositoryImpl.findByArticleId(LocalDate.now());
-        List<HotIssueResponseDto> result = new ArrayList<>();
+        List<HotTagResponseDto> result = new ArrayList<>();
         for(Long id : list){
             System.out.println("id : ----- " + id);
-            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
-            Ootd ootd = ootdRepository.findById(id).orElseThrow();
 
-            HotIssueResponseDto responseDto = HotIssueResponseDto.builder()
-                    .id(ootd.getId())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(ap.getImageUrl())
-                            .build())
-                    .hit(ootd.getHit())
-                    .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
-                    .build();
-
-            result.add(responseDto);
+            Tag tag = tagRepository.findById(id).orElseThrow();
+            result.add(HotTagResponseDto.builder()
+                    .id(tag.getId())
+                    .keyword(tag.getKeyword())
+                    .build());
         }
         return result;
     }

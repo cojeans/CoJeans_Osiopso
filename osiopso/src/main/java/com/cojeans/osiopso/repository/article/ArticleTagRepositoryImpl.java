@@ -32,7 +32,7 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
         // group by article_id
         // order by count(*) desc
         // limit 5;
-        //
+
         // select article_id, count(*)
         // from article_tag
         // inner join article
@@ -41,12 +41,18 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
         // order by count(*) desc
         // limit 5;
 
-        return jpaQueryFactory.select(article.id)
+        // select tag_id, count(*)
+        // from article_tag
+        // where article_tag.create_time between '2023-01-10' and '2023-02-11'
+        // group by tag_id
+        // order by count(*) desc
+        // limit 5;
+
+        return jpaQueryFactory.select(articleTag.tag.id)
                 .from(articleTag)
-                .innerJoin(articleTag.article, article)
-                .where(article.createTime.between(start, end))
-                .groupBy(article.id)
-                .orderBy(article.id.count().desc())
+                .where(articleTag.createTime.between(start, end))
+                .groupBy(articleTag.tag)
+                .orderBy(articleTag.tag.count().desc())
                 .limit(5)
                 .fetch();
     }
