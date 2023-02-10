@@ -24,6 +24,7 @@ import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepositoryImpl;
 import com.cojeans.osiopso.repository.user.UserRepository;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,9 +85,19 @@ public class AdviceService {
         Date date = new Date();
 
         for (Advice advice : Advices) {
-            GapTimeVo gapTime = articleService.getGapTime(advice, date);
+            Long issueScore = 0L;
 
+            GapTimeVo gapTime = articleService.getGapTime(advice, date);
             List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(advice.getId());
+
+            Article article = articleRepository.findById(advice.getId()).orElseThrow();
+
+            // 게시물의 댓글 수
+            int commentSize = commentRepository.findAllByArticle_Id(article.getId()).size();
+            // 게시물의 좋아요 수
+            int likeSize = articleLikeRepository.findAllByArticle_Id(article.getId()).size();
+
+            issueScore += ((commentSize * 4) + (likeSize * 2) + (advice.getHit()) * 1);
 
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
                     .id(advice.getId())
@@ -101,6 +112,7 @@ public class AdviceService {
                     .isSelected(advice.isSelected())
                     .time(gapTime.getTimeGapToString())
                     .pastTime(gapTime.getPastTime())
+                    .issueScore(issueScore)
                     .build();
             list.add(dto);
         }
@@ -112,7 +124,7 @@ public class AdviceService {
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    public AdviceDetailResponseDto detailAdvice(Long articleNo) {
+    public AdviceDetailResponseDto detailAdvice(Long articleNo, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
@@ -144,16 +156,16 @@ public class AdviceService {
         // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
         // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
 
-//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
-//
-//        for (CommentLike cl : commentLikeList) {
-//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-//                    .id(cl.getId())
-//                    .userId(cl.getUser().getId())
-//                    .commentId(cl.getComment().getId())
-//                    .build());
-//        }
+        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
+        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+
+        for (CommentLike cl : commentLikeList) {
+            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                    .id(cl.getId())
+                    .userId(cl.getUser().getId())
+                    .commentId(cl.getComment().getId())
+                    .build());
+        }
 
 
         // 댓글 가져오기
@@ -163,9 +175,18 @@ public class AdviceService {
 
         // 해당 게시물에 달린 모든 댓글 리스트
         for (Comment comment : commentList) {
+            boolean likeCo;
+
             // 대댓글인 경우에는 continue
             if (cocommentRepository.findByComment_Id(comment.getId()) != null){
                 continue;
+            }
+
+            // 좋아요가 눌려있다면
+            if (commentLikeRepository.findByComment_Id(comment.getId()) != null) {
+                likeCo = true;
+            } else {
+                likeCo = false;
             }
 
             GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
@@ -175,9 +196,18 @@ public class AdviceService {
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
             for (Cocomment cocomment : cocommentList) {
+                boolean likeCoco;
+
                 System.out.println(cocommentResponseDtoList.size());
                 if (cocommentResponseDtoList.size() == 3) {
                     break;
+                }
+
+                // 좋아요가 눌려있다면
+                if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
+                    likeCoco = true;
+                } else {
+                    likeCoco = false;
                 }
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
@@ -190,6 +220,7 @@ public class AdviceService {
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .like(likeCoco)
                         .time(cocommentGapTime.getTimeGapToString())
                         .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
@@ -203,16 +234,36 @@ public class AdviceService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .like(likeCo)
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
                     .build());
         }
 
+        System.out.println(advice.getUser().getId());
+        System.out.println(userId);
+
+        // 게시물의 작성자는 조회수를 증가시키지 않는다.
+        if (advice.getUser().getId() != userId) {
+            System.out.println(advice.getHit());
+            articleRepository.save(Advice.builder()
+                    .id(articleNo)
+                    .hit(advice.getHit() + 1)
+                    .user(advice.getUser())
+                    .subject(advice.getSubject())
+                    .isSelected(advice.isSelected())
+                    .content(advice.getContent())
+                    .createTime(advice.getCreateTime())
+                    .modifyTime(advice.getModifyTime())
+                    .report(advice.getReport())
+                    .build());
+        }
+
 
         return AdviceDetailResponseDto.builder()
                 .id(advice.getId())
-                .userId(advice.getUser().getId())
+                .userId(advice.getId())
                 .createTime(advice.getCreateTime())
                 .modifyTime(advice.getModifyTime())
                 .photos(photoResponseDtoList)
@@ -329,9 +380,6 @@ public class AdviceService {
 
         List<Long> list = commentRepositoryImpl.findByArticleId(LocalDate.now());
 
-        for (Long aLong : list) {
-            System.out.println(aLong + " ====================");
-        }
         List<BurningAdviceResponseDto> result = new ArrayList<>();
 
         for (Long id : list) {

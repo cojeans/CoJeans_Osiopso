@@ -1,13 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   ProfileImageBox,
   UpperProfile,
-  OotdDetailImage,
+  AdviceDetailImage,
   UpperImage,
   UpperComment,
-  LikeContainer,
   UpperLikeContainer,
-  AlertContainer,
+  IconBox,
+  TrashBox,
   HunsuButton,
   EachIcon,
 } from "./advice-detail.styles";
@@ -18,8 +18,97 @@ import { ReactComponent as Advice_like } from "../../assets/advice_like.svg";
 import { ReactComponent as Advice_dislike } from "../../assets/advice_dislike.svg";
 import Swal from "sweetalert2";
 
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/user/user.selector";
+import { useState, useEffect } from "react";
+import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+import { FiThumbsUp,  FiThumbsDown, FiAlertTriangle, FiTrash2  } from "react-icons/fi";
+import { FaRegComment } from "react-icons/fa";
+
+const defaultForm = {
+  cnt: 0,
+  list: []
+}
+
 const AdviceDetail = () => {
   const navigate = useNavigate();
+
+  const goToAdviceComment = ()=> {
+    navigate("/advice/comment", {
+      state: {
+        id: id
+      }
+    })
+  }
+
+
+  const location = useLocation();
+  const id= location.state.id
+
+  const Token = useSelector(selectUser)
+  const [advicedDetail, setAdviceDetail] = useState('')
+  const [photoUrl, setPhotoUrl] = useState('')
+  const [userData, setUserData] = useState('')
+  const [likeData, setLikeData] = useState(defaultForm)
+  const [commentData, setCommentData] = useState(defaultForm)
+
+
+  const getDetailAdvice = ()=>{
+    axios({
+      method: "get",
+      url: `http://localhost:8080/api/feed/advice/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`
+      }
+    })
+    .then((res)=>{
+      // console.log(res.data.responseData)
+      const result = res.data.responseData
+      setAdviceDetail(result)
+      setPhotoUrl(result.photos[0].imageUrl)
+      setCommentData({cnt : result.comments.length, list: result.comments})
+      setLikeData({cnt: result.articleLikes.length, list: result.articleLikes})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  const deleteAdvice = ()=> {
+    axios({
+      method: "delete",
+      url: `http://localhost:8080/api/feed/article/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+    .then((res)=>{
+      console.log(res.data)
+      Delete()
+    })
+    .catch((err)=> {
+      console.log(err)
+    })
+  }
+
+  const Delete = ()=> {
+    Swal.fire({
+      icon: 'success',
+      html: `
+      훈수 게시물이 삭제되었습니다.
+      `,
+      confirmButtonColor: "#DD6B55",
+    })
+    .then(()=>{
+      navigate("/advice")
+    })
+  }
+
+  useEffect(()=>{
+    getDetailAdvice()
+  },[])
+
 
   const goToCheckoutHandler = () => {
     navigate("/advice/commentlist")
@@ -47,6 +136,8 @@ const AdviceDetail = () => {
     })
   }
 
+
+
   return (
     <div>
       <hr />
@@ -56,22 +147,31 @@ const AdviceDetail = () => {
       </UpperProfile>
 
       <UpperImage>
-        <OotdDetailImage />
+        <AdviceDetailImage>
+          <img src={photoUrl} alt="" />
+        </AdviceDetailImage>
+
         <UpperLikeContainer>
-          <LikeContainer>
+          <IconBox>
             <EachIcon>
-              <Advice_like />
+              <FiThumbsUp size="20px"/>
             </EachIcon>
             <EachIcon>
-              <Advice_dislike />
+              <FiThumbsDown size="20px"/>
             </EachIcon>
             <EachIcon>
-              <DetailComment onClick={goToCheckoutHandler}/>
+              <FaRegComment onClick={goToCheckoutHandler} size="20px"/>
             </EachIcon>
-          </LikeContainer>
-          <AlertContainer>
-            <Alert onClick={Report} />
-          </AlertContainer>
+            </IconBox>
+            <TrashBox>
+              <EachIcon>
+                <FiTrash2 onClick={deleteAdvice} size="20px"/>
+              </EachIcon>
+              <EachIcon>
+                <FiAlertTriangle onClick={Report} size="20px"/>
+              </EachIcon>
+            </TrashBox>
+
         </UpperLikeContainer>
       </UpperImage>
 

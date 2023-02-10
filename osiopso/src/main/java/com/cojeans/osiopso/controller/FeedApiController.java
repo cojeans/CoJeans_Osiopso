@@ -84,8 +84,9 @@ public class FeedApiController {
 
 
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
-        AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo);
+    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo,
+                                                                @AuthenticationPrincipal UserDetail user) {
+        AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo, user.getId());
         return new ResponseEntity(new ApiResponseDto(true, "readAdviceDetail Success", detail), HttpStatus.OK);
     }
 

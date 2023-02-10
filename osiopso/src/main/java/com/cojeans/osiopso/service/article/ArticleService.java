@@ -44,7 +44,7 @@ public class ArticleService {
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(articleNo);
         for (ArticleTag at : articleTag) {
             articleTagRepository.deleteById(at.getId());
-            tagRepository.deleteById(at.getTag().getId());
+//            tagRepository.deleteById(at.getTag().getId());
         }
 
         // 게시물과 관련된 사진삭제
