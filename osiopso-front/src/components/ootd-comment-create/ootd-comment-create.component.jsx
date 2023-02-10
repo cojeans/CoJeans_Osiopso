@@ -6,21 +6,31 @@ import {
   CommentProfileImage,
   UpperComment,
   ClosetInput,
+  InputBox
 } from './ootd-comment-create.styles'
 import { ProfileImageBox } from '../ootd-detail/ootd-detail.styles';
 import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
 
-const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd }) => {
-  // const {cnt, list} = commentData
+const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd, isCocomment }) => {
+  
   const [content, setContent] = useState("")
-
-
+  const [cocoment, setCocoment] = useState("")
+  
+  useEffect(() => {
+    setContent('')
+    setCocoment('')
+  }, [isCocomment])
+  
   const handleChangeState = (e)=> {
     setContent(e.target.value)
   }
+  const handleChangeCocoment = (e) => {
+    setCocoment(e.target.value)
+  }
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
+  const placeholer = `${isCocomment.selectCommentId}에 답글 달기`
 
   const createComment = () => {
     console.log(articleId)
@@ -43,6 +53,27 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
       commentCreateAlert()
     })
     .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  const createCocoment = () => {
+    console.log('대댓글 달기입니다.')
+    axios({
+      method: "post",
+      url: `http://localhost:8080/api/comment/${articleId}/${isCocomment.selectCommentId}`,
+      data:{
+        content:cocoment
+      },
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+			},
+    })
+      .then((res) => {
+        console.log(res.data)
+        getDetailOotd()
+      setCocoment('')
+      }).catch((err) => {
       console.log(err)
     })
   }
@@ -72,15 +103,35 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
           <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
         </ProfileImageBox >
 
-        <ClosetInput
-          type="text"
-          autoFocus
-          maxLength={50}
-          placeholder="댓글 달기..."
-          onChange={handleChangeState}
-          value={content}
-        />
-        <button onClick={handleSubmit}>저장</button>
+        {
+          !isCocomment.check
+            ?
+            <InputBox>
+              <ClosetInput
+                type="text"
+                autoFocus
+                maxLength={50}
+                placeholder='댓글 달기...'
+                onChange={ handleChangeState}
+                value={content}
+              />
+              <button onClick={handleSubmit}>게시</button>
+            </InputBox>
+
+            :
+            <InputBox>
+              <ClosetInput
+                type="text"
+                placeholder={ placeholer }
+                autoFocus
+                maxLength={50}
+                onChange={handleChangeCocoment}
+                value={cocoment}
+              />
+              <button onClick={createCocoment}>게시</button>
+            </InputBox>
+        }
+
       </UpperComment>
     </div>
   );

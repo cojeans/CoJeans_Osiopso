@@ -32,10 +32,15 @@ const defaultForm = {
   cnt: 0,
   list : []
 }
+
+const isCocomentDefaultData = {
+  check: false,
+  selectCommentId : ''
+}
+
 const OotdDetail = () => {
   const navigate = useNavigate();
  
-
   const location = useLocation();
   const id = location.state.id;
 
@@ -45,6 +50,7 @@ const OotdDetail = () => {
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
   const [openComment, setOpenComment] = useState(false)
+  const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
   
   const userInfo = useSelector(selectUserInfo)
 
@@ -192,6 +198,15 @@ const OotdDetail = () => {
         </DetailContainer>
       </UpperImage>
 
+        {
+          openComment 
+          ? <OotdCommentList
+            commentData={commentData}
+            setIsCocomment={setIsCocomment}
+            />
+          : ''
+            
+        }
       <div id="commentId">
         <OotdCommentCreate
           articleId={ id }
@@ -199,17 +214,9 @@ const OotdDetail = () => {
           setCommentData={setCommentData}
           setOpenComment={setOpenComment}
           getDetailOotd={getDetailOotd}
-
+          isCocomment={isCocomment}
         />
       </div>
-      {
-        openComment 
-        ? <OotdCommentList
-            commentData={commentData}
-          />
-        : ''
-          
-      }
     </div>
   );
 };

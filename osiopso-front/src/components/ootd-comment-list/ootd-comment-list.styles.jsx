@@ -3,13 +3,13 @@ import styled from "styled-components";
 export const CommentContainer = styled.div`
 	display:flex;
 	flex-direction: column;
+	width: 100%;
 `
 
 export const CommentLargeBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	width:100%;
-	height:70px;
 	align-items: center;
 	justify-content: center;
 	div{
@@ -24,7 +24,7 @@ export const CommentBox = styled.div`
 	margin:auto;
 	align-items: center;
 	justify-content: center;
-	font-size: 14px;
+	font-size: 13px;
 `
 
 export const UserPorfileBox = styled.div`
@@ -35,10 +35,12 @@ export const UserPorfileBox = styled.div`
 	.imgBox{
 		overflow: hidden;
 		border-radius: 70%;
-	}
-		img{
 		width:2.5em;
 		height:2.5em;
+	}
+		img{
+		width:100%;
+		height:100%;
 	}
 `
 
@@ -67,3 +69,31 @@ export const HeartIconBox = styled.div`
 	}
 `
 
+export const Cocoment = styled.div`
+	padding-left:10px;
+	&:hover{
+		color:skyblue;
+		cursor: pointer;
+	}
+`
+
+export const CommentList = styled.div`
+	overflow: auto;
+	display: flex;
+	max-height: 50vh;
+	width: 100%;
+`
+
+export const CocomentBox = styled.div`
+	display: flex;
+	width: 67%;
+`
+
+export const CocomentList = styled.div`
+	display: flex;
+	flex-direction: column;
+	width:90%;
+	min-height: 70px;
+	border:solid 1px black;
+
+`
