@@ -194,9 +194,9 @@ public class AdviceService {
                 boolean likeCoco;
 
                 System.out.println(cocommentResponseDtoList.size());
-                if (cocommentResponseDtoList.size() == 3) {
-                    break;
-                }
+//                if (cocommentResponseDtoList.size() == 3) {
+//                    break;
+//                }
 
                 // 좋아요가 눌려있다면
                 if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
