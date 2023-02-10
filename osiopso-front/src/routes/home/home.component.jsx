@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectUser } from '../../store/user/user.selector'
 import { userInfo } from '../../store/user/user.reducer'
 
+import { useNavigate } from 'react-router-dom'
+
 import axios from 'axios'
 import './home.styles'
 
@@ -54,6 +56,8 @@ const Home = () =>{
 
 	const dispatch = useDispatch()
 
+	const navigate = useNavigate()
+
 	// 로그인 하고 홈에 들어오면 현재 유저 정보를 전역 상태로 저장합니다.
 	const getCurrentUser = () => {
     axios({
@@ -80,7 +84,12 @@ const Home = () =>{
 	}
 
 	useEffect(() => {
-		getCurrentUser()
+		if (!Token.token) {
+			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+			navigate('/login')
+		} else {
+			getCurrentUser()
+		}
 	},[])
 
 	return (
