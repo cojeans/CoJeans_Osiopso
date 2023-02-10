@@ -16,6 +16,7 @@ public class Clothes {
 
 //  private String url;
 
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)

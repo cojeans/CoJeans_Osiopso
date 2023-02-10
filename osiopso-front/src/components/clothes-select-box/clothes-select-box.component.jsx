@@ -36,7 +36,7 @@ const ClosetSelectBox = () => {
   const navigate = useNavigate();
 	const Token = useSelector(selectUser)
   const saveData = useSelector(selectClothes);
-  console.log(saveData)
+  console.log('thisis data', saveData)
 
   const dispatch = useDispatch();
   const onNavigateHandler = () => {

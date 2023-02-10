@@ -84,7 +84,7 @@ const AdviceCreate = ()=> {
       
       formData.append("picture", picture)
       formData.append("ootd", blob)
-  
+      console.log(formData)
   
       axios({
         method: "post",

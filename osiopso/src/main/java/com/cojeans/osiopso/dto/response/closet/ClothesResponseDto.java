@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class ClothesResponseDto {
     private Long id;
     private String category;
-    private byte[] url;
+    private String url;
 }
