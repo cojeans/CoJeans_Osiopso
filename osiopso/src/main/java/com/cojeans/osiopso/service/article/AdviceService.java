@@ -24,6 +24,7 @@ import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepositoryImpl;
 import com.cojeans.osiopso.repository.user.UserRepository;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,9 +85,19 @@ public class AdviceService {
         Date date = new Date();
 
         for (Advice advice : Advices) {
-            GapTimeVo gapTime = articleService.getGapTime(advice, date);
+            Long issueScore = 0L;
 
+            GapTimeVo gapTime = articleService.getGapTime(advice, date);
             List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(advice.getId());
+
+            Article article = articleRepository.findById(advice.getId()).orElseThrow();
+
+            // 게시물의 댓글 수
+            int commentSize = commentRepository.findAllByArticle_Id(article.getId()).size();
+            // 게시물의 좋아요 수
+            int likeSize = articleLikeRepository.findAllByArticle_Id(article.getId()).size();
+
+            issueScore += ((commentSize * 4) + (likeSize * 2) + (advice.getHit()) * 1);
 
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
                     .id(advice.getId())
@@ -101,6 +112,7 @@ public class AdviceService {
                     .isSelected(advice.isSelected())
                     .time(gapTime.getTimeGapToString())
                     .pastTime(gapTime.getPastTime())
+                    .issueScore(issueScore)
                     .build();
             list.add(dto);
         }
@@ -112,7 +124,7 @@ public class AdviceService {
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    public AdviceDetailResponseDto detailAdvice(Long articleNo) {
+    public AdviceDetailResponseDto detailAdvice(Long articleNo, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
@@ -229,10 +241,29 @@ public class AdviceService {
                     .build());
         }
 
+        System.out.println(advice.getUser().getId());
+        System.out.println(userId);
+
+        // 게시물의 작성자는 조회수를 증가시키지 않는다.
+        if (advice.getUser().getId() != userId) {
+            System.out.println(advice.getHit());
+            articleRepository.save(Advice.builder()
+                    .id(articleNo)
+                    .hit(advice.getHit() + 1)
+                    .user(advice.getUser())
+                    .subject(advice.getSubject())
+                    .isSelected(advice.isSelected())
+                    .content(advice.getContent())
+                    .createTime(advice.getCreateTime())
+                    .modifyTime(advice.getModifyTime())
+                    .report(advice.getReport())
+                    .build());
+        }
+
 
         return AdviceDetailResponseDto.builder()
                 .id(advice.getId())
-                .userId(advice.getUser().getId())
+                .userId(advice.getId())
                 .createTime(advice.getCreateTime())
                 .modifyTime(advice.getModifyTime())
                 .photos(photoResponseDtoList)
