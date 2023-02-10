@@ -3,7 +3,6 @@ package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.service.article.*;
-import com.google.protobuf.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @Slf4j
 @RestController
@@ -55,7 +52,7 @@ public class MainApiController {
         return new ResponseEntity(new ApiResponseDto(true, "hotIssue Success", ootdService.hotIssue()), HttpStatus.OK);
     }
 
-    // 3. OOTD 최신순, 인기순, 팔로잉
+    // 3. OOTD 팔로잉
     // 여기는 피드 .. 인데 .. 흠 .............
     // 일단 필터링만 구현해봅시다.
     // 어떻게 이을 것인가 ....
