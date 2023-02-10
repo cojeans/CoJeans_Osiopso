@@ -55,9 +55,7 @@ transition: all 0.3s linear;
 text-decoration:none;
 
 cursor: pointer;
-
     &:hover {
     background: hsl(205, 86%, 81%);
-
     }
 `

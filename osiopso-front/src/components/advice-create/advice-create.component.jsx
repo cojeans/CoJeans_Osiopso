@@ -137,7 +137,7 @@ const AdviceCreate = ()=> {
           showCancelButton: false,
           confirmButtonText: "확인",
     }).then(() => {
-      navigate('/advice/commentlist')
+      navigate('/advice')
     })
   }
   
