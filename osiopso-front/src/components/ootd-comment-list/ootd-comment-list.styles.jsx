@@ -94,6 +94,5 @@ export const CocomentList = styled.div`
 	flex-direction: column;
 	width:90%;
 	min-height: 70px;
-	border:solid 1px black;
 
 `
