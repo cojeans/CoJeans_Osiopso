@@ -4,7 +4,7 @@ import {
   UpperProfile,
   OotdDetailImage,
   UpperImage,
-  UpperComment,
+  IconContainer,
   IconBox,
   IconMessageBox,
   DetailContainer
@@ -22,7 +22,8 @@ import { useSelector } from 'react-redux';
 import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
 
-import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
+import { VscTrash, VscComment, VscWarning } from "react-icons/vsc";
 
 import OotdCommentCreate from "../ootd-comment-create/ootd-comment-create.component";
 import OotdCommentList from "../ootd-comment-list/ootd-comment-list.component"
@@ -37,13 +38,14 @@ const OotdDetail = () => {
 
   const location = useLocation();
   const id = location.state.id;
-  const {cnt, list} = defaultForm
 
   const Token = useSelector(selectUser)
   const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
+  const [openComment, setOpenComment] = useState(false)
+  
   const userInfo = useSelector(selectUserInfo)
 
   const getDetailOotd = () => {
@@ -55,12 +57,12 @@ const OotdDetail = () => {
       }
     })
       .then((res) => {
-        console.log(res.data.responseData)
         const result = res.data.responseData
+        console.log(result)
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
-        setCommentData({cnt : result.comments.length , list: result.comments.reverse()})
-        setLikeData({cnt : result.articleLikes.length , list: result.articleLikes})
+        setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
+        setLikeData({cnt : result.articleLikes.length , list: result.articleLikes, check:false})
       })
       .catch((err) => {
       console.log(err)
@@ -84,10 +86,28 @@ const OotdDetail = () => {
       .catch((err) => {
       console.log(err)
       })
-    
   }
 
+  const likeOotd = () => {
+    axios({
+      method: "post",
+      url: `http://localhost:8080/api/feed/likearticle/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+        if (! likeData.check) {
+          setLikeData({ ...likeData, cnt: likeData.cnt + 1, check:true })
+        } else {
+          setLikeData({ ...likeData, cnt: likeData.cnt - 1, check:false })
 
+        }
+      })
+      .catch((err) => {
+      console.log(err)
+    })
+  }
 
   useEffect(() => {
     getDetailOotd()
@@ -121,7 +141,7 @@ const OotdDetail = () => {
       confirmButtonColor: "#DD6B55", 
     })
       .then(() => {
-        navigate("/ootd")
+        navigate("/#ootd")
     })
   }
 
@@ -142,14 +162,27 @@ const OotdDetail = () => {
         </OotdDetailImage>
         <DetailContainer>
           <IconMessageBox>
-            <VscHeart size="25" />
-            <span>{ likeData.cnt }</span>
-            <VscComment size="25"  />  
-            <span>{ commentData.cnt }</span>
+            <IconContainer
+              onClick={likeOotd}
+            >
+              {
+                likeData.check
+                  ? <AiFillHeart size="23" color="red"/>
+                  : <AiOutlineHeart size="23" />
+              }
+              
+              <div>{likeData.cnt}</div>
+            </IconContainer>
+            <IconContainer
+              onClick={()=> openComment? setOpenComment(false): setOpenComment(true)}
+            >
+              <VscComment size="23"/>  
+              <div>{ commentData.cnt }</div>
+            </IconContainer>
           </IconMessageBox>
           <IconBox>
-            <VscWarning size="25" onClick={Report} />
-            <VscTrash size="25" onClick={deleteOotd}/>
+            <VscWarning size="23" onClick={Report} />
+            <VscTrash size="23" onClick={deleteOotd}/>
           </IconBox>
         </DetailContainer>
         <DetailContainer>
@@ -159,14 +192,24 @@ const OotdDetail = () => {
         </DetailContainer>
       </UpperImage>
 
-      <OotdCommentCreate
-        articleId={ id }
-        commentData= {commentData}
-        setCommentData={setCommentData}
-      />
-      <OotdCommentList
-        commentData={ commentData}
-      />
+      <div id="commentId">
+        <OotdCommentCreate
+          articleId={ id }
+          commentData= {commentData}
+          setCommentData={setCommentData}
+          setOpenComment={setOpenComment}
+          getDetailOotd={getDetailOotd}
+
+        />
+      </div>
+      {
+        openComment 
+        ? <OotdCommentList
+            commentData={commentData}
+          />
+        : ''
+          
+      }
     </div>
   );
 };

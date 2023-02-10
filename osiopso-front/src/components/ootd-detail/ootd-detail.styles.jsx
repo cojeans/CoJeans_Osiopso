@@ -120,11 +120,21 @@ export const IconBox = styled.div`
 `
 
 export const IconMessageBox = styled.div`
-  width:25%;
+  width:28%;
   display:flex;
   justify-content: space-around;
   align-items:center;
   span{
     font-weight:bold;
   }
+  `
+
+  export const IconContainer = styled.div`
+    display :flex;
+    align-items: center;
+    width:50%;
+    justify-content: space-evenly;
+    div{
+      font-size:13px;
+    }
   `

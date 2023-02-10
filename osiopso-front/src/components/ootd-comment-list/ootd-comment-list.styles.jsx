@@ -5,6 +5,18 @@ export const CommentContainer = styled.div`
 	flex-direction: column;
 `
 
+export const CommentLargeBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	width:100%;
+	height:70px;
+	align-items: center;
+	justify-content: center;
+	div{
+		font-size: 12px;
+	}
+`
+
 export const CommentBox = styled.div`
 	display: flex;
 	width:90%;
@@ -14,6 +26,7 @@ export const CommentBox = styled.div`
 	justify-content: center;
 	font-size: 14px;
 `
+
 export const UserPorfileBox = styled.div`
 	display: flex;
 	align-items: center;

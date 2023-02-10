@@ -11,13 +11,12 @@ import { ProfileImageBox } from '../ootd-detail/ootd-detail.styles';
 import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
 
-const OotdCommentCreate = ({ articleId, setCommentData, commentData }) => {
-  const {cnt, list} = commentData
+const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd }) => {
+  // const {cnt, list} = commentData
   const [content, setContent] = useState("")
 
 
   const handleChangeState = (e)=> {
-    console.log(e.target.value)
     setContent(e.target.value)
   }
   const Token = useSelector(selectUser)
@@ -38,8 +37,10 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData }) => {
     .then((res)=>{
       console.log(res.data)
       setCommentData({ ...commentData, cnt: commentData.cnt + 1 })
-      console.log(commentData)
+      getDetailOotd()
+
       setContent('')
+      commentCreateAlert()
     })
     .catch((err)=>{
       console.log(err)
@@ -48,10 +49,10 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData }) => {
 
   const handleSubmit = () => {
     createComment()
-    commentCreate()
+    setOpenComment(true)
   }
 
-  const commentCreate = ()=>{
+  const commentCreateAlert = ()=>{
     Swal.fire({
      icon: 'success',
       confirmButtonColor: "#DD6B55", 

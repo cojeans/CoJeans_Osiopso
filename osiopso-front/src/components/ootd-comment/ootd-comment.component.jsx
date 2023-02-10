@@ -45,7 +45,6 @@ const OotdComment = () => {
     <div>
       <UpperProfile>
         <ProfileImageBox />
-        MyNameIsMr.Umm
         <UpperLikeContainer>
           <LikeContainer>
             <Like />
