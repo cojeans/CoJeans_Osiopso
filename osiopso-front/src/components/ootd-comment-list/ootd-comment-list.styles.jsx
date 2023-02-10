@@ -1,9 +1,13 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 export const CommentContainer = styled.div`
 	display:flex;
 	flex-direction: column;
 	width: 100%;
+`
+
+export const selectComment = css`
+	background-color: #e7e2ff;
 `
 
 export const CommentLargeBox = styled.div`
@@ -15,6 +19,7 @@ export const CommentLargeBox = styled.div`
 	div{
 		font-size: 12px;
 	}
+/* ${({select})=>select && selectComment} */
 `
 
 export const CommentBox = styled.div`
@@ -80,6 +85,7 @@ export const Cocoment = styled.div`
 export const CommentList = styled.div`
 	overflow: auto;
 	display: flex;
+	flex-direction: column;
 	max-height: 70vh;
 	width: 100%;
 `
@@ -93,6 +99,8 @@ export const CocomentList = styled.div`
 	display: flex;
 	flex-direction: column;
 	width:90%;
+	margin-left: 8%;
+
 	/* min-height: 70px; */
 
 `
