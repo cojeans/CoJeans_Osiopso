@@ -325,8 +325,8 @@ public class OotdService {
 
 
         for (ArticleTag at : articleTags) {
-            old_tags.add(tagRepository.findById(at.getId()).orElseThrow());
-            old_tags_keyword.add(tagRepository.findById(at.getId()).orElseThrow().getKeyword());
+            old_tags.add(tagRepository.findById(at.getTag().getId()).orElseThrow());
+            old_tags_keyword.add(tagRepository.findById(at.getTag().getId()).orElseThrow().getKeyword());
         }
 
 
