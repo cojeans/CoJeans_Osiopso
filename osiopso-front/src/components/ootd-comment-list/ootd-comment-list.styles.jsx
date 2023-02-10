@@ -80,7 +80,7 @@ export const Cocoment = styled.div`
 export const CommentList = styled.div`
 	overflow: auto;
 	display: flex;
-	max-height: 50vh;
+	max-height: 70vh;
 	width: 100%;
 `
 
@@ -93,6 +93,6 @@ export const CocomentList = styled.div`
 	display: flex;
 	flex-direction: column;
 	width:90%;
-	min-height: 70px;
+	/* min-height: 70px; */
 
 `
