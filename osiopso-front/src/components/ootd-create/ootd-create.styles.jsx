@@ -16,6 +16,8 @@ export const MarginDiv = styled.div`
 margin: 10px;
 display:flex;
 width:350px;
+justify-content: center;
+align-items: center;
 textarea{
     border:none;
     outline:none;
@@ -62,4 +64,14 @@ export const StyleTagButton = styled.button`
     border-radius:4px;
     background-color:#e7e2ff;
     cursor:pointer;
+`
+
+export const TagBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    div{
+        margin:3px;
+    }
 `

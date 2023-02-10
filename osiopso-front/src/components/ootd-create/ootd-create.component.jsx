@@ -21,7 +21,8 @@ import {
   MarginDiv,
   OotdInput,
   OotdImgContainer,
-  StyleTagButton
+  StyleTagButton,
+  TagBox
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -32,7 +33,7 @@ import { storage } from '../../utils/utils';
 
 const defaultOotdForm = {
   content: '',
-  picture: '',
+  imageUrl: '',
   tags :[]
 }
 
@@ -43,13 +44,13 @@ const OotdCreate = () => {
   const [ootdImg, setOotdImg] = useState('')
   const [ootdFormData, setOotdFormData] = useState(defaultOotdForm)
 
-  const { content, picture, tags }= ootdFormData
+  const { content, imageUrl, tags }= ootdFormData
   const imgRef = useRef();
 
   	const saveImgFile = async () => {
     const file = imgRef.current.files[0];
     const uploaded_file = await uploadBytes(
-                fref(storage, `images/${file}`),
+                fref(storage, `images/${file.name}`),
                 file,
       );
     console.log(uploaded_file ,'testing')
@@ -60,7 +61,7 @@ const OotdCreate = () => {
       };
       const file_url = await getDownloadURL(uploaded_file.ref)
       console.log(file_url)
-      setOotdFormData({...ootdFormData, picture:file_url})
+      setOotdFormData({...ootdFormData, imageUrl:file_url})
 
   };
   const handleChange = (e) => {
@@ -80,30 +81,29 @@ const OotdCreate = () => {
 
   const submitOotdCreate = (e) => {
     e.preventDefault();
-    const formData = new FormData()
     const ootd = {
-      tags:ootdTags
-      , content
+      tags: ootdTags,
+      content,
+      urls: [
+        {imageUrl}
+      ]
     }
     console.log(ootd)
 
   //formdata형식의 value는 무조건 스트링으로 변환된다.
   // blob객체와 텍스트 형식 데이터만 append할 수 있는 것 같다. (File도 blob객체에 속합)
   // 그렇기에 formdata 타입으로 json타입 데이터를 보낼 때에는 blob함수로 감싸고, 두번째 인자로type: 'application/json'을 같이 넣어줘야 한다.
-    const json = JSON.stringify(ootd)
-    const blob = new Blob([json], { type: "application/json" })
-    
-    formData.append("picture", picture)
-    formData.append("ootd", blob)
-
 
     axios({
       method: "post",
       url: "http://localhost:8080/api/feed/ootd",
-      data: formData,
+      data: {
+        tags: ootd.tags,
+        content: ootd.content,
+        urls: ootd.urls
+      },
       headers: {
         Authorization: `Bearer ${Token.token}`,
-        "Content-Type": "multipart/form-data",
 			},
     })
       .then((res) => {
@@ -126,7 +126,7 @@ const OotdCreate = () => {
 		showCancelButton: false,
 		confirmButtonText: "확인",
   }).then(() => {
-    navigate('/ootd')
+    navigate('/#OOTD')
   })
 }
 
@@ -169,6 +169,13 @@ const OotdCreate = () => {
         </OotdImgContainer>
         <MarginDiv>
           <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+          <TagBox>
+            {
+              ootdTags.map((tag) => {
+                return <div>#{tag.type}</div>
+              })
+            }
+          </TagBox>
         </MarginDiv>
         <MarginDiv>
           <textarea

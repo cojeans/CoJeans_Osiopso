@@ -4,12 +4,10 @@ import {
   UpperProfile,
   OotdDetailImage,
   UpperImage,
-  CommentProfileImage,
-  UpperComment,
-  ClosetInput,
-  LikeContainer,
-  UpperLikeContainer,
-  AlertContainer
+  IconContainer,
+  IconBox,
+  IconMessageBox,
+  DetailContainer
 } from "./ootd-detail.styles";
 
 // import { ReactComponent as Like } from "../../assets/like.svg";
@@ -21,30 +19,34 @@ import axios from "axios";
 
 import { useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../store/user/user.selector';
+import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useEffect, useState } from "react";
 
-import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
+import { VscTrash, VscComment, VscWarning } from "react-icons/vsc";
 
+import OotdCommentCreate from "../ootd-comment-create/ootd-comment-create.component";
+import OotdCommentList from "../ootd-comment-list/ootd-comment-list.component"
 
-const defaultData = {
-  comments: [],
-  content: '',
-  
+const defaultForm = {
+  cnt: 0,
+  list : []
 }
-
-
 const OotdDetail = () => {
   const navigate = useNavigate();
-  const goToOotdComment = ()=>{
-    navigate("/ootd/comment")
-  }
+ 
 
   const location = useLocation();
   const id = location.state.id;
 
   const Token = useSelector(selectUser)
-  const [ootdDetail, setOotdDetail]= useState(defaultData)
+  const [ootdDetail, setOotdDetail]= useState('')
+  const [phtoUrl, setPhotoUrl] = useState('')
+  const [likeData, setLikeData] = useState(defaultForm)
+  const [commentData, setCommentData] = useState(defaultForm)
+  const [openComment, setOpenComment] = useState(false)
+  
+  const userInfo = useSelector(selectUserInfo)
 
   const getDetailOotd = () => {
     axios({
@@ -55,8 +57,52 @@ const OotdDetail = () => {
       }
     })
       .then((res) => {
-        console.log(res.data.responseData)
-        setOotdDetail(res.data.responseData)
+        const result = res.data.responseData
+        console.log(result)
+        setOotdDetail(result)
+        setPhotoUrl(result.photos[0].imageUrl)
+        setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
+        setLikeData({cnt : result.articleLikes.length , list: result.articleLikes, check:false})
+      })
+      .catch((err) => {
+      console.log(err)
+      })
+    
+  }
+
+  const deleteOotd = () => {
+    axios({
+      method: "delete",
+      url: `http://localhost:8080/api/feed/article/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data)
+         Delete()
+        
+      })
+      .catch((err) => {
+      console.log(err)
+      })
+  }
+
+  const likeOotd = () => {
+    axios({
+      method: "post",
+      url: `http://localhost:8080/api/feed/likearticle/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+        if (! likeData.check) {
+          setLikeData({ ...likeData, cnt: likeData.cnt + 1, check:true })
+        } else {
+          setLikeData({ ...likeData, cnt: likeData.cnt - 1, check:false })
+
+        }
       })
       .catch((err) => {
       console.log(err)
@@ -65,6 +111,7 @@ const OotdDetail = () => {
 
   useEffect(() => {
     getDetailOotd()
+
   },[])
 
   const Report = ()=>{
@@ -84,32 +131,85 @@ const OotdDetail = () => {
       }
     })
   }
+
+  const Delete = () => {
+      Swal.fire({
+      icon: 'success',
+       html: `
+        OOTD 게시물이 삭제되었습니다.
+      `,
+      confirmButtonColor: "#DD6B55", 
+    })
+      .then(() => {
+        navigate("/#ootd")
+    })
+  }
+
+
   return (
     <div>
-      <hr/>
-      <UpperProfile>
-        <ProfileImageBox />
-        MyNameIsMr.Umm
+      <UpperProfile
+      >
+        <ProfileImageBox >
+          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+        </ProfileImageBox >
+        {userInfo.name}
       </UpperProfile>
 
       <UpperImage>
-        <OotdDetailImage />
-        <div>
-          <VscHeart size="24" />
-          <VscComment onClick={goToOotdComment}  size="24"  />  
-          <span>{ ootdDetail.comments.length}</span>
-          <VscWarning size="24" onClick={Report} />
-          <VscTrash size="24"/>
-        </div>
-        <div>
-          { ootdDetail.content}
-        </div>
+        <OotdDetailImage>
+          <img src={phtoUrl } alt="" />
+        </OotdDetailImage>
+        <DetailContainer>
+          <IconMessageBox>
+            <IconContainer
+              onClick={likeOotd}
+            >
+              {
+                likeData.check
+                  ? <AiFillHeart size="23" color="red"/>
+                  : <AiOutlineHeart size="23" />
+              }
+              
+              <div>{likeData.cnt}</div>
+            </IconContainer>
+            <IconContainer
+              onClick={()=> openComment? setOpenComment(false): setOpenComment(true)}
+            >
+              <VscComment size="23"/>  
+              <div>{ commentData.cnt }</div>
+            </IconContainer>
+          </IconMessageBox>
+          <IconBox>
+            <VscWarning size="23" onClick={Report} />
+            <VscTrash size="23" onClick={deleteOotd}/>
+          </IconBox>
+        </DetailContainer>
+        <DetailContainer>
+          <span>
+          {ootdDetail.content}
+          </span>
+        </DetailContainer>
       </UpperImage>
 
-      <UpperComment>
-        <CommentProfileImage></CommentProfileImage>
-        <ClosetInput type="text" autoFocus maxLength={50} />
-      </UpperComment>
+      <div id="commentId">
+        <OotdCommentCreate
+          articleId={ id }
+          commentData= {commentData}
+          setCommentData={setCommentData}
+          setOpenComment={setOpenComment}
+          getDetailOotd={getDetailOotd}
+
+        />
+      </div>
+      {
+        openComment 
+        ? <OotdCommentList
+            commentData={commentData}
+          />
+        : ''
+          
+      }
     </div>
   );
 };

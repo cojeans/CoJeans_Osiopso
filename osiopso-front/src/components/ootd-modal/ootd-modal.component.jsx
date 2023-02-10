@@ -6,8 +6,9 @@ import {
 	CategoryModalContainer,
 	CategoryBox,
 	Title,
-	Tag
-} from "./ootd-modal.styles"
+	Tag,
+	SaveBox,
+} from "./category-modal.styles"
 
 const tags = {
 	'Season': ['봄', '여름', '가을', '겨울'],
@@ -90,7 +91,10 @@ const OotdModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
-			<button onClick={submitHandler}>저장</button>
+			
+			<SaveBox>
+				<button onClick={submitHandler}>저장</button>
+			</SaveBox>
 		</CategoryModalContainer>
 	)
 }

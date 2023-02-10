@@ -1,24 +1,94 @@
-import { HunsuImages, TopTag,  } from "./advice.styles";
+import {
+  HunsuImages,
+  TopTag,
+  Container,
+  UpperupperCommentContainer,
+  EachIcon,
+  CommentContainer,
+  EachBox,
+  ThumbBox,
+  TimeBox,
+} from "./advice.styles";
 import { TextToLeft } from "../../routes/home/home.styles";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ReactComponent as Comment } from "../../assets/comment.svg";
+import { selectUser } from "../../store/user/user.selector";
+import { FiThumbsUp,  FiThumbsDown, FiAlertTriangle, FiTrash2  } from "react-icons/fi";
+import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
 
+import axios from "axios";
+import Modal from '../modal/modal.component'
+
+import { useEffect, useState } from "react";
+import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
+
+const defaultAdviceForm = {
+  content:'',
+  imageUrl:'',
+  tags:[]
+}
 
 const Advice = () => {
-  const navigate = useNavigate();
-  const goToCheckoutHandler = ()=>{
-    navigate("create");
-  }
-  const goToDetail = ()=> {
-    navigate("detail");
+  const [modalOpen, setModalOpen] = useState(false);
+  const {lockScroll, openScroll } = useBodyScrollLock()
+  const [adviceFormData, setAdviceFormData] = useState(defaultAdviceForm)
+
+  const Token = useSelector(selectUser);
+
+  const [adviceArticle, setAdviceArticle] = useState([]);
+
+  const showModal = ()=>{
+    window.scrollTo(0,0);
+    setModalOpen(true)
+    lockScroll();
   }
 
+  const getAdviceAxios = () => {
+    axios({
+      method: "get",
+      url: "http://localhost:8080/api/feed/advice",
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data.responseData);
+        setAdviceArticle(res.data.responseData.reverse());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getAdviceAxios();
+  }, []);
+
+  const goToAdviceDetail = (id) => {
+    console.log(id);
+    navigate("detail/" + id, {
+      state: {
+        id: id,
+      },
+    });
+  };
+
+  const navigate = useNavigate();
+  const goToCheckoutHandler = () => {
+    navigate("create");
+  };
+  const goToDetail = () => {
+    navigate("detail");
+  };
+  console.log("어드바이스",adviceArticle)
   return (
     <div>
-      <h1>훈수페이지 입니다.</h1>
+
       <TextToLeft>
-        <TopTag>
+        <Container>
           <span>최신순</span> <span>논란순</span>
-        </TopTag>
+        </Container>
       </TextToLeft>
 
       <TextToLeft>
@@ -28,14 +98,32 @@ const Advice = () => {
       </TextToLeft>
 
       <HunsuImages>
-        <img src={require('../../assets/Mr_Umm.png')} alt="" onClick={goToDetail}/>      
-        <img src={require('../../assets/shit1.png')} alt="" onClick={goToDetail}/>      
-        <img src={require('../../assets/shit2.png')} alt="" onClick={goToDetail}/>      
-        <img src={require('../../assets/shit3.png')} alt="" onClick={goToDetail}/>      
-        <img src={require('../../assets/shit4.png')} alt="" onClick={goToDetail}/>      
-        <img src={require('../../assets/shit5.png')} alt="" onClick={goToDetail}/>      
-      </HunsuImages>
+        {adviceArticle.map((el, idx) => {
+          return (
+            <EachBox key={idx} onClick={() => goToAdviceDetail(el.id)}>
+              <img src={el.photo.imageUrl} alt="" />
 
+              <CommentContainer>
+              <ThumbBox>
+                <EachIcon>
+                  <FiThumbsUp size="30" />
+                </EachIcon>
+                <EachIcon>
+                  <VscComment size="30" />
+                  {el.commentCnt}
+                </EachIcon>
+              </ThumbBox>
+                {/* <FiThumbsDown size="30" /> */}
+                <TimeBox>{ el.time }</TimeBox>
+               
+              </CommentContainer>
+            </EachBox>
+          );
+        })}
+      </HunsuImages>
+      {
+        modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
+      }
     </div>
   );
 };

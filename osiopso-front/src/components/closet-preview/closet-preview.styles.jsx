@@ -29,7 +29,7 @@ export const PrevBox = styled.div`
 		border-top:solid 0.5px #E2E2E2;
 		border-left:solid 0.5px #E2E2E2;
 	}
-	img{
+	div{
 		width:3em;
 		height:3em;
 	}

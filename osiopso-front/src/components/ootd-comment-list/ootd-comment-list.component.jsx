@@ -1,20 +1,45 @@
-const OotdCommentList = ({commentList})=> {
+import {
+    CommentContainer,
+    UserPorfileBox,
+    CommentBox,
+    CommentLargeBox,
+    ContentBox,
+    UpperContent,
+    HeartIconBox
+} from "./ootd-comment-list.styles"
+import { BsHeart } from "react-icons/bs";
+
+const OotdCommentList = ({ commentData }) => {
+    
     return (
-        <div className="CommentList">
-            <h1>댓글 리스트들</h1>
-
-            <div>
-                {commentList.map((it)=>(
-                    <div>
-                        <div>내용: {it.content}</div>
-                        <div>작성 시간(ms): {it.created_date}</div>
-
-                    </div>
+        <CommentContainer>
+                {commentData.list.map((comment, idx)=>(
+                    <CommentLargeBox key={idx}>
+                        <CommentBox>
+                            <UserPorfileBox>
+                                <div className="imgBox">
+                                    <img  src={  comment.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.imageUrl} alt="" />
+                                </div>
+                            </UserPorfileBox>
+                            <ContentBox>
+                                <UpperContent>
+                                    <div >{ comment.userName}</div>
+                                    <div className="time"> { comment.time} </div>
+                                </UpperContent>
+                                <div>{comment.content}</div>
+                            </ContentBox>
+                            <HeartIconBox>
+                                <BsHeart />
+                                <div className="heartCount">4</div>
+                            </HeartIconBox>
+                        </CommentBox>
+                        <div>
+                            댓글 더보기...
+                        </div>
+                    </CommentLargeBox>
+                    
                 ))}
-            </div>
-
-
-        </div>
+        </CommentContainer>
     )
 }
 

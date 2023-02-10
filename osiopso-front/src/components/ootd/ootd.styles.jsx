@@ -5,6 +5,7 @@ export const TopDiv = styled.div`
   h1{
     text-align: center;
   }
+  min-height:50vh;
 `
 
 export const OotdTopBar = styled.div`
@@ -66,7 +67,6 @@ export const UpperCommentContainer = styled.div`
 display: flex;
 justify-content: start;
 align-items: center;
-
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;

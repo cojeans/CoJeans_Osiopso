@@ -1,29 +1,32 @@
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import Swal from "sweetalert2";
+
+import { useEffect, useState } from 'react';
 import {
   CommentProfileImage,
   UpperComment,
   ClosetInput,
 } from './ootd-comment-create.styles'
-import { selectUser } from '../../store/user/user.selector';
+import { ProfileImageBox } from '../ootd-detail/ootd-detail.styles';
+import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
 
-
-const OotdCommentCreate = ({onCreate}) => {
-
+const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd }) => {
+  // const {cnt, list} = commentData
   const [content, setContent] = useState("")
 
 
   const handleChangeState = (e)=> {
-    console.log(e.target.value)
     setContent(e.target.value)
   }
   const Token = useSelector(selectUser)
+  const userInfo = useSelector(selectUserInfo)
 
   const createComment = () => {
+    console.log(articleId)
     axios({
       method:"post",
-      url: "http://localhost:8080/api/comment/1",
+      url: `http://localhost:8080/api/comment/${articleId}`,
       data:{
         content:content
       },
@@ -33,31 +36,41 @@ const OotdCommentCreate = ({onCreate}) => {
     })
     .then((res)=>{
       console.log(res.data)
+      setCommentData({ ...commentData, cnt: commentData.cnt + 1 })
+      getDetailOotd()
+
+      setContent('')
+      commentCreateAlert()
     })
     .catch((err)=>{
       console.log(err)
     })
   }
 
-  const getComment = () =>{
-    axios({
-      
-    })
-  }
-
   const handleSubmit = () => {
     createComment()
+    setOpenComment(true)
   }
 
+  const commentCreateAlert = ()=>{
+    Swal.fire({
+     icon: 'success',
+      confirmButtonColor: "#DD6B55", 
+      html: `
+        댓글이 작성되었습니다.
+      `,
+          showCancelButton: false,
+          confirmButtonText: "확인",
+    })
+  }
 
 
   return (
     <div>
-      <h1>댓글 생성페이지</h1>
-
-
       <UpperComment>
-        <CommentProfileImage></CommentProfileImage>
+        <ProfileImageBox >
+          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+        </ProfileImageBox >
 
         <ClosetInput
           type="text"

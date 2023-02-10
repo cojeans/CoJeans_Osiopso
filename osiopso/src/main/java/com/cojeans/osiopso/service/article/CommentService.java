@@ -4,12 +4,14 @@ import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.entity.comment.Cocomment;
+import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CocommentRepositoryImpl;
+import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final CocommentRepositoryImpl cocommentRepositoryImpl;
+    private final CommentLikeRepository commentLikeRepository;
 
     public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -113,6 +116,7 @@ public class CommentService {
                 .id(comment.getId())
                 .content(dto.getContent())
                 .article(article)
+                .createTime(comment.getCreateTime())
                 .user(comment.getUser())
                 .report(comment.getReport())
                 .build());
@@ -194,5 +198,21 @@ public class CommentService {
         System.out.println(cocommentResponseDtoList.size());
 
         return cocommentResponseDtoList;
+    }
+
+    public CommentResponseDto getComment(Long commentNo) {
+        Comment comment = commentRepository.getById(commentNo);
+        boolean likeCo;
+
+        if (commentLikeRepository.findByComment_Id(comment.getId()) == null) {
+            likeCo = false;
+        } else {
+            likeCo = true;
+        }
+
+        return CommentResponseDto.builder()
+                .commentId(comment.getId())
+                .like(likeCo)
+                .build();
     }
 }

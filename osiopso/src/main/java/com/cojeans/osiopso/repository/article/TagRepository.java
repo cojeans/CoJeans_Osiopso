@@ -9,4 +9,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findAllByKeywordStartingWith(String input);
 
     List<Tag> findAllByKeyword(String keyword);
+
+    Tag findByKeyword(String keyword);
 }

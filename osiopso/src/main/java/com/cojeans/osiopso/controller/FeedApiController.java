@@ -3,6 +3,7 @@ package com.cojeans.osiopso.controller;
 import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.AdviceService;
@@ -83,8 +84,9 @@ public class FeedApiController {
 
 
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo) {
-        AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo);
+    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo,
+                                                                @AuthenticationPrincipal UserDetail user) {
+        AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo, user.getId());
         return new ResponseEntity(new ApiResponseDto(true, "readAdviceDetail Success", detail), HttpStatus.OK);
     }
 
@@ -134,6 +136,14 @@ public class FeedApiController {
         }
     }
 
+
+    // Ootd (스타일 태그, TPO ,나이, 성별) 별 분류
+    @GetMapping("/ootd/filter")
+    public ResponseEntity<?> filterOotd(@RequestBody FilterOotdRequestDto filter) {
+        List<OotdListResponseDto> ootdListResponseDtos = ootdService.filterOotd(filter);
+
+        return new ResponseEntity(new ApiResponseDto(true, "filterOotd Success", ootdListResponseDtos), HttpStatus.OK);
+    }
 
 
     // ====================== UPDATE ========================
