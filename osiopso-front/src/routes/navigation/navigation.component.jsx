@@ -80,7 +80,8 @@ const Navigation = () => {
 				<Link to='/mypage'>My page</Link> */}
 			</NavigationContainer>
 			{
-				modalOpen && <Modal setModalOpen={setModalOpen} openScroll={openScroll} page={ true } />
+				// page == 1 일 때 네비게이션 모달
+				modalOpen && <Modal setModalOpen={setModalOpen} openScroll={openScroll} page={ 1 } />
 			}
 		</Container>
 	)

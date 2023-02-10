@@ -91,6 +91,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 		console.log('저장?')
 		console.log(closetField)
 		const payload = { ...closetData.closet }
+		console.log('this', closetData)
 		payload.name = closetName
 		console.log(payload)
 

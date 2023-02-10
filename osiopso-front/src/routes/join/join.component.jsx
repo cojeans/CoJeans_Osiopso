@@ -96,10 +96,7 @@ const Join = () => {
 				required 
 				onChange={handleChange}name="confirmPassword" 
 				value={confirmPassword}/>
-				<Button>가입하기</Button>
-				<button onClick={JoinFunc}>
-            test
-          </button>
+				<Button onClick={JoinFunc}>가입하기</Button>
 			</form>
 		</SignUpContainer>
 	)

@@ -3,7 +3,9 @@ import { useEffect, useRef } from 'react';
 import { ModalPage } from "./modal.styles"
 
 import PlusModal from '../plus-content/plus-content.component';
-import CategoryModal from '../category-modal/category-modal.component';
+import OotdModal from '../ootd-modal/ootd-modal.component';
+import AdviceModal from '../advice-modal/advice-modal.component';
+import ClothesTagModal from '../clothes-tag-modal/clothes-tag-modal.component';
 
 const Modal = ({ setModalOpen, openScroll, page }) => {
 	 console.log(page)
@@ -39,11 +41,15 @@ const Modal = ({ setModalOpen, openScroll, page }) => {
 	return (
 		<ModalPage page={ page }>
 			<div ref={modalRef}>
-				{
+				{(page === 1) && (<PlusModal closeModal={closeModal} />)}
+				{(page === 2) && (<OotdModal closeModal={closeModal} />)}
+				{(page === 3) && (<AdviceModal closeModal={closeModal} />)}
+				{(page === 4) && (<ClothesTagModal closeModal={closeModal} />)}
+				{/* {
 					page
 						? <PlusModal closeModal={closeModal} />
 						: <CategoryModal closeModal={closeModal}/>
-				}
+				} */}
 				
 			</div>
 

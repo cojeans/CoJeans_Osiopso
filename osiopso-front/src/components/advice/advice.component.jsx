@@ -122,7 +122,7 @@ const Advice = () => {
         })}
       </HunsuImages>
       {
-        modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
+        modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
       }
     </div>
   );

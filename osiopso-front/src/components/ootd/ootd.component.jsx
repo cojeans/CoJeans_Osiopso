@@ -109,7 +109,7 @@ const Ootd = () => {
         })}
       </OotdList>
       {
-        modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll} ootdFormData={ootdFormData} setOotdFormData={setOotdFormData} />
+        modalOpen && <Modal page={ 2 } setModalOpen={setModalOpen} openScroll={openScroll} ootdFormData={ootdFormData} setOotdFormData={setOotdFormData} />
       }
     </TopDiv>
   );

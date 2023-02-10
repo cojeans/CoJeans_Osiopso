@@ -6,9 +6,8 @@ import {
 	CategoryModalContainer,
 	CategoryBox,
 	Title,
-	Tag,
-	SaveBox,
-} from "./category-modal.styles"
+	Tag
+} from "./clothes-tag-modal.styles"
 
 const tags = {
 	'Season': ['봄', '여름', '가을', '겨울'],
@@ -23,7 +22,7 @@ const defaultSelect = {
 }
 
 
-const CategoryModal = ({ closeModal }) => {
+const ClothesTagModal = ({ closeModal }) => {
 	// console.log('selector', useSelector(selectorOotdCategory))
 	const [selectedTag, setSelectedTag] = useState(defaultSelect)
 
@@ -51,6 +50,7 @@ const CategoryModal = ({ closeModal }) => {
 		})
 
 		console.log(newArr)
+
 		dispatch(selectOotdCategory(newArr))
 		closeModal()
 
@@ -90,12 +90,9 @@ const CategoryModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
-			
-			<SaveBox>
-				<button onClick={submitHandler}>저장</button>
-			</SaveBox>
+			<button onClick={submitHandler}>저장</button>
 		</CategoryModalContainer>
 	)
 }
 
-export default CategoryModal
+export default ClothesTagModal
