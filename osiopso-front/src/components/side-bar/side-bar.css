@@ -1,12 +1,12 @@
 
 .nav-open {
-  /* right: 0; */
-  right: 650px;
+  right: 0;
+  /* right: 650px; */
 }
 
 .nav-closed {
-  right: -320px;
-  /* right: -1000px; */
+  right: -1000px;
+  /* right: 0px; */
 }
 
 .nav-button {
