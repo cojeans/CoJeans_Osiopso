@@ -14,6 +14,7 @@ public class AdviceDetailResponseDto {
 
     private Long id;
     private Long userId;
+    private String userName;
     private Date createTime;
     private Date modifyTime;
     private Long commentCnt;

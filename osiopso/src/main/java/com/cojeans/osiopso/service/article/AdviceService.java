@@ -277,6 +277,7 @@ public class AdviceService {
         return AdviceDetailResponseDto.builder()
                 .id(advice.getId())
                 .userId(advice.getId())
+                .userName(advice.getUser().getName())
                 .createTime(advice.getCreateTime())
                 .modifyTime(advice.getModifyTime())
                 .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
