@@ -8,6 +8,7 @@ import {
   ImgContainer,
   CategoryContainer,
   StyleTagButton,
+  LinkContainer,
 } from "./clothes-select-box.styles";
 import { useNavigate } from 'react-router-dom';
 import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
@@ -15,6 +16,7 @@ import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
+
 import axios from 'axios'
 import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
@@ -36,9 +38,10 @@ const ClosetSelectBox = () => {
   const navigate = useNavigate();
 	const Token = useSelector(selectUser)
   const saveData = useSelector(selectClothes);
-  console.log('thisis data', saveData)
+  console.log(saveData)
 
   const dispatch = useDispatch();
+  // const saveData = useSelector(selectClothes);
   const onNavigateHandler = () => {
     navigate("update/");
   };
@@ -113,9 +116,11 @@ const ClosetSelectBox = () => {
       </ImgContainer>
       <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
       {
-        modalOpen && <Modal page={ 4} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
+        modalOpen && <Modal page={4} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
 			}
-      <Button onClick={handleSubmit}>저장</Button>
+      <LinkContainer to='/mypage'>
+        <Button onClick={handleSubmit}>저장</Button>
+      </LinkContainer>
     </>
   );
 };

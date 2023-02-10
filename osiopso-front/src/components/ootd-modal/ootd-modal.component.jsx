@@ -8,7 +8,7 @@ import {
 	Title,
 	Tag,
 	SaveBox,
-} from "./category-modal.styles"
+} from "./ootd-modal.styles"
 
 const tags = {
 	'Season': ['봄', '여름', '가을', '겨울'],

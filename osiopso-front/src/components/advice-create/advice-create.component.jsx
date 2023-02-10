@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -101,9 +100,8 @@ const AdviceCreate = ()=> {
       // const json = JSON.stringify(ootd)
       // const blob = new Blob([json], { type: "application/json" })
       
-      formData.append("picture", picture)
-      formData.append("ootd", blob)
-      console.log(formData)
+      // formData.append("picture", picture)
+      // formData.append("advice", blob)
   
       console.log(advice)
       axios({
@@ -197,8 +195,7 @@ const AdviceCreate = ()=> {
           <button onClick={submitAdviceCreate}>저장</button>
         </BottomContainer>
         {
-
-          modalOpen && <Modal page={ 3} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
+          modalOpen && <Modal page={ 3} setModalOpen={setModalOpen} openScroll={openScroll}adviceFormData={ adviceFormData} setAdviceFormData = {setAdviceFormData} />
               }
       </div>
         // <div>

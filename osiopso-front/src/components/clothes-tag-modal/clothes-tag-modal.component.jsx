@@ -10,17 +10,15 @@ import {
 } from "./clothes-tag-modal.styles"
 
 const tags = {
-	'Category' : ['드레스','바지','상의','신발','치마','아우터','모자'],
-	'Color': ['검정', '파랑', '빨강'],
-	'계절': ['봄', '여름', '가을', '겨울'],
+	'Season': ['봄', '여름', '가을', '겨울'],
 	'TPO': ['데일리','직장','데이트','경조사','여행','홈웨이','파티','운동','학교'],
+	'Category' : ['상의','하의','바지','치마','신발','아우터','모자',]
 }
 
 const defaultSelect = {
-	Categorys : [],
-	Colors : [],
-	Seasons: [],
+	Season: [],
 	TPO: [],
+	Category : [],
 }
 
 
