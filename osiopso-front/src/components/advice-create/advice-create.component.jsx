@@ -43,7 +43,7 @@ const AdviceCreate = ()=> {
   
     const { content, picture, tags }= ootdFormData
     const imgRef = useRef();
-  
+    console.log(picture)
         const saveImgFile = () => {
           const file = imgRef.current.files[0];
           const reader = new FileReader();
@@ -174,7 +174,8 @@ const AdviceCreate = ()=> {
           <button onClick={submitOotdCreate}>저장</button>
         </BottomContainer>
         {
-          modalOpen && <Modal page={ false} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
+
+          modalOpen && <Modal page={ 3} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
               }
       </div>
         // <div>

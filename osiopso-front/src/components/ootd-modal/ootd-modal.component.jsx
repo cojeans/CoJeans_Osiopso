@@ -7,7 +7,7 @@ import {
 	CategoryBox,
 	Title,
 	Tag
-} from "./category-modal.styles"
+} from "./ootd-modal.styles"
 
 const tags = {
 	'Season': ['봄', '여름', '가을', '겨울'],
@@ -22,7 +22,7 @@ const defaultSelect = {
 }
 
 
-const CategoryModal = ({ closeModal }) => {
+const OotdModal = ({ closeModal }) => {
 	// console.log('selector', useSelector(selectorOotdCategory))
 	const [selectedTag, setSelectedTag] = useState(defaultSelect)
 
@@ -50,6 +50,7 @@ const CategoryModal = ({ closeModal }) => {
 		})
 
 		console.log(newArr)
+
 		dispatch(selectOotdCategory(newArr))
 		closeModal()
 
@@ -94,4 +95,4 @@ const CategoryModal = ({ closeModal }) => {
 	)
 }
 
-export default CategoryModal
+export default OotdModal

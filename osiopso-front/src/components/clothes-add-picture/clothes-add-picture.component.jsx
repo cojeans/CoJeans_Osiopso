@@ -25,8 +25,11 @@ const ClothesAddPicture = () => {
   const onNavigateHandler = () => {
     navigate("camera/");
   };
-  const onNavigateHandler2 = () => navigate("selectbox/");
-  const [rawData, setRawData] = useState("");
+  const onNavigateHandler2 = () => {
+    navigate("selectbox/");
+    
+  }
+    const [rawData, setRawData] = useState("");
 
 
 
@@ -42,6 +45,11 @@ const ClothesAddPicture = () => {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setRawData(reader.result);
+
+      //임시 
+      dispatch(upload(reader.result))
+    
+    
     };
   };
   const callAxios = () => {
