@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -41,6 +42,7 @@ public class Comment {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifyTime;
-    private Long report;
 
+    @ColumnDefault(value = "0")
+    private Long report;
 }

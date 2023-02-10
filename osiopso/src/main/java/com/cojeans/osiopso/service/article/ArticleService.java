@@ -98,4 +98,20 @@ public class ArticleService {
                 .timeGapToString(timeGapToString)
                 .build();
     }
+
+    public void reportArticle(Long articleNo) {
+        Article article = articleRepository.findById(articleNo).orElseThrow();
+
+        articleRepository.save(Article.builder()
+                .id(articleNo)
+                .dtype(article.getDtype())
+                .content(article.getContent())
+                .dtype(article.getDtype())
+                .user(article.getUser())
+                .report(article.getReport() + 1)
+                .createTime(article.getCreateTime())
+                .modifyTime(article.getModifyTime())
+                .hit(article.getHit())
+                .build());
+    }
 }

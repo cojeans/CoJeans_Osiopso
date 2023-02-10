@@ -100,6 +100,13 @@ public class CommentApiController {
         }
     }
 
+    @PutMapping("/report/{commentno}")
+    public ResponseEntity<?> reportComment(@PathVariable("commentno") Long commentNo){
+        System.out.println(commentNo);
+        commentService.reportComment(commentNo);
+        return new ResponseEntity(new ApiResponseDto(true, "reportArticle Success", null), HttpStatus.OK);
+    }
+
 
     // ====================== DELETE ========================
 

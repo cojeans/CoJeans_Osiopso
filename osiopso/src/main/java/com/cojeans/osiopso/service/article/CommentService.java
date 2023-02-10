@@ -215,4 +215,18 @@ public class CommentService {
                 .like(likeCo)
                 .build();
     }
+
+    public void reportComment(Long commentNo) {
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        commentRepository.save(comment.builder()
+                .id(commentNo)
+                .content(comment.getContent())
+                .user(comment.getUser())
+                .report(comment.getReport() + 1)
+                .createTime(comment.getCreateTime())
+                .modifyTime(comment.getModifyTime())
+                .article(comment.getArticle())
+                .build());
+    }
 }
