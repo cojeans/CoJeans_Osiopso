@@ -349,9 +349,6 @@ public class AdviceService {
 
         List<Long> list = commentRepositoryImpl.findByArticleId(LocalDate.now());
 
-        for (Long aLong : list) {
-            System.out.println(aLong + " ====================");
-        }
         List<BurningAdviceResponseDto> result = new ArrayList<>();
 
         for (Long id : list) {

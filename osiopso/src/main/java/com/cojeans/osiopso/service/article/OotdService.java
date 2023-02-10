@@ -48,6 +48,7 @@ public class OotdService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CocommentRepository cocommentRepository;
+    private final ArticleTagRepositoryImpl articleTagRepositoryImpl;
     private final ArticleService articleService;
     private final CommentLikeRepository commentLikeRepository;
 
@@ -528,8 +529,31 @@ public class OotdService {
         return responseOotdList;
     }
 
-    public List hotIssue() {
+    // 전제 : article_tag에 createTime 컬럼 추가
+    // 1개월 내로 생성된 article_tag 리스트 뽑기
+    // group by tag_id count : 태그 별 개수 카운팅
+    // 내림차순 정렬 ~ 4등까지 -> 해시태그 탭 선택지로 만들기
+    // + 이후 ? 해당 탭을 누르면 좋아요를 기준으로 인기글 5개 뽑기
 
-        return null;
+    public List hotIssue() {
+        List<Long> list = articleTagRepositoryImpl.findByArticleId(LocalDate.now());
+        List<HotIssueResponseDto> result = new ArrayList<>();
+        for(Long id : list){
+            System.out.println("id : ----- " + id);
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
+            Ootd ootd = ootdRepository.findById(id).orElseThrow();
+
+            HotIssueResponseDto responseDto = HotIssueResponseDto.builder()
+                    .id(ootd.getId())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .imageUrl(ap.getImageUrl())
+                            .build())
+                    .hit(ootd.getHit())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                    .build();
+
+            result.add(responseDto);
+        }
+        return result;
     }
 }
