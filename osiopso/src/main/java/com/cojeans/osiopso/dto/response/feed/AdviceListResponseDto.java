@@ -19,4 +19,6 @@ public class AdviceListResponseDto {
     private boolean isSelected;
     private String subject;
     private Long commentCnt;
+    private Long issueScore;
 }
+

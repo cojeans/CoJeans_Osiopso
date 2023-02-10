@@ -81,17 +81,26 @@ public class OotdService {
         // 태그 저장
         List<ArticleTagRequestDto> tags = ootdRequestDto.getTags();
         for (ArticleTagRequestDto tag : tags) {
-            Tag tagSaved = tagRepository.save(Tag.builder()
-                    .keyword(tag.getKeyword())
-                    .type(tag.getType())
-                    .build());
+            Tag findTag = tagRepository.findByKeyword(tag.getKeyword());
+            Tag saveTag;
 
-            ArticleTag articleTagE = ArticleTag.builder()
+            if (findTag == null) {
+                // 중복이 없는 경우 태그에 저장하고,
+                Tag tagSaved = tagRepository.save(Tag.builder()
+                        .keyword(tag.getKeyword())
+                        .type(tag.getType())
+                        .build());
+
+                saveTag = tagSaved;
+            } else {
+                saveTag = tagRepository.findById(findTag.getId()).orElseThrow();
+            }
+
+            // article 태그에 저장한다.
+            articleTagRepository.save(ArticleTag.builder()
                     .article(ootdSaved)
-                    .tag(tagSaved)
-                    .build();
-
-            articleTagRepository.save(articleTagE);
+                    .tag(saveTag)
+                    .build());
         }
 
         while (matcher.find()) {
@@ -309,7 +318,7 @@ public class OotdService {
             for (ArticleTag at : articleTag) {
                 System.out.println(at.getTag().getKeyword() + " 삭제!");
                 articleTagRepository.deleteById(at.getId());
-                tagRepository.deleteById(at.getTag().getId());
+//                tagRepository.deleteById(at.getTag().getId());
             }
             return true;
         }
@@ -349,7 +358,7 @@ public class OotdService {
             // 2. 만약 추가할 태그에, 추가한 기존 태그가 없는 경우 => 삭제
             if (!new_tags_keyword.contains(old_tag.getKeyword())) {
                 articleTagRepository.deleteById(old_tag.getId());
-                tagRepository.deleteById(old_tag.getId());
+//                tagRepository.deleteById(old_tag.getId());
             }
         }
 
