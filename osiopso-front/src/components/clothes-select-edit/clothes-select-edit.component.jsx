@@ -39,9 +39,9 @@ const defaultOotdForm = {
 
 const ClosetSelectEdit = () => {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const saveData = useSelector(selectClothes);
+
   const beforeData = saveData
   const onNavigateHandler = () => {
     navigate("update/");
@@ -54,13 +54,16 @@ const ClosetSelectEdit = () => {
   const [drawHeight, setDrawHeight] = useState(400)
   const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock()
-
+  const [changeImg, setChangeImg] = useState("")
 	const showModal = () => {
 	window.scrollTo(0, 0);
 	setModalOpen(true);
 	lockScroll();
 	};
   const reset = () => {
+    // setIsCrop(false);
+    // setIsErase(false);
+    setChangeImg(beforeData)
     setCroppedImage(beforeData)
     dispatch(upload(beforeData));
   }
@@ -86,49 +89,54 @@ const ClosetSelectEdit = () => {
     }
   }, [croppedImage])
   const eraseCrop = () => {
+    console.log(changeImg)
     setIsErase(true);
+    // setIsCrop(false);    
   }
   const makeCrop = () => {
     setIsCrop(true);
+    // setIsErase(false);
+
   }
   const onCrop = () => {
     const imageElement = cropperRef?.current;
     const cropper = imageElement?.cropper;
     setCroppedImage(cropper.getCroppedCanvas().toDataURL());
+    // dispatch(upload(cropper.getCroppedCanvas().toDataURL()));
+
   };
-  const completeEdit = () => {
+  const completeCut = () => {
     setIsCrop(false);
+    setIsErase(false);
+    setChangeImg(croppedImage);
+    
+
+  }
+  const completeErase = () => {
+    setIsCrop(false);
+    setIsErase(false);
+    // dispatch(upload(croppedImage))
+
   }
   const canvasRef = useRef(null)
   // 캡쳐이미지가 리사이즈 될때 실행
-  useEffect(()=>{ 
-    if (croppedImage){
-      console.log(croppedImage)
-      // onSaveAs(croppedImage, 'image-download/png')
-      // const ctx = canvasRef.current.getContext("2d")
-      // ctx.clearRect(0, 0, 500, 500)
-
-      const image = new Image();
-      image.src = croppedImage
-      console.log(image.width)
-
-      setDrawWidth(image.width)
-      setDrawHeight(image.Heigth)
-
-      // image.onload = function() {
-      //   ctx.drawImage(image, 0, 0);
-      // };
-    }
-  }, [croppedImage])
-  return (
+  // const erase_image = ReactDOM.createRoot(
+  //   document.getElementById('erase_image')
+  // );
+  const onSave = () => {
+    dispatch(upload(croppedImage));
+    navigate(-1)
+  }
+    return (
     <>
     <div>
       안녕
     </div>
     <button onClick={reset}>초기화</button>
-    <button onClick={makeCrop}>자르기</button>
-    <button onClick={completeEdit}>완료</button>
-    <button onClick={eraseCrop}>지우기</button>
+    {!isCrop && <button onClick={makeCrop}>자르기</button>}
+    {isCrop && <button onClick={completeCut}>자르기 완료</button>}
+    {/* <button onClick={eraseCrop}>지우기</button>
+    {isErase && <button onClick={completeErase}>지우기 완료</button>} */}
 
     {/* <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton> */}
 
@@ -140,15 +148,23 @@ const ClosetSelectEdit = () => {
               alt="https://pixlr.com/images/index/remove-bg.webp"
             />
           )} */}
-          <img src={croppedImage} />
-          {isCrop && <Cropper src={saveData} crop={onCrop} ref={cropperRef} />}
+          <img src={croppedImage} alt="" />
+          {<button onClick={onSave}>저장</button>}
+
+          {/* <img src={saveData} alt="" /> */}
+          {/* <img src={changeImg} alt="" /> */}
+      {/* {croppedImage ? (<img src={croppedImage} />):(<img src={saveData} />)} */}
+          {/* <img src={croppedImage} /> */}
+          {isCrop && <Cropper src={changeImg} crop={onCrop} ref={cropperRef} />}
         </PrevUploadImg>
         {/* <ExampleBox onClick={callAxios}>
           <img src={require("../../assets/background.jpg")} alt="" />
           <span>이미지 자르기</span>
         </ExampleBox> */}
-              {isErase && <CanvasDraw  
-        imgSrc={croppedImage}
+        {/* {canvasRef && <img src={canvasRef} alt="" />} */}
+
+        { isErase && <CanvasDraw 
+        imgSrc={changeImg}
         brushColor={'white'}
         hideGridX={true}
         hideGridY={true}
@@ -158,6 +174,7 @@ const ClosetSelectEdit = () => {
         canvasHeight={drawHeight}
       />}
       </ImgContainer>
+
       {/* {
         modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
 			} */}
