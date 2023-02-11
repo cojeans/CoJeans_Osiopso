@@ -147,6 +147,12 @@ public class FeedApiController {
         return new ResponseEntity(new ApiResponseDto(true, "filterOotd Success", ootdListResponseDtos), HttpStatus.OK);
     }
 
+    // 현재 로그인한 유저가 팔로잉 중인 사람들의 ootd만 보여주기
+    @GetMapping("/ootd/follow")
+    public ResponseEntity<?> followOotd(@AuthenticationPrincipal UserDetail userDetail){
+        return new ResponseEntity(new ApiResponseDto(true, "followOotdList Success", ootdService.followOotd(userDetail)), HttpStatus.OK);
+    }
+
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
     public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo,
