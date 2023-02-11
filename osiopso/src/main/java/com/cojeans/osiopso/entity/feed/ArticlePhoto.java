@@ -15,7 +15,7 @@ public class ArticlePhoto {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(name = "image_url")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

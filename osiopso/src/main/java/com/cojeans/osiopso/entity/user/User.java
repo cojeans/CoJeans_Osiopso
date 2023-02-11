@@ -35,6 +35,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String imageUrl;
 
     @Column(nullable = false)
