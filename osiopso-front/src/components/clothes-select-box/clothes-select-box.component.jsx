@@ -68,10 +68,10 @@ const ClosetSelectBox = () => {
 
 		axios({
 			method: "post",
-			url: "http://localhost:8080/api/closet/clothes",
+			url: "https://www.osiopso.site/api/closet/clothes",
 			data: {
 				category: 1,
-				url:'https://w.namu.la/s/39841b85ec9b4f24ba21804371c3a9bc0ddfd43136c381848d7996b6d502b28cc4c20bc3908cee1a0356daf86ff6fe301535f1d08a6ee0dfb9f9b037261149a5e550e6a139fbdf9c48c1991f83a0a45ec729d93ed834b77a8842f01b72e39ef2',
+				imageUrl:saveData,
         closets: [{"id": 1}],
         colors:[{"id": 1}],
         seasons:[{"id": 1}],

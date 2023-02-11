@@ -61,7 +61,7 @@ const Ootd = () => {
   const getOotdAxios = () => {
     axios({
       method: "get",
-      url: "http://localhost:8080/api/feed/ootd",
+      url: "https://www.osiopso.site/api/feed/ootd",
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -97,7 +97,7 @@ const Ootd = () => {
         {ootdArticle.map((el, idx) => {
           return (
             <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
-              <img src={el.photo.imageUrl} alt="" />
+              <img src={el.imageUrl} alt="" />
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>

@@ -21,7 +21,7 @@ const AdviectComment = () => {
 	const getUserCloset = () => {
 		axios({
 			method: "post",
-			url: `http://localhost:8080/api/closet/list?userId=5`,
+			url: `https://www.osiopso.site/api/closet/list?userId=5`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },

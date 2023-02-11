@@ -18,7 +18,8 @@ const Closet = ({ closet }) => {
 			state: {
 		closet:closet
 	}})
- 	
+
+	console.log('preview', thumbnails)
 	return (
 		<ItemContainer onClick={onNavigateHandler}>
 			<ClosetItem>
