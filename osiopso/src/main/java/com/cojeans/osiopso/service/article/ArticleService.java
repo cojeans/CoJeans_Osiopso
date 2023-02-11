@@ -70,6 +70,7 @@ public class ArticleService {
 
         // 게시물 삭제
         articleRepository.deleteById(articleId);
+        // gitpull 됐음
 
         // 확실히 지워진 경우 (삭제한 articleNo로 해당 게시물을 찾을 수 없어야 한다.)
         if (articleRepository.findById(articleNo).isEmpty()) {

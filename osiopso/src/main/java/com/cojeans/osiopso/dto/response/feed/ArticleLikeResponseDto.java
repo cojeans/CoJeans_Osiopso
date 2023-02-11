@@ -9,4 +9,5 @@ import lombok.Data;
 public class ArticleLikeResponseDto {
     private final Long id;
     private final Long userId;
+    private final String userName;
 }
