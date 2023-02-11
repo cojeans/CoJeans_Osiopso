@@ -2,6 +2,7 @@ package com.cojeans.osiopso.repository.article;
 
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.QArticle;
+import com.cojeans.osiopso.entity.user.QFollow;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.util.List;
