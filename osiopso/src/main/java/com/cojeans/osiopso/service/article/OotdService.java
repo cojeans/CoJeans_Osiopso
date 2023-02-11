@@ -20,12 +20,15 @@ import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
+import com.cojeans.osiopso.entity.user.Follow;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
+import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +57,7 @@ public class OotdService {
     private final ArticleTagRepositoryImpl articleTagRepositoryImpl;
     private final ArticleService articleService;
     private final CommentLikeRepository commentLikeRepository;
+    private final OotdRepositoryImpl ootdRepositoryImpl;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -142,9 +146,7 @@ public class OotdService {
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(responsePhoto.get(0).getImageUrl())
-                            .build())
+                    .imageUrl(responsePhoto.get(0).getImageUrl())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                     .time(gapTime.getTimeGapToString())
                     .pastTime(gapTime.getPastTime())
@@ -596,6 +598,32 @@ public class OotdService {
             result.add(HotOotdResponseDto.builder()
                             .id(ootd.getId())
                             .imageUrl(ap.getImageUrl())
+                    .build());
+        }
+
+        return result;
+    }
+    public List<OotdListResponseDto> followOotd(UserDetail userDetail) {
+//        select * from article
+//        where user_id
+//        in (select following_id from follow where follower_id = 2)
+//        order by id desc;
+        List<Article> articles = ootdRepositoryImpl.findByUserId(userDetail.getId());
+        List<OotdListResponseDto> result = new ArrayList<>();
+
+        Date date = new Date();
+
+        for (Article article : articles) {
+            GapTimeVo gapTime = articleService.getGapTime(article, date);
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(article.getId());
+
+            result.add(OotdListResponseDto.builder()
+                    .id(article.getId())
+                    .pastTime(gapTime.getPastTime())
+                    .time(gapTime.getTimeGapToString())
+                    .userId(article.getUser().getId())
+                    .imageUrl(ap.getImageUrl())
+                    .hit(article.getHit())
                     .build());
         }
 

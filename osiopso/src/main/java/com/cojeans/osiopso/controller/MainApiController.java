@@ -58,9 +58,4 @@ public class MainApiController {
         System.out.println("Preview : " + tagId);
         return new ResponseEntity(new ApiResponseDto(true, "hotIssueList Success", ootdService.hotIssueList(tagId)), HttpStatus.OK);
     }
-
-    // 3. OOTD 팔로잉
-    // 여기는 피드 .. 인데 .. 흠 .............
-    // 일단 필터링만 구현해봅시다.
-    // 어떻게 이을 것인가 ....
 }

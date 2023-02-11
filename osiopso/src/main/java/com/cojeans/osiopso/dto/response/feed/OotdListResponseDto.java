@@ -14,7 +14,7 @@ public class OotdListResponseDto {
     private Float pastTime;
     private String time;
     private Long userId;
-    private ArticlePhotoResponseDto photo;
+    private String imageUrl;
     private Long commentCnt;
     private int hit;
     private String content;
