@@ -105,7 +105,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 
 		axios({
 			method: "post",
-			url: "http://localhost:8080/api/closet",
+			url: "https://www.osiopso.site/api/closet",
 			data: {
 				name: payload.name,
 				isSelected:payload.isSelected,

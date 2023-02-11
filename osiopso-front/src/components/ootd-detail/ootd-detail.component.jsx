@@ -98,7 +98,7 @@ const OotdDetail = () => {
   const getDetailOotd = () => {
     axios({
       method: "get",
-      url: `http://localhost:8080/api/feed/ootd/${id}`,
+      url: `https://www.osiopso.site/api/feed/ootd/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -132,7 +132,7 @@ const OotdDetail = () => {
   const deleteOotd = () => {
     axios({
       method: "delete",
-      url: `http://localhost:8080/api/feed/article/${id}`,
+      url: `https://www.osiopso.site/api/feed/article/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -150,7 +150,7 @@ const OotdDetail = () => {
   const likeOotd = () => {
     axios({
       method: "post",
-      url: `http://localhost:8080/api/feed/likearticle/${id}`,
+      url: `https://www.osiopso.site/api/feed/likearticle/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
