@@ -1,18 +1,36 @@
-import './advice.styles'
-import { TextToLeft } from '../home/home.styles'
+import Advice from '../../components/advice/advice.component';
+import AdviceCreate from '../../components/advice-create/advice-create.component'
+import AdviceCommentList from '../../components/advice-comment-list/advice-comment-list.component';
+import AdviceDetail from '../../components/advice-detail/advice-detail.component'
+import { Route, Routes } from "react-router-dom"
 
-const Advice = ()=>{
-    return(
-    <div>
-        <h3>아차차 훈수페이지</h3>
-        <TextToLeft><span>최신순</span> <span>논란순</span></TextToLeft>
-        <TextToLeft><span>채택 중</span>  <span>채택완료</span></TextToLeft>
-        
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { selectUser } from '../../store/user/user.selector'
+import { useEffect } from 'react';
 
+const AdvicePage = () => {
+  const Token = useSelector(selectUser)
+  const navigate = useNavigate()
 
+  
+	useEffect(() => {
+		if (!Token.token) {
+			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+			navigate('/login')
+		} 
+	},[])
 
-    </div>
-    )
+  return (
+    <Routes>
+      <Route index element={<Advice/>}/>
+      <Route path="/create" element={<AdviceCreate/>}/>
+      <Route path="/detail/*" element={<AdviceDetail/>}/>
+      <Route path="/commentlist" element={<AdviceCommentList/>}/>
+
+      
+    </Routes>
+  )
 }
 
-export default Advice
+export default AdvicePage

@@ -1,8 +1,29 @@
+import { useSelector, useDispatch } from 'react-redux'
+
+import { selectUser } from '../../store/user/user.selector'
+import { userInfo } from '../../store/user/user.reducer'
+
+import { useNavigate } from 'react-router-dom'
+
+import axios from 'axios'
 import './home.styles'
-import { TextToCenter, TextToLeft, Category, HomeOotdImage, SelectedTagContainer, SelectedTag, UserUploadList  } from './home.styles'
+
+import {
+	TextToCenter,
+	TextToLeft,
+	Category,
+	HomeOotdImage,
+	SelectedTagContainer,
+	SelectedTag,
+	UserUploadList,
+	OotdTagDiv
+} from './home.styles'
 import { ReactComponent as Fire } from "../../assets/fire.svg"
 import { ReactComponent as User2 } from "../../assets/userFashion.svg"
 // import DoSwiper from '../../components/swiper/swiper.component'
+import { ootd } from '../../store/ootd/ootd.reducer'
+import Ootd from '../../components/ootd/ootd.component'
+import { useEffect } from 'react'
 
 const Home = () =>{
 	const mainList = [
@@ -31,9 +52,48 @@ const Home = () =>{
 
 	]
 
+	const Token = useSelector(selectUser)
+
+	const dispatch = useDispatch()
+
+	const navigate = useNavigate()
+
+	// 로그인 하고 홈에 들어오면 현재 유저 정보를 전역 상태로 저장합니다.
+	const getCurrentUser = () => {
+    axios({
+      method: "get", 
+      url: 'http://localhost:8080/api/user',
+      headers: {
+          Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+				console.log(res.data)
+				const payload = {
+					id: res.data.id,
+					name: res.data.name,
+					age: res.data.age,
+					gender: res.data.gender,
+					imageUrl: res.data.imageUrl,
+				}
+				dispatch(userInfo(payload))
+      })
+    .catch((err)=>{
+      console.log(err)
+    })
+	}
+
+	useEffect(() => {
+		if (!Token.token) {
+			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+			navigate('/login')
+		} else {
+			getCurrentUser()
+		}
+	},[])
+
 	return (
 		<div>
-			<TextToCenter><h2>Home</h2></TextToCenter>
 			<TextToLeft>
 				{tags.map((el)=>{
 					return (
@@ -52,11 +112,11 @@ const Home = () =>{
 			</HomeOotdImage>
 			{/* <DoSwiper></DoSwiper> */}
 			
-			<SelectedTagContainer>
+			{/* <SelectedTagContainer>
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
-			</SelectedTagContainer>
+			</SelectedTagContainer> */}
 
-			<TextToLeft><Fire/><h4>와글와글 토론장</h4></TextToLeft>
+			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
 			<HomeOotdImage>
 				{hunsuImages.map((el)=>{
 					return (
@@ -66,17 +126,11 @@ const Home = () =>{
 			</HomeOotdImage>
 
 
-			<hr/>
-			<Category><h4>최신순</h4> <h4>인기순</h4> <h4>논란순</h4></Category>
-			<UserUploadList>
-				{userUpLoadImg.map((el)=> {
-					return (
-						<img src={el}/>
-					)
-				})}
-			</UserUploadList>
-			
+			{/* <Category ><h4>최신순</h4> <h4>인기순</h4> <h4>논란순</h4></Category> */}
+			<OotdTagDiv  id="OOTD">
+				<Ootd />
 
+			</OotdTagDiv>
 
 		</div>
 	)

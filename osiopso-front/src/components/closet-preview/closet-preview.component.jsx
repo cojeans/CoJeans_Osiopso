@@ -5,16 +5,21 @@ import {
 	PrevContainer
 } from "./closet-preview.styles"
 
-const ClosetPreview = ({ closetPev }) => {
+const ClosetPreview = ({ thumbnails }) => {
+	let tmpArray = [...thumbnails]
+	if (thumbnails.length < 4) {
+		for (let i = 0; i < 4 - thumbnails.length; i++) {
+			tmpArray = [...tmpArray, i]
+		}
+	}
 	return (
 		<PrevContainer>
 				{
-					closetPev.map((prev, i) => {
+					tmpArray.map((prev, i) => {
 						return <PrevBox key={i}>
-						<img src={prev} onError={({ currentTarget }) => {
-						currentTarget.onerror = null; 
-						currentTarget.src="https://mblogthumb-phinf.pstatic.net/20161008_248/sasa9508_1475929220263OMzsO_JPEG/2.jpg?type=w2";
-						}}/></PrevBox>
+							<div>
+							</div>
+						</PrevBox>
 					})
 				}
 		</PrevContainer>

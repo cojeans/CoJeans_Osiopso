@@ -10,6 +10,7 @@ import {
 import { ReactComponent as BackButton } from '../../assets/back.svg'
 import { SideBar } from "../side-bar/side-bar.component"
 
+
 const TopBar = () => {
 	const navigate = useNavigate();
 
@@ -25,6 +26,12 @@ const TopBar = () => {
 				break
 			case '/mypage/add-clothes':
 				setTopName('옷 등록')
+				break
+			case '/ootd/create':
+				setTopName('OOTD 등록')
+				break
+			case '/advice/create':
+				setTopName('훈수 등록')
 				break
 			default:
 				setTopName('Osiopso')

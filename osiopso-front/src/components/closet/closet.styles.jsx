@@ -8,8 +8,8 @@ export const ItemContainer = styled.div`
 `
 
 export const ClosetItem = styled.div`
-	width:8em;
-	height:8em;
+	width:8rem;
+	height:8rem;
 	border-radius:10px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 	p{
@@ -27,12 +27,14 @@ export const ClosetItem = styled.div`
 	`
 
 export const ItemInfo = styled.div`
-	width:80%;
+	width:93%;
 	display:flex;
 	flex-direction:column;
 	margin:auto;
 	p{
 		margin-bottom:0;
+		width:120px;
+		font-size:13px;
 		span{
 			font-size:13px;
 			color:gray;

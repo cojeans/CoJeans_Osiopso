@@ -12,7 +12,7 @@ cursor: pointer;
 `
 
 export const NavbarContainer = styled.nav`
-width: 310px;
+width: 230px;
 position: fixed;
 z-index: -1;
 top: 0;
@@ -55,9 +55,7 @@ transition: all 0.3s linear;
 text-decoration:none;
 
 cursor: pointer;
-
     &:hover {
     background: hsl(205, 86%, 81%);
-
     }
 `

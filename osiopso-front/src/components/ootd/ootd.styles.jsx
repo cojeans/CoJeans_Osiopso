@@ -5,6 +5,7 @@ export const TopDiv = styled.div`
   h1{
     text-align: center;
   }
+  min-height:50vh;
 `
 
 export const OotdTopBar = styled.div`
@@ -41,7 +42,7 @@ justify-items: center;
 margin: auto;
 img{
     width: 150px;   
-    height: 150px;
+    height: 200px;
 }
 `
 // 상위 1`
@@ -66,7 +67,6 @@ export const UpperCommentContainer = styled.div`
 display: flex;
 justify-content: start;
 align-items: center;
-
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;

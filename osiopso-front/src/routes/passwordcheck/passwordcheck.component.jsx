@@ -8,11 +8,14 @@ import {
   UpperInput,
   UpperCloseInputbox,
   AlertMessage,
-  ButtonBox
+  ButtonBox,
+  ButtonsContainer
 } from "./passwordcheck.styles";
 
+import Button from '../../components/button/button.component'
 
-const PasswordCheck = () => {
+
+const PasswordCheck = ({setConfirm}) => {
    
   const [inputPassword, setInputPassword] = useState('')
   const handleInput = (event) => {
@@ -21,6 +24,19 @@ const PasswordCheck = () => {
     console.log(value)
   }
 
+  // const checkFunc = (e) => {
+  //   e.preventDefault();
+  //   axios({
+  //     method: "post",
+  //     data: {
+  //         "message": value
+  //     }
+  //   })
+  //   .then((res) => {
+  //     console.log(res)
+
+  //   })
+  // }
 
   return (
     <div>
@@ -38,23 +54,21 @@ const PasswordCheck = () => {
             <p>비밀번호: </p>
             <UpperCloseInputbox>
               <CloseInput type="password" onChange={handleInput} value={inputPassword}/>
-              { 
+              {/* { 
                 inputPassword.length >1 && inputPassword.length< 8
                 ? <AlertMessage>비밀번호는 8자 이상이어야합니다.</AlertMessage>
                 : ''
-              }
+              } */}
             </UpperCloseInputbox>
           </UpperInput>
         </Box>
       </UpperBox>
-      <ButtonBox>
-        {
-          inputPassword.length>8
-          ? <button>확인</button>
-          : ''
-        }
-        
-      </ButtonBox>
+      <ButtonsContainer>
+        <Button onClick={()=>setConfirm(true)}>
+          확인
+        </Button>
+      </ButtonsContainer>
+
     </div>
   );
 };

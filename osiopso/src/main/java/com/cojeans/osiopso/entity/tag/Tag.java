@@ -1,7 +1,7 @@
 package com.cojeans.osiopso.entity.tag;
 
 
-import com.cojeans.osiopso.dto.tag.TagDto;
+import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -24,8 +24,8 @@ public class Tag {
 
     private String keyword;
 
-    public TagDto toDto(){
-        return TagDto.builder()
+    public ArticleTagResponseDto toDto(){
+        return ArticleTagResponseDto.builder()
                 .id(id)
                 .type(type)
                 .keyword(keyword)

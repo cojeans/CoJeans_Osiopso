@@ -5,7 +5,7 @@ export const ProfileBox = styled.div`
 	flex-direction:column;
 	border-bottom:solid 1px black;
 	width: 80%;
-	margin:auto;
+	margin:0 auto;
 `
 export const IntroBox = styled.div`
 	display:flex;
@@ -26,10 +26,13 @@ export const FollowBox = styled.div`
 	}
 `
 
-export const ProfileImageBox = styled.img.attrs({
-  src: `https://pixlr.com/images/index/remove-bg.webp`,
-})`
+export const ProfileImageBox = styled.div`
 	border-radius:50%;
 	width:5em;
 	height:5em;
+	overflow:hidden;
+	img{
+		width:100%;
+		height:100%;
+	}
 `;

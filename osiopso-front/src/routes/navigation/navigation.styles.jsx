@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 
 export const Container = styled.div`
   width: 100%;
@@ -7,7 +8,6 @@ export const Container = styled.div`
 	height:100%;
 	margin:auto;
 	position:relative;
-
 `
 
 export const NavigationContainer = styled.div`
@@ -16,13 +16,14 @@ export const NavigationContainer = styled.div`
 	max-width:430px;
   display: flex;
   justify-content: space-between;
-	color: #e7e2ff;
 	background-color: white;
 	margin:auto;
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	bottom: 0; 
+	
+	
 `
 
 export const LogoContainer = styled(NavLink)`
@@ -39,24 +40,19 @@ export const LogoContainer = styled(NavLink)`
 		width:45%;
 		height:45%;
 		margin:auto;
-	}
+		color:black;
+		}
 	span{
 		font-size:0.7em;
 		// font-weight:bold;
 		color:black;
 	}
-
-	svg{
-		stroke:black;
-		fill:black;
-	}
-	path{
-		stroke:black;
-		
-	}
 	
   &.active {
-		background-color:#e7e2ff
+		svg{
+			fill:#BCF0E0;
+			stroke:#BCF0E0
+		}
   }
 	
 `
@@ -66,12 +62,12 @@ export const BodyContainer = styled.div`
 	width: 100%;
 	max-width:430px;
 	margin:auto;
-	min-height:100%;
+	min-height:100vh;
 	display:flex;
 	flex-direction:column;
 `
 
-export const PlusContainer = styled(NavLink)`
+export const PlusContainer = styled.div`
   height: 100%;
   width: 25%;
 	display:flex;
@@ -92,12 +88,70 @@ export const PlusContainer = styled(NavLink)`
 		color:black;
 	}
 
+
+`
+
+export const HashContainer = styled.div`
+  height: 100%;
+  width: 25%;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+	text-decoration:none;
+	border-radius:5px;
+
+	.hash{
+		background-color:red;
+	}
+
+	
 	svg{
-		stroke:black;
-		fill:black;
+		width:45%;
+		height:45%;
+		margin:auto;
+		color:black;
+		}
+	span{
+		font-size:0.7em;
+		// font-weight:bold;
+		color:black;
 	}
-	path{
-		stroke:black;
-		
+	
+  &.active {
+		svg{
+			fill:#BCF0E0;
+			stroke:#BCF0E0
+		}
+  }
+`
+
+export const HashLinkContainer = styled(HashLink)`
+  height: 100%;
+  width: 25%;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+	text-decoration:none;
+	border-radius:5px;
+
+	
+	svg{
+		width:45%;
+		height:45%;
+		margin:auto;
+		color:black;
+		}
+	span{
+		font-size:0.7em;
+		// font-weight:bold;
+		color:black;
 	}
+	
+  &.active {
+		svg{
+			fill:#BCF0E0;
+			stroke:#BCF0E0
+		}
+  }
+	
 `

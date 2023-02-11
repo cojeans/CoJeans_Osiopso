@@ -1,11 +1,11 @@
 import { useState } from 'react'
-
+import { useNavigate } from "react-router-dom";
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignInContainer, ButtonsContainer  } from './login.stlyes'
 import { useDispatch } from 'react-redux'
 import './login.stlyes'
-
+import axios from 'axios';
 import { login } from '../../store/user/user.reducer'
 // import {
 //   signInAuthUserWithEmailAndPassword,
@@ -22,9 +22,9 @@ const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  // const resetFormFields = () => {
-  //   setFormFields(defaultFormFields);
-  // };
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
 
   // const signInWithGoogle = async () => {
   //   await signInWithGooglePopup();
@@ -45,17 +45,45 @@ const Login = () => {
     const { name, value } = event.target;
 
     setFormFields({ ...formFields, [name]: value });
-  
   };
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
 
+  const LoginFunc = (e) => {
+    e.preventDefault();
+      axios({
+        method: "post",
+        url: 'http://localhost:8080/api/user/login',
+        data: {
+          email,
+          password,
+        }
+      })
+      .then((res)=>{
+        console.log(res)
+        localStorage.clear()
+        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('email', email)
+        
+        const value = {email, token: res.data.accessToken}
+        dispatch(login(value))
+        navigate("/")
+      })
+      .catch((err) => {
+        console.log(err)
+        navigate("/login")
+      })
+  
+
+  }
   return (
     <SignInContainer>
 
       <hr />
       {/* <h2>Already have an account?</h2> */}
       <span>이메일과 비밀번호를 입력하세요.</span>
-      <form>
         <FormInput
           label='Email'
           type='email'
@@ -75,10 +103,11 @@ const Login = () => {
         />
         
         <ButtonsContainer>
-          <Button type='submit'>Sign In</Button>
-
+          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
+          {/* <button onClick={LoginFunc}>
+            test
+          </button> */}
         </ButtonsContainer>
-      </form>
     </SignInContainer>
   );
 };

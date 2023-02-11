@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,10 +27,6 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //일대 다 관계로 테이블로 만들어져야함
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-    private List<ArticlePhoto> photos;
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -42,21 +39,20 @@ public class Article {
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
-//    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
-//    private List<ArticleTag> tags;
+    @ColumnDefault(value = "0")
+    private Long report;
 
     @Column(insertable = false, updatable = false)
     private String dtype;
 
-    public Article(List<ArticlePhoto> photos, int hit, String content, String dtype, User user) {
-        this.photos = photos;
+    public Article(int hit, String content, User user) {
         this.hit = hit;
         this.content = content;
-        this.dtype = dtype;
+//        this.dtype = dtype;
         this.user = user;
     }
 }

@@ -1,10 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import axios from 'axios'
 
-import { getClosetAxios } from '../../utils/axios.utils';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+	createCloset,
+	resetCloset,
+} from '../../store/closet/closet.reducer';
+import { selectCloset } from '../../store/closet/closet.selector';
+import { selectUser } from '../../store/user/user.selector';
 
 import Button from '../button/button.component';
-import ToggleButton from '../toggle/toggle.component';
+// import ToggleButton from '../toggle/toggle.component';
+import ToggleButton2 from '../toggle/toggle2.component';
 
 import {
 	ModaContainer,
@@ -16,15 +24,23 @@ import {
 	ToggleContainer
 } from "./closet-create-modal.styles";
 
+import Swal from "sweetalert2";
+
 
 const defaultClosetFields = {
 	closetName: '',
 }
 
 
-const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
+
+
+const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
+
+	const Token = useSelector(selectUser)
+	const closetData  = useSelector(selectCloset)
+
 	const dispatch = useDispatch()
 
 	 // 모달 끄기 
@@ -32,7 +48,21 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 		setModalOpen(false);
 		openScroll()
 	};
-	const modalRef = useRef(null);
+	const modalRef = useRef(null); 
+	
+	const AlertHandler = () => {
+	Swal.fire({
+		icon: 'success',
+		confirmButtonColor: "#DD6B55", 
+		html: `
+		새 옷장이 생성되었습니다.
+		`,
+		showCancelButton: false,
+		confirmButtonText: "확인",
+	})
+	getClosetList() // 리스트 갱신
+
+}
 
 	useEffect(() => {
 		// 이벤트 핸들러 함수
@@ -60,9 +90,41 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 		setClosetField({ ...closetField, [name]: value })
 	}
 
+
 	const handleSubmit = () => {
 		console.log('저장?')
-		getClosetAxios("testId@gmail.com")
+		console.log(closetField)
+		const payload = { ...closetData.closet }
+		console.log('this', closetData)
+		payload.name = closetName
+		console.log(payload)
+
+		dispatch(createCloset(payload))
+
+		console.log(Token)
+
+		axios({
+			method: "post",
+			url: "http://localhost:8080/api/closet",
+			data: {
+				name: payload.name,
+				isSelected:payload.isSelected,
+			},
+			headers: {
+     	 Authorization: `Bearer ${Token.token}`,
+			}
+		})
+		 .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+		dispatch(resetCloset()) // redux 옷장 정보 초기화
+		
+		AlertHandler() // alert창 띄우기
+
 	}
 	
     return (
@@ -86,7 +148,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll }) => {
 						/>
 						<ToggleContainer>
 							<p>공개 설정</p>
-							<ToggleButton
+							<ToggleButton2
 							/>
 						</ToggleContainer>
 					</ClosetContent>
