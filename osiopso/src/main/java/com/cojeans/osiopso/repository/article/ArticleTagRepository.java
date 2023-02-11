@@ -11,4 +11,6 @@ public interface ArticleTagRepository extends JpaRepository<ArticleTag, Long> {
     List<ArticleTag> findAllByTag_Id(Long tagId);
 
     List<ArticleTag> findAllByArticle_Id(Long id);
+
+    List<ArticleTag> findTop8ByTagIdOrderByIdDesc(Long tagId);
 }

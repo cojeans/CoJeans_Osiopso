@@ -147,7 +147,6 @@ public class FeedApiController {
         return new ResponseEntity(new ApiResponseDto(true, "filterOotd Success", ootdListResponseDtos), HttpStatus.OK);
     }
 
-
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
     public ResponseEntity<?> editOotd(@PathVariable("articleno") Long articleNo,

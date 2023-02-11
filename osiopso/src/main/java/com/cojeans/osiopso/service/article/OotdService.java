@@ -584,4 +584,21 @@ public class OotdService {
         }
         return result;
     }
+
+    public List<HotOotdResponseDto> hotIssueList(Long tagId) {
+        // 특정 태그를 포함하는 게시물 중 최신순으로?인기순으로?
+        List<ArticleTag> articleTags = articleTagRepository.findTop8ByTagIdOrderByIdDesc(tagId);
+        List<HotOotdResponseDto> result = new ArrayList<>();
+
+        for (ArticleTag at : articleTags) {
+            Ootd ootd = ootdRepository.findById(at.getArticle().getId()).orElseThrow();
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(ootd.getId());
+            result.add(HotOotdResponseDto.builder()
+                            .id(ootd.getId())
+                            .imageUrl(ap.getImageUrl())
+                    .build());
+        }
+
+        return result;
+    }
 }

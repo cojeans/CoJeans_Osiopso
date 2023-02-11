@@ -52,6 +52,13 @@ public class MainApiController {
         return new ResponseEntity(new ApiResponseDto(true, "hotIssue Success", ootdService.hotIssue()), HttpStatus.OK);
     }
 
+    // 특정 태그를 포함하는 Ootd 게시물 최신순 8개
+    @GetMapping("/preview/{tagid}")
+    public ResponseEntity<?> hotIssueList(@PathVariable (name = "tagid") Long tagId){
+        System.out.println("Preview : " + tagId);
+        return new ResponseEntity(new ApiResponseDto(true, "hotIssueList Success", ootdService.hotIssueList(tagId)), HttpStatus.OK);
+    }
+
     // 3. OOTD 팔로잉
     // 여기는 피드 .. 인데 .. 흠 .............
     // 일단 필터링만 구현해봅시다.
