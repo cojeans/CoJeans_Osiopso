@@ -63,7 +63,7 @@ const OotdDetail = () => {
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(likeDefaultData)
   const [commentData, setCommentData] = useState(defaultForm)
-  const [openComment, setOpenComment] = useState(openCocoDefaultData)
+  const [openComment, setOpenComment] = useState(false)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
   const [ootdUserUrl, setOordUserUrl] = useState(require('../../assets/defaultuser.png'))
@@ -216,6 +216,8 @@ const OotdDetail = () => {
 
   return (
     <div>
+      <div>
+
       <UpperProfile
       >
         <ProfileImageBox >
@@ -251,8 +253,12 @@ const OotdDetail = () => {
             </IconContainer>
           </IconMessageBox>
           <IconBox>
-            <VscWarning size="23" onClick={Report} />
-            <VscTrash size="23" onClick={deleteOotd}/>
+              <VscWarning size="23" onClick={Report} />
+              {
+                ootdDetail.userId === userInfo.id
+                ?<VscTrash size="23" onClick={deleteOotd}/>
+                : ''
+              }
           </IconBox>
         </DetailContainer>
         <DetailContainer>
@@ -261,9 +267,10 @@ const OotdDetail = () => {
           </span>
         </DetailContainer>
       </UpperImage>
+      </div>
       {/* 댓글 아이콘 클릭시 리스트가 열리고 리스트 섹션으로 이동 */}
         {
-        openComment 
+        openComment && commentData.cnt
           ?<CommentListWrapper>
             <div onClick={()=>setOpenComment(false)}>접기</div>
             <OotdCommentList

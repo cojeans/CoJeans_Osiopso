@@ -17,11 +17,12 @@ import TopBar from "../../components/top-bar/top-bar.component"
 import Modal from "../../components/modal/modal.component"
 
 import { GiMirrorMirror } from "react-icons/gi";
-import { IoHandRightOutline } from "react-icons/io5";
+import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { TfiHome } from "react-icons/tfi";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
 
-import { ReactComponent as Plus } from '../../assets/plusNav.svg'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -60,18 +61,28 @@ const Navigation = () => {
 					to="/#top"
 					className={`${location.pathname}${location.hash}` === '/#top' ? "active" : ""}
 				>	
-					<TfiHome />
+					{
+						`${location.pathname}${location.hash}` === '/#top'
+							? <IoHomeSharp/>
+							:<IoHomeOutline />
+					}
+					
 					<span>홈</span>
 				</HashLinkContainer>	
 				<LogoContainer to='/advice'>
-					<IoHandRightOutline/>
+					{
+					
+						`${location.pathname}` === '/advice'
+					?<IoHandRightSharp />
+					:<IoHandRightOutline />
+					}
 					<span>훈수</span>
 				</LogoContainer>
 				<PlusContainer
 					// to='mypage/add-clothes'
 					onClick={showModal}
 				>
-					<Plus />
+					<AiFillPlusCircle color="#BCF0E0 "/>
 				</PlusContainer>
 				{/* <LogoContainer to='/ootd'> */}
 				<HashLinkContainer

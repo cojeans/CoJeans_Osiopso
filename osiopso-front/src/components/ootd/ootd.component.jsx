@@ -11,9 +11,11 @@ import {
   UpperCommentContainer,
   UpperupperCommentContainer,
 } from "./ootd.styles";
-import { ReactComponent as Filter } from "../../assets/filter.svg";
+
+import { RiFilter2Fill } from "react-icons/ri";
+
 import { ReactComponent as Comment } from "../../assets/comment.svg";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 
 import axios from 'axios'
@@ -21,6 +23,7 @@ import Modal from '../modal/modal.component'
 
 import { useEffect, useState } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
+
 
 const defaultOotdForm = {
   content: '',
@@ -86,7 +89,7 @@ const Ootd = () => {
           <h3>팔로잉</h3>
         </OotdCategory>
         <FilterContainer>
-          <Filter onClick={showModal}/>
+          <RiFilter2Fill onClick={showModal}/>
         </FilterContainer>
       </OotdTopBar>
 

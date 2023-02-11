@@ -31,17 +31,7 @@ const defaultClosetFields = {
 	closetName: '',
 }
 
-export const AlertHandler = () => {
-	Swal.fire({
-		icon: 'success',
-		confirmButtonColor: "#DD6B55", 
-		html: `
-		새 옷장이 생성되었습니다.
-		`,
-		showCancelButton: false,
-		confirmButtonText: "확인",
-	})
-}
+
 
 
 const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
@@ -58,7 +48,21 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 		setModalOpen(false);
 		openScroll()
 	};
-	const modalRef = useRef(null);
+	const modalRef = useRef(null); 
+	
+	const AlertHandler = () => {
+	Swal.fire({
+		icon: 'success',
+		confirmButtonColor: "#DD6B55", 
+		html: `
+		새 옷장이 생성되었습니다.
+		`,
+		showCancelButton: false,
+		confirmButtonText: "확인",
+	})
+	getClosetList() // 리스트 갱신
+
+}
 
 	useEffect(() => {
 		// 이벤트 핸들러 함수
@@ -121,7 +125,6 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 		
 		AlertHandler() // alert창 띄우기
 
-		getClosetList() // 리스트 갱신
 	}
 	
     return (

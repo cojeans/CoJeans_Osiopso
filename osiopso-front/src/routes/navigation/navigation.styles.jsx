@@ -50,8 +50,8 @@ export const LogoContainer = styled(NavLink)`
 	
   &.active {
 		svg{
-			fill:#8A689A;
-			stroke:#8A689A
+			fill:#BCF0E0;
+			stroke:#BCF0E0
 		}
   }
 	
@@ -119,8 +119,8 @@ export const HashContainer = styled.div`
 	
   &.active {
 		svg{
-			fill:#8A689A;
-			stroke:#8A689A
+			fill:#BCF0E0;
+			stroke:#BCF0E0
 		}
   }
 `
@@ -149,8 +149,8 @@ export const HashLinkContainer = styled(HashLink)`
 	
   &.active {
 		svg{
-			fill:#8A689A;
-			stroke:#8A689A
+			fill:#BCF0E0;
+			stroke:#BCF0E0
 		}
   }
 	
