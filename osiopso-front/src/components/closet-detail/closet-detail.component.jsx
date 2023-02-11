@@ -1,14 +1,40 @@
+import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../store/user/user.selector';
 import {
 	ClothesContainer,
 	ClothesItemContainer,
 	ClosetDetailPage
 } from './closet-detail.styles';
+import { useEffect } from 'react';
 
 const ClosetDetail = () => {
 	const location = useLocation();
 	const { name, thumbnails, count, id, isSelected } = location.state.closet
+	const Token = useSelector(selectUser)
+	const getClothes = () => {
+		axios({
+			method: "post",
+        url: `http://localhost:8080/api/closet/${id}/1`,
+        data: {
+					"id": id,
+					"keyword": null,
+					"type": null
+        },
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+              },
+		}).then((res) => {
+			console.log(res)
+		}).catch((err) => {
+			console.log(err)
+		})
+	}
+
+	useEffect(() => {
+		getClothes()
+	},[])
 
 	return (
 		<ClosetDetailPage>
