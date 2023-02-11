@@ -71,6 +71,15 @@ public class UserService {
         return false;
     }
 
+    public UserDto getUser(Long userId, UserDetail userDetail){
+        UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
+
+        if(followRepository.findByFollowingIdAndFollowerId(userId, userDetail.getId()) != null) userDto.setFollowed(true);
+        else userDto.setFollowed(false);
+        System.out.println("유저디티오^_^ : " + userDto);
+        return userDto;
+    }
+
     @Transactional
     public User editUser(SignUpRequestDto signUpRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(signUpRequest.getEmail());
@@ -110,24 +119,30 @@ public class UserService {
         return userList;
     }
 
-    public void followUser(String email, UserDetail userDetail) {
-        System.out.println("UserDetail : " + userDetail.getId());
-        followRepository.save(Follow.builder()
-                        .following(userRepository.findByEmail(email).orElseThrow())
-                        .follower(userRepository.findById(userDetail.getId()).orElseThrow())
-                        .build());
-    }
-
     @Transactional
-    public void unfollowUser(String email, UserDetail userDetail) {
-        User following  = userRepository.findByEmail(email).orElseThrow();
-        User follower = userRepository.findById(userDetail.getId()).orElseThrow();
+    public void followUser(Long followingId, UserDetail userDetail) {
+        // 아직 팔로우하지 않는 경우 해당 유저 팔로우
+        if(followRepository.findByFollowingIdAndFollowerId(followingId, userDetail.getId()) == null) {
+            followRepository.save(Follow.builder()
+                    .following(userRepository.findById(followingId).orElseThrow())
+                    .follower(userRepository.findById(userDetail.getId()).orElseThrow())
+                    .build());
+        } else { // 이미 팔로우한 경우 언팔로우
+            followRepository.deleteByFollowingIdAndFollowerId(followingId, userDetail.getId());
+        }
 
-        followRepository.deleteByFollowingIdAndFollowerId(following.getId(), follower.getId());
     }
 
-    public List<FollowResponseDto> listFollower(String email) {
-        User targetUser = userRepository.findByEmail(email).orElseThrow();
+//    @Transactional
+//    public void unfollowUser(String email, UserDetail userDetail) {
+//        User following  = userRepository.findByEmail(email).orElseThrow();
+//        User follower = userRepository.findById(userDetail.getId()).orElseThrow();
+//
+//        followRepository.deleteByFollowingIdAndFollowerId(following.getId(), follower.getId());
+//    }
+
+    public List<FollowResponseDto> listFollower(Long followingId) {
+        User targetUser = userRepository.findById(followingId).orElseThrow();
 
         List<Follow> followers = followRepository.findAllByFollowingId(targetUser.getId());
         List<FollowResponseDto> result = new ArrayList<>();
@@ -144,8 +159,8 @@ public class UserService {
         return result;
     }
 
-    public List<FollowResponseDto> listFollowing(String email) {
-        User targetUser = userRepository.findByEmail(email).orElseThrow();
+    public List<FollowResponseDto> listFollowing(Long followingId) {
+        User targetUser = userRepository.findById(followingId).orElseThrow();
 
         List<Follow> followings = followRepository.findAllByFollowerId(targetUser.getId());
         List<FollowResponseDto> result = new ArrayList<>();
