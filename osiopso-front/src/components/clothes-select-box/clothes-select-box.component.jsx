@@ -68,7 +68,7 @@ const ClosetSelectBox = () => {
 
 		axios({
 			method: "post",
-			url: "http://localhost:8080/api/closet/clothes",
+			url: "https://www.osiopso.site/api/closet/clothes",
 			data: {
 				category: 1,
 				imageUrl:saveData,

@@ -39,7 +39,7 @@ const ProfileCloset = () => {
 		console.log('옷장리스트가져오기')
 		axios({
 					method: "post",
-					url: "http://localhost:8080/api/closet/mylist",
+					url: "https://www.osiopso.site/api/closet/mylist",
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},

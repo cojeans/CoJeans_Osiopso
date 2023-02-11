@@ -16,7 +16,7 @@ const ClosetDetail = () => {
 	const getClothes = () => {
 		axios({
 			method: "post",
-        url: `http://localhost:8080/api/closet/${id}/1`,
+        url: `https://www.osiopso.site/api/closet/${id}/1`,
         data: {
 					"id": id,
 					"keyword": null,

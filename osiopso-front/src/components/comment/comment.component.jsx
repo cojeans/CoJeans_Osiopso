@@ -46,7 +46,7 @@ const Comment = ({ comment, select }) => {
 	const handleLikeComment = () => {
 		axios({
 			method: 'post',
-			url: `http://localhost:8080/api/comment/likecomment/${comment.commentId}`,
+			url: `https://www.osiopso.site/api/comment/likecomment/${comment.commentId}`,
 			headers: {
         Authorization: `Bearer ${Token.token}`,
       }

@@ -97,7 +97,7 @@ const OotdCreate = () => {
 
     axios({
       method: "post",
-      url: "http://localhost:8080/api/feed/ootd",
+      url: "https://www.osiopso.site/api/feed/ootd",
       data: {
         tags: ootd.tags,
         content: ootd.content,
