@@ -57,7 +57,7 @@ const AdviceDetail = () => {
   const getDetailAdvice = ()=>{
     axios({
       method: "get",
-      url: `https://www.osiopso.site/api/feed/advice/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/advice/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`
       }
@@ -78,7 +78,7 @@ const AdviceDetail = () => {
   const deleteAdvice = ()=> {
     axios({
       method: "delete",
-      url: `https://www.osiopso.site/api/feed/article/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/article/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
