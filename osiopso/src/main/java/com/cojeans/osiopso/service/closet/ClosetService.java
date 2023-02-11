@@ -89,10 +89,10 @@ public class ClosetService {
     }
 
     // 2-2 : 선택된 사용자의 옷장 리스트 조회
-    public List<ClosetResponseDto> listCloset(String email){
-        System.out.println("List Closet Service : " + email);
+    public List<ClosetResponseDto> listCloset(Long userId){
+        System.out.println("List Closet Service : " + userId);
 
-        Long uid = userRepository.findByEmail(email).orElseThrow().getId();
+        Long uid = userRepository.findById(userId).orElseThrow().getId();
         List<Closet> list = closetRepository.findAllByUserId(uid);
 
         List<ClosetResponseDto> result = list.stream()
