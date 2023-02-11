@@ -149,6 +149,7 @@ public class AdviceService {
             articleLikeResponseDtoList.add(ArticleLikeResponseDto.builder()
                     .id(al.getId())
                     .userId(al.getUser().getId())
+                    .userName(al.getUser().getName())
                     .build());
         }
 
