@@ -30,12 +30,12 @@ const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, s
                                 답글 달기 
                                 </Cocoment>
                                 {
-                                    openCoco
-                                    ?<Cocoment onClick={()=>setOpenCoco(false)}>
+                                    openCoco.selectCommentId === comment.commentId && openCoco.check
+                                    ?<Cocoment onClick={()=>setOpenCoco({check:false, selectCommentId:comment.commentId,  })}>
                                         답글 접기
                                     </Cocoment>
                                         
-                                    :<Cocoment onClick={()=>setOpenCoco(true)}>
+                                    :<Cocoment onClick={()=>setOpenCoco({check:true, selectCommentId:comment.commentId, })}>
                                         답글 보기 { comment.cocoments.length}
                                     </Cocoment>
                                 }
@@ -49,7 +49,7 @@ const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, s
                             </CocomentBox>
                         }
                         {
-                            openCoco 
+                            openCoco.selectCommentId === comment.commentId && openCoco.check 
                             ?<CocomentList>
                                 {
                                     comment.cocoments.map((coco) => {

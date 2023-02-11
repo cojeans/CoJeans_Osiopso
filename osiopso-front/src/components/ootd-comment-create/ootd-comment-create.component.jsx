@@ -73,7 +73,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
         console.log(res.data)
         getDetailOotd()
         setCocoment('')
-        setOpenCoco(true)
+        setOpenCoco({check:true, selectCommentId:isCocomment.selectCommentId })
       }).catch((err) => {
       console.log(err)
     })

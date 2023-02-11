@@ -41,6 +41,11 @@ const isCocomentDefaultData = {
   selectCommentName: '',
 }
 
+const openCocoDefaultData = {
+  check: false,
+  selectCommentId: '',
+}
+
 const likeDefaultData = {
   check: false,
   cnt: 0,
@@ -58,7 +63,7 @@ const OotdDetail = () => {
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(likeDefaultData)
   const [commentData, setCommentData] = useState(defaultForm)
-  const [openComment, setOpenComment] = useState(false)
+  const [openComment, setOpenComment] = useState(openCocoDefaultData)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
   const [ootdUserUrl, setOordUserUrl] = useState(require('../../assets/defaultuser.png'))
