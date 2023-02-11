@@ -7,8 +7,8 @@ export const CreatAdvicePage = styled.div`
 	justify-content: space-between;
 `
 
-export const ClosetContainer = styled.div`
-	height: 25%;
+export const ClothesContainer = styled.div`
+	height: 100px;
 	border:solid 1px black;
 	display: flex;
 	justify-content: center;
@@ -16,8 +16,10 @@ export const ClosetContainer = styled.div`
 `
 
 export const ItemDropContainer = styled.div`
-	height:40%;
+	width: 300px;
+	height: 300px;
 	border:solid 1px blue;
+	margin: auto;
 `
 
 export const InputContainer = styled.div`
@@ -26,8 +28,16 @@ export const InputContainer = styled.div`
 
 `
 
+export const ImageContainer = styled.div`
+	img{
+		width:70px;
+		height: 70px;
+	}	
+`
+
 export const SliderContainer = styled.div`
 	width:100%;
 	height:30%;
 	margin:auto
 `
+
