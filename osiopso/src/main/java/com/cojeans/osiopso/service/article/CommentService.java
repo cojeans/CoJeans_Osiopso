@@ -77,9 +77,11 @@ public class CommentService {
 
             cocommentRepository.save(Cocomment.builder()
                     .comment(savedComment)
+                    .article(article)
                     .depth(1L)
                     .rootId(commentNo)
                     .mentionId(commentNo)
+                    .mentionName(comment.getUser().getName())
                     .build());
             
         } else { // 댓글을 달려는 댓글 번호가 cocoment DB에 등록되어 있다면, 그 댓글은 CoComment 이다.
@@ -92,9 +94,11 @@ public class CommentService {
 
             cocommentRepository.save(Cocomment.builder()
                     .comment(savedComment)
+                    .article(article)
                     .depth(1L)
                     .rootId(cocomment.getRootId()) // 대댓글에 대한 rootId를 rootId로..
                     .mentionId(commentNo)
+                    .mentionName(comment.getUser().getName())
                     .build());
         }
         return true;
@@ -141,27 +145,16 @@ public class CommentService {
             // 1. 삭제하려는 댓글의 대댓글 모두 삭제
             cocommentRepository.deleteAllByRootId(commentno);
 
-            System.out.println("1");
-
             // 2. 삭제하려는 댓글의 좋아요 모두 삭제
             commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
 
-            System.out.println("2");
-
-
-            System.out.println("=====");
-            System.out.println(rootIdList.size());
             // 3. 댓글 삭제
             for (Cocomment cocomment : rootIdList) {
-                System.out.println(cocomment.getComment().getId());
                 // 2. 삭제하려는 댓글의 대댓글의 좋아요 모두 삭제
                 commentLikeRepository.deleteByComment_IdAndArticle_Id(cocomment.getComment().getId(), articleno);
                 commentRepository.deleteById(cocomment.getComment().getId());
             }
             commentRepository.deleteById(commentno);
-
-            System.out.println("====");
-            System.out.println("3");
 
         } else { // 대댓글인 경우
             // 1. 삭제하려는 댓글의 대댓글 삭제

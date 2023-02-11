@@ -183,6 +183,7 @@ public class OotdService {
             articleLikeResponseDtoList.add(ArticleLikeResponseDto.builder()
                     .id(al.getId())
                     .userId(al.getUser().getId())
+                    .userName(al.getUser().getName())
                     .build());
         }
 
@@ -225,6 +226,7 @@ public class OotdService {
                 commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
                         .userId(cl.getUser().getId())
                         .commentId(cl.getComment().getId())
+                        .userName(cl.getUser().getName())
                         .build());
             }
 
@@ -254,10 +256,13 @@ public class OotdService {
                     cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
                             .userId(cl.getUser().getId())
                             .commentId(cl.getComment().getId())
+                            .userName(cl.getUser().getName())
                             .build());
                 }
 
-                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
+                System.out.println(cocomment.getMentionId());
+
+
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .commentId(getComment.getId())
                         .content(getComment.getContent())
@@ -272,6 +277,7 @@ public class OotdService {
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
+                        .mentionName(cocomment.getMentionName())
                         .build());
             }
 

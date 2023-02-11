@@ -12,5 +12,5 @@ public class CocommentResponseDto extends CommentResponseDto {
     private Long depth;
     private Long rootId;
     private Long mentionId;
-
+    private String mentionName;
 }

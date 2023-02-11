@@ -107,6 +107,7 @@ public class AdviceService {
                     .photo(ArticlePhotoResponseDto.builder()
                             .imageUrl(responsePhoto.get(0).getImageUrl())
                             .build())
+
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .userId(advice.getUser().getId())
                     .isSelected(advice.isSelected())
@@ -148,6 +149,7 @@ public class AdviceService {
             articleLikeResponseDtoList.add(ArticleLikeResponseDto.builder()
                     .id(al.getId())
                     .userId(al.getUser().getId())
+                    .userName(al.getUser().getName())
                     .build());
         }
 
@@ -217,10 +219,10 @@ public class AdviceService {
                     cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
                             .userId(cl.getUser().getId())
                             .commentId(cl.getComment().getId())
+                            .userName(cl.getUser().getName())
                             .build());
                 }
 
-                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .commentId(getComment.getId())
                         .content(getComment.getContent())
@@ -235,6 +237,7 @@ public class AdviceService {
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
+                        .mentionName(cocomment.getMentionName())
                         .build());
             }
 

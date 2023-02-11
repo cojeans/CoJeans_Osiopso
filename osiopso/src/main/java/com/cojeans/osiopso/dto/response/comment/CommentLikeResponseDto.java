@@ -10,4 +10,5 @@ public class CommentLikeResponseDto {
     private final Long id;
     private final Long userId;
     private final Long commentId;
+    private final String userName;
 }
