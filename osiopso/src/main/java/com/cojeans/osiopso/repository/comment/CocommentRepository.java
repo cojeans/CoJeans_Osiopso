@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface CocommentRepository extends JpaRepository<Cocomment, Long> {
     Cocomment findByComment_Id(Long commentNo);
-    List<Cocomment> findAllByComment_Id(Long id);
-    void deleteAllByRootId(Long commentno);
     List<Cocomment> findAllByRootId(Long rootId);
 
     List<Cocomment> findAllByMentionId(Long id);
+    void deleteAllByRootId(Long commentno);
+    void deleteByComment_Id(Long commentno);
 }

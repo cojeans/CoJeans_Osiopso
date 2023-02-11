@@ -125,32 +125,69 @@ public class CommentService {
     }
 
     public boolean deleteComment(Long articleno, Long commentno, Long userId) {
-        Article article = articleRepository.findById(userId).orElseThrow();
+//        Article article = articleRepository.findById(userId).orElseThrow();
         Comment comment = commentRepository.findById(commentno).orElseThrow();
 
-        // 게시글 작성자만 삭제권한이 있다.
-        if (userId != article.getUser().getId()) {
-            System.out.println(userId + ", " + article.getUser().getId());
+        // 댓글 작성자만 삭제권한이 있다.
+        if (userId != comment.getUser().getId()) {
             return false;
         }
-
-        // 삭제하려는 comment의 번호와 article의 번호가 일치하는 comment를 삭제한다.
-        commentRepository.deleteByIdAndArticle_Id(commentno, articleno);
-
 
         // 최상위 rootComment 일 경우..
-        if (cocommentRepository.findByComment_Id(comment.getId()) == null) {
-            // 최상위 commnet의 Pk를 root_id로 사용하는 모든 게시물을 삭제한다.
-            cocommentRepository.deleteAllByRootId(commentno);
-        } // 원석게이야
+        if (cocommentRepository.findByComment_Id(commentno) == null) {
 
+            List<Cocomment> rootIdList = cocommentRepository.findAllByRootId(commentno);
+
+            // 1. 삭제하려는 댓글의 대댓글 모두 삭제
+            cocommentRepository.deleteAllByRootId(commentno);
+
+            System.out.println("1");
+
+            // 2. 삭제하려는 댓글의 좋아요 모두 삭제
+            commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
+
+            System.out.println("2");
+
+
+            System.out.println("=====");
+            System.out.println(rootIdList.size());
+            // 3. 댓글 삭제
+            for (Cocomment cocomment : rootIdList) {
+                System.out.println(cocomment.getComment().getId());
+                // 2. 삭제하려는 댓글의 대댓글의 좋아요 모두 삭제
+                commentLikeRepository.deleteByComment_IdAndArticle_Id(cocomment.getComment().getId(), articleno);
+                commentRepository.deleteById(cocomment.getComment().getId());
+            }
+            commentRepository.deleteById(commentno);
+
+            System.out.println("====");
+            System.out.println("3");
+
+        } else { // 대댓글인 경우
+            // 1. 삭제하려는 댓글의 대댓글 삭제
+            cocommentRepository.deleteByComment_Id(commentno);
+
+            // 2. 삭제하려는 댓글의 좋아요 모두 삭제
+            commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
+
+            // 3. 댓글 삭제
+            commentRepository.deleteById(commentno);
+        }
+
+
+//            // 삭제하려는 댓글의 좋아요(commentLikes) 먼제 삭제
+//            // 최상위 commnet의 Pk를 root_id로 사용하는 모든 댓글들을 삭제한다.
+//            commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
+//            cocommentRepository.deleteAllByRootId(commentno);
+//        } // 원석게이게이야
 
         // 제대로 지워졌다면?
-        if (commentRepository.findByIdAndArticle_Id(articleno, commentno) == null) {
-            return true;
-        } else {
-            return false;
-        }
+//        if (commentRepository.findByIdAndArticle_Id(articleno, commentno) == null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return true;
     }
 
 
