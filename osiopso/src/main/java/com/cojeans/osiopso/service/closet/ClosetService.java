@@ -148,8 +148,8 @@ public class ClosetService {
                 .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
                 .collect(Collectors.toList());
         List<Clothes> result = new ArrayList<>();
-        
-        if(category == null) { // 카테고리 : 전체(null)
+
+        if(category == "all") { // 카테고리 : 전체(null)
             if(size == 0){ // 태그 사이즈 0
                 // 전체 옷
                 return ccList.stream()
