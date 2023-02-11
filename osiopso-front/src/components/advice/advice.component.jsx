@@ -48,7 +48,7 @@ const Advice = () => {
   const getAdviceAxios = () => {
     axios({
       method: "get",
-      url: "http://localhost:8080/api/feed/advice",
+      url: "https://www.osiopso.site/api/feed/advice",
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },
