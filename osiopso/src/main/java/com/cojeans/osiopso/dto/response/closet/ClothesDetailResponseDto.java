@@ -14,7 +14,7 @@ import java.util.List;
 public class ClothesDetailResponseDto {
     private Long id;
     private String category;
-    private String url;
+    private String imageUrl;
     private List<ClosetResponseDto> closets;
     private List<ColorResponseDto> colors;
     private List<SeasonResponseDto> seasons;
