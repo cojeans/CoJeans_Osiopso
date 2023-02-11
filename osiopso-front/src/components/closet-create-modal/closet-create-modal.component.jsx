@@ -32,8 +32,6 @@ const defaultClosetFields = {
 }
 
 
-
-
 const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
@@ -105,7 +103,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 
 		axios({
 			method: "post",
-			url: "https://www.osiopso.site/api/closet",
+			url: `${process.env.REACT_APP_AXIOS_URL}closet`,
 			data: {
 				name: payload.name,
 				isSelected:payload.isSelected,

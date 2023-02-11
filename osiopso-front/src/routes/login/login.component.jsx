@@ -55,7 +55,7 @@ const Login = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: 'https://www.osiopso.site/api/user/login',
+        url: `${process.env.REACT_APP_AXIOS_URL}user/login`,
         data: {
           email,
           password,

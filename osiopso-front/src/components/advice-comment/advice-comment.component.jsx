@@ -1,6 +1,6 @@
 import { selectUser } from "../../store/user/user.selector"
 import { useSelector } from "react-redux"
-import { Fragment, useEffect } from "react"
+import { Fragment, useEffect, useState } from "react"
 
 import axios from "axios"
 
@@ -16,17 +16,22 @@ import {
 
 //style
 
+
+
 const AdviectComment = () => {
 	const Token = useSelector(selectUser)
+	const [closetList, setClosetList] = useState([])
+	
 	const getUserCloset = () => {
 		axios({
 			method: "post",
-			url: `https://www.osiopso.site/api/closet/list?userId=5`,
+			url: `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=7`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },
 		}).then((res) => {
 			console.log(res)
+			setClosetList(res.data)
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -37,7 +42,9 @@ const AdviectComment = () => {
 	return (
 		<div>
 			<SliderContainer>
-				<SimpleSlider/>
+				<SimpleSlider
+					closetList={ closetList}
+				/>
 			</SliderContainer>
 		</div>
 		// <CreatAdvicePage>

@@ -38,7 +38,7 @@ const Join = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: 'https://www.osiopso.site/api/user/signUp',
+        url: `${process.env.REACT_APP_AXIOS_URL}user/signUp`,
         data: {
           email: email,
           name: displayName,
