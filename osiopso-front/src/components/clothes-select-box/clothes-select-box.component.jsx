@@ -124,10 +124,10 @@ const ClosetSelectBox = () => {
   };
   // FashionAi()
   return (
-  //   <div>
-  //   <button onClick={FashionAi}> button</button>
-  // </div>
     <>
+    <div>
+    <button onClick={FashionAi}> button</button>
+  </div>
 
       <EditContainer>
         <EditBox onClick={onNavigateHandler}>
