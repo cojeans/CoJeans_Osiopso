@@ -71,7 +71,7 @@ const ClosetSelectBox = () => {
 			url: "http://localhost:8080/api/closet/clothes",
 			data: {
 				category: 1,
-				url:saveData,
+				imageUrl:saveData,
         closets: [{"id": 1}],
         colors:[{"id": 1}],
         seasons:[{"id": 1}],
