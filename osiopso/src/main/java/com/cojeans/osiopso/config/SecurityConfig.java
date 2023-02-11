@@ -118,7 +118,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/h2-console/**",
                         "/favicon.ico")
                         .permitAll()
-                    .antMatchers("/user/login","/user/signUp", "/oauth2/**")
+                    .antMatchers("/user/login","/user/signUp", "/oauth2/**","api/user/signUp","api/user/login")
                         .permitAll()
                     .antMatchers("/closet/**")
                         .permitAll()
