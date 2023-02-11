@@ -50,7 +50,7 @@ public class ClothesService {
 
         Clothes clothes = clothesRepository.save(new Clothes().builder()
                 .category(clothesRequestDto.getCategory())
-                .url(clothesRequestDto.getUrl())
+                .imageUrl(clothesRequestDto.getImageUrl())
                 .user(user)
                 .build());
 
@@ -159,7 +159,7 @@ public class ClothesService {
         return ClothesDetailResponseDto.builder()
                 .id(clothesNo)
                 .category(clothes.getCategory())
-                .url(clothes.getUrl())
+                .imageUrl(clothes.getImageUrl())
                 .closets(closets)
                 .colors(colors)
                 .seasons(seasons)
@@ -176,7 +176,7 @@ public class ClothesService {
         Clothes clothes = new Clothes().builder()
                 .id(id)
                 .category(clothesRequestDto.getCategory())
-                .url(clothesRequestDto.getUrl())
+                .imageUrl(clothesRequestDto.getImageUrl())
                 .user(user)
                 .build();
 

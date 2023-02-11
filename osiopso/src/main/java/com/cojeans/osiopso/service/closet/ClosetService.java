@@ -78,7 +78,7 @@ public class ClosetService {
             Arrays.fill(thumbnails, "null");
             thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
                     .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
-                    .map(b -> b.getUrl())
+                    .map(b -> b.getImageUrl())
                     .limit(4)
                     .toArray(String[]::new);
 
@@ -110,7 +110,7 @@ public class ClosetService {
             // 썸네일 리스트 설정
             thumbnails = closetClothesRepository.findAllByClosetIdOrderByIdDesc(list.get(i).getId()).stream()
                     .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
-                    .map(b -> b.getUrl())
+                    .map(b -> b.getImageUrl())
                     .limit(4)
                     .toArray(String[]::new);
 
@@ -132,7 +132,7 @@ public class ClosetService {
                 .map(b -> new ClothesResponseDto().builder()
                         .id(b.getId())
                         .category(b.getCategory())
-                        .url(b.getUrl())
+                        .imageUrl(b.getImageUrl())
                         .build())
                 .limit(4)
                 .collect(Collectors.toList());
@@ -140,7 +140,7 @@ public class ClosetService {
 
     // 2-3 : 선택 카테고리별 옷 리스트(최신순)
     public List<ClothesResponseDto> categoryList(Long id, String category, List<ClothesTagResponseDto> tags) {
-        System.out.println("Category List Service : " + id + " | " + category + tags);
+        System.out.println("Category List Service : " + id + " | " + category + " | " + tags.size() + " : " + tags);
         int size = tags.size();
 
         // 해당 옷장에 존재하는 모든 옷
@@ -148,18 +148,26 @@ public class ClosetService {
                 .map(a -> clothesRepository.findById(a.getClothes().getId()).orElseThrow())
                 .collect(Collectors.toList());
         List<Clothes> result = new ArrayList<>();
-        
-        if(category == null) { // 카테고리 : 전체(null)
+
+        System.out.println("야야야야야야야야야야야야야야야야야야야야야야야야야야야야");
+        for (Clothes clothes : ccList) {
+            System.out.println(clothes);
+
+        }
+
+        if(category.equals("all")) { // 카테고리 : 전체(null)
             if(size == 0){ // 태그 사이즈 0
                 // 전체 옷
+                System.out.println("전체 + 태그 없음");
                 return ccList.stream()
                         .map(a -> new ClothesResponseDto().builder()
                                 .id(a.getId())
                                 .category(a.getCategory())
-                                .url(a.getUrl())
+                                .imageUrl(a.getImageUrl())
                                 .build())
                         .collect(Collectors.toList());
             } else { // 태그 사이즈 1 ~
+                System.out.println("전체 + 태그 있음");
                 // 전체 옷 - 태그 : ClothesTag 컬럼이 존재하는지 확인
                 for (Clothes clothes : ccList) {
                     for (ClothesTagResponseDto tag : tags) {
@@ -171,6 +179,7 @@ public class ClosetService {
                 }
             }
         } else { // 특정 카테고리
+            System.out.println("특정 + 태그 없음");
             ccList = ccList.stream()
                     .filter(b -> b.getCategory().equals(category))
                     .collect(Collectors.toList());
@@ -179,10 +188,11 @@ public class ClosetService {
                         .map(a -> new ClothesResponseDto().builder()
                                 .id(a.getId())
                                 .category(a.getCategory())
-                                .url(a.getUrl())
+                                .imageUrl(a.getImageUrl())
                                 .build())
                         .collect(Collectors.toList());
             } else { // 특정 카테고리 + 태그
+                System.out.println("특정 + 태그 있음");
                 for (Clothes clothes : ccList) {
                     for (ClothesTagResponseDto tag : tags) {
                         if(clothesTagRepository.findByClothesIdAndTagId(clothes.getId(), tag.getId()) != null) {
@@ -197,7 +207,7 @@ public class ClosetService {
                 .map(a -> new ClothesResponseDto().builder()
                         .id(a.getId())
                         .category(a.getCategory())
-                        .url(a.getUrl())
+                        .imageUrl(a.getImageUrl())
                         .build())
                 .collect(Collectors.toList());
     }
