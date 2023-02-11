@@ -107,6 +107,7 @@ public class AdviceService {
                     .photo(ArticlePhotoResponseDto.builder()
                             .imageUrl(responsePhoto.get(0).getImageUrl())
                             .build())
+
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .userId(advice.getUser().getId())
                     .isSelected(advice.isSelected())
