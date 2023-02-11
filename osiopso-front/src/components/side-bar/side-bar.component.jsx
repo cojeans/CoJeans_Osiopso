@@ -35,7 +35,7 @@ export const SideBar = () => {
   
   const dispatch = useDispatch()
   const signOut = () => {
-    dispatch(resetUser)
+    dispatch(resetUser(''))
     const isToken = localStorage.getItem('token')
     if (isToken) {
       alert("로그아웃되었습니다.")

@@ -112,9 +112,9 @@ const Home = () =>{
 			</HomeOotdImage>
 			{/* <DoSwiper></DoSwiper> */}
 			
-			<SelectedTagContainer>
+			{/* <SelectedTagContainer>
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
-			</SelectedTagContainer>
+			</SelectedTagContainer> */}
 
 			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
 			<HomeOotdImage>

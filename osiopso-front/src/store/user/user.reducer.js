@@ -23,8 +23,8 @@ export const user = createSlice({
     userInfo: (state, action) => {
       state.user = action.payload;
     },
-    resetUser(state) {
-      Object.assign(state.value, this.initialState.value);
+    resetUser(state, action) {
+      state.value = action.payload;
     },
   },
 });

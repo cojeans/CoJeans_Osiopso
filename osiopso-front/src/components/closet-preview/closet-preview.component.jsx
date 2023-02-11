@@ -12,7 +12,6 @@ const ClosetPreview = ({ thumbnails }) => {
 			tmpArray = [...tmpArray, i]
 		}
 	}
-	console.log(tmpArray)
 	return (
 		<PrevContainer>
 				{

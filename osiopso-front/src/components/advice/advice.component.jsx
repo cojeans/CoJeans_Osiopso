@@ -20,8 +20,9 @@ import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
 import axios from "axios";
 import Modal from '../modal/modal.component'
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
+import AdviectComment from "../advice-comment/advice-comment.component";
 
 const defaultAdviceForm = {
   content:'',
@@ -84,7 +85,11 @@ const Advice = () => {
   console.log("어드바이스",adviceArticle)
   return (
     <div>
+      
+      <AdviectComment>
 
+      </AdviectComment>
+{/* 
       <TextToLeft>
         <Container>
           <span>최신순</span> <span>논란순</span>
@@ -113,7 +118,7 @@ const Advice = () => {
                   {el.commentCnt}
                 </EachIcon>
               </ThumbBox>
-                {/* <FiThumbsDown size="30" /> */}
+
                 <TimeBox>{ el.time }</TimeBox>
                
               </CommentContainer>
@@ -123,8 +128,8 @@ const Advice = () => {
       </HunsuImages>
       {
         modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
-      }
-    </div>
+      } */}
+ </div>
   );
 };
 
