@@ -1,4 +1,8 @@
+import React from 'react';
+import AiModel from '../../../src/model/model.json'
+import * as tf from '@tensorflow/tfjs';
 import { useState } from "react"
+import { loadGraphModel } from "@tensorflow/tfjs-converter"
 import { useSelector, useDispatch } from "react-redux"
 import { selectorOotdCategory } from "../../store/ootd/ootd.selector"
 import { selectOotdCategory } from "../../store/ootd/ootd.reducer"
@@ -8,26 +12,62 @@ import {
 	Title,
 	Tag
 } from "./clothes-tag-modal.styles"
+import {
+	selectClothes,
 
+  } from "../../store/clothes/clothes.selector";
+import { buffer } from '@tensorflow/tfjs';
+import exampleImage from '../../../src/00000001.jpg'
 const tags = {
+	'Category' : ['원피스','바지','상의','신발','치마','아우터','모자',],
+	'Color' : ['검정', '파랑', '빨강'],
 	'Season': ['봄', '여름', '가을', '겨울'],
 	'TPO': ['데일리','직장','데이트','경조사','여행','홈웨이','파티','운동','학교'],
-	'Category' : ['상의','하의','바지','치마','신발','아우터','모자',]
 }
 
 const defaultSelect = {
 	Season: [],
-	TPO: [],
-	Category : [],
+	TPO: ['데일리'],
+	Category : ['바지'],
 }
 
 
 const ClothesTagModal = ({ closeModal }) => {
+	const saveData = useSelector(selectClothes);
+
 	// console.log('selector', useSelector(selectorOotdCategory))
 	const [selectedTag, setSelectedTag] = useState(defaultSelect)
 
 	const dispatch = useDispatch()
+	// const FashionAi = async() => {
+	// 	// const model = await loadGraphModel(AiModel)
+	// 	const model = await loadGraphModel('./model/model.json')
+	// 	const image = new Image(96, 96)
+	// 	// const newimg = buffer.from(saveData, 'base64')
+	// 	// const t = tf.node.decdeImage(newimg)
+	// 	// console.log(t)
+	// 	// const b = atob(saveData)
+	// 	// console.log(b)
+	// 	// image.src = saveData;
+	// 	image.src = exampleImage;
+	// 	tf.browser.fromPixels(image).print();
+	// 	let tfTensor = tf.browser.fromPixels(image)
+	// 	tfTensor = tfTensor.div(255.0);
+	// 	tfTensor = tfTensor.expandDims(0);
+	// 	tfTensor = tfTensor.cast("float32");
+		
+	// 	const pred = model.predict(tfTensor)[0];
+	// 	const temp = Array.from(pred.argMax(1).dataSync())
+		
+	// 	const pred2 = model.predict(tfTensor)[1];
+	// 	const temp2 = Array.from(pred2.argMax(1).dataSync())
+	// 	console.log(temp, temp2)
 
+
+
+
+	// } 
+	// FashionAi()
 	const submitHandler = () => {
 		let newArr = []
 		selectedTag['Season'].forEach((el) => {
