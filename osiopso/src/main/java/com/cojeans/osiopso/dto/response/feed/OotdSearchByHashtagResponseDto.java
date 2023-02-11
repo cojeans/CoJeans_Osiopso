@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.dto.response.feed;
 
+import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.util.List;
 @Builder
 public class OotdSearchByHashtagResponseDto {
 
-    private final HashMap<String, Long> tagInfo;
+    private final List<SearchTagResponseDto> tagInfo;
     private final List<OotdSearchResponseDto> ootdSearchResponseDtoList;
 
 }

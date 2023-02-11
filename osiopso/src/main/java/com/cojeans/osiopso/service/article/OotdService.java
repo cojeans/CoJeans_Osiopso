@@ -1,14 +1,23 @@
 package com.cojeans.osiopso.service.article;
 
+import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterStyleTagRequestDto;
+import com.cojeans.osiopso.dto.request.filter.FilterTpoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.dto.response.tag.HotTagResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
+import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
+import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
@@ -24,10 +33,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = false)
@@ -43,9 +51,15 @@ public class OotdService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CocommentRepository cocommentRepository;
+    private final ArticleTagRepositoryImpl articleTagRepositoryImpl;
+    private final ArticleService articleService;
+    private final CommentLikeRepository commentLikeRepository;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
+        Pattern pattern = Pattern.compile("#[^\\s#]+");
+        Matcher matcher = pattern.matcher(ootdRequestDto.getContent());
+
 
         // 게시물 저장
         Ootd ootdSaved = ootdRepository.save(Ootd.builder()
@@ -71,9 +85,34 @@ public class OotdService {
         // 태그 저장
         List<ArticleTagRequestDto> tags = ootdRequestDto.getTags();
         for (ArticleTagRequestDto tag : tags) {
+            Tag findTag = tagRepository.findByKeyword(tag.getKeyword());
+            Tag saveTag;
+
+            if (findTag == null) {
+                // 중복이 없는 경우 태그에 저장하고,
+                Tag tagSaved = tagRepository.save(Tag.builder()
+                        .keyword(tag.getKeyword())
+                        .type(tag.getType())
+                        .build());
+
+                saveTag = tagSaved;
+            } else {
+                saveTag = tagRepository.findById(findTag.getId()).orElseThrow();
+            }
+
+            // article 태그에 저장한다.
+            articleTagRepository.save(ArticleTag.builder()
+                    .article(ootdSaved)
+                    .tag(saveTag)
+                    .build());
+        }
+
+        while (matcher.find()) {
+            String hashTag = matcher.group();
+
             Tag tagSaved = tagRepository.save(Tag.builder()
-                    .keyword(tag.getKeyword())
-                    .type(tag.getType())
+                    .keyword(hashTag)
+                    .type("H")
                     .build());
 
             ArticleTag articleTagE = ArticleTag.builder()
@@ -84,42 +123,31 @@ public class OotdService {
             articleTagRepository.save(articleTagE);
         }
 
+
         return true;
     }
 
 
     public List<OotdListResponseDto> listOotd() {
-        List<Article> Ootds = articleRepository.findAllByDtype("O");
+        List<Ootd> Ootds = ootdRepository.findAllByDtype("O");
         List<OotdListResponseDto> list = new ArrayList<>();
         Date date = new Date();
 
-        // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Article ootd : Ootds) {
+        for (Ootd ootd : Ootds) {
+            GapTimeVo gapTime = articleService.getGapTime(ootd, date);
 
-            Date createTime = ootd.getCreateTime();
-            long time = createTime.getTime();
-            long time1 = date.getTime();
-
-//            System.out.println(createTime.);
-            System.out.println(date);
-            System.out.println(time1 - time);
-
-            System.out.println();
-            System.out.println();
-            System.out.println(createTime.toString());
-
-            ArticlePhoto articlePhoto = articlePhotoRepository.findById(ootd.getId()).orElseThrow();
+            List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
 
             OotdListResponseDto dto = OotdListResponseDto.builder()
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-                    .createTime(ootd.getCreateTime())
-                    .dtype(ootd.getDtype())
                     .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(articlePhoto.getImageUrl())
+                            .imageUrl(responsePhoto.get(0).getImageUrl())
                             .build())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
                     .userId(ootd.getUser().getId())
                     .build();
 
@@ -157,28 +185,75 @@ public class OotdService {
         }
 
 
+
+
         // 댓글 가져오기
         List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        Date date = new Date();
 
         for (Comment comment : commentList) {
+            boolean likeCo;
+
             // 대댓글인 경우에는 continue
             if (cocommentRepository.findByComment_Id(comment.getId()) != null){
                 continue;
             }
 
+
+            // 좋아요가 눌려있다면
+            if (commentLikeRepository.findByComment_Id(comment.getId()) != null) {
+                likeCo = true;
+            } else {
+                likeCo = false;
+            }
+
+            GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
+
+            // 해당 댓글에 달린 대댓글 리스트
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
-
-
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+
+            // 댓글 좋아요 가져오기
+            List<CommentLike> commentLikeList = commentLikeRepository.findAllByComment_Id(comment.getId());
+            List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+            System.out.println(comment.getId());
+            for (CommentLike cl : commentLikeList) {
+                commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                        .userId(cl.getUser().getId())
+                        .commentId(cl.getComment().getId())
+                        .build());
+            }
+
+
             for (Cocomment cocomment : cocommentList) {
-                System.out.println(cocommentResponseDtoList.size());
-                if (cocommentResponseDtoList.size() == 3) {
-                    break;
+                boolean likeCoco;
+//                if (cocommentResponseDtoList.size() == 3) {
+//                    break;
+//                }
+
+                // 좋아요가 눌려있다면
+                if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
+                    likeCoco = true;
+                } else {
+                    likeCoco = false;
                 }
 
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+                GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
+
+
+                // 대댓글 좋아요 가져오기
+                List<CommentLike> cocommentLikeList = commentLikeRepository.findAllByComment_Id(cocomment.getComment().getId());
+                List<CommentLikeResponseDto> cocommentLikeResponseDtoList = new ArrayList<>();
+                System.out.println(cocomment.getId());
+                for (CommentLike cl : cocommentLikeList) {
+                    cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                            .userId(cl.getUser().getId())
+                            .commentId(cl.getComment().getId())
+                            .build());
+                }
 
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
@@ -186,6 +261,12 @@ public class OotdService {
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
+                        .like(likeCoco)
+                        .commentLikes(cocommentLikeResponseDtoList)
+                        .imageUrl(comment.getUser().getImageUrl())
+                        .userName(comment.getUser().getName())
+                        .time(cocommentGapTime.getTimeGapToString())
+                        .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
@@ -197,6 +278,13 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .cocommentCnt((long) cocommentRepository.findAllByRootId(comment.getUser().getId()).size())
+                    .like(likeCo)
+                    .commentLikes(commentLikeResponseDtoList)
+                    .imageUrl(comment.getUser().getImageUrl())
+                    .userName(comment.getUser().getName())
+                    .time(commentGapTime.getTimeGapToString())
+                    .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
                     .build());
         }
@@ -224,8 +312,10 @@ public class OotdService {
         return OotdDetailResponseDto.builder()
                 .id(ootd.getId())
                 .userId(ootd.getUser().getId())
+                .userName(ootd.getUser().getName())
                 .createTime(ootd.getCreateTime())
                 .modifyTime(ootd.getModifyTime())
+                .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                 .photos(photoResponseDtoList)
                 .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
@@ -236,8 +326,10 @@ public class OotdService {
     }
 
 
+
     public boolean editOotd(Long articleNo, OotdRequestDto ootdRequestDto, Long userId) {
         Ootd ootd = ootdRepository.findById(articleNo).orElseThrow();
+        Date createTime = ootd.getCreateTime();
 
         // 게시글 작성자만 수정권한이 있다.
         if (userId != ootd.getUser().getId()) {
@@ -262,15 +354,15 @@ public class OotdService {
             for (ArticleTag at : articleTag) {
                 System.out.println(at.getTag().getKeyword() + " 삭제!");
                 articleTagRepository.deleteById(at.getId());
-                tagRepository.deleteById(at.getTag().getId());
+//                tagRepository.deleteById(at.getTag().getId());
             }
             return true;
         }
 
 
         for (ArticleTag at : articleTags) {
-            old_tags.add(tagRepository.findById(at.getId()).orElseThrow());
-            old_tags_keyword.add(tagRepository.findById(at.getId()).orElseThrow().getKeyword());
+            old_tags.add(tagRepository.findById(at.getTag().getId()).orElseThrow());
+            old_tags_keyword.add(tagRepository.findById(at.getTag().getId()).orElseThrow().getKeyword());
         }
 
 
@@ -302,7 +394,7 @@ public class OotdService {
             // 2. 만약 추가할 태그에, 추가한 기존 태그가 없는 경우 => 삭제
             if (!new_tags_keyword.contains(old_tag.getKeyword())) {
                 articleTagRepository.deleteById(old_tag.getId());
-                tagRepository.deleteById(old_tag.getId());
+//                tagRepository.deleteById(old_tag.getId());
             }
         }
 
@@ -327,16 +419,16 @@ public class OotdService {
         }
 
 
-
-
-
         articleRepository.save(Ootd.builder()
                 .id(articleNo)
+                .user(userRepository.getById(userId))
                 .content(ootdRequestDto.getContent())
+                .createTime(createTime)
                 .build());
 
         return true;
     }
+
 
     public OotdSearchByHashtagResponseDto searchOotdByHashtag(String input) {
         // 해당 검색 해쉬태그를 contain("input%")한 태그들을 모두 찾아온다.
@@ -378,12 +470,118 @@ public class OotdService {
             }
         }
 
+        List<String> keySetList = new ArrayList<>(tagMap.keySet());
+        Collections.sort(keySetList, (o1, o2) -> (tagMap.get(o2).compareTo(tagMap.get(o1))));
+
+        List<SearchTagResponseDto> searchTagResponseDtoList = new ArrayList<>();
+
+        for(String key : keySetList) {
+            searchTagResponseDtoList.add(SearchTagResponseDto.builder()
+                    .keyword(key)
+                    .cnt(tagMap.get(key))
+                    .build());
+        }
+
+
         // 프론트에 넘어가야 할 정보
         // 태그들의 종류, 종류당 개수 / 검색 결과로 보여줄 게시물 정보
         return  OotdSearchByHashtagResponseDto.builder()
                 .ootdSearchResponseDtoList(ootdSearchResponseDtoList)
-                .tagInfo(tagMap)
+                .tagInfo(searchTagResponseDtoList)
                 .build();
     }
 
+
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter) {
+        List<String> styleTag = filter.getStyleTag();
+        List<String> tpoTag = filter.getTpo();
+        Long age = filter.getAge();
+        Gender gender = filter.getGender();
+
+
+        List<OotdListResponseDto> listOotd = listOotd();
+        List<OotdListResponseDto> responseOotdList = new ArrayList<>();
+
+        // 아무 필터도 적용되지 않은 경우
+        if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
+            return null;
+        }
+
+
+        // 전체 게시물 목록을 뒤져보자
+        for (OotdListResponseDto dto : listOotd) {
+            // 태그가 존재할 때에만..
+            if (styleTag != null || tpoTag != null) {
+                // 해당 게시물에 등록된 태그들을 가져오자
+                List<ArticleTag> articleTagList = articleTagRepository.findAllByArticle_Id(dto.getId());
+                List<String> tagList = new ArrayList<>();
+                int styleCnt = 0, tpoCnt = 0;
+
+
+                // 게시물에 등록된 태그들의 모든 keyword 들을 가져온다.
+                for (ArticleTag articleTag : articleTagList) {
+                    String keyword = tagRepository.findById(articleTag.getTag().getId()).orElseThrow().getKeyword();
+                    tagList.add(keyword);
+                }
+
+                // style 태그가 존재할 때에만..
+                if (styleTag != null) {
+                    // 필터링 할 스타일 태그가 기존 태그들에 포함되어있다면 cnt ++
+                    for (String keyword : styleTag) {
+                        if (tagList.contains(keyword)) styleCnt++;
+                    }
+                }
+
+
+                if (tpoTag != null) {
+                    // 필터링 할 tpo 태그가 기존 태그들에 포함되어있다면 cnt ++
+                    for (String keyword : tpoTag) {
+                        if (tagList.contains(keyword)) tpoCnt++;
+                    }
+                }
+
+                User user = userRepository.findById(dto.getUserId()).orElseThrow();
+
+                // 성별을 선택하지 않은경우
+                if (gender == null) {
+                    gender = user.getGender();
+                }
+
+                // 나이를 선택하지 않은경우
+                if (age == null) {
+                    age = (long) (user.getAge() / 10);
+                }
+
+                // 스타일, tpo 태그들 모두 다 찾고, 성별과 나이대도 일치할 경우..
+                if (styleTag.size() == styleCnt &&
+                        tpoTag.size() == tpoCnt &&
+                        user.getGender() == gender &&
+                        user.getAge() / 10 == age) {
+                    responseOotdList.add(dto);
+                }
+            }
+        }
+        return responseOotdList;
+    }
+
+    // 전제 : article_tag에 createTime 컬럼 추가
+    // 1개월 내로 생성된 article_tag 리스트 뽑기
+    // group by tag_id count : 태그 별 개수 카운팅
+    // 내림차순 정렬 ~ 4등까지 -> 해시태그 탭 선택지로 만들기
+    // + 이후 ? 해당 탭을 누르면 좋아요를 기준으로 인기글 5개 뽑기
+
+    public List<HotTagResponseDto> hotIssue() {
+        List<Long> list = articleTagRepositoryImpl.findByArticleId(LocalDate.now());
+        List<HotTagResponseDto> result = new ArrayList<>();
+        for(Long id : list){
+            System.out.println("id : ----- " + id);
+
+            Tag tag = tagRepository.findById(id).orElseThrow();
+            result.add(HotTagResponseDto.builder()
+                    .id(tag.getId())
+                    .keyword(tag.getKeyword())
+                    .build());
+        }
+        return result;
+    }
 }

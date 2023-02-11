@@ -63,3 +63,9 @@ display: flex;
 justify-content: center;
 margin-top: 20px;
 `
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;

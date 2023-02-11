@@ -10,8 +10,15 @@ import java.util.List;
 public class CommentResponseDto {
 
     private Long commentId;
-    private String content;
     private Long userId;
+    private String userName;
+    private String imageUrl;
+    private Float pastTime;
+    private boolean like;
+    private String time;
+    private String content;
+    private Long cocommentCnt;
     private Long report;
+    private List<CommentLikeResponseDto> commentLikes;
     private List<CocommentResponseDto> cocoments;
 }

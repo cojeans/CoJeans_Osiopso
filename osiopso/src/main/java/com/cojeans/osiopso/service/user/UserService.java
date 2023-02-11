@@ -1,12 +1,16 @@
 package com.cojeans.osiopso.service.user;
 
 import com.cojeans.osiopso.dto.response.feed.UserSearchResponseDto;
+import com.cojeans.osiopso.dto.user.FollowResponseDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
 import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
+import com.cojeans.osiopso.entity.user.Follow;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,9 @@ public class UserService {
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private FollowRepository followRepository;
 
     public User saveUser(SignUpRequestDto signUpRequest){
         User result = userRepository.save(User.builder()
@@ -101,5 +108,57 @@ public class UserService {
         }
 
         return userList;
+    }
+
+    public void followUser(String email, UserDetail userDetail) {
+        System.out.println("UserDetail : " + userDetail.getId());
+        followRepository.save(Follow.builder()
+                        .following(userRepository.findByEmail(email).orElseThrow())
+                        .follower(userRepository.findById(userDetail.getId()).orElseThrow())
+                        .build());
+    }
+
+    @Transactional
+    public void unfollowUser(String email, UserDetail userDetail) {
+        User following  = userRepository.findByEmail(email).orElseThrow();
+        User follower = userRepository.findById(userDetail.getId()).orElseThrow();
+
+        followRepository.deleteByFollowingIdAndFollowerId(following.getId(), follower.getId());
+    }
+
+    public List<FollowResponseDto> listFollower(String email) {
+        User targetUser = userRepository.findByEmail(email).orElseThrow();
+
+        List<Follow> followers = followRepository.findAllByFollowingId(targetUser.getId());
+        List<FollowResponseDto> result = new ArrayList<>();
+
+        for (Follow follower : followers) {
+            User user = userRepository.findById(follower.getFollower().getId()).orElseThrow();
+            result.add(FollowResponseDto.builder()
+                            .id(user.getId())
+                            .name(user.getName())
+                            .email(user.getEmail())
+                            .imageUrl(user.getImageUrl())
+                    .build());
+        }
+        return result;
+    }
+
+    public List<FollowResponseDto> listFollowing(String email) {
+        User targetUser = userRepository.findByEmail(email).orElseThrow();
+
+        List<Follow> followings = followRepository.findAllByFollowerId(targetUser.getId());
+        List<FollowResponseDto> result = new ArrayList<>();
+
+        for (Follow following : followings) {
+            User user = userRepository.findById(following.getFollowing().getId()).orElseThrow();
+            result.add(FollowResponseDto.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .imageUrl(user.getImageUrl())
+                    .build());
+        }
+        return result;
     }
 }

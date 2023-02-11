@@ -14,19 +14,23 @@ import {
   TextBox,
 } from "./changepassword.styles";
 
-export const AlertHandler = ()=> {
-  Swal.fire({
-    icon:'success',
-    confirmButtonColor: "DD6B55",
-    html: `
-    비밀번호 변경이 완료되었습니다.`,
-    showCancelButton: false,
-    confirmButtonText: "확인",
-  
-  })
-}
+
 
 const ChangePassword = () => {
+  const AlertHandler = ()=> {
+
+    Swal.fire({
+      icon:'success',
+      confirmButtonColor: "DD6B55",
+      html: `
+      비밀번호 변경이 완료되었습니다.`,
+      showCancelButton: false,
+      confirmButtonText: "확인",
+    }).then(()=> {
+      navigate('/')
+    })
+  }
+
   const [inputPassword1, setInputPassword1] = useState("");
   const [inputPassword2, setInputPassword2] = useState("");
 
@@ -46,10 +50,11 @@ const ChangePassword = () => {
   const ChangeConfirm=()=>{
     AlertHandler()
     setConfirm(false)
-    navigate('/')
-
-
+    
+    // navigate('/')
   }
+
+
 
   return (
     <div>

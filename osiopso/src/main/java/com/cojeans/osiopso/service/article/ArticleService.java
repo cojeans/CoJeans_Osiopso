@@ -1,14 +1,19 @@
 package com.cojeans.osiopso.service.article;
 
 //import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+import com.cojeans.osiopso.dto.GapTimeVo;
+import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
         import com.cojeans.osiopso.entity.feed.ArticleTag;
-        import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.entity.feed.Ootd;
+import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
         import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,7 +44,7 @@ public class ArticleService {
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(articleNo);
         for (ArticleTag at : articleTag) {
             articleTagRepository.deleteById(at.getId());
-            tagRepository.deleteById(at.getTag().getId());
+//            tagRepository.deleteById(at.getTag().getId());
         }
 
         // 게시물과 관련된 사진삭제
@@ -58,5 +63,55 @@ public class ArticleService {
         } else {
             return false;
         }
+    }
+
+    public GapTimeVo getGapTime(Object object, Date date) {
+        Date createTime;
+
+        if (object instanceof Ootd) {
+            createTime = ((Ootd) object).getCreateTime();
+        } else if (object instanceof Advice) {
+            createTime = ((Advice) object).getCreateTime();
+        } else {
+            createTime = ((Comment) object).getCreateTime();
+        }
+
+        long createT = createTime.getTime();
+        long nowT = date.getTime();
+        long timeGap = (nowT - createT) / 1000;
+        float pastTime = timeGap / 1000;
+        String timeGapToString = "";
+
+        // l/1000 는 초 단위
+        if (timeGap < 60) {
+            timeGapToString = Long.toString(timeGap) + "s";
+        } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
+            timeGapToString = Long.toString(timeGap / 60) + "m";
+        } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
+            timeGapToString = Long.toString(timeGap / 3600) + "h";
+        } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
+            timeGapToString = Long.toString(timeGap / 84000) + "d";
+        }
+
+        return GapTimeVo.builder()
+                .pastTime(pastTime)
+                .timeGapToString(timeGapToString)
+                .build();
+    }
+
+    public void reportArticle(Long articleNo) {
+        Article article = articleRepository.findById(articleNo).orElseThrow();
+
+        articleRepository.save(Article.builder()
+                .id(articleNo)
+                .dtype(article.getDtype())
+                .content(article.getContent())
+                .dtype(article.getDtype())
+                .user(article.getUser())
+                .report(article.getReport() + 1)
+                .createTime(article.getCreateTime())
+                .modifyTime(article.getModifyTime())
+                .hit(article.getHit())
+                .build());
     }
 }

@@ -53,7 +53,7 @@ const Join = () => {
         
         // const value = {email, token: res.data.accessToken}
         // dispatch(login(value))
-        navigate("/login")
+        navigate("/joincomplete")
       })
       .catch((err) => {
         console.log(err)
@@ -63,6 +63,7 @@ const Join = () => {
   }
 	return (
 		<SignUpContainer>
+			<img src={require("../../assets/The_Great_Gatsby.gif")} alt="" />
 			<form>
 				<FormInput
 				label="아이디" 
@@ -95,10 +96,7 @@ const Join = () => {
 				required 
 				onChange={handleChange}name="confirmPassword" 
 				value={confirmPassword}/>
-				<Button>가입하기</Button>
-				<button onClick={JoinFunc}>
-            test
-          </button>
+				<Button onClick={JoinFunc}>가입하기</Button>
 			</form>
 		</SignUpContainer>
 	)

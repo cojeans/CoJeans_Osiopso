@@ -3,6 +3,7 @@ package com.cojeans.osiopso.controller;
 import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
+import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.CommentService;
@@ -69,6 +70,12 @@ public class CommentApiController {
 
     // ====================== READ ========================
 
+    @GetMapping("/{commentno}")
+    public ResponseEntity<?> getComment(@PathVariable("commentno") Long commentNo) {
+        return new ResponseEntity(new ApiResponseDto(true, "createCommentLike Success", commentService.getComment(commentNo)), HttpStatus.OK);
+    }
+
+
     // rootId comment 를 기준으로 더 불러오기 버튼을 누르면, 4 ~ 10 번째 댓글까지 가져온다. 그 후로는 +10 개의 댓글씩 추가로 로딩
     @GetMapping("/loadmore/{rootid}")
     public ResponseEntity<?> loadMoreComment(@PathVariable("rootid") Long rootId){
@@ -91,6 +98,13 @@ public class CommentApiController {
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "editComment Fail", null), HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    @PutMapping("/report/{commentno}")
+    public ResponseEntity<?> reportComment(@PathVariable("commentno") Long commentNo){
+        System.out.println(commentNo);
+        commentService.reportComment(commentNo);
+        return new ResponseEntity(new ApiResponseDto(true, "reportArticle Success", null), HttpStatus.OK);
     }
 
 

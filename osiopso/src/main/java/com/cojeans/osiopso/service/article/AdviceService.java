@@ -1,20 +1,39 @@
 package com.cojeans.osiopso.service.article;
 
-import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.dto.GapTimeVo;
+import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
+import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
+import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
+import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.entity.comment.Cocomment;
+import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentLike;
+import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
+import com.cojeans.osiopso.entity.feed.ArticleLike;
+import com.cojeans.osiopso.entity.feed.ArticlePhoto;
+import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.AdviceRepository;
 import com.cojeans.osiopso.repository.article.ArticleLikeRepository;
 import com.cojeans.osiopso.repository.article.ArticlePhotoRepository;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
+import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
+import com.cojeans.osiopso.repository.comment.CommentRepositoryImpl;
 import com.cojeans.osiopso.repository.user.UserRepository;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = false)
@@ -28,9 +47,11 @@ public class AdviceService {
     private final ArticleLikeRepository articleLikeRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
+    private final CommentRepositoryImpl commentRepositoryImpl;
+    private final ArticleService articleService;
 
-
-    /*public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
+    public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
 
 
@@ -46,64 +67,77 @@ public class AdviceService {
 
 
         // 사진 저장
-        for (MultipartFile picture : pictures) {
-            String path = System.getProperty("user.dir"); // 현재 디렉토리
-            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+        List<ArticlePhotoRequestDto> urls = adviceRequestDto.getUrls();
 
-            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            try {
-                picture.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        for (ArticlePhotoRequestDto url : urls) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(file.getPath())
-                    .originFilename(file.getName())
+                    .imageUrl(url.getImageUrl())
                     .article(adviceSaved)
                     .build());
         }
 
         return true;
-    }*/
+    }
 
     public List<AdviceListResponseDto> listAdvice() {
-        List<Article> Advices = articleRepository.findAllByDtype("A");
+        List<Advice> Advices = adviceRepository.findAllByDtype("A");
         List<AdviceListResponseDto> list = new ArrayList<>();
+        Date date = new Date();
 
+        for (Advice advice : Advices) {
+            Long issueScore = 0L;
 
-        // 프론트와 필요한 리스트 데이터들 타협후에 완성할 예정
-        for (Article advice : Advices) {
+            GapTimeVo gapTime = articleService.getGapTime(advice, date);
+            List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(advice.getId());
+
+            Article article = articleRepository.findById(advice.getId()).orElseThrow();
+
+            // 게시물의 댓글 수
+            int commentSize = commentRepository.findAllByArticle_Id(article.getId()).size();
+            // 게시물의 좋아요 수
+            int likeSize = articleLikeRepository.findAllByArticle_Id(article.getId()).size();
+
+            issueScore += ((commentSize * 4) + (likeSize * 2) + (advice.getHit()) * 1);
+
             AdviceListResponseDto dto = AdviceListResponseDto.builder()
+                    .id(advice.getId())
+                    .hit(advice.getHit())
+                    .content(advice.getContent())
+                    .subject(advice.getSubject())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .imageUrl(responsePhoto.get(0).getImageUrl())
+                            .build())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                    .userId(advice.getUser().getId())
+                    .isSelected(advice.isSelected())
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
+                    .issueScore(issueScore)
                     .build();
             list.add(dto);
-        }
-
-        for (AdviceListResponseDto response : list) {
-            System.out.println(response.toString());
         }
 
         return list;
     }
 
 
-
     // 1. param 으로 훈수 찾아오기
     // 2. 훈수 게시물 Id로 articleTag 찾아오기
     // 3. articleTag iterator 돌려서 id로 keyword
-    /*public AdviceDetailResponseDto detailAdvice(Long articleNo) {
+    public AdviceDetailResponseDto detailAdvice(Long articleNo, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
 
         // 사진 가져오기
         List<ArticlePhoto> photoEntityList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
         List<ArticlePhotoResponseDto> photoResponseDtoList = new ArrayList<>();
 
+
         for (ArticlePhoto ap : photoEntityList) {
             photoResponseDtoList.add(ArticlePhotoResponseDto.builder()
-                    .originFilename(ap.getOriginFilename())
-                    .storeFilename(ap.getStoreFilename())
+                    .imageUrl(ap.getImageUrl())
                     .build());
         }
+
 
         // 게시물 좋아요 가져오기
         // DataFormat) x 유저가 좋아요를 눌렀다.
@@ -115,42 +149,89 @@ public class AdviceService {
                     .id(al.getId())
                     .userId(al.getUser().getId())
                     .build());
-        }*/
+        }
 
-
-//        // 댓글 좋아요 가져오기
-//        // 하나의 게시물에 등록된 여러개의 댓글에 대해 좋아요를 가져와야 한다.
-//        // DataFormat) x 번 댓글에 y 유저가 좋아요를 눌렀다.
-//
-//        List<CommentLike> commentLikeList = commentLikeRepository.findAllByArticle_Id(articleNo);
-//        List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
-//
-//        for (CommentLike cl : commentLikeList) {
-//            commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
-//                    .id(cl.getId())
-//                    .userId(cl.getUser().getId())
-//                    .commentId(cl.getComment().getId())
-//                    .build());
-//        }
 
         // 댓글 가져오기
-        /*List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();*/
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        Date date = new Date();
 
         // 해당 게시물에 달린 모든 댓글 리스트
-        /*for (Comment comment : commentList) {
+        for (Comment comment : commentList) {
+            boolean likeCo;
+
+            // 대댓글인 경우에는 continue
+            if (cocommentRepository.findByComment_Id(comment.getId()) != null){
+                continue;
+            }
+
+            // 좋아요가 눌려있다면
+            if (commentLikeRepository.findByComment_Id(comment.getId()) != null) {
+                likeCo = true;
+            } else {
+                likeCo = false;
+            }
+
+            GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
+
             // 해당 댓글에 달린 대댓글 리스트
-            List<Cocomment> cocomentList = cocommentRepository.findAllByComment_Id(comment.getId());
+            List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+            // 댓글 좋아요 가져오기
+            List<CommentLike> commentLikeList = commentLikeRepository.findAllByComment_Id(comment.getId());
+            List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+            System.out.println(comment.getId());
+            for (CommentLike cl : commentLikeList) {
+                commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                        .userId(cl.getUser().getId())
+                        .commentId(cl.getComment().getId())
+                        .build());
+            }
 
-            for (Cocomment cocomment : cocomentList) {
+            for (Cocomment cocomment : cocommentList) {
+                boolean likeCoco;
+
                 System.out.println(cocommentResponseDtoList.size());
-                if (cocommentResponseDtoList.size() == 3) {
-                    break;
+//                if (cocommentResponseDtoList.size() == 3) {
+//                    break;
+//                }
+
+                // 좋아요가 눌려있다면
+                if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
+                    likeCoco = true;
+                } else {
+                    likeCoco = false;
                 }
+
+                Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
+                GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
+
+
+                // 대댓글 좋아요 가져오기
+                List<CommentLike> cocommentLikeList = commentLikeRepository.findAllByComment_Id(cocomment.getComment().getId());
+                List<CommentLikeResponseDto> cocommentLikeResponseDtoList = new ArrayList<>();
+                System.out.println(cocomment.getId());
+                for (CommentLike cl : cocommentLikeList) {
+                    cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                            .userId(cl.getUser().getId())
+                            .commentId(cl.getComment().getId())
+                            .build());
+                }
+
                 // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
+                        .commentId(getComment.getId())
+                        .content(getComment.getContent())
+                        .userId(getComment.getUser().getId())
+                        .report(getComment.getReport())
+                        .like(likeCoco)
+                        .commentLikes(cocommentLikeResponseDtoList)
+                        .imageUrl(comment.getUser().getImageUrl())
+                        .userName(comment.getUser().getName())
+                        .time(cocommentGapTime.getTimeGapToString())
+                        .pastTime(cocommentGapTime.getPastTime())
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
@@ -162,16 +243,44 @@ public class AdviceService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .cocommentCnt((long) cocommentRepository.findAllByRootId(comment.getUser().getId()).size())
+                    .like(likeCo)
+                    .commentLikes(commentLikeResponseDtoList)
+                    .imageUrl(comment.getUser().getImageUrl())
+                    .userName(comment.getUser().getName())
+                    .time(commentGapTime.getTimeGapToString())
+                    .pastTime(commentGapTime.getPastTime())
                     .cocoments(cocommentResponseDtoList)
+                    .build());
+        }
+
+        System.out.println(advice.getUser().getId());
+        System.out.println(userId);
+
+        // 게시물의 작성자는 조회수를 증가시키지 않는다.
+        if (advice.getUser().getId() != userId) {
+            System.out.println(advice.getHit());
+            articleRepository.save(Advice.builder()
+                    .id(articleNo)
+                    .hit(advice.getHit() + 1)
+                    .user(advice.getUser())
+                    .subject(advice.getSubject())
+                    .isSelected(advice.isSelected())
+                    .content(advice.getContent())
+                    .createTime(advice.getCreateTime())
+                    .modifyTime(advice.getModifyTime())
+                    .report(advice.getReport())
                     .build());
         }
 
 
         return AdviceDetailResponseDto.builder()
                 .id(advice.getId())
-                .userId(advice.getUser().getId())
+                .userId(advice.getId())
+                .userName(advice.getUser().getName())
                 .createTime(advice.getCreateTime())
                 .modifyTime(advice.getModifyTime())
+                .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                 .photos(photoResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
                 .comments(commentResponseDtoList)
@@ -180,11 +289,12 @@ public class AdviceService {
                 .isSelected(advice.isSelected())
                 .subject(advice.getSubject())
                 .build();
-    }*/
+    }
 
 
-    /*public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, List<MultipartFile> pictures, Long userId) {
+    public boolean editAdvice(Long articleNo, AdviceRequestDto adviceRequestDto, Long userId) {
         Advice advice = adviceRepository.findById(articleNo).orElseThrow();
+        Date createTime = advice.getCreateTime();
 
         // 게시글 작성자만 수정권한이 있다.
         if (userId != advice.getUser().getId()) {
@@ -203,36 +313,30 @@ public class AdviceService {
         articlePhotoRepository.deleteAllByArticle_Id(articleNo);
 
         // 새로운 게시물 사진 추가
-        for (MultipartFile picture : pictures) {
-            String path = System.getProperty("user.dir"); // 현재 디렉토리
-            File file = new File(path + "/src/main/resources/static/" + picture.getOriginalFilename());
+        List<ArticlePhotoRequestDto> urls = adviceRequestDto.getUrls();
 
-            if(!file.getParentFile().exists()) file.getParentFile().mkdir();
-            try {
-                picture.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        for (ArticlePhotoRequestDto url : urls) {
             articlePhotoRepository.save(ArticlePhoto.builder()
-                    .storeFilename(file.getPath())
-                    .originFilename(file.getName())
+                    .imageUrl(url.getImageUrl())
                     .article(advice)
                     .build());
         }
 
         articleRepository.save(Advice.builder()
                 .id(articleNo)
+                .user(userRepository.getById(userId))
                 .subject(adviceRequestDto.getSubject())
                 .isSelected(adviceRequestDto.isSelected())
                 .content(adviceRequestDto.getContent())
+                .createTime(createTime)
+                .report(advice.getReport())
                 .build());
 
         return true;
-    }*/
+    }
 
 
-    /*public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
+    public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
         List<Advice> adviceList = adviceRepository.findAllBySubjectContaining(subject);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
 
@@ -241,21 +345,21 @@ public class AdviceService {
             ArticlePhoto articlePhoto = articlePhotoList.get(0);
 
             list.add(AdviceSearchResponseDto.builder()
+                    .articleNo(advice.getId())
                     .subject(advice.getSubject())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .photo(ArticlePhotoResponseDto.builder()
-                            .originFilename(articlePhoto.getOriginFilename())
-                            .storeFilename(articlePhoto.getStoreFilename())
+                            .imageUrl(articlePhoto.getImageUrl())
                             .build())
                     .isSelected(advice.isSelected())
                     .build());
         }
 
         return list;
-    }*/
+    }
 
 
-    /*public List<AdviceSearchResponseDto> searchAdviceByContent(String content) {
+    public List<AdviceSearchResponseDto> searchAdviceByContent(String content) {
         List<Advice> adviceList = adviceRepository.findAllByContentContaining(content);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
 
@@ -264,16 +368,52 @@ public class AdviceService {
             ArticlePhoto articlePhoto = articlePhotoList.get(0);
 
             list.add(AdviceSearchResponseDto.builder()
+                    .articleNo(advice.getId())
                     .subject(advice.getSubject())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                     .photo(ArticlePhotoResponseDto.builder()
-                            .originFilename(articlePhoto.getOriginFilename())
-                            .storeFilename(articlePhoto.getStoreFilename())
+                            .imageUrl(articlePhoto.getImageUrl())
                             .build())
                     .isSelected(advice.isSelected())
                     .build());
         }
 
         return list;
-    }*/
+    }
+
+    public List<BurningAdviceResponseDto> burnList() {
+        // 현재 날짜를 기준으로 1개월 내에 쓰여진 훈수 글
+        // List<Advice> adviceList = adviceRepository.findAllByCreateTimeGreaterThanEqualAndCreateTimeLessThanEqual(before, now);
+
+        // 해당 글들의 댓글 수를 기준으로 내림차순 정렬
+        // count gruopby를 생각 -> QueryDSL 이용해야 함
+        // select article_id, count(*) as count from comment
+        // where article_id
+        // in (select id from article where create_time >= date_sub(now(), interval 1 month) and create_time <= now())
+        // group by article_id
+        // order by count desc;
+
+        List<Long> list = commentRepositoryImpl.findByArticleId(LocalDate.now());
+
+        List<BurningAdviceResponseDto> result = new ArrayList<>();
+
+        for (Long id : list) {
+            System.out.println("id : ---- " + id);
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
+            Advice advice = adviceRepository.findById(id).orElseThrow();
+            BurningAdviceResponseDto responseDto = BurningAdviceResponseDto.builder()
+                    .id(advice.getId())
+                    .photo(ArticlePhotoResponseDto.builder()
+                            .imageUrl(ap.getImageUrl())
+                            .build())
+                    .hit(advice.getHit())
+                    .subject(advice.getSubject())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                    .build();
+
+            result.add(responseDto);
+        }
+
+        return result;
+    }
 }
