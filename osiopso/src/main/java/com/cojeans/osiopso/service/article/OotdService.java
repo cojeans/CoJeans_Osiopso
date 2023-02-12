@@ -5,8 +5,6 @@ import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.request.feed.ArticleTagRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
-import com.cojeans.osiopso.dto.request.filter.FilterStyleTagRequestDto;
-import com.cojeans.osiopso.dto.request.filter.FilterTpoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
@@ -20,21 +18,17 @@ import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
-import com.cojeans.osiopso.entity.user.Follow;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
-import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -270,7 +264,7 @@ public class OotdService {
                         .report(getComment.getReport())
                         .like(likeCoco)
                         .commentLikes(cocommentLikeResponseDtoList)
-                        .imageUrl(comment.getUser().getImageUrl())
+                        .profileImageUrl(comment.getUser().getImageUrl())
                         .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
                         .pastTime(cocommentGapTime.getPastTime())
@@ -289,7 +283,7 @@ public class OotdService {
                     .cocommentCnt((long) cocommentRepository.findAllByRootId(comment.getUser().getId()).size())
                     .like(likeCo)
                     .commentLikes(commentLikeResponseDtoList)
-                    .imageUrl(comment.getUser().getImageUrl())
+                    .profileImageUrl(comment.getUser().getImageUrl())
                     .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())
