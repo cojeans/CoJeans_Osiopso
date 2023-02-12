@@ -41,8 +41,8 @@ public class UserService {
     @Autowired
     private FollowRepository followRepository;
 
-    public User saveUser(SignUpRequestDto signUpRequest){
-        User result = userRepository.save(User.builder()
+    public UserDto saveUser(SignUpRequestDto signUpRequest){
+        User userEntity = userRepository.save(User.builder()
                         .name(signUpRequest.getName())
                         .email(signUpRequest.getEmail())
                         .password(passwordEncoder.encode(signUpRequest.getPassword()))
@@ -53,9 +53,10 @@ public class UserService {
                         .emailVerified(false)
                         .build()
         );
-        log.info("result : {}", result);
+        log.info("result : {}", userEntity);
 
-        return result;
+
+        return userEntity.toDto();
     }
 
     //비밀번호 일치 체크
@@ -175,5 +176,13 @@ public class UserService {
                     .build());
         }
         return result;
+    }
+
+    /* 이메일 인증이 되어있는지. 되어있지 않다면 false 반환*/
+    public boolean isEmailVefied(String email) {
+        if(userRepository.existsByEmail(email)){
+            return userRepository.findByEmail(email).orElse(null).getEmailVerified();
+        }
+        return false;
     }
 }

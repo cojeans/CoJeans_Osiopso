@@ -3,7 +3,6 @@ package com.cojeans.osiopso.entity.user;
 import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.dto.user.UserDto;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -119,7 +118,7 @@ public class User {
                 .id(this.getId())
                 .name(this.getName())
                 .email(this.getEmail())
-                .password(this.getPassword())
+//                .password(this.getPassword())
                 .age(this.getAge())
                 .gender(this.getGender())
                 .provider(this.getProvider())

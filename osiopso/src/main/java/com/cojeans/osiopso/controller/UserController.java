@@ -11,6 +11,7 @@ import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
 import com.cojeans.osiopso.security.UserDetail;
+import com.cojeans.osiopso.service.user.EmailAuthService;
 import com.cojeans.osiopso.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -49,6 +50,9 @@ public class UserController{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailAuthService emailAuthService;
 
     @GetMapping("")
     @Operation(summary = "내정보조회")
@@ -94,6 +98,12 @@ public class UserController{
                         loginRequestDto.getPassword()
                 )
         );
+        /*이메일 인증 체크*/
+        if(!userService.isEmailVefied(loginRequestDto.getEmail())){
+            return new ResponseEntity<>(AuthResponseDto.builder()
+                    .success(false)
+                    .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
+        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.createToken(authentication);
@@ -108,6 +118,7 @@ public class UserController{
         log.info("signUpRequest: {}",signUpRequest);
 
         userService.saveUser(signUpRequest);
+        emailAuthService.sendVerificationEmail(signUpRequest.getEmail());
 
         return new ResponseEntity(new ApiResponseDto(true, "User registered successfully@", null), HttpStatus.CREATED);
     }
@@ -216,6 +227,16 @@ public class UserController{
                         .build()
                 ,HttpStatus.ACCEPTED);
 
+    }
+
+    @GetMapping("/emailVerification/{code}")
+    public ResponseEntity<ApiResponseDto> verifyAccount(@PathVariable String code) {
+        log.info("verifyAccount code :", code);
+        emailAuthService.verifyAccount(code);
+        return new ResponseEntity<>(ApiResponseDto.builder()
+                .success(true)
+                .message("계정활성화가 성공적으로 완료됐습니다.")
+                .build(), HttpStatus.OK);
     }
 }
 
