@@ -12,7 +12,7 @@ import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.response.tag.HotTagResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
-import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.comment.CommentLike;

@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.security;
 
-import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
