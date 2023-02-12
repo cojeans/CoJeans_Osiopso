@@ -68,11 +68,11 @@ const ClosetSelectBox = () => {
 
 		axios({
 			method: "post",
-			url: "https://www.osiopso.site/api/closet/clothes",
+			url: `${process.env.REACT_APP_AXIOS_URL}closet/clothes`,
 			data: {
 				category: 1,
 				imageUrl:saveData,
-        closets: [{"id": 1}],
+        closets: [{"id": 3}],
         colors:[{"id": 1}],
         seasons:[{"id": 1}],
         tags:[{"id": 1}],
@@ -89,7 +89,7 @@ const ClosetSelectBox = () => {
       console.log(err);
     });
 
-		// dispatch(resetCloset()) // redux 옷장 정보 초기화
+		dispatch(upload('')) // redux 옷장 정보 초기화
 		
 		// AlertHandler() // alert창 띄우기
 

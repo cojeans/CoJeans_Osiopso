@@ -9,7 +9,8 @@ import {
   IconBox,
   IconMessageBox,
   DetailContainer,
-  CommentListWrapper
+  CommentListWrapper,
+  ContentBox,
 } from "./ootd-detail.styles";
 
 // import { ReactComponent as Like } from "../../assets/like.svg";
@@ -98,7 +99,7 @@ const OotdDetail = () => {
   const getDetailOotd = () => {
     axios({
       method: "get",
-      url: `https://www.osiopso.site/api/feed/ootd/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/ootd/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -132,7 +133,7 @@ const OotdDetail = () => {
   const deleteOotd = () => {
     axios({
       method: "delete",
-      url: `https://www.osiopso.site/api/feed/article/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/article/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -150,7 +151,7 @@ const OotdDetail = () => {
   const likeOotd = () => {
     axios({
       method: "post",
-      url: `https://www.osiopso.site/api/feed/likearticle/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/likearticle/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -262,9 +263,9 @@ const OotdDetail = () => {
           </IconBox>
         </DetailContainer>
         <DetailContainer>
-          <span>
+          <ContentBox>
           {ootdDetail.content}
-          </span>
+          </ContentBox>
         </DetailContainer>
       </UpperImage>
       </div>

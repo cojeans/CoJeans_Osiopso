@@ -48,7 +48,7 @@ const Advice = () => {
   const getAdviceAxios = () => {
     axios({
       method: "get",
-      url: "https://www.osiopso.site/api/feed/advice",
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/advice`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },
@@ -86,10 +86,9 @@ const Advice = () => {
   return (
     <div>
       
-      <AdviectComment>
+      {/* <AdviectComment>
+      </AdviectComment> */}
 
-      </AdviectComment>
-{/* 
       <TextToLeft>
         <Container>
           <span>최신순</span> <span>논란순</span>
@@ -128,7 +127,7 @@ const Advice = () => {
       </HunsuImages>
       {
         modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
-      } */}
+      }
  </div>
   );
 };

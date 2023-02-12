@@ -36,7 +36,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
     console.log(articleId)
     axios({
       method:"post",
-      url: `https://www.osiopso.site/api/comment/${articleId}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}comment/${articleId}`,
       data:{
         content:content
       },
@@ -61,7 +61,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
     console.log('대댓글 달기입니다.')
     axios({
       method: "post",
-      url: `https://www.osiopso.site/api/comment/${articleId}/${isCocomment.selectCommentId}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}comment/${articleId}/${isCocomment.selectCommentId}`,
       data:{
         content:cocoment
       },

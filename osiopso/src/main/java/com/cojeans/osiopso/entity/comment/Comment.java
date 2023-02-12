@@ -44,5 +44,11 @@ public class Comment {
     private Date modifyTime;
 
     @ColumnDefault(value = "0")
+    private Long up;
+
+    @ColumnDefault(value = "0")
+    private Long down;
+
+    @ColumnDefault(value = "0")
     private Long report;
 }

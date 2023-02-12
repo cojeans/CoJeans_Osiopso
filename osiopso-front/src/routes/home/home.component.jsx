@@ -62,7 +62,7 @@ const Home = () =>{
 	const getCurrentUser = () => {
     axios({
       method: "get", 
-      url: 'https://www.osiopso.site/api/user',
+      url: `${process.env.REACT_APP_AXIOS_URL}user`,
       headers: {
           Authorization: `Bearer ${Token.token}`,
       }
