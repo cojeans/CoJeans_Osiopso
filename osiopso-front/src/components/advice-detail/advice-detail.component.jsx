@@ -189,7 +189,7 @@ const AdviceDetail = () => {
       </UpperImage>
 
       <UpperComment>
-        <h5>여기가 게시글 내용</h5>
+      {advicedDetail.content}
       </UpperComment>
 
       <HunsuButton>

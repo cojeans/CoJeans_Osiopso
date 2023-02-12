@@ -61,7 +61,16 @@ export const ProfileImageBox = styled.img.attrs({
   `
   export const UpperComment = styled.div`
   display: flex; 
+  // adviceDetail.content{
+  //   white-space:normal;
+  //   word-wrap:break-word;
+  // }
+  // word-wrap: break-word;
+  word-break: normal;
+  width: 100%;
+  height: 100%;
   padding-left: 30px;
+  margin-bottom: 20px;
   `
 
   export const ClosetInput = styled.input`
