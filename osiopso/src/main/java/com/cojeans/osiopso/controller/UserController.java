@@ -210,7 +210,7 @@ public class UserController{
                         .message(followingId + " 의 팔로워 리스트")
                         .responseData(userService.listFollower(followingId))
                         .build()
-                ,HttpStatus.ACCEPTED);
+                ,HttpStatus.OK);
 
     }
 
@@ -225,10 +225,10 @@ public class UserController{
                         .message(followingId + " 의 팔로잉 리스트")
                         .responseData(userService.listFollowing(followingId))
                         .build()
-                ,HttpStatus.ACCEPTED);
+                ,HttpStatus.OK);
 
     }
-
+    @Operation(summary = "이메일 인증", description = "유저가 메일에서 활성화링크 눌렀을 때 오는것으로 백에서 씁니다.")
     @GetMapping("/emailVerification/{code}")
     public ResponseEntity<ApiResponseDto> verifyAccount(@PathVariable String code) {
         log.info("verifyAccount code :", code);
@@ -237,6 +237,27 @@ public class UserController{
                 .success(true)
                 .message("계정활성화가 성공적으로 완료됐습니다.")
                 .build(), HttpStatus.OK);
+    }
+    @Operation(summary = "공개범위 바꾸기", description = "IsProfilePublic칼럼을 반대로 토글시켜주고 바뀐 userDto객체를 반환.")
+    @GetMapping("/changeIsProfilePublic/{id}")
+    public ResponseEntity<ApiResponseDto> changeIsProfilePublic(@PathVariable Long id) {
+
+        /*실패 시*/
+        if(!userService.changeIsProfilePublic(id))
+            return new ResponseEntity<>(ApiResponseDto
+                    .builder()
+                    .success(false)
+                    .message("공개범위 변경 실패")
+                    .build()
+                    , HttpStatus.BAD_REQUEST);
+
+        /*성공 시*/
+        return new ResponseEntity<>(ApiResponseDto
+                .builder()
+                .success(true)
+                .message("공개범위 변경 성공")
+                .build()
+                , HttpStatus.OK);
     }
 }
 
