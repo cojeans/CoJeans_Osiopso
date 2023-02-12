@@ -6,7 +6,7 @@ import MoveableHelper from "moveable-helper";
 
 import { useState, useRef } from "react";
 
-const MoveItem = ({ item }) => {
+const MoveItem = ({ item, submitHandler, container }) => {
 	const [helper] = useState(() => {
 	return new MoveableHelper();
 	});
@@ -25,18 +25,20 @@ const MoveItem = ({ item }) => {
       </div>
 
       <Moveable
-        target={targetRef}
-        draggable={true}
-        scalable={true}
-        keepRatio={true}
-        rotatable={true}
-        onDragStart={helper.onDragStart}
-        onDrag={helper.onDrag}
-        onScaleStart={helper.onScaleStart}
-        onScale={helper.onScale}
-        onRotateStart={helper.onRotateStart}
-        onRotate={helper.onRotate}
-      />
+				target={!submitHandler ? targetRef : ''}
+				draggable={true}
+				scalable={true}
+				keepRatio={true}
+				rotatable={true}
+				onDragStart={helper.onDragStart}
+				onDrag={helper.onDrag}
+				onScaleStart={helper.onScaleStart}
+				onScale={helper.onScale}
+				onRotateStart={helper.onRotateStart}
+				onRotate={helper.onRotate}
+				bounds={container }
+			/>
+			
 		</Fragment>
 	)
 }
