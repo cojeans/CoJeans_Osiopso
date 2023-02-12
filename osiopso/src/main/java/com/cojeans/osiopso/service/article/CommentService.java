@@ -4,15 +4,13 @@ import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.entity.comment.Cocomment;
-import com.cojeans.osiopso.entity.comment.CommentLike;
-import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentDown;
+import com.cojeans.osiopso.entity.comment.CommentUp;
+import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
-import com.cojeans.osiopso.repository.comment.CocommentRepository;
-import com.cojeans.osiopso.repository.comment.CocommentRepositoryImpl;
-import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
-import com.cojeans.osiopso.repository.comment.CommentRepository;
+import com.cojeans.osiopso.repository.comment.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +29,8 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CocommentRepositoryImpl cocommentRepositoryImpl;
     private final CommentLikeRepository commentLikeRepository;
+    private final CommentUpRepository commentUpRepository;
+    private final CommentDownRepository commentDownRepository;
 
     public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -42,6 +42,8 @@ public class CommentService {
                 .content(dto.getContent())
                 .article(article)
                 .report(0L)
+                .up(0L)
+                .down(0L)
                 .build();
 
         commentRepository.save(build);
@@ -246,6 +248,7 @@ public class CommentService {
                 .build();
     }
 
+
     public void reportComment(Long commentNo) {
         Comment comment = commentRepository.findById(commentNo).orElseThrow();
 
@@ -253,10 +256,89 @@ public class CommentService {
                 .id(commentNo)
                 .content(comment.getContent())
                 .user(comment.getUser())
-                .report(comment.getReport() + 1)
+                .report(comment.getReport() + 1L)
                 .createTime(comment.getCreateTime())
                 .modifyTime(comment.getModifyTime())
                 .article(comment.getArticle())
                 .build());
+    }
+
+    public void upComment(Long commentNo) {
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        // 처음 Up 버튼을 누른거라면..
+        if (commentUpRepository.findByComment_Id(commentNo) == null) {
+            commentRepository.save(comment.builder()
+                    .id(commentNo)
+                    .content(comment.getContent())
+                    .user(comment.getUser())
+                    .report(comment.getReport())
+                    .createTime(comment.getCreateTime())
+                    .modifyTime(comment.getModifyTime())
+                    .article(comment.getArticle())
+                    .up(comment.getUp() + 1L)
+                    .down(comment.getDown())
+                    .build());
+
+            commentUpRepository.save(CommentUp.builder()
+                    .comment(comment)
+                    .user(comment.getUser())
+                    .article(comment.getArticle())
+                    .build());
+
+        } else {
+            commentRepository.save(comment.builder()
+                    .id(commentNo)
+                    .content(comment.getContent())
+                    .user(comment.getUser())
+                    .report(comment.getReport())
+                    .createTime(comment.getCreateTime())
+                    .modifyTime(comment.getModifyTime())
+                    .article(comment.getArticle())
+                    .up(comment.getUp() - 1L)
+                    .down(comment.getDown())
+                    .build());
+
+            commentUpRepository.deleteByComment_Id(commentNo);
+        }
+    }
+
+    public void downComment(Long commentNo) {
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        if (commentDownRepository.findByComment_Id(commentNo) == null) {
+            commentRepository.save(comment.builder()
+                    .id(commentNo)
+                    .content(comment.getContent())
+                    .user(comment.getUser())
+                    .report(comment.getReport())
+                    .createTime(comment.getCreateTime())
+                    .modifyTime(comment.getModifyTime())
+                    .article(comment.getArticle())
+                    .up(comment.getUp())
+                    .down(comment.getDown() + 1L)
+                    .build());
+
+            commentDownRepository.save(CommentDown.builder()
+                    .comment(comment)
+                    .user(comment.getUser())
+                    .article(comment.getArticle())
+                    .build());
+
+        } else {
+            commentRepository.save(comment.builder()
+                    .id(commentNo)
+                    .content(comment.getContent())
+                    .user(comment.getUser())
+                    .report(comment.getReport())
+                    .createTime(comment.getCreateTime())
+                    .modifyTime(comment.getModifyTime())
+                    .article(comment.getArticle())
+                    .up(comment.getUp())
+                    .down(comment.getDown() - 1L)
+                    .build());
+
+            commentDownRepository.deleteByComment_Id(commentNo);
+        }
     }
 }

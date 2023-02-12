@@ -80,21 +80,21 @@ public class FeedApiController {
 
     // ====================== READ ========================
     @GetMapping("/advice")
-    public ResponseEntity<List<AdviceListResponseDto>> listAdivce() {
+    public ResponseEntity<?> listAdivce() {
         return new ResponseEntity(new ApiResponseDto(true, "readAdviceList Success", adviceService.listAdvice()), HttpStatus.OK);
     }
 
 
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo,
-                                                                @AuthenticationPrincipal UserDetail user) {
+    public ResponseEntity<?> detailAdvice(@PathVariable("articleno") Long articleNo,
+                                          @AuthenticationPrincipal UserDetail user) {
         AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo, user.getId());
         return new ResponseEntity(new ApiResponseDto(true, "readAdviceDetail Success", detail), HttpStatus.OK);
     }
 
 
     @GetMapping("/ootd")
-    public ResponseEntity<List<OotdListResponseDto>> listOotd() {
+    public ResponseEntity<?> listOotd() {
         return new ResponseEntity(new ApiResponseDto(true, "readOotdList Success", ootdService.listOotd()), HttpStatus.OK);
     }
 
