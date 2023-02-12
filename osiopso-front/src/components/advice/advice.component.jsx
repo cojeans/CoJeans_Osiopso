@@ -87,9 +87,8 @@ const Advice = () => {
     <div>
       
       {/* <AdviectComment>
-
       </AdviectComment> */}
-{/* 
+
       <TextToLeft>
         <Container>
           <span>최신순</span> <span>논란순</span>
@@ -128,7 +127,7 @@ const Advice = () => {
       </HunsuImages>
       {
         modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
-      } */}
+      }
  </div>
   );
 };
