@@ -188,8 +188,9 @@ public class UserService {
     }
 
     public boolean changeIsProfilePublic(Long id) {
-        return userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException(id.toString(),"userRepository",null))
                 .changeIsProfilePublic();
+        return true;
     }
 }

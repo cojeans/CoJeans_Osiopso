@@ -75,9 +75,12 @@ public class User {
                 .build();
     }
     /* userPk값을 가져와서 업데이트 후 User객체 다시반환 -> toDto호출해서 Dto로 변환*/
-    public boolean changeIsProfilePublic(){
+    public void changeIsProfilePublic(){
         this.isProfilePublic = !this.isProfilePublic;
-        return true;
+    }
+
+    public void changePassword(String password){
+        this.password = password;
     }
 
 
