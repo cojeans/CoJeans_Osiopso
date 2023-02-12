@@ -2,6 +2,7 @@ package com.cojeans.osiopso.entity.user;
 
 import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.dto.user.UserDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -16,15 +17,16 @@ import javax.persistence.*;
 @DynamicInsert @DynamicUpdate
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String name;
     
     @Column(nullable = false)
     private String email;
+    @JsonIgnore @Column
+    private String password;
+
+    @Column(nullable = false)
+    private String name;
     
     @Column(nullable = true)
     private int age;
@@ -38,90 +40,51 @@ public class User {
     @Column(nullable = false)
     private Boolean emailVerified = false;
 
-//    @JsonIgnore //나중에 실서비스할때는 주석해재
     @Column
-    private String password;
-
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
-
+    @Column
     private String providerId;
 
-    public Long getId() {
-        return id;
-    }
+    @Column
+    private String bio; //자기소개 or 상태메세지
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column
+    private Boolean isProfilePublic; //프로필 공개여부
 
-    public String getName() {
-        return name;
-    }
+    @Column @Enumerated(EnumType.STRING)
+    private Role role; //역할. USER ADMIN 둘
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Boolean getEmailVerified() {
-        return emailVerified;
-    }
-
-    public void setEmailVerified(Boolean emailVerified) {
-        this.emailVerified = emailVerified;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public AuthProvider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(AuthProvider provider) {
-        this.provider = provider;
-    }
-
-    public String getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
-    }
 
     public UserDto toDto(){
         return UserDto.builder()
                 .id(this.getId())
                 .name(this.getName())
                 .email(this.getEmail())
-//                .password(this.getPassword())
+                .password(this.getPassword())
                 .age(this.getAge())
                 .gender(this.getGender())
                 .provider(this.getProvider())
+                .providerId(this.getProviderId())
                 .emailVerified(this.getEmailVerified())
+                .bio(this.getBio())
+                .role(this.getRole())
+                .isProfilePublic(this.getIsProfilePublic())
                 .build();
     }
+    /* userPk값을 가져와서 업데이트 후 User객체 다시반환 -> toDto호출해서 Dto로 변환*/
+    public void changeIsProfilePublic(){
+        this.isProfilePublic = !this.isProfilePublic;
+    }
+
+    public void changePassword(String password){
+        this.password = password;
+    }
+
+
+
+
 
 }

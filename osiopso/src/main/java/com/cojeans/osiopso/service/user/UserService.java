@@ -7,6 +7,7 @@ import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Follow;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
@@ -184,5 +185,12 @@ public class UserService {
             return userRepository.findByEmail(email).orElse(null).getEmailVerified();
         }
         return false;
+    }
+
+    public boolean changeIsProfilePublic(Long id) {
+        userRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException(id.toString(),"userRepository",null))
+                .changeIsProfilePublic();
+        return true;
     }
 }
