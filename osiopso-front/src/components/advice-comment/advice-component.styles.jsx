@@ -16,8 +16,8 @@ export const ClothesContainer = styled.div`
 `
 
 export const ItemDropContainer = styled.div`
-	width: 300px;
-	height: 300px;
+	min-width: 340px;
+	height: 340px;
 	border:solid 1px blue;
 	margin: auto;
 `

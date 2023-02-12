@@ -5,6 +5,8 @@ import { Fragment, useEffect, useState } from "react"
 import axios from "axios"
 
 import SimpleSlider from "../closet-slick/closet-slick.component"
+import DropArea from "../advice-comment-item-drop/advice-comment-item-drop.component"
+
 //style
 import {
 	ClothesContainer,
@@ -21,6 +23,7 @@ const AdviectComment = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
 	const [selectCloset, setSelectCloset] = useState([])
+	const [targetItem, setTargetItem ] = useState('')
 	
 	const getUserCloset = () => {
 		axios({
@@ -50,11 +53,17 @@ const AdviectComment = () => {
 			<ClothesContainer>
 				{
 					selectCloset.map((cloth, idx) => {
-						return <ImageContainer  key= {idx} ><img src={cloth.imageUrl } alt="" /></ImageContainer> 
+						return <ImageContainer key={idx} >
+							<img src={cloth.imageUrl} alt=""  onClick={()=>setTargetItem(cloth.imageUrl)}/>
+						</ImageContainer> 
 					})
 				}
 			</ClothesContainer>
-			<ItemDropContainer></ItemDropContainer>
+			<ItemDropContainer>
+				<DropArea
+					targetItem={ targetItem}
+				/>
+			</ItemDropContainer>
 
 		</div>
 		// <CreatAdvicePage>
