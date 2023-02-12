@@ -75,6 +75,19 @@ const AdviceDetail = () => {
     })
   }
 
+  // const putData= ()=> {
+  //   axios({
+  //     method: "put",
+  //     url: `http://localhost:8080/api/feed/article/${id}`,
+  //     headers: {
+  //       Authorization: `Bearer ${Token.token}`,
+  //     }
+  //   })
+  //   .then((res)=> {
+      
+  //   })
+  // }
+
   const deleteAdvice = ()=> {
     axios({
       method: "delete",
