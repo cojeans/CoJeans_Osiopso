@@ -66,6 +66,7 @@ export const ProfileImageBox = styled.img.attrs({
   //   word-wrap:break-word;
   // }
   // word-wrap: break-word;
+  white-space; normal;
   word-break: normal;
   width: 100%;
   height: 100%;

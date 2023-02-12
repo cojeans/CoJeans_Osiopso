@@ -89,8 +89,8 @@ const Advice = () => {
       {/* <AdviectComment>
 
       </AdviectComment> */}
-{/* 
-      <TextToLeft>
+
+      {/* <TextToLeft>
         <Container>
           <span>최신순</span> <span>논란순</span>
         </Container>
