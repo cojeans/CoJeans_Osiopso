@@ -99,11 +99,11 @@ public class UserController{
                 )
         );
         /*이메일 인증 체크*/
-        if(!userService.isEmailVefied(loginRequestDto.getEmail())){
-            return new ResponseEntity<>(AuthResponseDto.builder()
-                    .success(false)
-                    .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
-        }
+//        if(!userService.isEmailVefied(loginRequestDto.getEmail())){
+//            return new ResponseEntity<>(AuthResponseDto.builder()
+//                    .success(false)
+//                    .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
+//        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.createToken(authentication);
