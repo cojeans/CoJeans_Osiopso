@@ -11,9 +11,7 @@ import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor @NoArgsConstructor
-@ToString
-@Getter
-@Builder
+@ToString @Getter @Setter @Builder
 @Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @DynamicInsert @DynamicUpdate
 public class User {
@@ -24,10 +22,10 @@ public class User {
 
     @Column(nullable = false)
     private String name;
-
+    
     @Column(nullable = false)
     private String email;
-
+    
     @Column(nullable = true)
     private int age;
 
