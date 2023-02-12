@@ -264,7 +264,7 @@ public class OotdService {
                         .report(getComment.getReport())
                         .like(likeCoco)
                         .commentLikes(cocommentLikeResponseDtoList)
-                        //.profileImageUrl(comment.getUser().getImageUrl())
+                        .profileImageUrl(comment.getUser().getImageUrl())
                         .imageUrl(comment.getUser().getImageUrl())
                         .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
