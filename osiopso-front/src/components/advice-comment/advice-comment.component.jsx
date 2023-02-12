@@ -18,12 +18,11 @@ import {
 //style
 
 
-
 const AdviectComment = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
 	const [selectCloset, setSelectCloset] = useState([])
-	const [targetItem, setTargetItem ] = useState('')
+	const [targetItem, setTargetItem ] = useState([])
 	
 	const getUserCloset = () => {
 		axios({
@@ -41,7 +40,8 @@ const AdviectComment = () => {
 	}
 	useEffect(() => {
 		getUserCloset()
-	},[])
+	}, [])
+
 	return (
 		<div>
 			<SliderContainer>
@@ -54,7 +54,7 @@ const AdviectComment = () => {
 				{
 					selectCloset.map((cloth, idx) => {
 						return <ImageContainer key={idx} >
-							<img src={cloth.imageUrl} alt=""  onClick={()=>setTargetItem(cloth.imageUrl)}/>
+							<img src={cloth.imageUrl} alt="" onClick={() => setTargetItem([...targetItem, cloth.imageUrl])} />
 						</ImageContainer> 
 					})
 				}
@@ -64,6 +64,7 @@ const AdviectComment = () => {
 					targetItem={ targetItem}
 				/>
 			</ItemDropContainer>
+			<input type="text" />
 
 		</div>
 		// <CreatAdvicePage>
