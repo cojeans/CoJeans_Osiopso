@@ -54,9 +54,7 @@ const AdviectComment = () => {
 					})
 				}
 			</ClothesContainer>
-			<ItemDropContainer>
-				
-			</ItemDropContainer>
+			<ItemDropContainer></ItemDropContainer>
 
 		</div>
 		// <CreatAdvicePage>

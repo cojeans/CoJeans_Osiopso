@@ -86,9 +86,9 @@ const Advice = () => {
   return (
     <div>
       
-      <AdviectComment>
+      {/* <AdviectComment>
 
-      </AdviectComment>
+      </AdviectComment> */}
 {/* 
       <TextToLeft>
         <Container>
