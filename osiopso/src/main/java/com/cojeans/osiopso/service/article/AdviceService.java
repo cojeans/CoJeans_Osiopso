@@ -11,16 +11,14 @@ import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticleLike;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.user.User;
-import com.cojeans.osiopso.repository.article.AdviceRepository;
-import com.cojeans.osiopso.repository.article.ArticleLikeRepository;
-import com.cojeans.osiopso.repository.article.ArticlePhotoRepository;
-import com.cojeans.osiopso.repository.article.ArticleRepository;
+import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepositoryImpl;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +42,7 @@ public class AdviceService {
     private final CommentLikeRepository commentLikeRepository;
     private final CommentRepositoryImpl commentRepositoryImpl;
     private final ArticleService articleService;
+    private final ArticleScrollQdslRepositoryImpl articleScrollQdslRepositoryImpl;
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -73,8 +72,10 @@ public class AdviceService {
         return true;
     }
 
-    public List<AdviceListResponseDto> listAdvice() {
-        List<Advice> Advices = adviceRepository.findAllByDtype("A");
+
+    public List<AdviceListResponseDto> listAdvice(Pageable pageable, Long idx) {
+        List<Advice> Advices = articleScrollQdslRepositoryImpl.findNoOffsetAdvicePaging(pageable, idx);
+
         List<AdviceListResponseDto> list = new ArrayList<>();
         Date date = new Date();
 
@@ -181,7 +182,6 @@ public class AdviceService {
 //                        .commentId(cl.getComment().getId())
 //                        .build());
 //            }
-
 
 
             commentAdviceResponseDtoList.add(CommentAdviceResponseDto.builder()
