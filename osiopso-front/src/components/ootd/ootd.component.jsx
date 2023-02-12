@@ -61,7 +61,7 @@ const Ootd = () => {
   const getOotdAxios = () => {
     axios({
       method: "get",
-      url: "https://www.osiopso.site/api/feed/ootd",
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/ootd`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }

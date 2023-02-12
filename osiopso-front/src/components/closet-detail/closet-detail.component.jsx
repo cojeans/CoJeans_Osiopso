@@ -7,26 +7,26 @@ import {
 	ClothesItemContainer,
 	ClosetDetailPage
 } from './closet-detail.styles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const ClosetDetail = () => {
 	const location = useLocation();
 	const { name, thumbnails, count, id, isSelected } = location.state.closet
 	const Token = useSelector(selectUser)
+
+	const [allClothes, setAllClothes] = useState([])
+	
 	const getClothes = () => {
 		axios({
 			method: "post",
-        url: `https://www.osiopso.site/api/closet/${id}/1`,
-        data: {
-					"id": id,
-					"keyword": null,
-					"type": null
-        },
+        url: `${process.env.REACT_APP_AXIOS_URL}closet/${id}/all`,
+        data: [],
         headers: {
           Authorization: `Bearer ${Token.token}`,
               },
 		}).then((res) => {
-			console.log(res)
+			console.log(res.data)
+			setAllClothes(res.data)
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -46,8 +46,8 @@ const ClosetDetail = () => {
 					:
 					<ClothesContainer>	
 						{
-							thumbnails.map((el, idx)=>{
-								return <ClothesItemContainer key={idx}><img src={el}/></ClothesItemContainer>
+							allClothes.map((el, idx)=>{
+								return <ClothesItemContainer key={idx}><img src={el.imageUrl}/></ClothesItemContainer>
 							})
 						}
 					</ClothesContainer>

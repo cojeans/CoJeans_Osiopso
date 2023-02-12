@@ -62,6 +62,10 @@ dependencies {
 
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+//    이메일인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    //인증메일용 템플릿 생성을 위한 타임리프
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

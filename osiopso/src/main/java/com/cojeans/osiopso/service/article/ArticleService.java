@@ -1,17 +1,16 @@
 package com.cojeans.osiopso.service.article;
 
 //import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
+
 import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
-        import com.cojeans.osiopso.entity.feed.ArticleTag;
+import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.repository.article.*;
-import com.cojeans.osiopso.repository.comment.CocommentRepository;
-import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
-import com.cojeans.osiopso.repository.comment.CommentRepository;
-        import lombok.RequiredArgsConstructor;
+import com.cojeans.osiopso.repository.comment.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,9 @@ public class ArticleService {
     private final CommentLikeRepository commentLikeRepository;
     private final CocommentRepository cocommentRepository;
     private final ArticleLikeRepository articleLikeRepository;
+    private final CommentUpRepository commentUpRepository;
+    private final CommentDownRepository commentDownRepository;
+
 
     // 1번 article 을 지울 때..
     // 1번 article 을 외래키로 가진 article_tag 조회
@@ -55,6 +57,10 @@ public class ArticleService {
         // 게시물과 관련된 사진삭제
         articlePhotoRepository.deleteByArticle_Id(articleNo);
         Long articleId = articleRepository.findById(articleNo).orElseThrow().getId();
+
+        // 게시물과 관련된 up, down 삭제
+        commentUpRepository.deleteByArticle_Id(articleNo);
+        commentDownRepository.deleteByArticle_Id(articleNo);
 
         // 게시물과 관련된 좋아요들 삭제
         articleLikeRepository.deleteAllByArticle_Id(articleNo);
@@ -99,13 +105,13 @@ public class ArticleService {
 
         // l/1000 는 초 단위
         if (timeGap < 60) {
-            timeGapToString = Long.toString(timeGap) + "s";
+            timeGapToString = timeGap + "s";
         } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-            timeGapToString = Long.toString(timeGap / 60) + "m";
+            timeGapToString = timeGap / 60 + "m";
         } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-            timeGapToString = Long.toString(timeGap / 3600) + "h";
+            timeGapToString = timeGap / 3600 + "h";
         } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-            timeGapToString = Long.toString(timeGap / 84000) + "d";
+            timeGapToString = timeGap / 84000 + "d";
         }
 
         return GapTimeVo.builder()
@@ -123,7 +129,7 @@ public class ArticleService {
                 .content(article.getContent())
                 .dtype(article.getDtype())
                 .user(article.getUser())
-                .report(article.getReport() + 1)
+                .report(article.getReport() + 1L)
                 .createTime(article.getCreateTime())
                 .modifyTime(article.getModifyTime())
                 .hit(article.getHit())

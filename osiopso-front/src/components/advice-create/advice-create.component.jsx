@@ -106,7 +106,7 @@ const AdviceCreate = ()=> {
       console.log(advice)
       axios({
         method: "post",
-        url: "https://www.osiopso.site/api/feed/advice",
+        url: `${process.env.REACT_APP_AXIOS_URL}api/feed/advice`,
         data: {
           tags: advice.tags,
           content: advice.content,

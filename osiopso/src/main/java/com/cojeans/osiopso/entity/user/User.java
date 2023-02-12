@@ -3,7 +3,6 @@ package com.cojeans.osiopso.entity.user;
 import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.dto.user.UserDto;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,9 +11,7 @@ import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor @NoArgsConstructor
-@ToString
-@Getter
-@Builder
+@ToString @Getter @Setter @Builder
 @Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @DynamicInsert @DynamicUpdate
 public class User {
@@ -25,16 +22,17 @@ public class User {
 
     @Column(nullable = false)
     private String name;
-
+    
     @Column(nullable = false)
     private String email;
-
+    
     @Column(nullable = true)
     private int age;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String imageUrl;
 
     @Column(nullable = false)
@@ -118,7 +116,7 @@ public class User {
                 .id(this.getId())
                 .name(this.getName())
                 .email(this.getEmail())
-                .password(this.getPassword())
+//                .password(this.getPassword())
                 .age(this.getAge())
                 .gender(this.getGender())
                 .provider(this.getProvider())

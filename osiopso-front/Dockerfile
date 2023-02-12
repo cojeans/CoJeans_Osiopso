@@ -37,7 +37,25 @@
 
 #CMD ["npm", "start"]
 ###############################
+# FROM nginx:stable-alpine
+
+# WORKDIR /app
+
+# RUN mkdir ./build
+
+# ADD ./build ./build
+
+# RUN rm /etc/nginx/conf.d/default.conf
+
+# COPY ./nginx.conf /etc/nginx/conf.d
+
+# EXPOSE 3000
+
+# CMD [ "nginx","-g","daemon off;" ]
+
 FROM node:14-alpine
+
+#FROM node:16.18.0-alpine
 
 RUN mkdir /app
 WORKDIR /app

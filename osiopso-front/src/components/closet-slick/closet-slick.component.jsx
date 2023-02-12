@@ -3,57 +3,62 @@ import "slick-carousel/slick/slick-theme.css";
 
 import Slider from "react-slick";
 
-import { MdArrowBackIos, MdArrowForwardIos  } from "react-icons/md";
+// import { MdArrowBackIos, MdArrowForwardIos  } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/user/user.selector";
+import axios from "axios";
 
+import { ItemInfo } from "../closet/closet.styles";
 import { SlickItem } from "./closet-slick.styles";
-
 import {
 	ClosetItem,
 } from "../closet/closet.styles"
 import ClosetPreview from "../closet-preview/closet-preview.component"
 
-const SimpleSlider= () => {
+const SimpleSlider = ({ closetList, setSelectCloset }) => {
     const settings = {
       dots: false,
       infinite: true,
       slidesToShow: 3,
-      slidesToScroll: 3,
+      slidesToScroll: 1,
 	};
-		const thumbnails=['','','','']
+  const thumbnails = ['', '', '', '']
+  const Token = useSelector(selectUser)
+  const selectClothes = (id) => {
+    axios({
+			method: "post",
+        url: `${process.env.REACT_APP_AXIOS_URL}closet/${id}/all`,
+        data: [],
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+              },
+		}).then((res) => {
+			console.log(res.data,'😢')
+			setSelectCloset(res.data)
+		}).catch((err) => {
+			console.log(err)
+		})
+  }
 
     return (
       <div>
         <Slider {...settings}>
-          <SlickItem>
-						<ClosetItem>
-						<ClosetPreview thumbnails={ thumbnails }/>
-					</ClosetItem>
-          </SlickItem>
-          <SlickItem>
-            <ClosetItem>
-						<ClosetPreview thumbnails={ thumbnails }/>
-					</ClosetItem>
-          </SlickItem>
-          <SlickItem>
-            <ClosetItem>
-						<ClosetPreview thumbnails={ thumbnails }/>
-					</ClosetItem>
-          </SlickItem>
-          <SlickItem>
-            <ClosetItem>
-						<ClosetPreview thumbnails={ thumbnails }/>
-					</ClosetItem>
-          </SlickItem>
-          <SlickItem>
-            <ClosetItem>
-						<ClosetPreview thumbnails={ thumbnails }/>
-					</ClosetItem>
-          </SlickItem>
-          <SlickItem>
-            <ClosetItem>
-						<ClosetPreview thumbnails={ thumbnails }/>
-					</ClosetItem>
-          </SlickItem>
+          {
+            closetList.map((closet, idx) => {
+              return (
+              <SlickItem key={idx}>
+                <ClosetItem onClick={()=>selectClothes(closet.id)}>
+                    <ClosetPreview thumbnails={closet.thumbnails} />
+                  </ClosetItem>
+                  			<ItemInfo>
+                        <p>
+                          { closet.name }
+                        </p>
+                      </ItemInfo>
+              </SlickItem>
+            )
+            })
+          }
         </Slider>
       </div>
     );

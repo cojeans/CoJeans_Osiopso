@@ -1,32 +1,40 @@
 import { selectUser } from "../../store/user/user.selector"
 import { useSelector } from "react-redux"
-import { Fragment, useEffect } from "react"
+import { Fragment, useEffect, useState } from "react"
 
 import axios from "axios"
 
 import SimpleSlider from "../closet-slick/closet-slick.component"
+import DropArea from "../advice-comment-item-drop/advice-comment-item-drop.component"
+
 //style
 import {
-	CreatAdvicePage,
-	ClosetContainer,
-	ItemDropContainer,
-	InputContainer,
-	SliderContainer
+	ClothesContainer,
+	SliderContainer,
+	ImageContainer,
+	ItemDropContainer
 } from "./advice-component.styles"
 
 //style
 
+
+
 const AdviectComment = () => {
 	const Token = useSelector(selectUser)
+	const [closetList, setClosetList] = useState([])
+	const [selectCloset, setSelectCloset] = useState([])
+	const [targetItem, setTargetItem ] = useState('')
+	
 	const getUserCloset = () => {
 		axios({
 			method: "post",
-			url: `https://www.osiopso.site/api/closet/list?userId=5`,
+			url: `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=7`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },
 		}).then((res) => {
 			console.log(res)
+			setClosetList(res.data)
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -37,8 +45,26 @@ const AdviectComment = () => {
 	return (
 		<div>
 			<SliderContainer>
-				<SimpleSlider/>
+				<SimpleSlider
+					closetList={closetList}
+					setSelectCloset={ setSelectCloset }
+				/>
 			</SliderContainer>
+			<ClothesContainer>
+				{
+					selectCloset.map((cloth, idx) => {
+						return <ImageContainer key={idx} >
+							<img src={cloth.imageUrl} alt=""  onClick={()=>setTargetItem(cloth.imageUrl)}/>
+						</ImageContainer> 
+					})
+				}
+			</ClothesContainer>
+			<ItemDropContainer>
+				<DropArea
+					targetItem={ targetItem}
+				/>
+			</ItemDropContainer>
+
 		</div>
 		// <CreatAdvicePage>
 		// 		{/* 옷장이 올 자리입니다.  */}

@@ -18,7 +18,7 @@ const ClosetPreview = ({ thumbnails }) => {
 			{
 				tmpArray.map((prev, i) => {
 					if (prev < 10) {
-						return <PrevBox><div></div></PrevBox>
+						return <PrevBox key={ i }><div></div></PrevBox>
 					} else {
 					return (<PrevBox PrevBox key={i} >
 						<ImgPrevBox>

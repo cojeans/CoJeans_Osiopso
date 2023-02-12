@@ -107,14 +107,27 @@ public class CommentApiController {
         return new ResponseEntity(new ApiResponseDto(true, "reportArticle Success", null), HttpStatus.OK);
     }
 
+    @PutMapping("/up/{commentno}")
+    public ResponseEntity<?> upComment(@PathVariable("commentno") Long commentNo){
+        commentService.upComment(commentNo);
+        return new ResponseEntity(new ApiResponseDto(true, "upComment Success", null), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/down/{commentno}")
+    public ResponseEntity<?> downComment(@PathVariable("commentno") Long commentNo){
+        commentService.downComment(commentNo);
+        return new ResponseEntity(new ApiResponseDto(true, "downComment Success", null), HttpStatus.OK);
+    }
 
     // ====================== DELETE ========================
 
     @DeleteMapping("/{articleno}/{commentno}")
     public ResponseEntity<?> deleteComment(@PathVariable("articleno") Long articleNo,
                                            @PathVariable("commentno") Long commentNo,
-                                           @AuthenticationPrincipal UserDetail user){
-        if (commentService.deleteComment(articleNo, commentNo, user.getId())){
+                                           @AuthenticationPrincipal UserDetail user) {
+
+        if (commentService.deleteComment(articleNo, commentNo, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "deleteComment Success", null), HttpStatus.OK);
         } else {
             return new ResponseEntity(new ApiResponseDto(false, "deleteComment Fail", null), HttpStatus.NOT_ACCEPTABLE);

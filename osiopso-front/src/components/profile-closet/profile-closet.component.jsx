@@ -34,12 +34,12 @@ export function useBodyScrollLock() {
 const ProfileCloset = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
-	const checkClothesAdd = useSelector(selectClothes)
+	const check = useSelector(selectClothes)
 	const getClosetList = () => {
 		console.log('옷장리스트가져오기')
 		axios({
 					method: "post",
-					url: "https://www.osiopso.site/api/closet/mylist",
+					url: `${process.env.REACT_APP_AXIOS_URL}closet/mylist`,
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},
@@ -51,10 +51,7 @@ const ProfileCloset = () => {
 					console.log(err);
 				});
 	}
-	
-	useEffect(() => {
-			getClosetList()
-	}, [checkClothesAdd])
+
 	
 	console.log(closetList)
 
@@ -66,6 +63,10 @@ const ProfileCloset = () => {
 		setModalOpen(true);
 		lockScroll();
 	};
+
+	useEffect(() => {
+		getClosetList()
+	},[])
 
 	
 	return (

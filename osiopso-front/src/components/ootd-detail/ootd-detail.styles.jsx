@@ -157,3 +157,10 @@ export const CommentListWrapper = styled.div`
   width: 100%;;
   align-items: center;
 `
+export const ContentBox = styled.div`
+display: flex;
+width: 90%;
+height: 100%;
+margin: 10px 20px 10px;
+white-space: normal;
+`
