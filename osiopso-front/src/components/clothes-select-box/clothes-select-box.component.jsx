@@ -30,14 +30,16 @@ import {
   localPhoto,
 } from "../../store/clothes/clothes.selector";
 import Modal from "../modal/modal.component";
-
+import Test from "../test/test.component";
+const category = ['dress', 'jeans', 'shirt', 'shoes'] 
+const color = ['black', 'blue', 'red']
 const defaultOotdForm = {
   content: "",
   picture: "",
   tags: [],
 };
 
-const ClosetSelectBox = () => {
+const ClothesSelectBox = () => {
   const navigate = useNavigate();
   const Token = useSelector(selectUser);
   const saveData = useSelector(selectClothes);
@@ -49,7 +51,7 @@ const ClosetSelectBox = () => {
     navigate("update/");
   };
   const [ootdFormData, setOotdFormData] = useState(defaultOotdForm);
-
+  const [isAutoTag, setIsAutoTag] = useState(false); 
   const [modalOpen, setModalOpen] = useState(false);
   const { lockScroll, openScroll } = useBodyScrollLock();
 
@@ -58,6 +60,9 @@ const ClosetSelectBox = () => {
     setModalOpen(true);
     lockScroll();
   };
+  const handleAutoTag = () => {
+    setIsAutoTag(!isAutoTag)
+  }
   const handleSubmit = () => {
     // console.log('저장?')
     // console.log(closetField)
@@ -100,7 +105,9 @@ const ClosetSelectBox = () => {
   const FashionAi = async () => {
     console.log(exampleImage)
     // const model = await loadGraphModel(AiModel)
-    const model = await loadGraphModel("./model/model.json");
+    // const model = await loadGraphModel("model/model.json");
+    const modelpath = require('../../../src/model/model.json')
+    const model = await loadGraphModel(modelpath);
     const image = new Image(96, 96);
     // const newimg = buffer.from(saveData, 'base64')
     // const t = tf.node.decdeImage(newimg)
@@ -108,6 +115,7 @@ const ClosetSelectBox = () => {
     // const b = atob(saveData)
     // console.log(b)
     // image.src = saveData;
+    image.crossOrigin = 'anonymous'
     image.src = exampleImage;
     tf.browser.fromPixels(image).print();
     let tfTensor = tf.browser.fromPixels(image);
@@ -120,7 +128,8 @@ const ClosetSelectBox = () => {
 
     const pred2 = model.predict(tfTensor)[1];
     const temp2 = Array.from(pred2.argMax(1).dataSync());
-    console.log(temp, temp2);
+		console.log(category[temp])
+		console.log(color[temp2])
   };
   // FashionAi()
   return (
@@ -147,8 +156,8 @@ const ClosetSelectBox = () => {
       </ImgContainer>
       <StyleTagButton
         onClick={() => {
-          // showModal();
-          FashionAi();
+          showModal();
+          handleAutoTag();
         }}
       >
         Add Tag
@@ -162,6 +171,7 @@ const ClosetSelectBox = () => {
           setOotdFormData={setOotdFormData}
         />
       )}
+      <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/>
       <LinkContainer to="/mypage">
         <Button onClick={handleSubmit}>저장</Button>
       </LinkContainer>
@@ -169,4 +179,4 @@ const ClosetSelectBox = () => {
   );
 };
 
-export default ClosetSelectBox;
+export default ClothesSelectBox;

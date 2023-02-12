@@ -15,6 +15,7 @@ import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
 import JoinComplete from "./routes/join/join-complete.component";
 import Test from "./components/test/test.component"
+import ClothesSelectBox from "./components/clothes-select-box/clothes-select-box.component"
 
 
 import "./App.scss";
@@ -44,6 +45,7 @@ function App() {
         <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
         <Route path='joincomplete' element={<JoinComplete/>}/>
         <Route path='test' element={<Test/>}/>
+        <Route path='mypage/add-clothes/selectbox/' element={<ClothesSelectBox/>}/>
         
       </Route>
     </Routes>
