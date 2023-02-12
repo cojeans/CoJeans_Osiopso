@@ -7,11 +7,10 @@ import axios from "axios"
 import SimpleSlider from "../closet-slick/closet-slick.component"
 //style
 import {
-	CreatAdvicePage,
-	ClosetContainer,
-	ItemDropContainer,
-	InputContainer,
-	SliderContainer
+	ClothesContainer,
+	SliderContainer,
+	ImageContainer,
+	ItemDropContainer
 } from "./advice-component.styles"
 
 //style
@@ -21,6 +20,7 @@ import {
 const AdviectComment = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
+	const [selectCloset, setSelectCloset] = useState([])
 	
 	const getUserCloset = () => {
 		axios({
@@ -43,9 +43,19 @@ const AdviectComment = () => {
 		<div>
 			<SliderContainer>
 				<SimpleSlider
-					closetList={ closetList}
+					closetList={closetList}
+					setSelectCloset={ setSelectCloset }
 				/>
 			</SliderContainer>
+			<ClothesContainer>
+				{
+					selectCloset.map((cloth, idx) => {
+						return <ImageContainer  key= {idx} ><img src={cloth.imageUrl } alt="" /></ImageContainer> 
+					})
+				}
+			</ClothesContainer>
+			<ItemDropContainer></ItemDropContainer>
+
 		</div>
 		// <CreatAdvicePage>
 		// 		{/* 옷장이 올 자리입니다.  */}
