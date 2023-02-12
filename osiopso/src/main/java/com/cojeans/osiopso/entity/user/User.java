@@ -46,10 +46,10 @@ public class User {
     private String providerId;
 
     @Column
-    private String bio; //자기소개 or 상태메세지
+    private String bio=""; //자기소개 or 상태메세지
 
     @Column
-    private Boolean isProfilePublic; //프로필 공개여부
+    private Boolean isProfilePublic=true; //프로필 공개여부 기본값 true
 
     @Column @Enumerated(EnumType.STRING)
     private Role role; //역할. USER ADMIN 둘
