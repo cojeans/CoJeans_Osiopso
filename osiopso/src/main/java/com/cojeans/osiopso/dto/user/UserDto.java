@@ -4,6 +4,7 @@ import com.cojeans.osiopso.entity.user.AuthProvider;
 import lombok.*;
 
 @Getter @Setter @Builder @AllArgsConstructor @NoArgsConstructor
+@ToString
 public class UserDto {
 
     private Long id;
@@ -26,5 +27,6 @@ public class UserDto {
 
     private String providerId;
 
+    private boolean Followed;
 
 }

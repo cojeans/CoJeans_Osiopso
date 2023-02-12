@@ -8,21 +8,27 @@ import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterStyleTagRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterTpoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
+import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.dto.response.tag.HotTagResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
 import com.cojeans.osiopso.dto.user.Gender;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentLike;
 import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.Tag;
+import com.cojeans.osiopso.entity.user.Follow;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
+import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +57,7 @@ public class OotdService {
     private final ArticleTagRepositoryImpl articleTagRepositoryImpl;
     private final ArticleService articleService;
     private final CommentLikeRepository commentLikeRepository;
+    private final OotdRepositoryImpl ootdRepositoryImpl;
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -139,9 +146,7 @@ public class OotdService {
                     .id(ootd.getId())
                     .hit(ootd.getHit())
                     .content(ootd.getContent())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(responsePhoto.get(0).getImageUrl())
-                            .build())
+                    .imageUrl(responsePhoto.get(0).getImageUrl())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                     .time(gapTime.getTimeGapToString())
                     .pastTime(gapTime.getPastTime())
@@ -178,8 +183,11 @@ public class OotdService {
             articleLikeResponseDtoList.add(ArticleLikeResponseDto.builder()
                     .id(al.getId())
                     .userId(al.getUser().getId())
+                    .userName(al.getUser().getName())
                     .build());
         }
+
+
 
 
         // 댓글 가져오기
@@ -209,11 +217,25 @@ public class OotdService {
             List<Cocomment> cocommentList = cocommentRepository.findAllByRootId(comment.getId());
             List<CocommentResponseDto> cocommentResponseDtoList = new ArrayList<>();
 
+
+            // 댓글 좋아요 가져오기
+            List<CommentLike> commentLikeList = commentLikeRepository.findAllByComment_Id(comment.getId());
+            List<CommentLikeResponseDto> commentLikeResponseDtoList = new ArrayList<>();
+            System.out.println(comment.getId());
+            for (CommentLike cl : commentLikeList) {
+                commentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                        .userId(cl.getUser().getId())
+                        .commentId(cl.getComment().getId())
+                        .userName(cl.getUser().getName())
+                        .build());
+            }
+
+
             for (Cocomment cocomment : cocommentList) {
                 boolean likeCoco;
-                if (cocommentResponseDtoList.size() == 3) {
-                    break;
-                }
+//                if (cocommentResponseDtoList.size() == 3) {
+//                    break;
+//                }
 
                 // 좋아요가 눌려있다면
                 if (commentLikeRepository.findByComment_Id(cocomment.getId()) != null) {
@@ -225,13 +247,29 @@ public class OotdService {
                 Comment getComment = commentRepository.findById(cocomment.getComment().getId()).orElseThrow();
                 GapTimeVo cocommentGapTime = articleService.getGapTime(getComment, date);
 
-                // 최초로 불러올 때에는 대댓글 3 개만 가져오기.
+
+                // 대댓글 좋아요 가져오기
+                List<CommentLike> cocommentLikeList = commentLikeRepository.findAllByComment_Id(cocomment.getComment().getId());
+                List<CommentLikeResponseDto> cocommentLikeResponseDtoList = new ArrayList<>();
+                System.out.println(cocomment.getId());
+                for (CommentLike cl : cocommentLikeList) {
+                    cocommentLikeResponseDtoList.add(CommentLikeResponseDto.builder()
+                            .userId(cl.getUser().getId())
+                            .commentId(cl.getComment().getId())
+                            .userName(cl.getUser().getName())
+                            .build());
+                }
+
+                System.out.println(cocomment.getMentionId());
+
+
                 cocommentResponseDtoList.add(CocommentResponseDto.builder()
                         .commentId(getComment.getId())
                         .content(getComment.getContent())
                         .userId(getComment.getUser().getId())
                         .report(getComment.getReport())
                         .like(likeCoco)
+                        .commentLikes(cocommentLikeResponseDtoList)
                         .imageUrl(comment.getUser().getImageUrl())
                         .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
@@ -239,6 +277,7 @@ public class OotdService {
                         .depth(cocomment.getDepth())
                         .rootId(cocomment.getRootId())
                         .mentionId(cocomment.getMentionId())
+                        .mentionName(cocomment.getMentionName())
                         .build());
             }
 
@@ -247,7 +286,9 @@ public class OotdService {
                     .content(comment.getContent())
                     .userId(comment.getUser().getId())
                     .report(comment.getReport())
+                    .cocommentCnt((long) cocommentRepository.findAllByRootId(comment.getUser().getId()).size())
                     .like(likeCo)
+                    .commentLikes(commentLikeResponseDtoList)
                     .imageUrl(comment.getUser().getImageUrl())
                     .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
@@ -279,8 +320,10 @@ public class OotdService {
         return OotdDetailResponseDto.builder()
                 .id(ootd.getId())
                 .userId(ootd.getUser().getId())
+                .userName(ootd.getUser().getName())
                 .createTime(ootd.getCreateTime())
                 .modifyTime(ootd.getModifyTime())
+                .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
                 .photos(photoResponseDtoList)
                 .tags(tagResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)
@@ -535,25 +578,61 @@ public class OotdService {
     // 내림차순 정렬 ~ 4등까지 -> 해시태그 탭 선택지로 만들기
     // + 이후 ? 해당 탭을 누르면 좋아요를 기준으로 인기글 5개 뽑기
 
-    public List hotIssue() {
+    public List<HotTagResponseDto> hotIssue() {
         List<Long> list = articleTagRepositoryImpl.findByArticleId(LocalDate.now());
-        List<HotIssueResponseDto> result = new ArrayList<>();
+        List<HotTagResponseDto> result = new ArrayList<>();
         for(Long id : list){
             System.out.println("id : ----- " + id);
-            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
-            Ootd ootd = ootdRepository.findById(id).orElseThrow();
 
-            HotIssueResponseDto responseDto = HotIssueResponseDto.builder()
-                    .id(ootd.getId())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(ap.getImageUrl())
-                            .build())
-                    .hit(ootd.getHit())
-                    .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
-                    .build();
-
-            result.add(responseDto);
+            Tag tag = tagRepository.findById(id).orElseThrow();
+            result.add(HotTagResponseDto.builder()
+                    .id(tag.getId())
+                    .keyword(tag.getKeyword())
+                    .build());
         }
+        return result;
+    }
+
+    public List<HotOotdResponseDto> hotIssueList(Long tagId) {
+        // 특정 태그를 포함하는 게시물 중 최신순으로?인기순으로?
+        List<ArticleTag> articleTags = articleTagRepository.findTop8ByTagIdOrderByIdDesc(tagId);
+        List<HotOotdResponseDto> result = new ArrayList<>();
+
+        for (ArticleTag at : articleTags) {
+            Ootd ootd = ootdRepository.findById(at.getArticle().getId()).orElseThrow();
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(ootd.getId());
+            result.add(HotOotdResponseDto.builder()
+                            .id(ootd.getId())
+                            .imageUrl(ap.getImageUrl())
+                    .build());
+        }
+
+        return result;
+    }
+    public List<OotdListResponseDto> followOotd(UserDetail userDetail) {
+//        select * from article
+//        where user_id
+//        in (select following_id from follow where follower_id = 2)
+//        order by id desc;
+        List<Article> articles = ootdRepositoryImpl.findByUserId(userDetail.getId());
+        List<OotdListResponseDto> result = new ArrayList<>();
+
+        Date date = new Date();
+
+        for (Article article : articles) {
+            GapTimeVo gapTime = articleService.getGapTime(article, date);
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(article.getId());
+
+            result.add(OotdListResponseDto.builder()
+                    .id(article.getId())
+                    .pastTime(gapTime.getPastTime())
+                    .time(gapTime.getTimeGapToString())
+                    .userId(article.getUser().getId())
+                    .imageUrl(ap.getImageUrl())
+                    .hit(article.getHit())
+                    .build());
+        }
+
         return result;
     }
 }

@@ -47,13 +47,15 @@ public class MainApiController {
     // 내림차순 정렬 ~ 4등까지 -> 해시태그 탭 선택지로 만들기
     // + 이후 ? 해당 탭을 누르면 좋아요를 기준으로 인기글 5개 뽑기
     @GetMapping("/preview")
-    @Operation(summary = "요즘 인기있는 스타일 태그들", description = "인기 태그 게시물들을 보여줍니다.")
+    @Operation(summary = "요즘 인기있는 스타일 태그들", description = "인기 태그 5개를 보여줍니다.")
     public ResponseEntity<?> hotIssue() {
         return new ResponseEntity(new ApiResponseDto(true, "hotIssue Success", ootdService.hotIssue()), HttpStatus.OK);
     }
 
-    // 3. OOTD 팔로잉
-    // 여기는 피드 .. 인데 .. 흠 .............
-    // 일단 필터링만 구현해봅시다.
-    // 어떻게 이을 것인가 ....
+    // 특정 태그를 포함하는 Ootd 게시물 최신순 8개
+    @GetMapping("/preview/{tagid}")
+    public ResponseEntity<?> hotIssueList(@PathVariable (name = "tagid") Long tagId){
+        System.out.println("Preview : " + tagId);
+        return new ResponseEntity(new ApiResponseDto(true, "hotIssueList Success", ootdService.hotIssueList(tagId)), HttpStatus.OK);
+    }
 }

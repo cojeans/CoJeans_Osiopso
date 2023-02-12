@@ -65,9 +65,9 @@ public class ClosetApiController {
 
     @PostMapping("/list")
     @Operation(summary = "다른 사용자의 옷장 리스트 조회", description = "선택한 사용자의 옷장 리스트를 조회합니다.")
-    public ResponseEntity<List<ClosetResponseDto>> listCloset(@RequestParam String email, @AuthenticationPrincipal UserDetail user){
-        LOGGER.info("listCloset() 호출 : " + email);
-        List<ClosetResponseDto> list = closetService.listCloset(email);
+    public ResponseEntity<List<ClosetResponseDto>> listCloset(@RequestParam Long userId, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("listCloset() 호출 : " + userId);
+        List<ClosetResponseDto> list = closetService.listCloset(userId);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

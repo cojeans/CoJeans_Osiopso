@@ -11,9 +11,11 @@ import {
   UpperCommentContainer,
   UpperupperCommentContainer,
 } from "./ootd.styles";
-import { ReactComponent as Filter } from "../../assets/filter.svg";
+
+import { RiFilter2Fill } from "react-icons/ri";
+
 import { ReactComponent as Comment } from "../../assets/comment.svg";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 
 import axios from 'axios'
@@ -21,6 +23,7 @@ import Modal from '../modal/modal.component'
 
 import { useEffect, useState } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
+
 
 const defaultOotdForm = {
   content: '',
@@ -58,7 +61,7 @@ const Ootd = () => {
   const getOotdAxios = () => {
     axios({
       method: "get",
-      url: "http://localhost:8080/api/feed/ootd",
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/ootd`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -86,7 +89,7 @@ const Ootd = () => {
           <h3>팔로잉</h3>
         </OotdCategory>
         <FilterContainer>
-          <Filter onClick={showModal}/>
+          <RiFilter2Fill onClick={showModal}/>
         </FilterContainer>
       </OotdTopBar>
 
@@ -94,7 +97,7 @@ const Ootd = () => {
         {ootdArticle.map((el, idx) => {
           return (
             <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
-              <img src={el.photo.imageUrl} alt="" />
+              <img src={el.imageUrl} alt="" />
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>
@@ -109,7 +112,7 @@ const Ootd = () => {
         })}
       </OotdList>
       {
-        modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll} ootdFormData={ootdFormData} setOotdFormData={setOotdFormData} />
+        modalOpen && <Modal page={ 2 } setModalOpen={setModalOpen} openScroll={openScroll} ootdFormData={ootdFormData} setOotdFormData={setOotdFormData} />
       }
     </TopDiv>
   );

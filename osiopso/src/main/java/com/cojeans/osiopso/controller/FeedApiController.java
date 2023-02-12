@@ -5,6 +5,7 @@ import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.AdviceService;
 import com.cojeans.osiopso.service.article.ArticleService;
@@ -28,6 +29,7 @@ import java.util.List;
 @RequestMapping("/feed")
 @Tag(name = "게시글 관련 API")
 public class FeedApiController {
+    private final ArticleRepository articleRepository;
 //    private static final String SUCCESS = "success";
 //    private static final String FAIL = "fail";
 
@@ -145,6 +147,11 @@ public class FeedApiController {
         return new ResponseEntity(new ApiResponseDto(true, "filterOotd Success", ootdListResponseDtos), HttpStatus.OK);
     }
 
+    // 현재 로그인한 유저가 팔로잉 중인 사람들의 ootd만 보여주기
+    @GetMapping("/ootd/follow")
+    public ResponseEntity<?> followOotd(@AuthenticationPrincipal UserDetail userDetail){
+        return new ResponseEntity(new ApiResponseDto(true, "followOotdList Success", ootdService.followOotd(userDetail)), HttpStatus.OK);
+    }
 
     // ====================== UPDATE ========================
     @PutMapping("/ootd/{articleno}")
@@ -169,11 +176,18 @@ public class FeedApiController {
         }
     }
 
+    @PutMapping("/report/{articleno}")
+    public ResponseEntity<?> reportArticle(@PathVariable("articleno") Long articleNo){
+        articleService.reportArticle(articleNo);
+        return new ResponseEntity(new ApiResponseDto(true, "reportArticle Success", null), HttpStatus.OK);
+    }
+
 
     // ====================== DELETE ========================
     @DeleteMapping("/article/{articleno}")
     public ResponseEntity<?> deleteArticle(@PathVariable("articleno") Long articleNo,
                                            @AuthenticationPrincipal UserDetail user) {
+
         if (articleService.deleteArticle(articleNo, user.getId())) {
             return new ResponseEntity(new ApiResponseDto(true, "deleteArticle Success", null), HttpStatus.OK);
         } else {

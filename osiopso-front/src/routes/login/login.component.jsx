@@ -55,7 +55,7 @@ const Login = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: 'http://localhost:8080/api/user/login',
+        url: `${process.env.REACT_APP_AXIOS_URL}user/login`,
         data: {
           email,
           password,
@@ -103,10 +103,10 @@ const Login = () => {
         />
         
         <ButtonsContainer>
-          <Button type='submit'>Sign In</Button>
-          <button onClick={LoginFunc}>
+          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
+          {/* <button onClick={LoginFunc}>
             test
-          </button>
+          </button> */}
         </ButtonsContainer>
     </SignInContainer>
   );

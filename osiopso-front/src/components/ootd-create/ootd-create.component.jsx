@@ -93,10 +93,11 @@ const OotdCreate = () => {
   //formdata형식의 value는 무조건 스트링으로 변환된다.
   // blob객체와 텍스트 형식 데이터만 append할 수 있는 것 같다. (File도 blob객체에 속합)
   // 그렇기에 formdata 타입으로 json타입 데이터를 보낼 때에는 blob함수로 감싸고, 두번째 인자로type: 'application/json'을 같이 넣어줘야 한다.
+    console.log(ootd.tags)
 
     axios({
       method: "post",
-      url: "http://localhost:8080/api/feed/ootd",
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/ootd`,
       data: {
         tags: ootd.tags,
         content: ootd.content,
@@ -192,7 +193,7 @@ const OotdCreate = () => {
         <button onClick={submitOotdCreate}>저장</button>
       </BottomContainer>
       {
-        modalOpen && <Modal page={ false} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData} setOotdFormData = {setOotdFormData} />
+        modalOpen && <Modal page={ 2} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
 			}
     </div>
   );

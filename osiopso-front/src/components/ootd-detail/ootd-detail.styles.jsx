@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { HashLink } from 'react-router-hash-link';
+
 
 export const RoundProfileImage = styled.div`
 
@@ -138,3 +140,20 @@ export const IconMessageBox = styled.div`
       font-size:13px;
     }
   `
+
+export const CommentIcon = styled(HashLink)`
+    display :flex;
+    align-items: center;
+    width:50%;
+    justify-content: space-evenly;
+    div{
+      font-size:13px;
+    }
+`
+
+export const CommentListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;;
+  align-items: center;
+`

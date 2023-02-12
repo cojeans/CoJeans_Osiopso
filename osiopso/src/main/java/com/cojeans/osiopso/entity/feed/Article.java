@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -42,6 +43,7 @@ public class Article {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    @ColumnDefault(value = "0")
     private Long report;
 
     @Column(insertable = false, updatable = false)

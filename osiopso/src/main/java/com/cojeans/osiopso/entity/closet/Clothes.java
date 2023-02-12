@@ -14,7 +14,10 @@ public class Clothes {
 
     private String category;
 
-    private String url;
+//  private String url;
+
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")

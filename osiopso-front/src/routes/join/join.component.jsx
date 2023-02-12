@@ -38,7 +38,7 @@ const Join = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: 'http://localhost:8080/api/user/signUp',
+        url: `${process.env.REACT_APP_AXIOS_URL}user/signUp`,
         data: {
           email: email,
           name: displayName,
@@ -96,10 +96,7 @@ const Join = () => {
 				required 
 				onChange={handleChange}name="confirmPassword" 
 				value={confirmPassword}/>
-				<Button>가입하기</Button>
-				<button onClick={JoinFunc}>
-            test
-          </button>
+				<Button onClick={JoinFunc}>가입하기</Button>
 			</form>
 		</SignUpContainer>
 	)

@@ -14,9 +14,11 @@ public class CommentResponseDto {
     private String userName;
     private String imageUrl;
     private Float pastTime;
-    private List<CocommentResponseDto> cocoments;
     private boolean like;
     private String time;
     private String content;
+    private Long cocommentCnt;
     private Long report;
+    private List<CommentLikeResponseDto> commentLikes;
+    private List<CocommentResponseDto> cocoments;
 }

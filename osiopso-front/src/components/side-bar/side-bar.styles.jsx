@@ -12,7 +12,7 @@ cursor: pointer;
 `
 
 export const NavbarContainer = styled.nav`
-width: 310px;
+width: 230px;
 position: fixed;
 z-index: -1;
 top: 0;

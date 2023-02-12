@@ -57,7 +57,7 @@ const AdviceDetail = () => {
   const getDetailAdvice = ()=>{
     axios({
       method: "get",
-      url: `http://localhost:8080/api/feed/advice/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/advice/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`
       }
@@ -91,7 +91,7 @@ const AdviceDetail = () => {
   const deleteAdvice = ()=> {
     axios({
       method: "delete",
-      url: `http://localhost:8080/api/feed/article/${id}`,
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/article/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }

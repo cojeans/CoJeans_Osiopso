@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -107,7 +106,7 @@ const AdviceCreate = ()=> {
       console.log(advice)
       axios({
         method: "post",
-        url: "http://localhost:8080/api/feed/advice",
+        url: `${process.env.REACT_APP_AXIOS_URL}api/feed/advice`,
         data: {
           tags: advice.tags,
           content: advice.content,
@@ -196,7 +195,7 @@ const AdviceCreate = ()=> {
           <button onClick={submitAdviceCreate}>저장</button>
         </BottomContainer>
         {
-          modalOpen && <Modal page={ false} setModalOpen={setModalOpen} openScroll={openScroll}adviceFormData={ adviceFormData} setAdviceFormData = {setAdviceFormData} />
+          modalOpen && <Modal page={ 3} setModalOpen={setModalOpen} openScroll={openScroll}adviceFormData={ adviceFormData} setAdviceFormData = {setAdviceFormData} />
               }
       </div>
         // <div>

@@ -10,6 +10,7 @@ import {
 import { ReactComponent as BackButton } from '../../assets/back.svg'
 import { SideBar } from "../side-bar/side-bar.component"
 
+
 const TopBar = () => {
 	const navigate = useNavigate();
 

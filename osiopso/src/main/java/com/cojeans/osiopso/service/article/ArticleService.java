@@ -8,6 +8,8 @@ import com.cojeans.osiopso.entity.feed.Article;
         import com.cojeans.osiopso.entity.feed.ArticleTag;
 import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.comment.CocommentRepository;
+import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
         import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class ArticleService {
     private final ArticlePhotoRepository articlePhotoRepository;
     private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
+    private final CocommentRepository cocommentRepository;
+    private final ArticleLikeRepository articleLikeRepository;
 
     // 1번 article 을 지울 때..
     // 1번 article 을 외래키로 가진 article_tag 조회
@@ -51,11 +56,21 @@ public class ArticleService {
         articlePhotoRepository.deleteByArticle_Id(articleNo);
         Long articleId = articleRepository.findById(articleNo).orElseThrow().getId();
 
+        // 게시물과 관련된 좋아요들 삭제
+        articleLikeRepository.deleteAllByArticle_Id(articleNo);
+
+        // 댓글과 관련된 좋아요들 삭제
+        commentLikeRepository.deleteAllByArticle_Id(articleNo);
+
+        // 게시물과 관련된 대댓글들 삭제
+        cocommentRepository.deleteAllByArticle_Id(articleNo);
+
         // 게시물과 관련된 댓글들 삭제
-        commentRepository.deleteByArticle_Id(articleNo);
+        commentRepository.deleteAllByArticle_Id(articleNo);
 
         // 게시물 삭제
         articleRepository.deleteById(articleId);
+        // gitpull 됐음
 
         // 확실히 지워진 경우 (삭제한 articleNo로 해당 게시물을 찾을 수 없어야 한다.)
         if (articleRepository.findById(articleNo).isEmpty()) {
@@ -97,5 +112,21 @@ public class ArticleService {
                 .pastTime(pastTime)
                 .timeGapToString(timeGapToString)
                 .build();
+    }
+
+    public void reportArticle(Long articleNo) {
+        Article article = articleRepository.findById(articleNo).orElseThrow();
+
+        articleRepository.save(Article.builder()
+                .id(articleNo)
+                .dtype(article.getDtype())
+                .content(article.getContent())
+                .dtype(article.getDtype())
+                .user(article.getUser())
+                .report(article.getReport() + 1)
+                .createTime(article.getCreateTime())
+                .modifyTime(article.getModifyTime())
+                .hit(article.getHit())
+                .build());
     }
 }

@@ -23,7 +23,7 @@ export const NavigationContainer = styled.div`
 	right: 0;
 	bottom: 0; 
 	
-	}
+	
 `
 
 export const LogoContainer = styled(NavLink)`
@@ -50,8 +50,8 @@ export const LogoContainer = styled(NavLink)`
 	
   &.active {
 		svg{
-			fill:#8A689A;
-			stroke:#8A689A
+			fill:#BCF0E0;
+			stroke:#BCF0E0
 		}
   }
 	
@@ -62,7 +62,7 @@ export const BodyContainer = styled.div`
 	width: 100%;
 	max-width:430px;
 	margin:auto;
-	min-height:100%;
+	min-height:100vh;
 	display:flex;
 	flex-direction:column;
 `
@@ -119,8 +119,8 @@ export const HashContainer = styled.div`
 	
   &.active {
 		svg{
-			fill:#8A689A;
-			stroke:#8A689A
+			fill:#BCF0E0;
+			stroke:#BCF0E0
 		}
   }
 `
@@ -149,8 +149,8 @@ export const HashLinkContainer = styled(HashLink)`
 	
   &.active {
 		svg{
-			fill:#8A689A;
-			stroke:#8A689A
+			fill:#BCF0E0;
+			stroke:#BCF0E0
 		}
   }
 	

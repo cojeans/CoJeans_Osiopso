@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectUser } from '../../store/user/user.selector'
 import { userInfo } from '../../store/user/user.reducer'
 
+import { useNavigate } from 'react-router-dom'
+
 import axios from 'axios'
 import './home.styles'
 
@@ -54,11 +56,13 @@ const Home = () =>{
 
 	const dispatch = useDispatch()
 
+	const navigate = useNavigate()
+
 	// 로그인 하고 홈에 들어오면 현재 유저 정보를 전역 상태로 저장합니다.
 	const getCurrentUser = () => {
     axios({
       method: "get", 
-      url: 'http://localhost:8080/api/user',
+      url: `${process.env.REACT_APP_AXIOS_URL}user`,
       headers: {
           Authorization: `Bearer ${Token.token}`,
       }
@@ -66,6 +70,7 @@ const Home = () =>{
       .then((res) => {
 				console.log(res.data)
 				const payload = {
+					id: res.data.id,
 					name: res.data.name,
 					age: res.data.age,
 					gender: res.data.gender,
@@ -79,7 +84,12 @@ const Home = () =>{
 	}
 
 	useEffect(() => {
-		getCurrentUser()
+		if (!Token.token) {
+			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+			navigate('/login')
+		} else {
+			getCurrentUser()
+		}
 	},[])
 
 	return (
@@ -102,9 +112,9 @@ const Home = () =>{
 			</HomeOotdImage>
 			{/* <DoSwiper></DoSwiper> */}
 			
-			<SelectedTagContainer>
+			{/* <SelectedTagContainer>
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
-			</SelectedTagContainer>
+			</SelectedTagContainer> */}
 
 			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
 			<HomeOotdImage>

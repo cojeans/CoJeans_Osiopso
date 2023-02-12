@@ -2,7 +2,8 @@ import { Fragment, useState } from "react"
 
 import {
 	PrevBox,
-	PrevContainer
+	PrevContainer,
+	ImgPrevBox
 } from "./closet-preview.styles"
 
 const ClosetPreview = ({ thumbnails }) => {
@@ -12,16 +13,19 @@ const ClosetPreview = ({ thumbnails }) => {
 			tmpArray = [...tmpArray, i]
 		}
 	}
-	console.log(tmpArray)
 	return (
 		<PrevContainer>
-				{
-					tmpArray.map((prev, i) => {
-						return <PrevBox key={i}>
-							<div>
-							</div>
-						</PrevBox>
-					})
+			{
+				tmpArray.map((prev, i) => {
+					if (prev < 10) {
+						return <PrevBox key={ i }><div></div></PrevBox>
+					} else {
+					return (<PrevBox PrevBox key={i} >
+						<ImgPrevBox>
+							<img src={prev} alt="" />
+						</ImgPrevBox>
+					</PrevBox>)}
+				})
 				}
 		</PrevContainer>
 	)

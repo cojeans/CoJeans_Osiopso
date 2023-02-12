@@ -1,12 +1,16 @@
 package com.cojeans.osiopso.service.user;
 
 import com.cojeans.osiopso.dto.response.feed.UserSearchResponseDto;
+import com.cojeans.osiopso.dto.user.FollowResponseDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
 import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
+import com.cojeans.osiopso.entity.user.Follow;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
+import com.cojeans.osiopso.security.UserDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,9 @@ public class UserService {
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private FollowRepository followRepository;
 
     public User saveUser(SignUpRequestDto signUpRequest){
         User result = userRepository.save(User.builder()
@@ -62,6 +69,15 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public UserDto getUser(Long userId, UserDetail userDetail){
+        UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
+
+        if(followRepository.findByFollowingIdAndFollowerId(userId, userDetail.getId()) != null) userDto.setFollowed(true);
+        else userDto.setFollowed(false);
+        System.out.println("유저디티오^_^ : " + userDto);
+        return userDto;
     }
 
     @Transactional
@@ -101,5 +117,63 @@ public class UserService {
         }
 
         return userList;
+    }
+
+    @Transactional
+    public void followUser(Long followingId, UserDetail userDetail) {
+        // 아직 팔로우하지 않는 경우 해당 유저 팔로우
+        if(followRepository.findByFollowingIdAndFollowerId(followingId, userDetail.getId()) == null) {
+            followRepository.save(Follow.builder()
+                    .following(userRepository.findById(followingId).orElseThrow())
+                    .follower(userRepository.findById(userDetail.getId()).orElseThrow())
+                    .build());
+        } else { // 이미 팔로우한 경우 언팔로우
+            followRepository.deleteByFollowingIdAndFollowerId(followingId, userDetail.getId());
+        }
+
+    }
+
+//    @Transactional
+//    public void unfollowUser(String email, UserDetail userDetail) {
+//        User following  = userRepository.findByEmail(email).orElseThrow();
+//        User follower = userRepository.findById(userDetail.getId()).orElseThrow();
+//
+//        followRepository.deleteByFollowingIdAndFollowerId(following.getId(), follower.getId());
+//    }
+
+    public List<FollowResponseDto> listFollower(Long followingId) {
+        User targetUser = userRepository.findById(followingId).orElseThrow();
+
+        List<Follow> followers = followRepository.findAllByFollowingId(targetUser.getId());
+        List<FollowResponseDto> result = new ArrayList<>();
+
+        for (Follow follower : followers) {
+            User user = userRepository.findById(follower.getFollower().getId()).orElseThrow();
+            result.add(FollowResponseDto.builder()
+                            .id(user.getId())
+                            .name(user.getName())
+                            .email(user.getEmail())
+                            .imageUrl(user.getImageUrl())
+                    .build());
+        }
+        return result;
+    }
+
+    public List<FollowResponseDto> listFollowing(Long followingId) {
+        User targetUser = userRepository.findById(followingId).orElseThrow();
+
+        List<Follow> followings = followRepository.findAllByFollowerId(targetUser.getId());
+        List<FollowResponseDto> result = new ArrayList<>();
+
+        for (Follow following : followings) {
+            User user = userRepository.findById(following.getFollowing().getId()).orElseThrow();
+            result.add(FollowResponseDto.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .imageUrl(user.getImageUrl())
+                    .build());
+        }
+        return result;
     }
 }

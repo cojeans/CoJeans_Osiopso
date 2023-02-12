@@ -8,8 +8,8 @@ export const ItemContainer = styled.div`
 `
 
 export const ClosetItem = styled.div`
-	width:8em;
-	height:8em;
+	width:8rem;
+	height:8rem;
 	border-radius:10px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 	p{

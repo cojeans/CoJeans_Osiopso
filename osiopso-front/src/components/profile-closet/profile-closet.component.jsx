@@ -15,6 +15,7 @@ import {
 	PlusCloset
 } from "./profile-closet.styles"
 import { ClosetItem } from "../closet/closet.styles"
+import { selectClothes } from '../../store/clothes/clothes.selector';
 
 
 export function useBodyScrollLock() {
@@ -33,11 +34,12 @@ export function useBodyScrollLock() {
 const ProfileCloset = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
-
+	const check = useSelector(selectClothes)
 	const getClosetList = () => {
+		console.log('옷장리스트가져오기')
 		axios({
 					method: "post",
-					url: "http://localhost:8080/api/closet/mylist",
+					url: `${process.env.REACT_APP_AXIOS_URL}closet/mylist`,
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},
@@ -49,10 +51,7 @@ const ProfileCloset = () => {
 					console.log(err);
 				});
 	}
-	
-	useEffect(() => {
-			getClosetList()
-	}, [])
+
 	
 	console.log(closetList)
 
@@ -64,6 +63,10 @@ const ProfileCloset = () => {
 		setModalOpen(true);
 		lockScroll();
 	};
+
+	useEffect(() => {
+		getClosetList()
+	},[])
 
 	
 	return (
