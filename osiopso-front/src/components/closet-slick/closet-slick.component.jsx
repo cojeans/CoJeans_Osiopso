@@ -47,7 +47,7 @@ const SimpleSlider = ({ closetList, setSelectCloset }) => {
             closetList.map((closet, idx) => {
               return (
               <SlickItem key={idx}>
-                <ClosetItem onClick={()=>selectClothes(closet.id)}>
+                <ClosetItem page={'advice'} onClick={()=>selectClothes(closet.id) }>
                     <ClosetPreview thumbnails={closet.thumbnails} />
                   </ClosetItem>
                   			<ItemInfo>

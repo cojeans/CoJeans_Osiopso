@@ -1,18 +1,18 @@
 import MoveItem from "../advice-create-move-item/advice-create-move-item.component";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { ItemDropContainer } from "./advice-comment-item-drop.styles";
+
 const DropArea = ({ targetItem }) => {
-  const [submitHandler, setSubmitHandler] = useState(false)
   const container = useRef(null)
   return (
-    <div className="container" ref={container }>
+    <ItemDropContainer ref={container}>
       {
         targetItem.map((item, idx) => {
-          return <MoveItem key={idx} item={item} submitHandler={submitHandler} container={ container} />
+          return <MoveItem key={idx} item={item} />
         })
       }
-      			<button onClick={()=>setSubmitHandler(true)}>제출</button>
 
-    </div>
+    </ItemDropContainer>
   );
 }
 

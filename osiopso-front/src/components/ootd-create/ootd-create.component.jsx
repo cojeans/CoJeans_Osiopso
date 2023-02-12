@@ -48,7 +48,7 @@ const OotdCreate = () => {
   const imgRef = useRef();
 
   	const saveImgFile = async () => {
-    const file = imgRef.current.files[0];
+      const file = imgRef.current.files[0];
     const uploaded_file = await uploadBytes(
                 fref(storage, `images/${file.name}`),
                 file,
