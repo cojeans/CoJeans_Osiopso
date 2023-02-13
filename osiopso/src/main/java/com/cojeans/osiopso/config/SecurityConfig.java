@@ -102,6 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
                 .authorizeRequests()
+                .antMatchers("/api").permitAll()
                     .antMatchers("/",
                         "/error",
                         "/favicon.ico",
@@ -118,8 +119,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/h2-console/**",
                         "/favicon.ico")
                         .permitAll()
-//                    .antMatchers("/user/login","/user/signUp", "/oauth2/**","api/user/signUp","api/user/login","api/user/**","/api/user/emailVerification/**","/user/emailVerification/**")
-                    .antMatchers("/user/signUp","/api/user/login","/api/user/emailVerification/**")
+                    .antMatchers("/user/login","/user/signUp", "/oauth2/**","api/user/signUp","api/user/login","api/user/**","/api/user/emailVerification/**","/user/emailVerification/**")
                         .permitAll()
                     .antMatchers("/closet/**")
                         .permitAll()
