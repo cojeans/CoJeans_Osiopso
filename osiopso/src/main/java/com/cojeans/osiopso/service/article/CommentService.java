@@ -3,10 +3,7 @@ package com.cojeans.osiopso.service.article;
 import com.cojeans.osiopso.dto.request.comment.CommentRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CocommentResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
-import com.cojeans.osiopso.entity.comment.Cocomment;
-import com.cojeans.osiopso.entity.comment.Comment;
-import com.cojeans.osiopso.entity.comment.CommentDown;
-import com.cojeans.osiopso.entity.comment.CommentUp;
+import com.cojeans.osiopso.entity.comment.*;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
@@ -31,13 +28,14 @@ public class CommentService {
     private final CommentLikeRepository commentLikeRepository;
     private final CommentUpRepository commentUpRepository;
     private final CommentDownRepository commentDownRepository;
+    private final CommentPhotoRepository commentPhotoRepository;
 
     public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
         Article article = articleRepository.findById(articleNo).orElseThrow();
 
         // 일반 댓글은 depth 가 0이며, rootId와 mentionId가 null 이다.
-        Comment build = Comment.builder()
+        Comment comment = Comment.builder()
                 .user(user)
                 .content(dto.getContent())
                 .article(article)
@@ -46,7 +44,17 @@ public class CommentService {
                 .down(0L)
                 .build();
 
-        commentRepository.save(build);
+        commentRepository.save(comment);
+
+        // 훈수 댓글일 경우 이미지 저장
+        if (dto.getImageUrl() != null) {
+            commentPhotoRepository.save(CommentPhoto.builder()
+                    .imageUrl(dto.getImageUrl())
+                    .article(article)
+                    .comment(comment)
+                    .build());
+        }
+
         return true;
     }
 
