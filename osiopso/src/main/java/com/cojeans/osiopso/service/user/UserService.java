@@ -198,6 +198,7 @@ public class UserService {
 
         for (User user : users) {
             userList.add(UserSearchResponseDto.builder()
+                    .userId(user.getId())
                     .userName(user.getName())
                     .profileImageUrl(user.getImageUrl())
                     .build());

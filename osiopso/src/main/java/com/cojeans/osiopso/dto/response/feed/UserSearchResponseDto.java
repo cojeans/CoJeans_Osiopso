@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class UserSearchResponseDto {
 
+    private Long userId;
     private String userName;
     private String profileImageUrl;
 }
