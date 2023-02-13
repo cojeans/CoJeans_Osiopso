@@ -45,7 +45,7 @@ const Home = () =>{
 	]
 
 	const tags = [
-		'고프코어',
+		'고프코어였던것',
 		'미니멀',
 		'놈코어',
 		'스트릿',
@@ -141,7 +141,7 @@ const Home = () =>{
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
 			</SelectedTagContainer> */}
 
-			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
+			<TextToLeft><Fire/>훈수 토론장</TextToLeft>
 			<HomeOotdImage>
 				{hunsuImages.map((el)=>{
 					return (

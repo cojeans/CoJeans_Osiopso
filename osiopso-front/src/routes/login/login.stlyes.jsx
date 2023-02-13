@@ -12,3 +12,14 @@ export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+export const Osiopso = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Bodoni = styled.div`
+  display: flex;
+  font-family: 'Bodoni';
+  font-size: 300%;
+`;
