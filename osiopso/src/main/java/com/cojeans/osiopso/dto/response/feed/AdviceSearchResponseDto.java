@@ -10,7 +10,8 @@ public class AdviceSearchResponseDto {
     private Long articleNo;
     private String subject;
     private boolean isSelected;
-    private ArticlePhotoResponseDto photo;
+    private String imageUrl;
     private Long commentCnt;
-    private String Time;
+    private String time;
+    private Float pastTime;
 }
