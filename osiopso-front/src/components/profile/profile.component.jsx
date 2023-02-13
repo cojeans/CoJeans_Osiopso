@@ -42,8 +42,7 @@ const Profile = ({ id }) => {
 			console.log('userBio')
 			console.log(res.data)
 			setUserProfile(res.data)
-			getFollowings(res.data.id)
-			getFollower(res.data.id)
+
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -57,8 +56,7 @@ const Profile = ({ id }) => {
         Authorization: `Bearer ${Token.token}`,
       },
 		}).then((res) => {
-			console.log('following')
-			console.log(res.data.responseData)
+ 			console.log(res.data.responseData,'😊팔로잉입니다.')
 			setFollow({...follow, following:res.data.responseData})
 		}).catch((err) => {
 			console.log(err)
@@ -73,9 +71,23 @@ const Profile = ({ id }) => {
         Authorization: `Bearer ${Token.token}`,
       },
 		}).then((res) => {
-			console.log('follower')
-			console.log(res.data.responseData)
+			console.log(res.data.responseData,'🤣팔로우입니다.')
 			setFollow({...follow, followed:res.data.responseData})
+		}).catch((err) => {
+			console.log(err)
+		})
+	}
+
+	// 팔로우 함수입니다.
+	const clickFollow = () => {
+		axios({
+			method: "post",	
+  		url: `${process.env.REACT_APP_AXIOS_URL}user/follow?followingId=${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      },
+		}).then((res) => {
+			console.log(res)
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -85,8 +97,12 @@ const Profile = ({ id }) => {
 		if (id > 0) {
 			getMyProfileData(`${process.env.REACT_APP_AXIOS_URL}user/${id}`)
 			console.log(true)
-	} else {
+			getFollowings(id)
+			getFollower(id)
+		} else {
 			getMyProfileData(`${process.env.REACT_APP_AXIOS_URL}user`)
+			getFollowings(userInfo.id)
+			getFollower(userInfo.id)
 			console.log(false)
 	}
 
@@ -112,8 +128,18 @@ const Profile = ({ id }) => {
 				{
 					id > 0
 						?
+						userProfile.followed
+							?
 							<Button
-								size={'sm'}
+							size={'sm'}
+							onClick={ () => {clickFollow(id)}}
+							>
+								Unfollow
+							</Button>
+							:
+							<Button
+							size={'sm'}
+							onClick={ () => {clickFollow(id)}}
 							>
 								Follow
 							</Button>
