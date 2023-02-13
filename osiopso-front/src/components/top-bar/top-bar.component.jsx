@@ -36,9 +36,12 @@ const TopBar = () => {
 				break
 			case '/advice/ootdCommentCreate':
 			setTopName('훈수 등록')
-			break
+				break
 			default:
 				setTopName('Osiopso')
+		}
+		if (location.pathname.includes('ootd/detail')) {
+			setTopName('OOTD 게시글')
 		}
 }, [location ])
 
