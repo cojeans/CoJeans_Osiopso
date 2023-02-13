@@ -6,7 +6,6 @@ import Navigation from "./routes/navigation/navigation.component";
 import Login from "./routes/login/login.component";
 import Join from "./routes/join/join.component";
 import Mypage from "./routes/mypage/mypage.component";
-import Advice from './routes/advice/advice.component';
 import OOTDPage from './routes/ootd/ootd.component'
 import PasswordCheck from './routes/passwordcheck/passwordcheck.component'
 import ChangePassword from './routes/changeuserinfo/changepassword.component'
@@ -14,9 +13,8 @@ import PwdComplete from './routes/changeuserinfo/pwdchangecomplete'
 import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
 import JoinComplete from "./routes/join/join-complete.component";
-
-
-
+import AdvicePage from './routes/advice/advice.component'
+  
 import "./App.scss";
 
 function App() {
@@ -36,7 +34,7 @@ function App() {
         <Route path="join" element={<Join />} />
         <Route path='passwordcheck' element={<PasswordCheck/>}/>
         <Route path="mypage/*" element={<Mypage />} />
-        <Route path="advice/*" element={<Advice />} />        
+        <Route path="advice/*" element={<AdvicePage />} />        
         <Route path='ootd/*' element={<OOTDPage/>}/>
         <Route path='changePassword' element={<ChangePassword/>}/>
         <Route path='pwdchangecomplete' element={<PwdComplete/>}/>
