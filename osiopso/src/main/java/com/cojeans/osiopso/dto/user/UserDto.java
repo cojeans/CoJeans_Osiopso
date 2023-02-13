@@ -12,28 +12,28 @@ public class UserDto {
 
     private Long id;
 
-    private String name;
+    private NotificationEmail name;
 
-    private String email;
+    private NotificationEmail email;
 
     private int age;
 
     private Gender gender;
 
     @JsonIgnore
-    private String password;
+    private NotificationEmail password;
 
-    private String imageUrl;
+    private NotificationEmail imageUrl;
 
     private Boolean emailVerified;
 
     private AuthProvider provider;
 
-    private String providerId;
+    private NotificationEmail providerId;
 
     private Boolean Followed;
 
-    private String bio;//자기소개
+    private NotificationEmail bio;//자기소개
 
     private Boolean isProfilePublic; //프로필 공개범위
 

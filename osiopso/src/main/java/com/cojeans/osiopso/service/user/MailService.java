@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.service.user;
 
+import com.cojeans.osiopso.dto.user.PasswordRequestEmail;
 import com.cojeans.osiopso.dto.user.NotificationEmail;
 import com.cojeans.osiopso.exception.CustomMailException;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,28 @@ public class MailService {
             mailSender.send(messagePreparator);
             log.info("활성화 메일이 보내졌다 to: {}",notificationEmail);
         } catch (MailException e) {
-            log.error(String.valueOf(e));
+            log.error(java.lang.String.valueOf(e));
             throw new CustomMailException("메일을 여기로 보내는 중 에러 발생 :  " + notificationEmail.getTo());
+        }
+    }
+
+    @Async
+    void sendMail(PasswordRequestEmail passwordRequestEmail) {
+        log.info(mailSender.toString());
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            messageHelper.setFrom("wearecojeans@gmaill.com");
+            messageHelper.setTo(passwordRequestEmail.getTo());
+            messageHelper.setSubject(passwordRequestEmail.getSubject());
+            messageHelper.setText(passwordRequestEmail.getBody(), true);
+        };
+
+        try {
+            mailSender.send(messagePreparator);
+            log.info("활성화 메일이 보내졌다 to: {}",passwordRequestEmail);
+        } catch (MailException e) {
+            log.error(java.lang.String.valueOf(e));
+            throw new CustomMailException("메일을 여기로 보내는 중 에러 발생 :  " + passwordRequestEmail.getTo());
         }
     }
 }

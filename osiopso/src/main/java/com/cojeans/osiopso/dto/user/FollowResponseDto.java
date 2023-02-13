@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class FollowResponseDto {
     private Long id;
-    private String name;
-    private String email;
-    private String imageUrl;
+    private NotificationEmail name;
+    private NotificationEmail email;
+    private NotificationEmail imageUrl;
 }

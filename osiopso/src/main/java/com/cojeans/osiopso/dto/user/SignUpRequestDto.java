@@ -16,17 +16,17 @@ import lombok.*;
 @Setter
 public class SignUpRequestDto {
 
-    private String name;
+    private NotificationEmail name;
 
-    private String email;
+    private NotificationEmail email;
 
-    private String password;
+    private NotificationEmail password;
 
     private int age = 0;
 
     private Gender gender = Gender.UNKNOWN;
 
-    private String imageUrl = "UNKNOWN";
+    private NotificationEmail imageUrl = "UNKNOWN";
 
 
 }

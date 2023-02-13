@@ -10,7 +10,7 @@ import lombok.ToString;
  */
 @Getter @Setter @Builder @ToString
 public class EditUserDto {
-    private String name;
+    private NotificationEmail name;
 
 
 }

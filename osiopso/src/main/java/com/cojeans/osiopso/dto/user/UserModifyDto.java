@@ -12,9 +12,9 @@ public class UserModifyDto {
 
     private int age;
 
-    private String name;
+    private NotificationEmail name;
 
     private Gender gender;
 
-    private String bio;
+    private NotificationEmail bio;
 }

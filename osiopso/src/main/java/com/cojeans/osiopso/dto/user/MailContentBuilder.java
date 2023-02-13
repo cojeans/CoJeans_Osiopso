@@ -11,7 +11,7 @@ public class MailContentBuilder {
 
     private final TemplateEngine templateEngine;
 
-    public String build(String message) {
+    public NotificationEmail build(NotificationEmail message) {
         Context context = new Context();
         context.setVariable("link", message);
         return templateEngine.process("mailTemplate", context);

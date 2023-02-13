@@ -5,23 +5,23 @@ package com.cojeans.osiopso.dto.user;
  * Created by rajeevkumarsingh on 02/08/17.
  */
 public class LoginRequestDto {
-    private String email;
+    private NotificationEmail email;
 
-    private String password;
+    private NotificationEmail password;
 
-    public String getEmail() {
+    public NotificationEmail getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(NotificationEmail email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    public NotificationEmail getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(NotificationEmail password) {
         this.password = password;
     }
 }
