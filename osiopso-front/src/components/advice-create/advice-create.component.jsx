@@ -79,6 +79,7 @@ const AdviceCreate = ()=> {
   
     const submitAdviceCreate = (e) => {
       e.preventDefault();
+      console.log(adviceTags)
       // const formData = new FormData()
       const advice = {
         tags: adviceTags,

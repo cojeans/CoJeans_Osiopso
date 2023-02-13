@@ -4,13 +4,18 @@ const initialState = {
 	
   uploadImg: "https://pixlr.com/images/index/remove-bg.webp",
   isGallery : false,
+  //   clothesTag: [],
+  AutoTag: {
+	category: '',
+	colors:[]
+  },
+  
   clothesTag: {
-	category: null,
-	url: null,
-	closets:null,
-	colors:null,
-	seasons:null,
-	tags:null,
+	category: '',
+	url: '',
+	closets:[],
+	colors:[],
+	seasons:[],
   }
 };
 
@@ -24,6 +29,9 @@ export const clothes = createSlice({
 		checkLocal(state, action) {
 			state.isGallery = action.payload;
 		},
+		createAutoTag(state, action){
+			state.AutoTag = action.payload;
+		},
 		createTag(state, action){
 			state.clothesTag = action.payload;
 		},
@@ -34,5 +42,5 @@ export const clothes = createSlice({
 	}
 })
 
-export const { upload, checkLocal, createTag, resetTag } = clothes.actions;
+export const { upload, checkLocal, createAutoTag, createTag, resetTag } = clothes.actions;
 export default clothes.reducer;

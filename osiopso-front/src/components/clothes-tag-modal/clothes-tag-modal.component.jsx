@@ -2,13 +2,14 @@ import React from 'react';
 import AiModel from '../../../src/model/model.json'
 import * as tf from '@tensorflow/tfjs';
 import { useState } from "react"
-import { upload, checkLocal } from "../../store/clothes/clothes.reducer";
+
+import { selectCloset } from '../../store/closet/closet.selector';
 
 import { loadGraphModel } from "@tensorflow/tfjs-converter"
 import { useSelector, useDispatch } from "react-redux"
 import { selectorOotdCategory } from "../../store/ootd/ootd.selector"
 import { selectOotdCategory } from "../../store/ootd/ootd.reducer"
-import { createTag } from "../../store/clothes/clothes.reducer"
+import { createTag, createAutoTag, upload, checkLocal } from "../../store/clothes/clothes.reducer"
 
 import {
 	CategoryModalContainer,
@@ -19,7 +20,8 @@ import {
 import {
 	selectClothes,
 	selectTag,
-	localPhoto
+	localPhoto,
+	selectAutoTag
   } from "../../store/clothes/clothes.selector";
 import { buffer } from '@tensorflow/tfjs';
 import exampleImage from '../../../src/00000001.jpg'
@@ -36,14 +38,18 @@ const tags = {
 // 	Category : [],
 // }
 
-const block = false;
+
 const ClothesTagModal = ({ closeModal }) => {
-	const saveTag = useSelector(selectTag)
-	console.log(saveTag, 'saveTag')
+	const closetData  = useSelector(selectCloset)
+	console.log(closetData, 'closet_list')
+	const saveAutoTag = useSelector(selectAutoTag)
+	console.log(saveAutoTag, 'saveAutoTag')
 	// console.log(saveTag, 'saveTag')
 	const defaultSelect = {
-		Category : [tags.Category[saveTag.category]],
-		Color: [tags.Color[saveTag.colors]],
+		// Category : [tags.Category[saveTag.category]],
+		// Color: [tags.Color[saveTag.colors]],
+		Category : [tags.Category[saveAutoTag.category]],
+		Color: [tags.Color[saveAutoTag.colors]],
 		Season: [],
 		TPO : [],
 	}
@@ -89,16 +95,32 @@ const ClothesTagModal = ({ closeModal }) => {
 		let newArr = []
 		selectedTag['Category'].forEach((el) => {
 			newArr = [...newArr, {
-				keyword: "Category",
-				type: el
+				category: el,
+				// type: el
 			}]
 		})
+
+		// selectedTag['Category'].forEach((el) => {
+		// 	newArr = [...newArr, {
+		// 		keyword: "Category",
+		// 		type: el
+		// 	}]
+		// })
+		
 		selectedTag['Color'].forEach((el) => {
 			newArr = [...newArr, {
-				keyword: "Color",
-				type: el
+				colors: el,
+				// type: el
 			}]
 		})
+		
+		// selectedTag['Color'].forEach((el) => {
+		// 	newArr = [...newArr, {
+		// 		keyword: "Color",
+		// 		type: el
+		// 	}]
+		// })
+
 		selectedTag['Season'].forEach((el) => {
 			newArr = [...newArr, {
 				keyword: "Season",
@@ -112,9 +134,11 @@ const ClothesTagModal = ({ closeModal }) => {
 			}]
 		})
 
-		console.log(newArr)
+		console.log(newArr, 'newArr')
 
 		dispatch(createTag(newArr))
+
+		console.log(newArr)
 		// dispatch(selectOotdCategory(newArr))
 		dispatch(checkLocal(false));
 

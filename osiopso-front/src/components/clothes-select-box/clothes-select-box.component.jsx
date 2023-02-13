@@ -19,35 +19,39 @@ import { useBodyScrollLock } from "../../components/profile-closet/profile-close
 import { loadGraphModel } from "@tensorflow/tfjs-converter"
 import * as tf from '@tensorflow/tfjs';
 import React from 'react';
-import { createTag } from "../../store/clothes/clothes.reducer";
-import { selectTag } from "../../store/clothes/clothes.selector"
+import { createTag, createAutoTag, upload, checkLocal } from "../../store/clothes/clothes.reducer";
+import { selectTag, selectAutoTag } from "../../store/clothes/clothes.selector"
 import axios from "axios";
 import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { upload, checkLocal } from "../../store/clothes/clothes.reducer";
+
 import {
   selectClothes,
   localPhoto,
 } from "../../store/clothes/clothes.selector";
 import Modal from "../modal/modal.component";
+import { selectCloset } from '../../store/closet/closet.selector';
+
 import Test from "../test/test.component";
-const category = ['dress', 'jeans', 'shirt', 'shoes'] 
-const color = ['black', 'blue', 'red']
-const defaultOotdForm = {
-  content: "",
+const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
+const color = ['검정', '파랑', '빨강']
+
+
+const defaultClothesForm = {
   picture: "",
   tags: [],
 };
 
 const ClothesSelectBox = () => {
-  const saveTag = useSelector(selectTag)
+  const closetData  = useSelector(selectCloset)
+	// console.log(closetData, 'closet_list')
+  const saveData = useSelector(selectClothes);
   const navigate = useNavigate();
+  // console.log(saveData)
   // const [isAutoTag, setIsAutoTag] = useState(false); 
   const Token = useSelector(selectUser);
-  const saveData = useSelector(selectClothes);
   const isAutoTag = useSelector(localPhoto);
-  // console.log(saveData)
   useEffect(() => {
     FashionAi();
   }, [isAutoTag]);
@@ -56,20 +60,31 @@ const ClothesSelectBox = () => {
   const onNavigateHandler = () => {
     navigate("update/");
   };
-  const [ootdFormData, setOotdFormData] = useState(defaultOotdForm);
+  const [ootdFormData, setOotdFormData] = useState(defaultClothesForm);
+  const [clothesFormData, setClothesFormData] = useState(defaultClothesForm);
+  const { picture, tags } = clothesFormData
   const [modalOpen, setModalOpen] = useState(false);
   const { lockScroll, openScroll } = useBodyScrollLock();
-  const [authCategory, setAutoCategory] = useState('');
-  const [authColor, setAutoColor] = useState('');
+  // const [authCategory, setAutoCategory] = useState('');
+  // const [authColor, setAutoColor] = useState('');
   const showModal = () => {
     window.scrollTo(0, 0);
     setModalOpen(true);
     lockScroll();
   };
+  const saveTag = useSelector(selectAutoTag)
+  const finalTag = useSelector(selectTag)
   // const handleAutoTag = () => {
   //   setIsAutoTag(!isAutoTag)
   // }
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const saveTag2 = useSelector(selectTag)
+
+    console.log('this is tag', finalTag)
+    console.log(finalTag[0])
+    // const closetData  = useSelector(selectCloset)
+    console.log(closetData, 'closetlist')
     // console.log('저장?')
     // console.log(closetField)
     // const payload = { ...closetData.closet }
@@ -79,17 +94,31 @@ const ClothesSelectBox = () => {
     // dispatch(createCloset(payload))
 
     // console.log(Token)
-
     axios({
       method: "post",
       url: "http://localhost:8080/api/closet/clothes",
       data: {
-        category: 1,
-        url: saveData,
-        closets: [{ id: 1 }],
-        colors: [{ id: 1 }],
-        seasons: [{ id: 1 }],
-        tags: [{ id: 1 }],
+        // clothesTag: {
+        //   category: '',
+        //   url: '',
+        //   closets:[],
+        //   colors:[],
+        //   seasons:[],
+        //   }
+        url : saveData,
+        tags: saveTag,
+        // closets:
+        // saveTag
+        // url: saveData,
+        // closets: [{id:1}],
+        // colors: [{tag.tags.colors}],
+        // seasons: [tag.tags.seasons],
+        // tags: [tag.tags.seasons],
+        // category: '1',
+        // closets: [{ id: 1 }],
+        // colors: [{ id: 1 }],
+        // seasons: [{ id: 1 }],
+        // tags: [{ id: 1 }],
       },
       headers: {
         Authorization: `Bearer ${Token.token}`,
@@ -136,14 +165,18 @@ const ClothesSelectBox = () => {
     const temp2 = Array.from(pred2.argMax(1).dataSync());
 		console.log(category[temp])
 		console.log(color[temp2])
-    setAutoCategory(category[temp])
-    setAutoColor(color[temp2])
+    // setAutoCategory(category[temp])
+    // setAutoColor(color[temp2])
     const payload = {
+      // category: category[temp],
+      // colors: color[temp2]
       category: temp,
       colors: temp2
     }
     // console.log(saveData)
-    dispatch(createTag(payload))
+    // setClothesFormData(payload)
+    console.log(payload, 'payload')
+    dispatch(createAutoTag(payload))
     dispatch(checkLocal(true));
   };
   
@@ -185,12 +218,12 @@ const ClothesSelectBox = () => {
           page={4}
           isAutoTag={isAutoTag}
           // handleAutoTag={handleAutoTag}
-          authCategory={authCategory}
-          authColor={authColor}
+          // authCategory={authCategory}
+          // authColor={authColor}
           setModalOpen={setModalOpen}
           openScroll={openScroll}
-          ootdFormData={ootdFormData}
-          setOotdFormData={setOotdFormData}
+          clothesFormData={clothesFormData}
+          setClothesFormData={setClothesFormData}
         />
       )}
       {/* <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/> */}
