@@ -14,9 +14,8 @@ import PwdComplete from './routes/changeuserinfo/pwdchangecomplete'
 import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
 import JoinComplete from "./routes/join/join-complete.component";
-
-
-
+import AdvicePage from './routes/advice/advice.component'
+  
 import "./App.scss";
 
 function App() {

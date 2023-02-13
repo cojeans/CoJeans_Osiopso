@@ -62,7 +62,7 @@ public class User {
                 .id(this.getId())
                 .name(this.getName())
                 .email(this.getEmail())
-                .password(this.getPassword())
+//                .password(this.getPassword())
                 .age(this.getAge())
                 .gender(this.getGender())
                 .provider(this.getProvider())

@@ -11,6 +11,8 @@ import {
 import { ReactComponent as BackButton } from '../../assets/back.svg'
 import { SideBar } from "../side-bar/side-bar.component"
 
+import { BiSearch } from "react-icons/bi";
+
 
 const TopBar = () => {
 	const navigate = useNavigate();
@@ -57,7 +59,9 @@ const TopBar = () => {
 			<TopBarContent>
 				{ topName }
 						</TopBarContent>
-						<div></div>
+						<CategoryContainer >
+						<BiSearch/>	
+						</CategoryContainer>
 		</TopBarContainer>
 					: topName === 'Profile'
 				?				<TopBarContainer>

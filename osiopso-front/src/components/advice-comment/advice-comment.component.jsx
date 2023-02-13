@@ -1,6 +1,7 @@
 import { selectUser } from "../../store/user/user.selector"
 import { useSelector } from "react-redux"
-import {  useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
+
 
 import axios from "axios"
 import html2canvas from "html2canvas";
@@ -14,6 +15,7 @@ import {
 	ClothesContainer,
 	SliderContainer,
 	ImageContainer,
+
 	ItemDropContainer,
 	InputContainer,
 	CreatAdvicePage,
@@ -25,10 +27,12 @@ import {
 //style
 
 
+
 const AdviectComment = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
 	const [selectCloset, setSelectCloset] = useState([])
+
 	const [targetItem, setTargetItem] = useState([])
 	const [content, setContent] = useState('')
 	const [imgUrl, setImgUrl] = useState('')
@@ -94,6 +98,7 @@ const onCapture = () => {
 					setSelectCloset={ setSelectCloset }
 				/>
 			</SliderContainer>
+
 			<ClothesBox>
 				<CategoryBox>
 					전체

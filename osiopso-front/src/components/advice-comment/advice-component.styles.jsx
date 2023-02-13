@@ -8,7 +8,10 @@ export const CreatAdvicePage = styled.div`
 `
 
 export const ClothesContainer = styled.div`
+
+
 	width: 90%;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -53,6 +56,9 @@ export const InputContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 `
+
+
+
 
 export const SliderContainer = styled.div`
 	width:100%;
