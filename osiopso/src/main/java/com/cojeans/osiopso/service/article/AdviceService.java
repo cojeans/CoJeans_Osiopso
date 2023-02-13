@@ -6,21 +6,17 @@ import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CommentAdviceResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentPhoto;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticleLike;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.user.User;
-import com.cojeans.osiopso.repository.article.AdviceRepository;
-import com.cojeans.osiopso.repository.article.ArticleLikeRepository;
-import com.cojeans.osiopso.repository.article.ArticlePhotoRepository;
-import com.cojeans.osiopso.repository.article.ArticleRepository;
-import com.cojeans.osiopso.repository.comment.CocommentRepository;
-import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
-import com.cojeans.osiopso.repository.comment.CommentRepository;
-import com.cojeans.osiopso.repository.comment.CommentRepositoryImpl;
+import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.comment.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +40,8 @@ public class AdviceService {
     private final CommentLikeRepository commentLikeRepository;
     private final CommentRepositoryImpl commentRepositoryImpl;
     private final ArticleService articleService;
+    private final ArticleScrollQdslRepositoryImpl articleScrollQdslRepositoryImpl;
+    private final CommentPhotoRepository commentPhotoRepository;
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -73,8 +71,10 @@ public class AdviceService {
         return true;
     }
 
-    public List<AdviceListResponseDto> listAdvice() {
-        List<Advice> Advices = adviceRepository.findAllByDtype("A");
+
+    public List<AdviceListResponseDto> listAdvice(Pageable pageable, Long idx) {
+        List<Advice> Advices = articleScrollQdslRepositoryImpl.findNoOffsetAdvicePaging(pageable, idx);
+
         List<AdviceListResponseDto> list = new ArrayList<>();
         Date date = new Date();
 
@@ -170,6 +170,8 @@ public class AdviceService {
 
             GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
 
+            // 해당 훈수에 달린 댓글의 사진 가져오기
+            CommentPhoto commentPhoto = commentPhotoRepository.findByArticle_IdAndComment_Id(comment.getArticle().getId(), comment.getId());
 
             // 댓글 좋아요 가져오기
 //            List<CommentLike> commentLikeList = commentLikeRepository.findAllByComment_Id(comment.getId());
@@ -183,7 +185,6 @@ public class AdviceService {
 //            }
 
 
-
             commentAdviceResponseDtoList.add(CommentAdviceResponseDto.builder()
                     .commentId(comment.getId())
                     .content(comment.getContent())
@@ -191,6 +192,7 @@ public class AdviceService {
                     .report(comment.getReport())
                     .like(likeCo)
                     .profileImageUrl(comment.getUser().getImageUrl())
+                    .imageUrl(commentPhoto.getImageUrl())
                     .userName(comment.getUser().getName())
                     .time(commentGapTime.getTimeGapToString())
                     .pastTime(commentGapTime.getPastTime())

@@ -19,12 +19,11 @@ import Modal from "../../components/modal/modal.component"
 import { GiMirrorMirror } from "react-icons/gi";
 import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
-import { TfiHome } from "react-icons/tfi";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
 
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { selectUser } from '../../store/user/user.selector'
 

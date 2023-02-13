@@ -71,7 +71,7 @@ const ProfileCloset = () => {
 	
 	return (
 		<ClosetBodyContainer>
-			<ClosetItem onClick={showModal}>
+			<ClosetItem page={ 'profile'} onClick={showModal}>
 				<LogoContainer2>
 					<PlusCloset/>
 				</LogoContainer2>
