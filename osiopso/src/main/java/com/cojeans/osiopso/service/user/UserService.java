@@ -7,6 +7,7 @@ import com.cojeans.osiopso.dto.user.UserDto;
 import com.cojeans.osiopso.dto.user.UserModifyDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Follow;
+import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.exception.BadRequestException;
 import com.cojeans.osiopso.exception.ResourceNotFoundException;
@@ -43,8 +44,11 @@ public class UserService {
     @Autowired
     private FollowRepository followRepository;
 
+    /*
+    회원 기본값들이 들어가고, 비밀번호를 인코딩해서 저장한다.
+     */
     public UserDto saveUser(SignUpRequestDto signUpRequest){
-        User userEntity = userRepository.save(User.builder()
+        UserDto userDto = userRepository.save(User.builder()
                         .name(signUpRequest.getName())
                         .email(signUpRequest.getEmail())
                         .password(passwordEncoder.encode(signUpRequest.getPassword()))
@@ -53,12 +57,15 @@ public class UserService {
                         .provider(AuthProvider.local)
                         .imageUrl(signUpRequest.getImageUrl())
                         .emailVerified(false)
+                        .role(Role.USER)
+                        .bio("")
+                        .isProfilePublic(true)
+                        .providerId("local")
                         .build()
-        );
-        log.info("result : {}", userEntity);
+        ).toDto();
 
-
-        return userEntity.toDto();
+        log.info("saveUser service userDto : {}", userDto);
+        return userDto;
     }
 
     //비밀번호 일치 체크
@@ -194,7 +201,7 @@ public class UserService {
         return false;
     }
 
-    public boolean changeIsProfilePublic(Long id) {
+    public boolean modifyIsProfilePublic(Long id) {
         userRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException(id.toString(),"userRepository",null))
                 .changeIsProfilePublic();

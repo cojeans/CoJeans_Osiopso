@@ -54,13 +54,13 @@ public class UserController{
 
     @GetMapping("")
     @Operation(summary = "내정보조회")
-    public ResponseEntity<User> getCurrentUser(Authentication authentication) {
+    public ResponseEntity<UserDto> getCurrentUser(Authentication authentication) {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 
         User user = userRepository.findById(userDetail.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
@@ -258,11 +258,11 @@ public class UserController{
                 .build(), HttpStatus.OK);
     }
     @Operation(summary = "공개범위 바꾸기", description = "IsProfilePublic칼럼을 반대로 토글시켜주고 바뀐 userDto객체를 반환.")
-    @GetMapping("/changeIsProfilePublic/{id}")
-    public ResponseEntity<ApiResponseDto> changeIsProfilePublic(@PathVariable Long id) {
-
+    @GetMapping("/modifyIsProfilePublic/{id}")
+    public ResponseEntity<ApiResponseDto> modifyIsProfilePublic(@PathVariable Long id) {
+        boolean modifyResult = userService.modifyIsProfilePublic(id);
         /*실패 시*/
-        if(!userService.changeIsProfilePublic(id))
+        if(!modifyResult)
             return new ResponseEntity<>(ApiResponseDto
                     .builder()
                     .success(false)
