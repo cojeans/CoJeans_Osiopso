@@ -15,6 +15,9 @@ import com.cojeans.osiopso.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -79,24 +82,56 @@ public class FeedApiController {
 
 
     // ====================== READ ========================
+
+    // http://localhost:8080/api/feed/paging?page=1&size=15&sort=id,DESC
+//    @GetMapping("/paging")
+//    public ResponseEntity<?> listAdviceScroll(
+//            @RequestParam(value = "idx", defaultValue = "0") long idx,
+//            @PageableDefault(size = 6, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
+//        System.out.println(pageable.getPageNumber());
+//        System.out.println(pageable.getPageSize());
+//        System.out.println(pageable.getSort());
+//        System.out.println(pageable);
+//        System.out.println(idx);
+//        adviceService.listAdviceScroll(pageable, idx);
+//        return null;
+//    }
+
     @GetMapping("/advice")
-    public ResponseEntity<List<AdviceListResponseDto>> listAdivce() {
-        return new ResponseEntity(new ApiResponseDto(true, "readAdviceList Success", adviceService.listAdvice()), HttpStatus.OK);
+    public ResponseEntity<?> listAdivce(
+            @RequestParam(value = "idx", defaultValue = "0") long idx,
+            @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        // 최초 로딩시점
+        if (idx == 0) {
+            idx = Long.MAX_VALUE;
+        }
+
+        return new ResponseEntity(new ApiResponseDto(true, "readAdviceList Success", adviceService.listAdvice(pageable, idx)), HttpStatus.OK);
     }
 
 
     @GetMapping("/advice/{articleno}")
-    public ResponseEntity<AdviceDetailResponseDto> detailAdvice(@PathVariable("articleno") Long articleNo,
-                                                                @AuthenticationPrincipal UserDetail user) {
+    public ResponseEntity<?> detailAdvice(@PathVariable("articleno") Long articleNo,
+                                          @AuthenticationPrincipal UserDetail user) {
         AdviceDetailResponseDto detail = adviceService.detailAdvice(articleNo, user.getId());
         return new ResponseEntity(new ApiResponseDto(true, "readAdviceDetail Success", detail), HttpStatus.OK);
     }
 
 
     @GetMapping("/ootd")
-    public ResponseEntity<List<OotdListResponseDto>> listOotd() {
-        return new ResponseEntity(new ApiResponseDto(true, "readOotdList Success", ootdService.listOotd()), HttpStatus.OK);
+    public ResponseEntity<?> listOotd(
+            @RequestParam(value = "idx", defaultValue = "0") long idx,
+            @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        // 최초 로딩시점
+        if (idx == 0) {
+            idx = Long.MAX_VALUE;
+        }
+
+        return new ResponseEntity(new ApiResponseDto(true, "readAdviceList Success", ootdService.listOotd(pageable, idx)), HttpStatus.OK);
     }
+
 
 
     @GetMapping("/ootd/{articleno}")

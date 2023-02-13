@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentRequestDto {
     String content;
-
+    String imageUrl;
+    boolean anonymous;
 }

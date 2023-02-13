@@ -13,6 +13,7 @@ export const TopBarContainer = styled.div`
   top: 0;
   left: 0;
   right: 0;
+	z-index: 10;
 `
 
 export const ButtonContainer = styled.div`

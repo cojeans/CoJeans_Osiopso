@@ -52,7 +52,6 @@ public class Article {
     public Article(int hit, String content, User user) {
         this.hit = hit;
         this.content = content;
-//        this.dtype = dtype;
         this.user = user;
     }
 }

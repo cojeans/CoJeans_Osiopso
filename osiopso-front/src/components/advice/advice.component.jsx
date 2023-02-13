@@ -85,9 +85,8 @@ const Advice = () => {
   console.log("어드바이스",adviceArticle)
   return (
     <div>
-
-{/*       
-      <AdviectComment>
+      
+      {/* <AdviectComment>
       </AdviectComment> */}
 
       <TextToLeft>

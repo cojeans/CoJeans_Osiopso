@@ -5,6 +5,9 @@ body {
   margin: 0;
   padding: 0;
 }
+.container{
+  position: relative;
+}
 .description {
   padding: 10px;
 }

@@ -1,8 +1,9 @@
 import { selectUser } from "../../store/user/user.selector"
 import { useSelector } from "react-redux"
-import { Fragment, useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 
 import axios from "axios"
+import html2canvas from "html2canvas";
 
 import SimpleSlider from "../closet-slick/closet-slick.component"
 import DropArea from "../advice-comment-item-drop/advice-comment-item-drop.component"
@@ -12,18 +13,28 @@ import {
 	ClothesContainer,
 	SliderContainer,
 	ImageContainer,
-	ItemDropContainer
+	ItemDropContainer,
+	InputContainer,
+	CreatAdvicePage,
+	AdcivceCommentInput,
+	ClothesBox,
+	CategoryBox
 } from "./advice-component.styles"
 
 //style
-
 
 
 const AdviectComment = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
 	const [selectCloset, setSelectCloset] = useState([])
-	const [targetItem, setTargetItem ] = useState('')
+	const [targetItem, setTargetItem] = useState([])
+	const [content, setContent] = useState('')
+
+	const inputHandler = (e) => {
+
+		setContent(e.target.value)
+	}
 	
 	const getUserCloset = () => {
 		axios({
@@ -39,33 +50,63 @@ const AdviectComment = () => {
 			console.log(err)
 		})
 	}
+const onCapture = () => {
+    console.log("onCapture");
+	html2canvas(document.getElementById("dropArea")).then((canvas) => {
+		const captureImg = canvas.toDataURL("image/png")
+		// onSaveAs(canvas.toDataURL('image/png'), 'image-download/png')
+		console.log(content)
+
+	})
+	
+}
+
+	
 	useEffect(() => {
 		getUserCloset()
-	},[])
+	}, [])
+
 	return (
-		<div>
+		<CreatAdvicePage>
 			<SliderContainer>
 				<SimpleSlider
 					closetList={closetList}
 					setSelectCloset={ setSelectCloset }
 				/>
 			</SliderContainer>
-			<ClothesContainer>
-				{
-					selectCloset.map((cloth, idx) => {
-						return <ImageContainer key={idx} >
-							<img src={cloth.imageUrl} alt=""  onClick={()=>setTargetItem(cloth.imageUrl)}/>
-						</ImageContainer> 
-					})
-				}
-			</ClothesContainer>
+			<ClothesBox>
+				<CategoryBox>
+					전체
+				</CategoryBox>
+				<ClothesContainer>
+					{
+						selectCloset.map((cloth, idx) => {
+							return <ImageContainer key={idx} >
+								<img src={cloth.imageUrl} alt="" onClick={() => setTargetItem([...targetItem, cloth.imageUrl])} />
+							</ImageContainer> 
+						})
+					}
+				</ClothesContainer>
+			</ClothesBox>
 			<ItemDropContainer>
-				<DropArea
-					targetItem={ targetItem}
-				/>
+				{/* 저장될 영역 */}
+				<div id='dropArea'>
+					<DropArea
+						targetItem={targetItem}
+					/>
+				</div>
 			</ItemDropContainer>
-
-		</div>
+			<InputContainer>
+				<AdcivceCommentInput
+					type="text"
+					value={content}
+					onChange={inputHandler}
+				/>
+				<button onClick={onCapture}>
+					제출
+				</button>
+			</InputContainer>
+		</CreatAdvicePage>
 		// <CreatAdvicePage>
 		// 		{/* 옷장이 올 자리입니다.  */}
 		// 		{/* <>
@@ -81,8 +122,7 @@ const AdviectComment = () => {
 		// 	</ItemDropContainer>
 
 		// 		{/* 입력창이 있을 자리입니다.  */}
-		// 	<InputContainer>
-		// 	</InputContainer>
+
 		
 		// </CreatAdvicePage>
 	)

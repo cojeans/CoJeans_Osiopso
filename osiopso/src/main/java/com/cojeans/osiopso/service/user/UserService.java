@@ -4,9 +4,13 @@ import com.cojeans.osiopso.dto.response.feed.UserSearchResponseDto;
 import com.cojeans.osiopso.dto.user.FollowResponseDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
 import com.cojeans.osiopso.dto.user.UserDto;
+import com.cojeans.osiopso.dto.user.UserModifyDto;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Follow;
+import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.exception.BadRequestException;
+import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
@@ -21,7 +25,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -41,8 +44,11 @@ public class UserService {
     @Autowired
     private FollowRepository followRepository;
 
-    public User saveUser(SignUpRequestDto signUpRequest){
-        User result = userRepository.save(User.builder()
+    /*
+    회원 기본값들이 들어가고, 비밀번호를 인코딩해서 저장한다.
+     */
+    public UserDto saveUser(SignUpRequestDto signUpRequest){
+        UserDto userDto = userRepository.save(User.builder()
                         .name(signUpRequest.getName())
                         .email(signUpRequest.getEmail())
                         .password(passwordEncoder.encode(signUpRequest.getPassword()))
@@ -51,11 +57,15 @@ public class UserService {
                         .provider(AuthProvider.local)
                         .imageUrl(signUpRequest.getImageUrl())
                         .emailVerified(false)
+                        .role(Role.USER)
+                        .bio("")
+                        .isProfilePublic(true)
+                        .providerId("local")
                         .build()
-        );
-        log.info("result : {}", result);
+        ).toDto();
 
-        return result;
+        log.info("saveUser service userDto : {}", userDto);
+        return userDto;
     }
 
     //비밀번호 일치 체크
@@ -81,14 +91,16 @@ public class UserService {
     }
 
     @Transactional
-    public User editUser(SignUpRequestDto signUpRequest) {
-        Optional<User> optionalUser = userRepository.findByEmail(signUpRequest.getEmail());
-        UserDto userDto = optionalUser.get().toDto();
+    public UserDto editUser(UserModifyDto userModifyDto) {
+        UserDto userDto = userRepository
+                .findById(userModifyDto.getId())
+                .orElseThrow(()-> new BadRequestException("없는 유저입니다."))
+                .toDto();
 
-        if(StringUtils.isNotBlank(signUpRequest.getName())) userDto.setName(signUpRequest.getName());
-        if(signUpRequest.getAge()!=0) userDto.setAge(signUpRequest.getAge());
-        if(signUpRequest.getGender()!=null) userDto.setGender(signUpRequest.getGender());
-        if(signUpRequest.getImageUrl()!=null) userDto.setImageUrl(signUpRequest.getImageUrl());
+        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userDto.getName());
+        if(userDto.getGender()!=null) userDto.setGender(userDto.getGender());
+        userDto.setAge(userModifyDto.getAge());
+        if(userDto.getImageUrl()!=null) userDto.setImageUrl(userDto.getImageUrl());
 
         return userRepository.save(User.builder()
                         .id(userDto.getId())
@@ -96,11 +108,15 @@ public class UserService {
                         .name(userDto.getName())
                         .password(userDto.getPassword())
                         .gender(userDto.getGender())
+                        .age(userDto.getAge())
                         .imageUrl(userDto.getImageUrl())
                         .provider(userDto.getProvider())
                         .providerId(userDto.getProviderId())
                         .emailVerified(userDto.getEmailVerified())
-                .build());
+                        .bio(userDto.getBio())
+                        .isProfilePublic(userDto.getIsProfilePublic())
+                        .role(userDto.getRole())
+                .build()).toDto();
     }
 
     public List<UserSearchResponseDto> searchUserByNickname(String input) {
@@ -175,5 +191,27 @@ public class UserService {
                     .build());
         }
         return result;
+    }
+
+    /* 이메일 인증이 되어있는지. 되어있지 않다면 false 반환*/
+    public boolean isEmailVerified(String email) {
+        if(userRepository.existsByEmail(email)){
+            return userRepository.findByEmail(email).orElse(null).getEmailVerified();
+        }
+        return false;
+    }
+
+    public boolean modifyIsProfilePublic(Long id) {
+        userRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException(id.toString(),"userRepository",null))
+                .changeIsProfilePublic();
+        return true;
+    }
+
+    public void modifyPassword(String password, Long id) {
+            userRepository
+                    .findById(id)
+                    .orElseThrow(()-> new BadRequestException("존재하지 않는 유저입니다. 비밀번호를 바꿀 수 없습니다."))
+                .setPassword(passwordEncoder.encode(password));
     }
 }

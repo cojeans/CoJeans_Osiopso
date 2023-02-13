@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.dto.user;
 
 
+import com.cojeans.osiopso.entity.user.Gender;
 import lombok.*;
 
 /**

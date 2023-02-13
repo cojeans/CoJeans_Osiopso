@@ -9,7 +9,8 @@ import {
   IconBox,
   IconMessageBox,
   DetailContainer,
-  CommentListWrapper
+  CommentListWrapper,
+  ContentBox,
 } from "./ootd-detail.styles";
 
 // import { ReactComponent as Like } from "../../assets/like.svg";
@@ -262,9 +263,9 @@ const OotdDetail = () => {
           </IconBox>
         </DetailContainer>
         <DetailContainer>
-          <span>
+          <ContentBox>
           {ootdDetail.content}
-          </span>
+          </ContentBox>
         </DetailContainer>
       </UpperImage>
       </div>

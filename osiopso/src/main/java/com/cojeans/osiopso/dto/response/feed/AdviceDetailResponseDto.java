@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.dto.response.feed;
 
+import com.cojeans.osiopso.dto.response.comment.CommentAdviceResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentLikeResponseDto;
 import com.cojeans.osiopso.dto.response.comment.CommentResponseDto;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class AdviceDetailResponseDto {
     private Long commentCnt;
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleLikeResponseDto> articleLikes;
-    private List<CommentResponseDto> comments;
+    private List<CommentAdviceResponseDto> comments;
     private int hit;
     private String content;
     private boolean isSelected;
