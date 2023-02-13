@@ -8,6 +8,7 @@ import html2canvas from "html2canvas";
 
 import SimpleSlider from "../closet-slick/closet-slick.component"
 import DropArea from "../advice-comment-item-drop/advice-comment-item-drop.component"
+import Button from "../button/button.component";
 
 //style
 import {
@@ -34,6 +35,7 @@ const AdviectComment = () => {
 
 	const [targetItem, setTargetItem] = useState([])
 	const [content, setContent] = useState('')
+	const [imgUrl, setImgUrl] = useState('')
 
 	const inputHandler = (e) => {
 
@@ -46,7 +48,8 @@ const AdviectComment = () => {
 			url: `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=7`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
-      },
+			},
+
 		}).then((res) => {
 			console.log(res)
 			setClosetList(res.data)
@@ -58,14 +61,31 @@ const onCapture = () => {
     console.log("onCapture");
 	html2canvas(document.getElementById("dropArea")).then((canvas) => {
 		const captureImg = canvas.toDataURL("image/png")
+		setImgUrl(captureImg)
 		// onSaveAs(canvas.toDataURL('image/png'), 'image-download/png')
-		console.log(content)
-
 	})
+
+	submitCommentCreate()
 	
 }
-
-	
+	const submitCommentCreate = () => {
+		console.log('통신보냄	')
+		axios({
+			method: "post",
+			url: `${process.env.REACT_APP_AXIOS_URL}comment/8`,
+			headers: {
+				Authorization: `Bearer ${Token.token}`,
+			},
+			data: {
+				"content": content,
+				 "imageUrl":imgUrl,
+			}
+		}).then((res) => {
+			console.log(res)
+		}).catch((err) => {
+			console.log(err)
+		})
+}
 	useEffect(() => {
 		getUserCloset()
 	}, [])
@@ -95,41 +115,29 @@ const onCapture = () => {
 			</ClothesBox>
 			<ItemDropContainer>
 				{/* 저장될 영역 */}
-				<div id='dropArea'>
-					<DropArea
-						targetItem={targetItem}
-					/>
-				</div>
+				{
+					!targetItem.length ?	
+					<img className='imageExample' src={ require('../../assets/example_advice.jpg')} alt="" />
+				:
+					<div id='dropArea'>
+						<DropArea
+							targetItem={targetItem}
+						/>
+					</div>
+				}
 			</ItemDropContainer>
 			<InputContainer>
 				<AdcivceCommentInput
 					type="text"
 					value={content}
 					onChange={inputHandler}
+					placeholder='훈수 댓글을 작성해 주세요.😊'
 				/>
-				<button onClick={onCapture}>
+				<Button onClick={onCapture}>
 					제출
-				</button>
+				</Button>
 			</InputContainer>
 		</CreatAdvicePage>
-		// <CreatAdvicePage>
-		// 		{/* 옷장이 올 자리입니다.  */}
-		// 		{/* <>
-		// 		<SimpleSlider/>
-		// 	</> */}
-
-		// 		{/* 옷 아이템이 올 자리입니다.  */}
-		// 	<ClosetContainer>
-		// 	</ClosetContainer>
-
-		// 		{/* 옷 아이템이 드랍될 자리입니다.  */}
-		// 	<ItemDropContainer>
-		// 	</ItemDropContainer>
-
-		// 		{/* 입력창이 있을 자리입니다.  */}
-
-		
-		// </CreatAdvicePage>
 	)
 }
 

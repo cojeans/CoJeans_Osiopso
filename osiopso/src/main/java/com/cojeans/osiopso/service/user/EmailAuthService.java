@@ -27,15 +27,15 @@ public class EmailAuthService {
     private final MailContentBuilder mailContentBuilder;
     private final MailService mailService;
 
-//    static String ACTIVATION_EMAIL = "http://localhost:8080/api/user/emailVerification/";
-    static java.lang.String ACTIVATION_EMAIL = "https://www.osiopso.site/api/user/emailVerification/";
-    static java.lang.String EMAIL_SUBJECT = "오시옵소 계정활성화를 해주세요";
+    static String ACTIVATION_EMAIL = "http://localhost:8080/api/user/emailVerification/";
+//    static String ACTIVATION_EMAIL = "https://www.osiopso.site/api/user/emailVerification/";
+    static String EMAIL_SUBJECT = "오시옵소 계정활성화를 해주세요";
     @Transactional
-    public void sendVerificationEmail(java.lang.String userEmail) {
-        java.lang.String token = generateVerificationToken(userEmail);
+    public void sendVerificationEmail(String userEmail) {
+        String token = generateVerificationToken(userEmail);
 //        String link = Constants.ACTIVATION_EMAIL + "/" + token;
-        java.lang.String link = ACTIVATION_EMAIL + token;
-        java.lang.String mailContent = mailContentBuilder.build(link); //html파일로 링크에 변수 넣어서 만든다.
+        String link = ACTIVATION_EMAIL + token;
+        String mailContent = mailContentBuilder.build(link); //html파일로 링크에 변수 넣어서 만든다.
         log.info("link={} , token={}", link, token);
 
         mailService.sendMail(NotificationEmail
@@ -46,8 +46,8 @@ public class EmailAuthService {
                 .build());
     }
 
-    private java.lang.String generateVerificationToken(java.lang.String userEmail) {
-        java.lang.String token = UUID.randomUUID().toString();
+    private String generateVerificationToken(String userEmail) {
+        String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
         verificationToken.setUserEmail(userEmail);
@@ -59,7 +59,7 @@ public class EmailAuthService {
 //        return passwordEncoder.encode(password);
 //    }
 
-    public void verifyAccount(java.lang.String token) {
+    public void verifyAccount(String token) {
         log.info("verifyAccount ={}",token);
         Optional<VerificationToken> verificationTokenOptional = verificationTokenRepository.findOneByToken(token);
         verificationTokenOptional.orElseThrow(() -> new CustomMailException("잘못된 토큰입니다."));
@@ -68,7 +68,7 @@ public class EmailAuthService {
 
     @Transactional
     public void setUserEnabled(VerificationToken verificationToken) {
-        java.lang.String email = verificationToken.getUserEmail();
+        String email = verificationToken.getUserEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomMailException("유저를 찾을 수 없음 " + email));
         user.setEmailVerified(true);
         userRepository.save(user);

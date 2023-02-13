@@ -189,7 +189,7 @@ const AdviceDetail = () => {
       </UpperImage>
 
       <UpperComment>
-        {AdviceDetail.content}
+      {advicedDetail.content}
       </UpperComment>
 
       <HunsuButton>

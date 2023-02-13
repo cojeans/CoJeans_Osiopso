@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter @Setter @Builder @AllArgsConstructor @NoArgsConstructor @ToString
 public class NotificationEmail {
-    private java.lang.String subject;
-    private java.lang.String to;
-    private java.lang.String body;
+    private String subject;
+    private String to;
+    private String body;
 }

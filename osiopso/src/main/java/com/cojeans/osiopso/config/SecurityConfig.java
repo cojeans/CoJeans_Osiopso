@@ -102,7 +102,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
                 .authorizeRequests()
-                .antMatchers("/api").permitAll()
                     .antMatchers("/",
                         "/error",
                         "/favicon.ico",

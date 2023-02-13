@@ -103,10 +103,12 @@ const Login = () => {
         />
         
         <ButtonsContainer>
-          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
-          {/* <button onClick={LoginFunc}>
-            test
-          </button> */}
+        <Button
+          type='submit'
+          size={'md'}
+          variant={ 'success'}
+          onClick={LoginFunc}
+          >Sign In</Button>
         </ButtonsContainer>
     </SignInContainer>
   );
