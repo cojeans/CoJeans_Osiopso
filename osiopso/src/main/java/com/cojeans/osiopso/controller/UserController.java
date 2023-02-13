@@ -86,7 +86,8 @@ public class UserController{
 
     @Operation(summary = "비밀번호변경", description = "비밀번호 변경 전 비밀번호 체크페이지를 통과해야한다.")
     @PostMapping("/modifyPassword")
-    public ResponseEntity<ApiResponseDto> modifyPassword(@RequestBody String password, @AuthenticationPrincipal UserDetail userDetail) {
+    public ResponseEntity<ApiResponseDto> modifyPassword(@RequestBody ApiRequestDto apiRequestDto, @AuthenticationPrincipal UserDetail userDetail) {
+        String password = apiRequestDto.getMessage();
         try {
             userService.modifyPassword(password, userDetail.getId());
         } catch (BadRequestException e) {
