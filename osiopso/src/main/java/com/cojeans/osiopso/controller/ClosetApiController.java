@@ -84,10 +84,10 @@ public class ClosetApiController {
     // 2-3 : 선택 카테고리별 옷 리스트 + 태그 필터(order by desc)
     @PostMapping("/{closetno}/{category}")
     @Operation(summary = "카테고리별 옷 리스트", description = "선택한 카테고리에 속하는 옷 리스트를 조회합니다.")
-    public ResponseEntity<List<ClothesResponseDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category, @RequestBody List<ClothesTagResponseDto> tags, @AuthenticationPrincipal UserDetail user){
-        LOGGER.info("categoryList() 호출 : " + closetNo + " | " + category + " | " + tags);
+    public ResponseEntity<List<ClothesResponseDto>> categoryList(@PathVariable (value = "closetno") Long closetNo, @PathVariable String category, @AuthenticationPrincipal UserDetail user){
+        LOGGER.info("categoryList() 호출 : " + closetNo + " | " + category);
 
-        return new ResponseEntity<List<ClothesResponseDto>>(closetService.categoryList(closetNo, category, tags), HttpStatus.OK);
+        return new ResponseEntity<List<ClothesResponseDto>>(closetService.categoryList(closetNo, category), HttpStatus.OK);
     }
 
     // 3. U : 옷장 정보 수정
@@ -114,7 +114,7 @@ public class ClosetApiController {
     // =================================== 옷 관련 ===================================
     // 1. C : 옷 등록
     @PostMapping("/clothes")
-    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다. closets, colors, seasons, tags 모두 id만 보내도 됨")
+    @Operation(summary = "옷 등록", description = "새로운 옷을 등록합니다. closets, colors, seasons 모두 List<String>으로 이름맞춰 보내야 함")
     public ResponseEntity<String> createClothes(@RequestBody ClothesRequestDto clothesRequestDto, @AuthenticationPrincipal UserDetail user) throws IOException {
         LOGGER.info("createClothes() 호출 : " + clothesRequestDto);
 
