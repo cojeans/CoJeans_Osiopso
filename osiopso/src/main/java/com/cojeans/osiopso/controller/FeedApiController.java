@@ -119,7 +119,7 @@ public class FeedApiController {
     }
 
 
-    @GetMapping("/paging")
+    @GetMapping("/ootd")
     public ResponseEntity<?> listOotd(
             @RequestParam(value = "idx", defaultValue = "0") long idx,
             @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
