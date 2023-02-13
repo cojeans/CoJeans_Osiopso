@@ -27,7 +27,7 @@ export const ButtonContainer = styled.div`
 	justify-content:center;
 	text-decoration:none;
 		svg{
-		width:30px;
+		width:25px;
 		height:80%;
 	}
 	cursor:pointer;
@@ -52,7 +52,7 @@ export const CategoryContainer = styled.div`
 	justify-content:center;
 	text-decoration:none;
 		svg{
-		width:30px;
+		width:25px;
 		height:80%;
 	}
 	cursor:pointer;

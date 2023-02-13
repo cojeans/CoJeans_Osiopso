@@ -5,7 +5,7 @@ import {
 	FollowBox,
 	ProfileImageBox,
 	Intro,
-	ProfileBottom
+	Followcon
 } from "./profile.styles"
 
 import Button from "../button/button.component";
@@ -18,17 +18,21 @@ import { AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import { useEffect } from "react";
 
-const defaultFollowData = {
-	following: [],
-	followed : [],
+
+const defaultState = {
+	lst: [],
+	cnt: 0
 }
+
 const Profile = ({ id }) => {
 
   const Token = useSelector(selectUser);
 	const userInfo = useSelector(selectUserInfo)
 
 	const [userProfile, setUserProfile] = useState('')
-	const [follow, setFollow] = useState(defaultFollowData)
+	const [following, setFollowing] = useState(defaultState)
+	const [followed, setFollowed] = useState(defaultState)
+	const [followState, setFollowState] = useState(false)
 	
 	const getMyProfileData = (urlString) => {
 
@@ -42,6 +46,7 @@ const Profile = ({ id }) => {
 			console.log('userBio')
 			console.log(res.data)
 			setUserProfile(res.data)
+			setFollowState(res.data.followed)
 
 		}).catch((err) => {
 			console.log(err)
@@ -57,7 +62,7 @@ const Profile = ({ id }) => {
       },
 		}).then((res) => {
  			console.log(res.data.responseData,'😊팔로잉입니다.')
-			setFollow({...follow, following:res.data.responseData})
+			setFollowing({lst:res.data.responseData, cnt:res.data.responseData.length})
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -72,7 +77,7 @@ const Profile = ({ id }) => {
       },
 		}).then((res) => {
 			console.log(res.data.responseData,'🤣팔로우입니다.')
-			setFollow({...follow, followed:res.data.responseData})
+			setFollowed({lst:res.data.responseData, cnt:res.data.responseData.length})
 		}).catch((err) => {
 			console.log(err)
 		})
@@ -80,6 +85,15 @@ const Profile = ({ id }) => {
 
 	// 팔로우 함수입니다.
 	const clickFollow = () => {
+		// 팔로우한 상태이면
+		setFollowState(!followState)
+		if (followState) {
+			// 언팔로우 상태로 만듭니당..
+			setFollowing({ ...following.lst, cnt: following.cnt - 1 })
+		} else {
+			setFollowing({...following.lst, cnt:following.cnt + 1})	
+		}
+		
 		axios({
 			method: "post",	
   		url: `${process.env.REACT_APP_AXIOS_URL}user/follow?followingId=${id}`,
@@ -121,36 +135,35 @@ const Profile = ({ id }) => {
 			</IntroBox>
 			
 			<FollowBox>
-				<p>팔로잉 { follow.following.length }</p>
-				<p>팔로워 { follow.followed.length }</p>
-			</FollowBox>
-			<ProfileBottom>
+				<Followcon>
+					<p>팔로잉 {  followed.cnt}</p>
+					<p>팔로워 { following.cnt}</p>
+				</Followcon>
 				{
 					id > 0
 						?
-						userProfile.followed
+						followState
 							?
 							<Button
-							size={'sm'}
-							onClick={ () => {clickFollow(id)}}
+								size={'sm'}
+								onClick={clickFollow}
 							>
 								Unfollow
 							</Button>
 							:
 							<Button
-							size={'sm'}
-							onClick={ () => {clickFollow(id)}}
+								size={'sm'}
+								onClick={clickFollow} 
 							>
 								Follow
 							</Button>
 						:
-						<Fragment>
+						<Followcon>
 							<AiFillEdit color="BCF0E0"/>
 							<span>edit</span>
-						</Fragment>
+						</Followcon>
 				}
-			</ProfileBottom>
-
+			</FollowBox>
 		</ProfileBox>
 	)
 }
