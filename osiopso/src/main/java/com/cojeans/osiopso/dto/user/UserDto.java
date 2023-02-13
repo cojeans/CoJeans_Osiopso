@@ -1,10 +1,16 @@
 package com.cojeans.osiopso.dto.user;
 
+import com.cojeans.osiopso.dto.response.feed.AdviceListResponseDto;
+import com.cojeans.osiopso.dto.response.feed.HotOotdResponseDto;
+import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
+import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.user.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
+import java.util.List;
 
 @Getter @Setter @Builder @AllArgsConstructor @NoArgsConstructor
 @ToString
@@ -39,4 +45,7 @@ public class UserDto {
 
     private Role role; //권한
 
+    private List<HotOotdResponseDto> ootdList;
+
+    private List<HotOotdResponseDto> adviceList;
 }
