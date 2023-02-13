@@ -2,11 +2,9 @@ package com.cojeans.osiopso.controller;
 
 import com.cojeans.osiopso.dto.ApiRequestDto;
 import com.cojeans.osiopso.dto.ApiResponseDto;
-import com.cojeans.osiopso.dto.user.AuthResponseDto;
-import com.cojeans.osiopso.dto.user.LoginRequestDto;
-import com.cojeans.osiopso.dto.user.SignUpRequestDto;
-import com.cojeans.osiopso.dto.user.UserDto;
+import com.cojeans.osiopso.dto.user.*;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.exception.BadRequestException;
 import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
@@ -56,13 +54,13 @@ public class UserController{
 
     @GetMapping("")
     @Operation(summary = "내정보조회")
-    public ResponseEntity<User> getCurrentUser(Authentication authentication) {
+    public ResponseEntity<UserDto> getCurrentUser(Authentication authentication) {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 
         User user = userRepository.findById(userDetail.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
@@ -78,13 +76,34 @@ public class UserController{
     * 리턴타입 수정
     *
     * */
-    @Operation(summary = "회원수정")
+    @Operation(summary = "회원수정", description = "변경후 변경 완료된 userDto를 반환해서 그대로 redux에 저장된 유저객체에 덮어씌우면 될듯합니다.")
     @PutMapping("")
-    public ResponseEntity<UserDto> EditUser(@RequestBody SignUpRequestDto signUpRequest) {
-        log.info("signUpRequest: {}",signUpRequest);
-        UserDto userDto = userService.editUser(signUpRequest).toDto();
+    public ResponseEntity<UserDto> EditUser(@RequestBody UserModifyDto userModifyDto) {
+        log.info("userModifyDto: {}",userModifyDto);
+        UserDto userDto = userService.editUser(userModifyDto);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
+    @Operation(summary = "비밀번호변경", description = "비밀번호 변경 전 비밀번호 체크페이지를 통과해야한다.")
+    @PostMapping("/modifyPassword")
+    public ResponseEntity<ApiResponseDto> modifyPassword(@RequestBody String password, @AuthenticationPrincipal UserDetail userDetail) {
+        try {
+            userService.modifyPassword(password, userDetail.getId());
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>(ApiResponseDto
+                    .builder()
+                    .success(false)
+                    .message("비밀번호변경중 오류발생")
+                    .build()
+                    ,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(ApiResponseDto
+                .builder()
+                .success(true)
+                .message("비밀번호 변경완료")
+                .build()
+                , HttpStatus.OK);
     }
 
 
@@ -99,7 +118,7 @@ public class UserController{
                 )
         );
         /*이메일 인증 체크*/
-        if(!userService.isEmailVefied(loginRequestDto.getEmail())){
+        if(!userService.isEmailVerified(loginRequestDto.getEmail())){
             return new ResponseEntity<>(AuthResponseDto.builder()
                     .success(false)
                     .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
@@ -239,11 +258,11 @@ public class UserController{
                 .build(), HttpStatus.OK);
     }
     @Operation(summary = "공개범위 바꾸기", description = "IsProfilePublic칼럼을 반대로 토글시켜주고 바뀐 userDto객체를 반환.")
-    @GetMapping("/changeIsProfilePublic/{id}")
-    public ResponseEntity<ApiResponseDto> changeIsProfilePublic(@PathVariable Long id) {
-
+    @GetMapping("/modifyIsProfilePublic/{id}")
+    public ResponseEntity<ApiResponseDto> modifyIsProfilePublic(@PathVariable Long id) {
+        boolean modifyResult = userService.modifyIsProfilePublic(id);
         /*실패 시*/
-        if(!userService.changeIsProfilePublic(id))
+        if(!modifyResult)
             return new ResponseEntity<>(ApiResponseDto
                     .builder()
                     .success(false)

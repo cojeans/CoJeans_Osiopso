@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.security;
 
-import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+/*정보 조회시 userDetail에 있는 id로 userRepository에서 객체 가져와서 저장할 것.*/
 public class UserDetail implements OAuth2User, UserDetails {
     private Long id;
     private String email;
@@ -23,7 +24,12 @@ public class UserDetail implements OAuth2User, UserDetails {
     private String name;
     private int age;
     private Gender gender;
+    private String imageUrl;
+    private Boolean emailVerified;
+    private String bio;
+    private Boolean isProfilePublic;
     private AuthProvider provider;
+    private String providerId;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
     private Role role;
@@ -41,7 +47,7 @@ public class UserDetail implements OAuth2User, UserDetails {
 
     public static UserDetail create(User user) {
         List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority("ROLE_USER")); //기본적으로 USER의 권한주기
+                singletonList(new SimpleGrantedAuthority(Role.USER.getKey())); //기본적으로 USER의 권한주기
 
         return UserDetail.builder()
                 .id(user.getId())

@@ -1,4 +1,4 @@
-package com.cojeans.osiopso.dto.user;
+package com.cojeans.osiopso.entity.user;
 
 import lombok.Getter;
 
