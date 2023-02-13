@@ -110,18 +110,24 @@ public class OotdService {
 
         while (matcher.find()) {
             String hashTag = matcher.group();
+            Tag findTag = tagRepository.findByKeyword(hashTag);
+            Tag saveTag;
 
-            Tag tagSaved = tagRepository.save(Tag.builder()
-                    .keyword(hashTag)
-                    .type("H")
-                    .build());
+            if (findTag == null) {
+                Tag tagSaved = tagRepository.save(Tag.builder()
+                        .keyword(hashTag)
+                        .type("H")
+                        .build());
 
-            ArticleTag articleTagE = ArticleTag.builder()
+                saveTag = tagSaved;
+            } else {
+                saveTag = tagRepository.findById(findTag.getId()).orElseThrow();
+            }
+
+            articleTagRepository.save(ArticleTag.builder()
                     .article(ootdSaved)
-                    .tag(tagSaved)
-                    .build();
-
-            articleTagRepository.save(articleTagE);
+                    .tag(saveTag)
+                    .build());
         }
 
 
