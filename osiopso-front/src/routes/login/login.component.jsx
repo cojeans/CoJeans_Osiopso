@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignInContainer, ButtonsContainer  } from './login.stlyes'
+import { SignInContainer, ButtonsContainer, Osiopso, Bodoni  } from './login.stlyes'
 import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
@@ -83,7 +83,11 @@ const Login = () => {
 
       <hr />
       {/* <h2>Already have an account?</h2> */}
-      <span>이메일과 비밀번호를 입력하세요.</span>
+      {/* <span>이메일과 비밀번호를 입력하세요.</span> */}
+      <Osiopso>
+        <Bodoni>Osiopso</Bodoni>
+        &nbsp;내 옷장을 앱속으로
+        </Osiopso>
         <FormInput
           label='Email'
           type='email'
