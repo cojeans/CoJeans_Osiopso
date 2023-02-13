@@ -1,6 +1,7 @@
 package com.cojeans.osiopso.dto.user;
 
 import com.cojeans.osiopso.entity.user.AuthProvider;
+import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.user.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
