@@ -34,6 +34,9 @@ const TopBar = () => {
 			case '/advice/create':
 				setTopName('훈수 등록')
 				break
+			case '/advice/ootdCommentCreate':
+			setTopName('훈수 등록')
+			break
 			default:
 				setTopName('Osiopso')
 		}

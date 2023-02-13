@@ -62,8 +62,8 @@ const Profile = () => {
 				<p>팔로워 { followerNum }</p>
 			</FollowBox>
 			<ProfileBottom>
-					<AiFillEdit />
-					<span>eidt</span>
+					<AiFillEdit color="BCF0E0"/>
+					<span>edit</span>
 				{/* <Button
 					size={'sm'}
 				>
