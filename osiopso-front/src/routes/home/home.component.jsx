@@ -124,8 +124,8 @@ const Home = () =>{
 	},[])
 
 	const goToTag = (e)=>{
-		// e.preventDefault()
 		console.log(e)		
+		
 	}
 
 	return (

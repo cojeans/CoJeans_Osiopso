@@ -5,6 +5,7 @@ import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+import { SlExclamation } from "react-icons/sl";
 
 import Swal from "sweetalert2";
 
@@ -21,7 +22,11 @@ import {
   MarginDiv,
   OotdInput,
   OotdImgContainer,
-  StyleTagButton
+  StyleTagButton,
+  Note,
+  NoteBox,
+  TextBox,
+  CautionBox,
 } from "./advice-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -76,6 +81,11 @@ const AdviceCreate = ()=> {
     const goToHome = ()=> {
         navigate('/')
     }
+
+
+      const CautionMessage = ()=> {
+        alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
+      }
   
     const submitAdviceCreate = (e) => {
       e.preventDefault();
@@ -177,6 +187,14 @@ const AdviceCreate = ()=> {
               ref={imgRef}
             />
           </OotdImgContainer>
+          <NoteBox>
+          <Note>
+            <CautionBox onClick={CautionMessage}>
+              <SlExclamation />
+              <TextBox>작성 시 유의사항</TextBox>
+            </CautionBox>
+          </Note>
+        </NoteBox>
           <MarginDiv>
             <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
           </MarginDiv>

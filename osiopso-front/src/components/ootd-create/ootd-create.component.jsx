@@ -5,6 +5,8 @@ import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+import { SlExclamation } from "react-icons/sl";
+
 
 import Swal from "sweetalert2";
 
@@ -22,7 +24,10 @@ import {
   OotdInput,
   OotdImgContainer,
   StyleTagButton,
-  TagBox
+  TagBox,
+  Note,
+  NoteBox,
+  ExclamationMark
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -39,6 +44,9 @@ const defaultOotdForm = {
 
 
 const OotdCreate = () => {
+  const CautionMessage = ()=> {
+    alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
+  }
   const Token = useSelector(selectUser)
   
   const [ootdImg, setOotdImg] = useState('')
@@ -168,6 +176,16 @@ const OotdCreate = () => {
             ref={imgRef}
           />
         </OotdImgContainer>
+        <NoteBox>
+          <Note>
+            <ExclamationMark>
+              <SlExclamation />
+            </ExclamationMark>
+            <div onClick={CautionMessage}>
+              작성 시 유의사항
+            </div>
+          </Note>
+        </NoteBox>
         <MarginDiv>
           <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
           <TagBox>
@@ -185,7 +203,7 @@ const OotdCreate = () => {
             id=""
             cols="30"
             rows="10" 
-            placeholder='#코딩이 #힘들다'
+            placeholder='착용 아이템 및 스타일을 소개해주세요.'
             onChange={handleChange}
           >
           </textarea>
