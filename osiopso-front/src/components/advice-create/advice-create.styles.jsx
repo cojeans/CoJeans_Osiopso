@@ -79,3 +79,32 @@ export const StyleTagButton = styled.button`
     background-color:#e7e2ff;
     cursor:pointer;
 `
+export const Note = styled.div`
+display: flex;
+width: 100%;
+height: 100%;
+text-align: start;
+font-size: 80%;
+margin: 3% 2% 1%;
+`
+export const NoteBox = styled.div`
+display: flex;
+width: 100%;
+height: 100%;
+margin-left: 12%;
+`
+
+export const CautionBox = styled.div`
+display: flex;
+// margin-right: 1%;
+width: 100%;
+height: 100%
+`
+export const TextBox = styled.div`
+display: flex;
+margin-left: 2%;
+`
+export const ExclamationMark = styled.div`
+display: flex;
+margin-right: 1%;
+`

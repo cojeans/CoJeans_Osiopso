@@ -75,3 +75,21 @@ export const TagBox = styled.div`
         margin:3px;
     }
 `
+export const Note = styled.div`
+display: flex;
+width: 100%;
+height: 100%;
+text-align: start;
+font-size: 80%;
+margin: 3% 2% 1%;
+`
+export const NoteBox = styled.div`
+display: flex;
+width: 100%;
+height: 100%;
+margin-left: 12%;
+`
+export const ExclamationMark = styled.div`
+display: flex;
+margin-right: 1%;
+`

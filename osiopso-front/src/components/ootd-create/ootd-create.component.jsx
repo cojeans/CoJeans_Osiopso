@@ -5,6 +5,7 @@ import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+import { SlExclamation } from "react-icons/sl";
 
 import Swal from "sweetalert2";
 
@@ -22,7 +23,10 @@ import {
   OotdInput,
   OotdImgContainer,
   StyleTagButton,
-  TagBox
+  TagBox,
+  Note,
+  ExclamationMark,
+  NoteBox,
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -116,6 +120,10 @@ const OotdCreate = () => {
     AlertCreateOotd()
   }
 
+  const CautionMessage = ()=> {
+    alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
+  }
+
   const AlertCreateOotd = () => {
 
   Swal.fire({
@@ -178,6 +186,17 @@ const OotdCreate = () => {
             }
           </TagBox>
         </MarginDiv>
+        <NoteBox>
+          <Note>
+            <ExclamationMark>
+              <SlExclamation />
+            </ExclamationMark>
+            <div onClick={CautionMessage}>
+              작성 시 유의사항
+            </div>
+          </Note>
+        </NoteBox>
+
         <MarginDiv>
           <textarea
             name="content"
