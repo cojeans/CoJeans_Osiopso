@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PasswordRequestEmail {
-    private java.lang.String subject;
-    private java.lang.String to;
-    private java.lang.String body;
+    private String subject;
+    private String to;
+    private String body;
 }
