@@ -123,14 +123,20 @@ const Home = () =>{
 		}
 	},[])
 
+	const goToTag = (e)=>{
+		// e.preventDefault()
+		console.log(e)		
+	}
+
 	return (
 		<div>
 
 			<TextToLeft>
+				
 				{
 				tagData.map((tag, idx)=>{
 					return (
-						<div key={idx}>{tag.keyword}</div>
+						<div key={idx} onClick={()=> goToTag(tag.keyword)}>{tag.keyword}</div>
 					)	
 				})
 				}
