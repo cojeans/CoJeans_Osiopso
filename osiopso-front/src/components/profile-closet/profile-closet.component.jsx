@@ -6,7 +6,7 @@ import { useState, useCallback, useEffect } from "react"
 import { useSelector } from 'react-redux';
 
 import { selectUser } from '../../store/user/user.selector';
-import { selectCloset } from '../../store/closet/closet.selector';
+// import { selectCloset } from '../../store/closet/closet.selector';
 
 import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
@@ -15,7 +15,7 @@ import {
 	PlusCloset
 } from "./profile-closet.styles"
 import { ClosetItem } from "../closet/closet.styles"
-import { selectClothes } from '../../store/clothes/clothes.selector';
+// import { selectClothes } from '../../store/clothes/clothes.selector';
 
 
 export function useBodyScrollLock() {
@@ -34,7 +34,6 @@ export function useBodyScrollLock() {
 const ProfileCloset = ({ id }) => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
-	const check = useSelector(selectClothes)
 	const getClosetList = (urlString) => {
 		console.log('옷장리스트가져오기')
 		axios({
@@ -76,12 +75,15 @@ const ProfileCloset = ({ id }) => {
 	
 	return (
 		<ClosetBodyContainer>
-			<ClosetItem page={ 'profile'} onClick={showModal}>
-				<LogoContainer2>
-					<PlusCloset/>
-				</LogoContainer2>
-				<p> 옷장 만들기</p>
-			</ClosetItem>
+			{
+				! id>0 &&
+				<ClosetItem page={ 'profile'} onClick={showModal}>
+					<LogoContainer2>
+						<PlusCloset/>
+					</LogoContainer2>
+					<p> 옷장 만들기</p>
+				</ClosetItem>
+			}
 			{
 				closetList.map((closet, idx) => {
 					return <Closet closet={ closet } key={idx} />
@@ -93,7 +95,7 @@ const ProfileCloset = ({ id }) => {
 				<ClosetCreateModal
 					setModalOpen={setModalOpen}
 					openScroll={openScroll}
-					getClosetList={getClosetList}
+					setClosetList={ setClosetList }
 				/>
 			}
 
