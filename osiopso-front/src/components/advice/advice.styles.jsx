@@ -23,6 +23,7 @@ display:flex;
 // flex-direction: column;
 justify-content: space-between;
 align-items:center;
+margin-top: 20px;
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;
