@@ -7,6 +7,7 @@ import html2canvas from "html2canvas";
 
 import SimpleSlider from "../closet-slick/closet-slick.component"
 import DropArea from "../advice-comment-item-drop/advice-comment-item-drop.component"
+import Button from "../button/button.component";
 
 //style
 import {
@@ -109,41 +110,29 @@ const onCapture = () => {
 			</ClothesBox>
 			<ItemDropContainer>
 				{/* 저장될 영역 */}
-				<div id='dropArea'>
-					<DropArea
-						targetItem={targetItem}
-					/>
-				</div>
+				{
+					!targetItem.length ?	
+					<img className='imageExample' src={ require('../../assets/example_advice.jpg')} alt="" />
+				:
+					<div id='dropArea'>
+						<DropArea
+							targetItem={targetItem}
+						/>
+					</div>
+				}
 			</ItemDropContainer>
 			<InputContainer>
 				<AdcivceCommentInput
 					type="text"
 					value={content}
 					onChange={inputHandler}
+					placeholder='훈수 댓글을 작성해 주세요.😊'
 				/>
-				<button onClick={onCapture}>
+				<Button onClick={onCapture}>
 					제출
-				</button>
+				</Button>
 			</InputContainer>
 		</CreatAdvicePage>
-		// <CreatAdvicePage>
-		// 		{/* 옷장이 올 자리입니다.  */}
-		// 		{/* <>
-		// 		<SimpleSlider/>
-		// 	</> */}
-
-		// 		{/* 옷 아이템이 올 자리입니다.  */}
-		// 	<ClosetContainer>
-		// 	</ClosetContainer>
-
-		// 		{/* 옷 아이템이 드랍될 자리입니다.  */}
-		// 	<ItemDropContainer>
-		// 	</ItemDropContainer>
-
-		// 		{/* 입력창이 있을 자리입니다.  */}
-
-		
-		// </CreatAdvicePage>
 	)
 }
 

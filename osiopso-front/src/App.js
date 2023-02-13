@@ -34,7 +34,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="join" element={<Join />} />
         <Route path="passwordcheck" element={<PasswordCheck />} />
-        <Route path="mypage/*" element={<Mypage />} />
+        <Route path="profile/*" element={<Mypage />} />
         <Route path="advice/*" element={<AdvicePage />} />
         <Route path="ootd/*" element={<OOTDPage />} />
         <Route path="changePassword" element={<ChangePassword />} />

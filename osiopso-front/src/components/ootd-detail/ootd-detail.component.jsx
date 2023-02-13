@@ -42,10 +42,10 @@ const isCocomentDefaultData = {
   selectCommentName: '',
 }
 
-const openCocoDefaultData = {
-  check: false,
-  selectCommentId: '',
-}
+// const openCocoDefaultData = {
+//   check: false,
+//   selectCommentId: '',
+// }
 
 const likeDefaultData = {
   check: false,
@@ -60,6 +60,7 @@ const OotdDetail = () => {
   const id = location.state.id;
 
   const Token = useSelector(selectUser)
+  
   const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(likeDefaultData)
@@ -67,7 +68,7 @@ const OotdDetail = () => {
   const [openComment, setOpenComment] = useState(false)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
-  const [ootdUserUrl, setOordUserUrl] = useState(require('../../assets/defaultuser.png'))
+  const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
   const [openCoco, setOpenCoco] = useState(false)
 
   
@@ -209,6 +210,20 @@ const OotdDetail = () => {
       setOpenComment(true)
     }
   }
+
+  const goUserProfile = () => {
+    if (ootdDetail.userId === userInfo.id) {
+     navigate('/profile/')
+    } else {
+      navigate(
+        '/profile/' + ootdDetail.userId,
+        {
+          state: {
+		      id:ootdDetail.userId
+    	}}
+      )
+   }
+  }
   
   useEffect(() => {
     sccurRef1()
@@ -219,9 +234,10 @@ const OotdDetail = () => {
     <div>
       <div>
 
-      <UpperProfile
+      <UpperProfile 
+      onClick={goUserProfile}
       >
-        <ProfileImageBox >
+        <ProfileImageBox  >
           <img src={  ootdUserUrl} alt="" />
         </ProfileImageBox >
         {ootdDetail.userName}

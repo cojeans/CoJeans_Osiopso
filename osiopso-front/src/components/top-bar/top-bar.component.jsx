@@ -42,6 +42,8 @@ const TopBar = () => {
 		}
 		if (location.pathname.includes('ootd/detail')) {
 			setTopName('OOTD 게시글')
+		} else if (location.pathname.includes('profile')) {
+			setTopName('Profile')
 		}
 }, [location ])
 
@@ -54,23 +56,38 @@ const TopBar = () => {
 			</div>
 			<TopBarContent>
 				{ topName }
-			</TopBarContent>
-			<CategoryContainer >
-        		<SideBar/>
-			</CategoryContainer>
+						</TopBarContent>
+						<div></div>
 		</TopBarContainer>
-			:<TopBarContainer>
-			<ButtonContainer onClick={() =>{
-				navigate(-1)
-			}}>
-				<BackButton />
-			</ButtonContainer>	
+					: topName === 'Profile'
+				?				<TopBarContainer>
+									<ButtonContainer onClick={() =>{
+										navigate(-1)
+									}}>
+										<BackButton />
+									</ButtonContainer>	
 
-			<TopBarContent>
-				{ topName }
-			</TopBarContent>
+									<TopBarContent>
+										{ topName }
+									</TopBarContent>
+									<CategoryContainer >
+												<SideBar/>
+									</CategoryContainer>
+								</TopBarContainer>
+						:	<TopBarContainer>
+									<ButtonContainer onClick={() =>{
+										navigate(-1)
+									}}>
+										<BackButton />
+									</ButtonContainer>	
 
-		</TopBarContainer>
+									<TopBarContent>
+										{ topName }
+									</TopBarContent>
+									<div></div>
+								</TopBarContainer>
+					
+	
 	}</Fragment>
 	)
 }

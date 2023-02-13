@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Fragment, useState } from "react"
 import {
 	ProfileBox,
 	IntroBox,
@@ -7,6 +7,8 @@ import {
 	Intro,
 	ProfileBottom
 } from "./profile.styles"
+
+import Button from "../button/button.component";
 
 import { useSelector } from "react-redux"
 import { selectUser } from "../../store/user/user.selector";
@@ -20,18 +22,19 @@ const defaultFollowData = {
 	following: [],
 	followed : [],
 }
-const Profile = () => {
+const Profile = ({ id }) => {
 
   const Token = useSelector(selectUser);
 	const userInfo = useSelector(selectUserInfo)
 
 	const [userProfile, setUserProfile] = useState('')
 	const [follow, setFollow] = useState(defaultFollowData)
+	
+	const getMyProfileData = (urlString) => {
 
-	const getMyProfileData = () => {
 		axios({
 			method: "get",	
-  		url: `${process.env.REACT_APP_AXIOS_URL}user`,
+  		url: urlString,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },
@@ -79,13 +82,19 @@ const Profile = () => {
 	}
 
 	useEffect(() => {
-		getMyProfileData()
+		if (id > 0) {
+			getMyProfileData(`${process.env.REACT_APP_AXIOS_URL}user/${id}`)
+			console.log(true)
+	} else {
+			getMyProfileData(`${process.env.REACT_APP_AXIOS_URL}user`)
+			console.log(false)
+	}
 
 	},[])
 
 	return (
 		<ProfileBox>
-			<h2>{userInfo.name}</h2>
+			<h2>{userProfile.name}</h2>
 			<IntroBox>
 				<ProfileImageBox>
 					<img src={  ! userProfile.imageUrl? require('../../assets/defaultuser.png'):userProfile.imageUrl} alt="" />
@@ -100,13 +109,20 @@ const Profile = () => {
 				<p>팔로워 { follow.followed.length }</p>
 			</FollowBox>
 			<ProfileBottom>
-					<AiFillEdit color="BCF0E0"/>
-					<span>edit</span>
-				{/* <Button
-					size={'sm'}
-				>
-					Follow
-				</Button> */}
+				{
+					id > 0
+						?
+							<Button
+								size={'sm'}
+							>
+								Follow
+							</Button>
+						:
+						<Fragment>
+							<AiFillEdit color="BCF0E0"/>
+							<span>edit</span>
+						</Fragment>
+				}
 			</ProfileBottom>
 
 		</ProfileBox>

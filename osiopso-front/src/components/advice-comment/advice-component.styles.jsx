@@ -20,12 +20,17 @@ export const ClothesContainer = styled.div`
 export const ItemDropContainer = styled.div`
 	width: 340px;
 	height: 220px;
-	border: solid 1px gray;
 	display: flex;
 	margin: auto;
 	justify-content: center;
 	align-items: center;
 	min-height: 140px;
+	border:dotted;
+	.imageExample{
+		width: 100%;
+		height: 100%;
+		opacity: 0.2;
+	}
 	
 `
 
@@ -70,4 +75,6 @@ export const AdcivceCommentInput = styled.input`
 	&:focus{
 		outline: none;
 	}
+	font-family: 'LINESeedKR-Bd';
+
 `

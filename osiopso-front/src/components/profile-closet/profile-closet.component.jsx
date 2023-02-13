@@ -31,15 +31,15 @@ export function useBodyScrollLock() {
 }
 
 
-const ProfileCloset = () => {
+const ProfileCloset = ({ id }) => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
 	const check = useSelector(selectClothes)
-	const getClosetList = () => {
+	const getClosetList = (urlString) => {
 		console.log('옷장리스트가져오기')
 		axios({
 					method: "post",
-					url: `${process.env.REACT_APP_AXIOS_URL}closet/mylist`,
+					url: urlString,
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},
@@ -65,7 +65,12 @@ const ProfileCloset = () => {
 	};
 
 	useEffect(() => {
-		getClosetList()
+		if (id > 0) {
+		getClosetList( `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=${id}`)
+
+		} else {
+			getClosetList( `${process.env.REACT_APP_AXIOS_URL}closet/mylist`)
+		}
 	},[])
 
 	
