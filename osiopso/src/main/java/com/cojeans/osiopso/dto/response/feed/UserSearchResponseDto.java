@@ -8,5 +8,5 @@ import lombok.Data;
 public class UserSearchResponseDto {
 
     private String userName;
-    private String imageUrl;
+    private String profileImageUrl;
 }

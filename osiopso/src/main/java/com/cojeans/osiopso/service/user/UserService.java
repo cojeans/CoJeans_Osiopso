@@ -199,7 +199,7 @@ public class UserService {
         for (User user : users) {
             userList.add(UserSearchResponseDto.builder()
                     .userName(user.getName())
-                    .imageUrl(user.getImageUrl())
+                    .profileImageUrl(user.getImageUrl())
                     .build());
         }
 
