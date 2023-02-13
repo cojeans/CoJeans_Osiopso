@@ -8,8 +8,8 @@ import {
 	CategoryContainer
 } from "./top-bar.styles"
 
-import { ReactComponent as BackButton } from '../../assets/back.svg'
 import { SideBar } from "../side-bar/side-bar.component"
+import { MdArrowBackIosNew } from "react-icons/md";
 
 import { BiSearch } from "react-icons/bi";
 
@@ -39,6 +39,9 @@ const TopBar = () => {
 			case '/advice/ootdCommentCreate':
 			setTopName('훈수 등록')
 				break
+			case '/advice':
+			setTopName('훈수')
+				break
 			default:
 				setTopName('Osiopso')
 		}
@@ -52,7 +55,7 @@ const TopBar = () => {
 	return (
 		<Fragment>
 		{
-				topName ==='Osiopso'?
+				topName ==='Osiopso' || topName==='훈수'?
 		<TopBarContainer page={'two'}>
 			<div>
 			</div>
@@ -68,7 +71,7 @@ const TopBar = () => {
 									<ButtonContainer onClick={() =>{
 										navigate(-1)
 									}}>
-										<BackButton />
+								<MdArrowBackIosNew color='white' />
 									</ButtonContainer>	
 
 									<TopBarContent>
@@ -82,7 +85,7 @@ const TopBar = () => {
 									<ButtonContainer onClick={() =>{
 										navigate(-1)
 									}}>
-										<BackButton />
+										<MdArrowBackIosNew color='white' />
 									</ButtonContainer>	
 
 									<TopBarContent>
