@@ -1,6 +1,6 @@
 package com.cojeans.osiopso.dto.request.filter;
 
-import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.entity.user.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

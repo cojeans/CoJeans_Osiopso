@@ -18,6 +18,7 @@ public class CommentResponseDto {
     private String time;
     private String content;
     private Long cocommentCnt;
+    private String profileImageUrl;
     private Long report;
     private List<CommentLikeResponseDto> commentLikes;
     private List<CocommentResponseDto> cocoments;

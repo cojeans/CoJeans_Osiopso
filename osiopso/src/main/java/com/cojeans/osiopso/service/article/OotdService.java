@@ -12,7 +12,7 @@ import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.dto.response.tag.HotTagResponseDto;
 import com.cojeans.osiopso.dto.tag.ArticleTagResponseDto;
 import com.cojeans.osiopso.dto.tag.SearchTagResponseDto;
-import com.cojeans.osiopso.dto.user.Gender;
+import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.comment.Cocomment;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.comment.CommentLike;
@@ -26,6 +26,7 @@ import com.cojeans.osiopso.repository.comment.CommentRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.UserDetail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,8 @@ public class OotdService {
     private final ArticleService articleService;
     private final CommentLikeRepository commentLikeRepository;
     private final OotdRepositoryImpl ootdRepositoryImpl;
+    private final ArticleScrollQdslRepositoryImpl articleScrollQdslRepositoryImpl;
+
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -126,8 +129,15 @@ public class OotdService {
     }
 
 
-    public List<OotdListResponseDto> listOotd() {
-        List<Ootd> Ootds = ootdRepository.findAllByDtype("O");
+    public List<OotdListResponseDto> listOotd(Pageable pageable, Long idx) {
+        List<Ootd> Ootds;
+
+        if (pageable == null) { // 필터링용
+            Ootds = ootdRepository.findAllByDtype("O");
+        } else {
+            Ootds = articleScrollQdslRepositoryImpl.findNoOffsetOotdPaging(pageable, idx);
+        }
+
         List<OotdListResponseDto> list = new ArrayList<>();
         Date date = new Date();
 
@@ -152,6 +162,7 @@ public class OotdService {
 
         return list;
     }
+
 
 
     public OotdDetailResponseDto detailOotd(Long articleNo) {
@@ -264,7 +275,7 @@ public class OotdService {
                         .report(getComment.getReport())
                         .like(likeCoco)
                         .commentLikes(cocommentLikeResponseDtoList)
-                        //.profileImageUrl(comment.getUser().getImageUrl())
+                        .profileImageUrl(comment.getUser().getImageUrl())
                         .imageUrl(comment.getUser().getImageUrl())
                         .userName(comment.getUser().getName())
                         .time(cocommentGapTime.getTimeGapToString())
@@ -502,7 +513,7 @@ public class OotdService {
         Gender gender = filter.getGender();
 
 
-        List<OotdListResponseDto> listOotd = listOotd();
+        List<OotdListResponseDto> listOotd = listOotd(null, 0L);
         List<OotdListResponseDto> responseOotdList = new ArrayList<>();
 
         // 아무 필터도 적용되지 않은 경우
