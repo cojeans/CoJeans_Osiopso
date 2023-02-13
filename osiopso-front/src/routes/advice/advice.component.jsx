@@ -2,7 +2,7 @@ import Advice from '../../components/advice/advice.component';
 import AdviceCreate from '../../components/advice-create/advice-create.component'
 import AdviceCommentList from '../../components/advice-comment-list/advice-comment-list.component';
 import AdviceDetail from '../../components/advice-detail/advice-detail.component'
-import AdviectComment from '../../components/advice-comment/advice-comment.component';
+// import AdviectComment from '../../components/advice-comment/advice-comment.component';
 import { Route, Routes } from "react-router-dom"
 
 import { useSelector, useDispatch } from 'react-redux'
