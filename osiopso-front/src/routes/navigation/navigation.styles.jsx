@@ -1,8 +1,13 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 
 const main = "#BCF0E0"
+
+export const isPadding = css`
+		padding:65px 0;
+
+`
 
 export const Container = styled.div`
   width: 100%;
@@ -53,14 +58,15 @@ export const LogoContainer = styled(NavLink)`
   &.active {
 		svg{
 			fill:${main};
-			stroke::${main};
+			stroke:${main};
 		}
   }
 	
 `
 
 export const BodyContainer = styled.div`
-	padding:65px 0;
+  ${({page}) => page && isPadding}
+
 	width: 100%;
 	max-width:430px;
 	margin:auto;

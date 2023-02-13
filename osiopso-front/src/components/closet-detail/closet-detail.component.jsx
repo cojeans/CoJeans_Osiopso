@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 import {
@@ -8,9 +8,12 @@ import {
 	ClosetDetailPage
 } from './closet-detail.styles';
 import { useEffect, useState } from 'react';
+import { BiTrash } from "react-icons/bi";
+import Swal from "sweetalert2";
 
 const ClosetDetail = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const { name, thumbnails, count, id, isSelected } = location.state.closet
 	const Token = useSelector(selectUser)
 
@@ -32,13 +35,41 @@ const ClosetDetail = () => {
 		})
 	}
 
+	const deleteCloset = () => {
+		axios({
+			method: 'delete',
+			url: `${process.env.REACT_APP_AXIOS_URL}closet/${id}`,
+			headers: {
+				Authorization: `Bearer ${Token.token}`,
+						},
+		}).then((res) => {
+			console.log(res)
+		}).catch((err) => {
+			console.log(err)
+		})
+
+		Swal.fire({
+		icon: 'success',
+		confirmButtonColor: "#DD6B55", 
+		html: `
+		옷장이 삭제되었습니다.
+		`,
+		showCancelButton: false,
+		confirmButtonText: "확인",
+		width: '300px'
+
+	})
+		navigate('/profile')
+	}
+
 	useEffect(() => {
 		getClothes()
 	},[])
 
 	return (
 		<ClosetDetailPage>
-			<h3>{ name } 옷장</h3>
+			<h3>{name} 옷장</h3>
+			<BiTrash onClick={deleteCloset}/>
 			{
 				count === 0 
 					?

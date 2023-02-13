@@ -1,6 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+
+import { SideBar } from "../side-bar/side-bar.component"
+
 import { Fragment } from "react"
+
 import {
 	TopBarContainer,
 	TopBarContent,
@@ -8,7 +12,6 @@ import {
 	CategoryContainer
 } from "./top-bar.styles"
 
-import { SideBar } from "../side-bar/side-bar.component"
 import { MdArrowBackIosNew } from "react-icons/md";
 
 import { BiSearch } from "react-icons/bi";
@@ -19,6 +22,11 @@ const TopBar = () => {
 
 	const [topName, setTopName] = useState('Osiopso')
 	const location = useLocation()
+
+	const searchHandler = () => {
+		navigate('/search')
+	}
+	
 	useEffect(() => {
 		switch (location.pathname) {
 			case '/join':
@@ -63,7 +71,7 @@ const TopBar = () => {
 				{ topName }
 						</TopBarContent>
 						<CategoryContainer >
-						<BiSearch/>	
+						<BiSearch onClick={searchHandler}/>	
 						</CategoryContainer>
 		</TopBarContainer>
 					: topName === 'Profile'
@@ -93,9 +101,11 @@ const TopBar = () => {
 									</TopBarContent>
 									<div></div>
 								</TopBarContainer>
-					
+								
 	
-	}</Fragment>
+			}
+
+		</Fragment>
 	)
 }
 

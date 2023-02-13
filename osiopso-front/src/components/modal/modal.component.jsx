@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import {  useEffect, useRef } from 'react';
 
 import { ModalPage } from "./modal.styles"
 
@@ -6,6 +6,7 @@ import PlusModal from '../plus-content/plus-content.component';
 import OotdModal from '../ootd-modal/ootd-modal.component';
 import AdviceModal from '../advice-modal/advice-modal.component';
 import ClothesTagModal from '../clothes-tag-modal/clothes-tag-modal.component';
+
 
 const Modal = ({ setModalOpen, openScroll, page }) => {
 	 console.log(page)
@@ -15,6 +16,8 @@ const Modal = ({ setModalOpen, openScroll, page }) => {
 		openScroll()
 	};
 	const modalRef = useRef(null);
+
+
 
 	
 	useEffect(() => {

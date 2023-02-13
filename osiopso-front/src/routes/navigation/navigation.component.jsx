@@ -26,6 +26,7 @@ import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
 import { useSelector, } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { selectUser } from '../../store/user/user.selector'
+import { useEffect } from "react"
 
 
 const Navigation = () => {
@@ -33,9 +34,10 @@ const Navigation = () => {
 	const { lockScroll, openScroll } = useBodyScrollLock()
 	let location = useLocation();
 	const Token = useSelector(selectUser)
-  const navigate = useNavigate()
+	const navigate = useNavigate()
+	const [curRoute, setCurRoute] = useState(true)
 
-
+ 
 	const showModal = () => {
 		if (!Token.token) {
 		alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
@@ -45,17 +47,27 @@ const Navigation = () => {
 			setModalOpen(true);
 				lockScroll();
 	}
-		
 	};
+
+	useEffect(() => {
+		if (location.pathname ==='/login' || location.pathname ==='/search' || location.pathname ==='join' ) {
+			setCurRoute(false)
+		} else {
+			setCurRoute(true)
+		}
+	},[location])
 
 	return (
 		
 		<Container>
-			<TopBar />
-			<BodyContainer>
+			{
+				curRoute &&<TopBar />
+			}
+			
+			<BodyContainer page={ curRoute }>
 				<Outlet />
 			</BodyContainer>
-			<NavigationContainer>
+			{curRoute && <NavigationContainer>
 				<HashLinkContainer
 					smooth
 					to="/#top"
@@ -101,11 +113,12 @@ const Navigation = () => {
 				{/* <Link to='/login'>Login</Link> 
 				<Link to='/join'>Join</Link>
 				<Link to='/mypage'>My page</Link> */}
-			</NavigationContainer>
+			</NavigationContainer>}
 			{
 				// page == 1 일 때 네비게이션 모달
 				modalOpen && <Modal setModalOpen={setModalOpen} openScroll={openScroll} page={ 1 } />
 			}
+
 		</Container>
 	)
 }

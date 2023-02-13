@@ -2,7 +2,6 @@ import axios from 'axios'
 
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 import {
 	createCloset,
@@ -39,7 +38,6 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 
 	const Token = useSelector(selectUser)
 	const closetData  = useSelector(selectCloset)
-	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
 	 // 모달 끄기 

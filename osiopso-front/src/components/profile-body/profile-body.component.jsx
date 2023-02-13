@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Fragment } from "react"
 import ProfileCloset from "../profile-closet/profile-closet.component"
 import {
@@ -6,15 +7,23 @@ import {
 } from "./profile-body.styles"
 
 const ProfileBody = ({ id }) => {
+	const [profilePage, setProfilePage] = useState('closet')
+
 	return (
 		<Fragment>
 			<TabMenue>
-				<p>옷장</p>
-				<p>OOTD</p>
-				<p>훈수</p>
+				<p onClick={() => setProfilePage('closet')} page={ profilePage=== 'closet'}>옷장</p>
+				<p onClick={()=> setProfilePage('ootd')} page={ profilePage==='ootd' }>OOTD</p>
+				<p onClick={()=> setProfilePage('advice')} page={ profilePage ==='advice'}>훈수</p>
 			</TabMenue>
 			<TabBody>
-				<ProfileCloset id={id } />
+				{
+					profilePage === 'closet'
+						?	<ProfileCloset id={id} />
+						: profilePage === 'ootd'
+							?<div>ootd</div> 
+							:<div>advice</div>
+						}
 			</TabBody>
 		</Fragment>
 	)
