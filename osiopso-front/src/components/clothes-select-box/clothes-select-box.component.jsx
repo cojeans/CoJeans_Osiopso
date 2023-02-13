@@ -19,12 +19,13 @@ import { useBodyScrollLock } from "../../components/profile-closet/profile-close
 import { loadGraphModel } from "@tensorflow/tfjs-converter"
 import * as tf from '@tensorflow/tfjs';
 import React from 'react';
-
+import { createTag } from "../../store/clothes/clothes.reducer";
+import { selectTag } from "../../store/clothes/clothes.selector"
 import axios from "axios";
 import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { upload } from "../../store/clothes/clothes.reducer";
+import { upload, checkLocal } from "../../store/clothes/clothes.reducer";
 import {
   selectClothes,
   localPhoto,
@@ -40,29 +41,34 @@ const defaultOotdForm = {
 };
 
 const ClothesSelectBox = () => {
+  const saveTag = useSelector(selectTag)
   const navigate = useNavigate();
+  // const [isAutoTag, setIsAutoTag] = useState(false); 
   const Token = useSelector(selectUser);
   const saveData = useSelector(selectClothes);
+  const isAutoTag = useSelector(localPhoto);
   // console.log(saveData)
-
+  useEffect(() => {
+    FashionAi();
+  }, [isAutoTag]);
   const dispatch = useDispatch();
   // const saveData = useSelector(selectClothes);
   const onNavigateHandler = () => {
     navigate("update/");
   };
   const [ootdFormData, setOotdFormData] = useState(defaultOotdForm);
-  const [isAutoTag, setIsAutoTag] = useState(false); 
   const [modalOpen, setModalOpen] = useState(false);
   const { lockScroll, openScroll } = useBodyScrollLock();
-
+  const [authCategory, setAutoCategory] = useState('');
+  const [authColor, setAutoColor] = useState('');
   const showModal = () => {
     window.scrollTo(0, 0);
     setModalOpen(true);
     lockScroll();
   };
-  const handleAutoTag = () => {
-    setIsAutoTag(!isAutoTag)
-  }
+  // const handleAutoTag = () => {
+  //   setIsAutoTag(!isAutoTag)
+  // }
   const handleSubmit = () => {
     // console.log('저장?')
     // console.log(closetField)
@@ -105,9 +111,9 @@ const ClothesSelectBox = () => {
   const FashionAi = async () => {
     console.log(exampleImage)
     // const model = await loadGraphModel(AiModel)
-    // const model = await loadGraphModel("model/model.json");
-    const modelpath = require('../../../src/model/model.json')
-    const model = await loadGraphModel(modelpath);
+    const model = await loadGraphModel("model/model.json");
+    // const modelpath = require('../../../src/model/model.json')
+    // const model = await loadGraphModel(modelpath);
     const image = new Image(96, 96);
     // const newimg = buffer.from(saveData, 'base64')
     // const t = tf.node.decdeImage(newimg)
@@ -116,7 +122,7 @@ const ClothesSelectBox = () => {
     // console.log(b)
     // image.src = saveData;
     image.crossOrigin = 'anonymous'
-    image.src = exampleImage;
+    image.src = saveData;
     tf.browser.fromPixels(image).print();
     let tfTensor = tf.browser.fromPixels(image);
     tfTensor = tfTensor.div(255.0);
@@ -130,13 +136,24 @@ const ClothesSelectBox = () => {
     const temp2 = Array.from(pred2.argMax(1).dataSync());
 		console.log(category[temp])
 		console.log(color[temp2])
+    setAutoCategory(category[temp])
+    setAutoColor(color[temp2])
+    const payload = {
+      category: temp,
+      colors: temp2
+    }
+    // console.log(saveData)
+    dispatch(createTag(payload))
+    dispatch(checkLocal(true));
   };
+  
   // FashionAi()
   return (
     <>
-    <div>
+      {/* <div>
+    {saveTag}
     <button onClick={FashionAi}> button</button>
-  </div>
+  </div> */}
 
       <EditContainer>
         <EditBox onClick={onNavigateHandler}>
@@ -157,7 +174,8 @@ const ClothesSelectBox = () => {
       <StyleTagButton
         onClick={() => {
           showModal();
-          handleAutoTag();
+          // handleAutoTag();
+          FashionAi();
         }}
       >
         Add Tag
@@ -165,13 +183,17 @@ const ClothesSelectBox = () => {
       {modalOpen && (
         <Modal
           page={4}
+          isAutoTag={isAutoTag}
+          // handleAutoTag={handleAutoTag}
+          authCategory={authCategory}
+          authColor={authColor}
           setModalOpen={setModalOpen}
           openScroll={openScroll}
           ootdFormData={ootdFormData}
           setOotdFormData={setOotdFormData}
         />
       )}
-      <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/>
+      {/* <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/> */}
       <LinkContainer to="/mypage">
         <Button onClick={handleSubmit}>저장</Button>
       </LinkContainer>

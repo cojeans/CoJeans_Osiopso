@@ -2,10 +2,14 @@ import React from 'react';
 import AiModel from '../../../src/model/model.json'
 import * as tf from '@tensorflow/tfjs';
 import { useState } from "react"
+import { upload, checkLocal } from "../../store/clothes/clothes.reducer";
+
 import { loadGraphModel } from "@tensorflow/tfjs-converter"
 import { useSelector, useDispatch } from "react-redux"
 import { selectorOotdCategory } from "../../store/ootd/ootd.selector"
 import { selectOotdCategory } from "../../store/ootd/ootd.reducer"
+import { createTag } from "../../store/clothes/clothes.reducer"
+
 import {
 	CategoryModalContainer,
 	CategoryBox,
@@ -14,7 +18,8 @@ import {
 } from "./clothes-tag-modal.styles"
 import {
 	selectClothes,
-
+	selectTag,
+	localPhoto
   } from "../../store/clothes/clothes.selector";
 import { buffer } from '@tensorflow/tfjs';
 import exampleImage from '../../../src/00000001.jpg'
@@ -25,19 +30,31 @@ const tags = {
 	'TPO': ['데일리','직장','데이트','경조사','여행','홈웨이','파티','운동','학교'],
 }
 
-const defaultSelect = {
-	Season: [],
-	TPO: ['데일리'],
-	Category : ['바지'],
-}
+// const defaultSelect = {
+// 	Season: [],
+// 	TPO: [tags.TPO[0]],
+// 	Category : [],
+// }
 
-
+const block = false;
 const ClothesTagModal = ({ closeModal }) => {
-	const saveData = useSelector(selectClothes);
+	const saveTag = useSelector(selectTag)
+	console.log(saveTag, 'saveTag')
+	// console.log(saveTag, 'saveTag')
+	const defaultSelect = {
+		Category : [tags.Category[saveTag.category]],
+		Color: [tags.Color[saveTag.colors]],
+		Season: [],
+		TPO : [],
+	}
+	const isAutoTag = useSelector(localPhoto);
 
+	const saveData = useSelector(selectClothes);
+	// console.log(autoCategory, autoColor)
+	// console.log(saveTag)
+	// console.log('this is tag modal')
 	// console.log('selector', useSelector(selectorOotdCategory))
 	const [selectedTag, setSelectedTag] = useState(defaultSelect)
-
 	const dispatch = useDispatch()
 	// const FashionAi = async() => {
 	// 	// const model = await loadGraphModel(AiModel)
@@ -70,6 +87,18 @@ const ClothesTagModal = ({ closeModal }) => {
 	// FashionAi()
 	const submitHandler = () => {
 		let newArr = []
+		selectedTag['Category'].forEach((el) => {
+			newArr = [...newArr, {
+				keyword: "Category",
+				type: el
+			}]
+		})
+		selectedTag['Color'].forEach((el) => {
+			newArr = [...newArr, {
+				keyword: "Color",
+				type: el
+			}]
+		})
 		selectedTag['Season'].forEach((el) => {
 			newArr = [...newArr, {
 				keyword: "Season",
@@ -82,16 +111,13 @@ const ClothesTagModal = ({ closeModal }) => {
 				type: el
 			}]
 		})
-		selectedTag['Category'].forEach((el) => {
-			newArr = [...newArr, {
-				keyword: "Category",
-				type: el
-			}]
-		})
 
 		console.log(newArr)
 
-		dispatch(selectOotdCategory(newArr))
+		dispatch(createTag(newArr))
+		// dispatch(selectOotdCategory(newArr))
+		dispatch(checkLocal(false));
+
 		closeModal()
 
 }
@@ -110,8 +136,20 @@ const ClothesTagModal = ({ closeModal }) => {
 		}
 	}
 
-	return (
-		<CategoryModalContainer>
+	return (<>
+		{<CategoryModalContainer>
+			<CategoryBox>
+						<Title>카테고리</Title>
+					{tags.Category.map((el, idx) => {
+						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+					}) }
+			</CategoryBox>
+			<CategoryBox>
+						<Title>색상</Title>
+					{tags.Color.map((el, idx) => {
+						return <Tag key={idx} onClick={()=> selectHandler('Color', el) } select={ selectedTag['Color'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+					}) }
+			</CategoryBox>
 			<CategoryBox>
 					<Title>계절</Title>
 					{tags.Season.map((el, idx) => {
@@ -124,14 +162,8 @@ const ClothesTagModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={()=> selectHandler('TPO', el) } select={ selectedTag['TPO'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
-			<CategoryBox>
-						<Title>카테고리</Title>
-					{tags.Category.map((el, idx) => {
-						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
-					}) }
-			</CategoryBox>
 			<button onClick={submitHandler}>저장</button>
-		</CategoryModalContainer>
+		</CategoryModalContainer>}</>
 	)
 }
 

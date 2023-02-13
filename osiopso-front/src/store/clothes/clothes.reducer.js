@@ -7,10 +7,10 @@ const initialState = {
   clothesTag: {
 	category: null,
 	url: null,
-	closets:[],
-	colors:[],
-	seasons:[],
-	tags:[],
+	closets:null,
+	colors:null,
+	seasons:null,
+	tags:null,
   }
 };
 
