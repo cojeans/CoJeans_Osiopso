@@ -13,6 +13,10 @@ export const TextToLeft = styled.div`
 display: flex;
 align-items: center
 text-align: left;
+margin: 10px 10px 10px;
+div{
+    margin: 0px 4px 10px;
+}
 `
 export const HomeOotdImage = styled.div`
 display:grid;

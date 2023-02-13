@@ -29,7 +29,7 @@ import { useState } from 'react'
 
 
 const Home = () =>{
-	const [ tagData, setTagData ] = useState() 
+	const [ tagData, setTagData ] = useState([]) 
 
 
 	const mainList = [
@@ -101,11 +101,12 @@ const Home = () =>{
 		})
 		.then((res)=>{
 			console.log("엑시오스 결과",res.data)
-			for (let idx = 0; idx < res.data.responseData.length; idx++) {
-				res.data.responseData[idx].map((el)=>{
-					setTagData({...tagData,el })				
-				})		
-			}
+			
+			setTagData(res.data.responseData)
+			// res.data.responseData.map((el)=>{
+			// 	console.log(el.keyword)
+			// })
+
 		})
 		.catch((er)=> {
 			console.log(er)
@@ -113,27 +114,36 @@ const Home = () =>{
 	}
 
 	useEffect(() => {
-		getFamousTags()
 		if (!Token.token) {
 			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
 			navigate('/login')
 		} else {
 			getCurrentUser()
+			getFamousTags()
 		}
 	},[])
 
 	return (
 		<div>
+
 			<TextToLeft>
-				{tagData}
+				{
+				tagData.map((tag, idx)=>{
+					return (
+						<div key={idx}>{tag.keyword}</div>
+					)	
+				})
+				}
 			</TextToLeft>
 
 			<HomeOotdImage>
-				{mainList.map((el)=>{
+				{
+				mainList.map((el)=>{
 					return(
 						<img src={el}/>
 					)
-				})}
+				})
+				}
 			</HomeOotdImage>
 			{/* <DoSwiper></DoSwiper> */}
 			
