@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 
+
+
 export const TopBarContainer = styled.div`
 	height: 60px;
   width: 100%;
 	max-width:430px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-	  justify-content: center;
+	justify-content: center;
 	background-color: #BCF0E0;
 	margin:auto;
 	position: fixed;

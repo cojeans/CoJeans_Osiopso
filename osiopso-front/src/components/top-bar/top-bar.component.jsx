@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { Fragment } from "react"
 import {
 	TopBarContainer,
 	TopBarContent,
@@ -39,7 +40,20 @@ const TopBar = () => {
 }, [location ])
 
 	return (
-		<TopBarContainer>
+		<Fragment>
+		{
+				topName ==='Osiopso'?
+		<TopBarContainer page={'two'}>
+			<div>
+			</div>
+			<TopBarContent>
+				{ topName }
+			</TopBarContent>
+			<CategoryContainer >
+        		<SideBar/>
+			</CategoryContainer>
+		</TopBarContainer>
+			:<TopBarContainer>
 			<ButtonContainer onClick={() =>{
 				navigate(-1)
 			}}>
@@ -49,10 +63,9 @@ const TopBar = () => {
 			<TopBarContent>
 				{ topName }
 			</TopBarContent>
-			<CategoryContainer >
-        		<SideBar/>
-			</CategoryContainer>
+
 		</TopBarContainer>
+	}</Fragment>
 	)
 }
 

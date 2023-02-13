@@ -30,6 +30,7 @@ const AdviectComment = () => {
 	const [selectCloset, setSelectCloset] = useState([])
 	const [targetItem, setTargetItem] = useState([])
 	const [content, setContent] = useState('')
+	const [imgUrl, setImgUrl] = useState('')
 
 	const inputHandler = (e) => {
 
@@ -42,7 +43,8 @@ const AdviectComment = () => {
 			url: `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=7`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
-      },
+			},
+
 		}).then((res) => {
 			console.log(res)
 			setClosetList(res.data)
@@ -54,14 +56,31 @@ const onCapture = () => {
     console.log("onCapture");
 	html2canvas(document.getElementById("dropArea")).then((canvas) => {
 		const captureImg = canvas.toDataURL("image/png")
+		setImgUrl(captureImg)
 		// onSaveAs(canvas.toDataURL('image/png'), 'image-download/png')
-		console.log(content)
-
 	})
+
+	submitCommentCreate()
 	
 }
-
-	
+	const submitCommentCreate = () => {
+		console.log('통신보냄	')
+		axios({
+			method: "post",
+			url: `${process.env.REACT_APP_AXIOS_URL}comment/8`,
+			headers: {
+				Authorization: `Bearer ${Token.token}`,
+			},
+			data: {
+				"content": content,
+				 "imageUrl":imgUrl,
+			}
+		}).then((res) => {
+			console.log(res)
+		}).catch((err) => {
+			console.log(err)
+		})
+}
 	useEffect(() => {
 		getUserCloset()
 	}, [])
