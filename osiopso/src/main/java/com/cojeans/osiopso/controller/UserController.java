@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -136,7 +137,6 @@ public class UserController{
     @PostMapping("/signUp")
     public ResponseEntity<ApiResponseDto> registerUser(@RequestBody SignUpRequestDto signUpRequest) {
         log.info("signUpRequest: {}",signUpRequest);
-
         userService.saveUser(signUpRequest);
         emailAuthService.sendVerificationEmail(signUpRequest.getEmail());
 
@@ -215,7 +215,7 @@ public class UserController{
 //                        .success(true)
 //                        .message("언팔로우 완료")
 //                        .build()
-//                ,HttpStatus.ACCEPTED);
+//                ,HttpStatus.ACCEPTED);``
 //
 //    }
 

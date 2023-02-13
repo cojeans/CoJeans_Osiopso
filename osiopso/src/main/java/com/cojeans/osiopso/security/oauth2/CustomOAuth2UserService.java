@@ -7,6 +7,7 @@ import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.security.oauth2.user.OAuth2UserInfo;
 import com.cojeans.osiopso.security.oauth2.user.OAuth2UserInfoFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -20,6 +21,7 @@ import org.springframework.util.StringUtils;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
@@ -28,6 +30,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
+        log.info("서브시까지왔습니다. oAuth2UserRequest:{}");
 
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);

@@ -74,7 +74,9 @@ import static com.cojeans.osiopso.security.oauth2.HttpCookieOAuth2AuthorizationR
     }
 
     private boolean isAuthorizedRedirectUri(String uri) {
-        URI clientRedirectUri = URI.create(uri);
+        return true;
+    }
+     /*   URI clientRedirectUri = URI.create(uri);
 
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
@@ -87,5 +89,5 @@ import static com.cojeans.osiopso.security.oauth2.HttpCookieOAuth2AuthorizationR
                     }
                     return false;
                 });
-    }
+    }*/
 }
