@@ -221,7 +221,7 @@ public class AdviceService {
 
         return AdviceDetailResponseDto.builder()
                 .id(advice.getId())
-                .userId(advice.getId())
+                .userId(advice.getUser().getId())
                 .userName(advice.getUser().getName())
                 .createTime(advice.getCreateTime())
                 .modifyTime(advice.getModifyTime())

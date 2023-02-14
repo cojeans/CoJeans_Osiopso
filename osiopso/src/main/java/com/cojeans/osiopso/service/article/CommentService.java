@@ -98,6 +98,7 @@ public class CommentService {
                     .report(0L)
                     .up(0L)
                     .down(0L)
+                    .isSelected(false)
                     .build());
 
             cocommentRepository.save(Cocomment.builder()
@@ -117,6 +118,7 @@ public class CommentService {
                     .report(0L)
                     .up(0L)
                     .down(0L)
+                    .isSelected(false)
                     .build());
 
             cocommentRepository.save(Cocomment.builder()
@@ -150,6 +152,9 @@ public class CommentService {
                 .createTime(comment.getCreateTime())
                 .user(comment.getUser())
                 .report(comment.getReport())
+                .down(comment.getDown())
+                .up(comment.getUp())
+                .isSelected(comment.getIsSelected())
                 .build());
 
         return true;
@@ -293,6 +298,7 @@ public class CommentService {
                 .createTime(comment.getCreateTime())
                 .modifyTime(comment.getModifyTime())
                 .article(comment.getArticle())
+                .isSelected(comment.getIsSelected())
                 .build());
     }
 
@@ -373,5 +379,31 @@ public class CommentService {
 
             commentDownRepository.deleteByComment_Id(commentNo);
         }
+    }
+
+    // 댓글 채택
+    public boolean selectComment(Long commentNo, Long userId) {
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        // 본인의 댓글은 채택할 수 없다.
+        // 해당 댓글의 작성자가 본인일 경우..
+        if (comment.getUser().getId() == userId) {
+            return false;
+        }
+
+        commentRepository.save(comment.builder()
+                .id(commentNo)
+                .content(comment.getContent())
+                .user(comment.getUser())
+                .report(comment.getReport())
+                .createTime(comment.getCreateTime())
+                .modifyTime(comment.getModifyTime())
+                .article(comment.getArticle())
+                .up(comment.getUp())
+                .down(comment.getDown())
+                .isSelected(true)
+                .build());
+
+        return true;
     }
 }

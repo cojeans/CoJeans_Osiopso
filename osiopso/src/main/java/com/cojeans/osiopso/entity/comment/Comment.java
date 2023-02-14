@@ -51,4 +51,6 @@ public class Comment {
 
     @ColumnDefault(value = "0")
     private Long report;
+
+    private Boolean isSelected;
 }
