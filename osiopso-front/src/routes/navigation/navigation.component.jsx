@@ -21,6 +21,8 @@ import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
+import { GiLargeDress } from "react-icons/gi";
+
 
 
 import { useSelector, } from 'react-redux'
@@ -79,7 +81,7 @@ const Navigation = () => {
 							:<IoHomeOutline />
 					}
 					
-					<span>홈</span>
+					<span>Home</span>
 				</HashLinkContainer>	
 				<LogoContainer to='/advice'>
 					{
@@ -88,7 +90,7 @@ const Navigation = () => {
 					?<IoHandRightSharp />
 					:<IoHandRightOutline />
 					}
-					<span>훈수</span>
+					<span>Advice</span>
 				</LogoContainer>
 				<PlusContainer
 					// to='mypage/add-clothes'
@@ -102,13 +104,13 @@ const Navigation = () => {
 					to="/#OOTD"
 				 className={`${location.pathname}${location.hash}` === '/#OOTD' ? "active" : ""}
 				>
-					<GiMirrorMirror />
+					<GiLargeDress />
 					<span>OOTD</span>
 				</HashLinkContainer>
 				{/* </LogoContainer> */}
 				<LogoContainer  to='/profile'>
 					<FaUserCircle />
-					<span>프로필</span>
+					<span>Profile</span>
 				</LogoContainer>
 				{/* <Link to='/login'>Login</Link> 
 				<Link to='/join'>Join</Link>

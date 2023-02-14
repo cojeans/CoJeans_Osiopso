@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 
-const main = "#BCF0E0"
+const main = "black"
 
 export const isPadding = css`
 		padding:65px 0;
@@ -58,7 +58,6 @@ export const LogoContainer = styled(NavLink)`
   &.active {
 		svg{
 			fill:${main};
-			stroke:${main};
 		}
   }
 	
@@ -118,6 +117,7 @@ export const HashContainer = styled.div`
 		height:45%;
 		margin:auto;
 		color:black;
+		fill:white;
 		}
 	span{
 		font-size:0.7em;
@@ -127,8 +127,7 @@ export const HashContainer = styled.div`
 	
   &.active {
 		svg{
-			fill:#BCF0E0;
-			stroke:#BCF0E0
+			fill:black;
 		}
   }
 `
@@ -148,7 +147,8 @@ export const HashLinkContainer = styled(HashLink)`
 		height:45%;
 		margin:auto;
 		color:black;
-		}
+	}
+		
 	span{
 		font-size:0.7em;
 		// font-weight:bold;
@@ -158,7 +158,6 @@ export const HashLinkContainer = styled(HashLink)`
   &.active {
 		svg{
 			fill:${main};;
-			stroke:${main};
 		}
   }
 	
