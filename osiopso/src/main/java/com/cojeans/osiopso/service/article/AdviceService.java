@@ -198,6 +198,7 @@ public class AdviceService {
                     .pastTime(commentGapTime.getPastTime())
                     .up(comment.getUp())
                     .down(comment.getDown())
+                    .isSelected(comment.getIsSelected())
                     .build());
         }
 
