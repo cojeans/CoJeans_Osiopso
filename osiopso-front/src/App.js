@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, } from "react-router-dom";
 import { useEffect } from "react";
 
 import Home from "./routes/home/home.component";
@@ -15,6 +15,9 @@ import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
 import JoinComplete from "./routes/join/join-complete.component";
   
+import Test from "./components/test/test.component"
+import SelectboxPage from "./routes/selectbox/selectbox.component";
+import OAuth2RedirectHandler from "./routes/oauth2/OAuth2RedirectHandler";
 import "./App.scss";
 
 function App() {
@@ -34,15 +37,16 @@ function App() {
         <Route path="passwordcheck" element={<PasswordCheck />} />
         <Route path="profile/*" element={<Mypage />} />
         <Route path="advice/*" element={<AdvicePage />} />
-        <Route path="ootd/*" element={<OOTDPage />} />
-        <Route path="changePassword" element={<ChangePassword />} />
-        <Route path="pwdchangecomplete" element={<PwdComplete />} />
         <Route path="disclosurescope" element={<DisclosureScope />} />
-        <Route
-          path="membershipwithdrawal/"
-          element={<MembershipWithdrawal />}
-        />
-        <Route path="joincomplete" element={<JoinComplete />} />
+        <Route path="mypage/*" element={<Mypage />} />   
+        <Route path='ootd/*' element={<OOTDPage/>}/>
+        <Route path='changePassword' element={<ChangePassword/>}/>
+        <Route path='pwdchangecomplete' element={<PwdComplete/>}/>
+        <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
+        <Route path='joincomplete' element={<JoinComplete/>}/>
+        <Route path='test' element={<Test/>}/>
+        <Route path='selectbox/*' element={<SelectboxPage/>}/>
+        <Route path="/oauth2/redirect" element={OAuth2RedirectHandler}></Route>  
       </Route>
     </Routes>
   );

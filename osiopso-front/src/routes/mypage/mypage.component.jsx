@@ -1,5 +1,4 @@
 import {Routes, Route} from 'react-router-dom'
-
 import MypageBody from '../../components/mypage/mypage.component'
 import ClothesAdd from '../../components/clothes-add/clothes-add.component'
 import ClosetDetail from '../../components/closet-detail/closet-detail.component'

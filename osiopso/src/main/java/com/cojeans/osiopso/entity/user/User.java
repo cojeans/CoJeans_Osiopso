@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor @NoArgsConstructor
 @ToString @Getter @Setter @Builder
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "user")
 @DynamicInsert @DynamicUpdate
 public class User {
 
