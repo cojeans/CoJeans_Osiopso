@@ -84,6 +84,7 @@ const Login = () => {
   }
 
   const goToFindPage = ()=> {
+    navigate('/find')
     
   }
   return (
@@ -130,7 +131,7 @@ const Login = () => {
           >Join</Button>
         
         </ButtonsContainer>
-        <p onClick={goToFindPage}>아이디/비밀번호 찾기 ></p>
+        <p onClick={goToFindPage}>아이디 / 비밀번호 찾기 > </p>
     </SignInContainer>
   );
 };
