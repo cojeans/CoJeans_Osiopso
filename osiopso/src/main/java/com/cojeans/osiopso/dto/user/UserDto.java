@@ -45,6 +45,8 @@ public class UserDto {
 
     private Role role; //권한
 
+    private Long grade;
+
     private List<HotOotdResponseDto> ootdList;
 
     private List<HotOotdResponseDto> adviceList;

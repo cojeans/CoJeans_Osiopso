@@ -17,6 +17,9 @@ import JoinComplete from "./routes/join/join-complete.component";
 import Search from "./routes/search/search.component";
 import FindPage from "./routes/findpage/findpage.component";
 import ErrorPage from "./routes/errorpage/errorpage.component";
+import Test from "./components/test/test.component"
+import SelectboxPage from "./routes/selectbox/selectbox.component";
+
 import "./App.scss";
 
 function App() {
@@ -48,6 +51,13 @@ function App() {
         <Route path="search" element={<Search />} />
         <Route path="find" element={<FindPage />} />
         <Route path="/*" element={<ErrorPage/>} />
+        <Route path="mypage/*" element={<Mypage />} />
+        <Route path='disclosurescope' element={<DisclosureScope/>}/>
+        <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
+        <Route path='joincomplete' element={<JoinComplete/>}/>
+        <Route path='test' element={<Test/>}/>
+        <Route path='selectbox/*' element={<SelectboxPage/>}/>
+        
       </Route>
     </Routes>
   );
