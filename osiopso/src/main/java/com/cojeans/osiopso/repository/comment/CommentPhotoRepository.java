@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentPhotoRepository extends JpaRepository<CommentPhoto, Long> {
     CommentPhoto findByArticle_IdAndComment_Id(Long id, Long id1);
+
+    CommentPhoto findByCommentId(Long commentNo);
+
+    void deleteAllByCommentId(Long commentno);
 }

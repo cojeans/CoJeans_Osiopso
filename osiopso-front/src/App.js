@@ -15,7 +15,8 @@ import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
 import JoinComplete from "./routes/join/join-complete.component";
 import Search from "./routes/search/search.component";
-
+import FindPage from "./routes/findpage/findpage.component";
+import ErrorPage from "./routes/errorpage/errorpage.component";
 import "./App.scss";
 
 function App() {
@@ -45,6 +46,8 @@ function App() {
         />
         <Route path="joincomplete" element={<JoinComplete />} />
         <Route path="search" element={<Search />} />
+        <Route path="find" element={<FindPage />} />
+        <Route path="/*" element={<ErrorPage/>} />
       </Route>
     </Routes>
   );

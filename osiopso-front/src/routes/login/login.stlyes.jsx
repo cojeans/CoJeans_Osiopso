@@ -10,7 +10,14 @@ export const SignInContainer = styled.div`
 
 export const ButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  // justify-content: space-between;
+  Button{
+    margin: 2% 0% 2%;
+   
+    // width: 50%;
+    // height: 50%;
+  }
 `;
 
 export const Osiopso = styled.div`
@@ -23,3 +30,11 @@ export const Bodoni = styled.div`
   font-family: 'Bodoni';
   font-size: 300%;
 `;
+
+export const FindIdPassword = styled.div`
+display:flex;
+margin: auto;
+
+`
+
+

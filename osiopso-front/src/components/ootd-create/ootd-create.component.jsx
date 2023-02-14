@@ -211,6 +211,8 @@ const OotdCreate = () => {
         </MarginDiv>
         <button onClick={submitOotdCreate}>저장</button>
       </BottomContainer>
+
+
       {
         modalOpen && <Modal page={ 2} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
 			}

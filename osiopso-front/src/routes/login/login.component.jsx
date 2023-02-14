@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignInContainer, ButtonsContainer, Osiopso, Bodoni  } from './login.stlyes'
+import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword  } from './login.stlyes'
 import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
@@ -82,6 +82,11 @@ const Login = () => {
   const SignUp = ()=>{
     navigate('/join')
   }
+
+  const goToFindPage = ()=> {
+    navigate('/find')
+    
+  }
   return (
     <SignInContainer>
 
@@ -124,7 +129,9 @@ const Login = () => {
           variant={ 'success'}
           onClick={SignUp}
           >Join</Button>
-          </ButtonsContainer>
+        
+        </ButtonsContainer>
+        <p onClick={goToFindPage}>아이디 / 비밀번호 찾기 > </p>
     </SignInContainer>
   );
 };
