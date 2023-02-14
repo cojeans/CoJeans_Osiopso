@@ -196,16 +196,6 @@ const OotdCreate = () => {
             }
           </TagBox>
         </MarginDiv>
-        <NoteBox>
-          <Note>
-            <ExclamationMark>
-              <SlExclamation />
-            </ExclamationMark>
-            <div onClick={CautionMessage}>
-              작성 시 유의사항
-            </div>
-          </Note>
-        </NoteBox>
 
         <MarginDiv>
           <textarea

@@ -16,7 +16,8 @@ import {
 	SelectedTagContainer,
 	SelectedTag,
 	UserUploadList,
-	OotdTagDiv
+	OotdTagDiv,
+	TagBox
 } from './home.styles'
 import { ReactComponent as Fire } from "../../assets/fire.svg"
 import { ReactComponent as User2 } from "../../assets/userFashion.svg"
@@ -136,7 +137,7 @@ const Home = () =>{
 				{
 				tagData.map((tag, idx)=>{
 					return (
-						<div key={idx} onClick={()=> goToTag(tag.keyword)}>{tag.keyword}</div>
+						<TagBox key={idx} onClick={()=> goToTag(tag.keyword)}>{tag.keyword}</TagBox>
 					)	
 				})
 				}
