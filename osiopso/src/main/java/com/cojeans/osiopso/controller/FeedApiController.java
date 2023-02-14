@@ -102,6 +102,8 @@ public class FeedApiController {
             @RequestParam(value = "idx", defaultValue = "0") long idx,
             @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
 
+
+
         // 최초 로딩시점
         if (idx == 0) {
             idx = Long.MAX_VALUE;
