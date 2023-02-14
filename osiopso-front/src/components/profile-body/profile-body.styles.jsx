@@ -1,11 +1,18 @@
 import styled from "styled-components"
 
+
 export const TabMenue = styled.div`
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	width: 80%;
-		p{
+	p{
 			text-align:center;
+			margin:0;
+			padding:10px;
+			
+		}
+		.select{
+			border-bottom: solid 2px black;
 		}
 	margin:0 auto;
 	margin-bottom:15px;

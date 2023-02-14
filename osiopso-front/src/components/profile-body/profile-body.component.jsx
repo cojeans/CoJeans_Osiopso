@@ -12,9 +12,14 @@ const ProfileBody = ({ id }) => {
 	return (
 		<Fragment>
 			<TabMenue>
-				<p onClick={() => setProfilePage('closet')} page={ profilePage=== 'closet'}>옷장</p>
-				<p onClick={()=> setProfilePage('ootd')} page={ profilePage==='ootd' }>OOTD</p>
-				<p onClick={()=> setProfilePage('advice')} page={ profilePage ==='advice'}>훈수</p>
+				<p onClick={() => setProfilePage('closet')} page={profilePage === 'closet'}
+					className={ profilePage==='closet' ? 'select' : ''}
+				>옷장</p>
+				<p onClick={() => setProfilePage('ootd')} page={profilePage === 'ootd'}
+				className={ profilePage==='ootd' ? 'select' : ''}>OOTD</p>
+				<p onClick={() => setProfilePage('advice')} page={profilePage === 'advice'}
+				className={ profilePage==='advice' ? 'select' : ''}
+				>훈수</p>
 			</TabMenue>
 			<TabBody>
 				{

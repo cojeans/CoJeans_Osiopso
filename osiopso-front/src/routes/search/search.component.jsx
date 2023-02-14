@@ -118,7 +118,7 @@ const Search = () => {
 							})
 						}
 					</HashContainer>
-			
+{/* 			
 					<div>
 						{
 							searchUserData.map((data, idx) => {
@@ -141,7 +141,7 @@ const Search = () => {
 								return <div>{ data.photo.imageUrl}</div>
 							})
 						}
-					</div>
+					</div> */}
 
 				</Fragment>
 			)
