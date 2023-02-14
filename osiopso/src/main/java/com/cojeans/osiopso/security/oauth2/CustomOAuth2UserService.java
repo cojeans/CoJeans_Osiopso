@@ -1,6 +1,8 @@
 package com.cojeans.osiopso.security.oauth2;
 
 import com.cojeans.osiopso.entity.user.AuthProvider;
+import com.cojeans.osiopso.entity.user.Gender;
+import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.exception.OAuth2AuthenticationProcessingException;
 import com.cojeans.osiopso.repository.user.UserRepository;
@@ -8,9 +10,11 @@ import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.security.oauth2.user.OAuth2UserInfo;
 import com.cojeans.osiopso.security.oauth2.user.OAuth2UserInfoFactory;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -26,6 +30,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -44,15 +50,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
+        if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user;
-        if(userOptional.isPresent()) {
+        if (userOptional.isPresent()) {
             user = userOptional.get();
-            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
@@ -74,6 +80,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
         user.setEmailVerified(true); //소셜 회원은 기본적으로 이메일인증 통과
+        user.setGender(Gender.UNKNOWN); //모두 기본값
+        user.setAge(0);
+        user.setBio("");
+        user.setIsProfilePublic(true);
+        user.setRole(Role.USER);
+        user.setPassword(passwordEncoder.encode(RandomString.make(10)));
 
         return userRepository.save(user);
     }
