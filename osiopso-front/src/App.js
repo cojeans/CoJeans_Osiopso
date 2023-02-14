@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, } from "react-router-dom";
 import { useEffect } from "react";
 
 import Home from "./routes/home/home.component";
@@ -16,7 +16,7 @@ import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdr
 import JoinComplete from "./routes/join/join-complete.component";
 import Test from "./components/test/test.component"
 import SelectboxPage from "./routes/selectbox/selectbox.component";
-
+import OAuth2RedirectHandler from "./routes/oauth2/OAuth2RedirectHandler";
 import "./App.scss";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
         <Route path='joincomplete' element={<JoinComplete/>}/>
         <Route path='test' element={<Test/>}/>
         <Route path='selectbox/*' element={<SelectboxPage/>}/>
-        
+        <Route path="/oauth2/redirect" element={OAuth2RedirectHandler}></Route>  
       </Route>
     </Routes>
   );
