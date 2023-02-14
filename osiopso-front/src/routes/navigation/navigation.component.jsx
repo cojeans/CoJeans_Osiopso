@@ -16,7 +16,6 @@ import {
 import TopBar from "../../components/top-bar/top-bar.component"
 import Modal from "../../components/modal/modal.component"
 
-import { GiMirrorMirror } from "react-icons/gi";
 import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillPlusCircle } from "react-icons/ai";

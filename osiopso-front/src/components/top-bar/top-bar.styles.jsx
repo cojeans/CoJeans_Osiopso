@@ -6,7 +6,7 @@ export const TopBarContainer = styled.div`
 		font-family: 'Bodoni';
 		font-size:28px;
 	}
-	height: 60px;
+	height: 53px;
   width: 100%;
 	max-width:430px;
   display: grid;
