@@ -386,7 +386,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentNo).orElseThrow();
 
         // 본인의 댓글은 채택할 수 없다.
-        // 해당 댓글의 작성자가 본인일 경우..
+        // 해당 댓글의 작성자가 본인일 경우.. 채택 x
         if (comment.getUser().getId() == userId) {
             return false;
         }
@@ -402,6 +402,26 @@ public class CommentService {
                 .up(comment.getUp())
                 .down(comment.getDown())
                 .isSelected(true)
+                .build());
+
+        // 채택이 된 유저의 점수를 올려줘야한다.
+        User user = userRepository.findById(userId).orElseThrow();
+
+        userRepository.save(user.builder()
+                .id(user.getId())
+                .age(user.getAge())
+                .bio(user.getBio())
+                .email(user.getEmail())
+                .emailVerified(user.getEmailVerified())
+                .gender(user.getGender())
+                .imageUrl(user.getImageUrl())
+                .grade(user.getGrade() + 5)
+                .isProfilePublic(user.getIsProfilePublic())
+                .name(user.getName())
+                .password(user.getPassword())
+                .provider(user.getProvider())
+                .providerId(user.getProviderId())
+                .role(user.getRole())
                 .build());
 
         return true;
