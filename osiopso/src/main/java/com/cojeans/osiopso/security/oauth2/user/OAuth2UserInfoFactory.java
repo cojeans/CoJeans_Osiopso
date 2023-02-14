@@ -15,11 +15,11 @@ public class OAuth2UserInfoFactory {
         } else if (registrationId.equalsIgnoreCase(AuthProvider.facebook.toString())) {
             return new FacebookOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(AuthProvider.github.toString())) {
-            return new com.example.springsocial.security.oauth2.user.GithubOAuth2UserInfo(attributes);
+            return new GithubOAuth2UserInfo(attributes);
         } else if(registrationId.equalsIgnoreCase(AuthProvider.kakao.toString())){
             return new KakaoOAuth2UserInfo(attributes);
         }else {
-            throw new OAuth2AuthenticationProcessingException("Sorry! Login with " + registrationId + " is not supported yet.");
+            throw new OAuth2AuthenticationProcessingException("소셜로그인: " + registrationId + "에 해당하는 플랫폼은 아직 지원하지 않습니다!");
         }
     }
 }

@@ -36,7 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-        log.info("서브시까지왔습니다. oAuth2UserRequest:{}");
+        log.info("oAuth2UserRequest:{}");
 
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
@@ -51,13 +51,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
         if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
-            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+            throw new OAuth2AuthenticationProcessingException("해당하는 플랫폼의 OAuth2 provider가 없습니다.");
         }
 
-        Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        //이메일과 플랫폼 기준으로 구분
+        Optional<User> userOptional = userRepository.findByEmailAndProvider(oAuth2UserInfo.getEmail()
+                ,AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         User user;
         if (userOptional.isPresent()) {
             user = userOptional.get();
+            //이메일은 같지만 다른 플랫폼일때 로직. 위에서 findByEmailAndProvider로 커스텀해서 여기 오지 않는다.
             if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
