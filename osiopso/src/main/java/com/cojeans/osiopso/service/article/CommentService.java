@@ -250,9 +250,14 @@ public class CommentService {
             likeCo = true;
         }
 
+        String imageUrl = null;
+        CommentPhoto cp = commentPhotoRepository.findByCommentId(commentNo);
+        if(cp != null) imageUrl = cp.getImageUrl();
+
         return CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .like(likeCo)
+                .imageUrl(imageUrl)
                 .build();
     }
 
