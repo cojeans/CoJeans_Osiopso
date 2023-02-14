@@ -63,7 +63,7 @@ const ChangePassword = () => {
       ) : (
         <div>
           <UpperBox>
-            <h3>비밀번호 변경페이지</h3>
+            <h2>비밀번호 변경</h2>
           </UpperBox>
 
           <UpperBox>
@@ -73,7 +73,7 @@ const ChangePassword = () => {
                 변경하지 않은 경우 비밀번호 변경을 권장하고 있습니다.
               </PasswordBoxMessage>
               <UpperInput>
-                <TextBox>비밀번호: </TextBox>
+                <TextBox>새 비밀번호: </TextBox>
                 <UpperCloseInputbox>
                   <CloseInput
                     type="password"
@@ -91,8 +91,9 @@ const ChangePassword = () => {
               </UpperInput>
 
               <UpperInput>
-                <p>비밀번호 확인: </p>
+                <p>새 비밀번호 확인: </p>
                 <UpperCloseInputbox>
+                  {/* <input type="password" onChange={handleInput2} value={inputPassword2}/> */}
                   <CloseInput
                     type="password"
                     onChange={handleInput2}

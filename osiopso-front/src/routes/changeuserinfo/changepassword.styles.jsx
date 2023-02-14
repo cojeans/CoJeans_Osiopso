@@ -12,7 +12,7 @@ flex-direction: column;
 align-items: center;
 width: 90%;
 height: 200px;
-border: 0.1px solid lightgrey;
+// border: 0.1px solid lightgrey;
 p{
     font-size: 12px;
 }
