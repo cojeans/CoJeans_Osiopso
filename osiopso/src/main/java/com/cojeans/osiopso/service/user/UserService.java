@@ -141,20 +141,34 @@ public class UserService {
         UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
 
         List<Ootd> ootdList = ootdRepository.findAllByUserId(userId);
-        List<HotOotdResponseDto> result = new ArrayList<>();
+        List<HotOotdResponseDto> ootds = new ArrayList<>();
 
         for(Ootd ootd : ootdList){
             ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(ootd.getId());
 
-            result.add(HotOotdResponseDto.builder()
+            ootds.add(HotOotdResponseDto.builder()
                             .id(ootd.getId())
                             .imageUrl(ap.getImageUrl())
                     .build());
         }
+
+        List<Advice> adviceList = adviceRepository.findAllByUserId(userId);
+        List<HotOotdResponseDto> advices = new ArrayList<>();
+
+        for(Advice advice : adviceList){
+            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(advice.getId());
+
+            advices.add(HotOotdResponseDto.builder()
+                    .id(advice.getId())
+                    .imageUrl(ap.getImageUrl())
+                    .build());
+        }
+
+        userDto.setOotdList(ootds);
+        userDto.setAdviceList(advices);
+
         if(followRepository.findByFollowingIdAndFollowerId(userId, userDetail.getId()) != null) userDto.setFollowed(true);
         else userDto.setFollowed(false);
-
-        userDto.setOotdList(result);
 
         System.out.println("유저디티오^_^ : " + userDto);
 
