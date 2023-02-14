@@ -6,9 +6,11 @@ import {
 	PlusLogoContainer
 } from "./plus-content.styles"
 
-import { ReactComponent as Hand } from '../../assets/hand.svg'
-import { ReactComponent as OOTD } from '../../assets/ootd.svg'
 import { ReactComponent as Clothes } from '../../assets/clothes.svg'
+
+import { GiLargeDress } from "react-icons/gi";
+import { IoHandRightOutline } from "react-icons/io5";
+
 
 const PlusModal = ({ closeModal }) => {
 	const navigate = useNavigate()
@@ -45,7 +47,7 @@ const PlusModal = ({ closeModal }) => {
 			
 			<PlusContent  onClick={onNavigateHandler3}>
 				<PlusLogoContainer>
-					<OOTD/>
+					<GiLargeDress color="#BCF0E0 "/>
 				</PlusLogoContainer>
 				<span>
 					OOTD 등록
@@ -54,7 +56,7 @@ const PlusModal = ({ closeModal }) => {
 
 			<PlusContent onClick={onNavigateHandler2}>
 				<PlusLogoContainer>
-					<Hand/>
+					<IoHandRightOutline/>
 				</PlusLogoContainer>
 				<span>
 					훈수 등록

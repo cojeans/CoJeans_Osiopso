@@ -1,5 +1,6 @@
 import { css } from "styled-components";
 import { StyleButton} from "./button.styles";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 const SIZES = {
   sm: css`
@@ -36,7 +37,7 @@ const VARIANTS = {
     --button-hover-bg-color: #e0a800;
   `,
 };
-const Button = ({ disabled, size, variant, children, ...otherProps }) => {
+const Button = ({ disabled, size, variant, children, write, ...otherProps }) => {
 	const sizeStyle = SIZES[size];
 	const variantStyle = VARIANTS[variant];
 
@@ -46,7 +47,8 @@ const Button = ({ disabled, size, variant, children, ...otherProps }) => {
 			disabled={disabled}
       sizeStyle={sizeStyle}
       variantStyle={variantStyle}
-		>{children}</StyleButton>
+    >{write &&<HiOutlinePencilSquare/>}
+      {children}</StyleButton>
 	)
 }
 

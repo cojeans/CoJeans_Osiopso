@@ -1,4 +1,9 @@
 import {
+  AdvicecContainer, 
+  AdviceItemBox,
+  ContentBox,
+  ImageContainer,
+
   HunsuImages,
   TopTag,
   Container,
@@ -16,6 +21,7 @@ import { ReactComponent as Comment } from "../../assets/comment.svg";
 import { selectUser } from "../../store/user/user.selector";
 import { FiThumbsUp,  FiThumbsDown, FiAlertTriangle, FiTrash2  } from "react-icons/fi";
 import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+
 
 import axios from "axios";
 import Modal from '../modal/modal.component'
@@ -55,7 +61,7 @@ const Advice = () => {
     })
       .then((res) => {
         console.log(res.data.responseData);
-        setAdviceArticle(res.data.responseData.reverse());
+        setAdviceArticle(res.data.responseData);
       })
       .catch((err) => {
         console.log(err);
@@ -85,9 +91,6 @@ const Advice = () => {
   console.log("어드바이스",adviceArticle)
   return (
     <div>
-      
-      {/* <AdviectComment>
-      </AdviectComment> */}
 
       <TextToLeft>
         <Container>
@@ -100,34 +103,31 @@ const Advice = () => {
           <h4>채택 중</h4> <h4>채택완료</h4>
         </TopTag>
       </TextToLeft>
-
-      <HunsuImages>
-        {adviceArticle.map((el, idx) => {
-          return (
-            <EachBox key={idx} onClick={() => goToAdviceDetail(el.id)}>
-              <img src={el.photo.imageUrl} alt="" />
-
-              <CommentContainer>
-              <ThumbBox>
-                <EachIcon>
-                  <FiThumbsUp size="30" />
-                </EachIcon>
-                <EachIcon>
-                  <VscComment size="30" />
-                  {el.commentCnt}
-                </EachIcon>
-              </ThumbBox>
-
-                <TimeBox>{ el.time }</TimeBox>
-               
-              </CommentContainer>
-            </EachBox>
-          );
-        })}
-      </HunsuImages>
+      <Fragment>
       {
-        modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
+          adviceArticle &&
+          adviceArticle.map((at) => {
+            return (
+              <AdvicecContainer onClick={()=>goToAdviceDetail(at.id)}>
+                <div className="hori">
+                </div>
+                <AdviceItemBox>
+                  <ContentBox>
+                      <div className="title">title:{ at.subject}</div>
+                      <div className="content">{ at.content}</div>
+                      <div className="comment"><VscComment /><div>{ at.commentCnt}</div></div>
+                  </ContentBox>
+                    <ImageContainer>
+                      <img src={ at.photo.imageUrl} alt="" />
+                  </ImageContainer>
+                </AdviceItemBox>
+            </AdvicecContainer>
+
+            )
+          })
+          
       }
+      </Fragment>
  </div>
   );
 };
