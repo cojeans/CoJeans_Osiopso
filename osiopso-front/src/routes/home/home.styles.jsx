@@ -64,3 +64,10 @@ border: 4px solid black;
 export const OotdTagDiv = styled.div`
     padding-top:60px;
 `
+export const TagBox = styled.div`
+display: flex;
+// align-items: center
+text-align: left;
+font-size: 80%;
+margin: 1% 2% 2% 0%;
+`
