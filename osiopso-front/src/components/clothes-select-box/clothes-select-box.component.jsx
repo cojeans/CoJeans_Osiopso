@@ -26,25 +26,24 @@ import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { upload } from "../../store/clothes/clothes.reducer";
 import Modal from "../modal/modal.component";
 import {
   selectClothes,
   localPhoto,
 } from "../../store/clothes/clothes.selector";
-import Modal from "../modal/modal.component";
 import { selectCloset } from '../../store/closet/closet.selector';
 
 import Test from "../test/test.component";
+import { ref as fref, getStorage, uploadString } from "firebase/storage";
 const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
 const color = ['검정', '파랑', '빨강']
-import { ref as fref, getStorage, uploadString } from "firebase/storage";
 
-const defaultOotdForm = {
-    content: "",
-    picture: "",
-    tags: [],
+
+const defaultClothesForm = {
+  picture: "",
+  tags: [],
 };
+
 
 const ClothesSelectBox = () => {
     const navigate = useNavigate();
@@ -132,6 +131,8 @@ const ClothesSelectBox = () => {
             .catch((err) => {
                 console.log(err);
             });
+
+          };
             const FashionAi = async () => {
               console.log(exampleImage)
               // const model = await loadGraphModel(AiModel)
@@ -179,8 +180,7 @@ const ClothesSelectBox = () => {
         // AlertHandler() // alert창 띄우기
 
         // getClosetList() // 리스트 갱신
-    };
-
+  
     return (
       <>
       {/* <div>
@@ -233,5 +233,5 @@ const ClothesSelectBox = () => {
     </>
     );
 
-      }
+      };
 export default ClothesSelectBox;
