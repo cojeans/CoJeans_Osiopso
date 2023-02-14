@@ -7,6 +7,7 @@ import com.cojeans.osiopso.entity.comment.*;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
+import com.cojeans.osiopso.repository.closet.ClothesRepository;
 import com.cojeans.osiopso.repository.comment.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class CommentService {
     private final CommentUpRepository commentUpRepository;
     private final CommentDownRepository commentDownRepository;
     private final CommentPhotoRepository commentPhotoRepository;
+    private final CommentClothesRepository commentClothesRepository;
+    private final ClothesRepository clothesRepository;
 
     public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -53,6 +56,16 @@ public class CommentService {
                     .article(article)
                     .comment(comment)
                     .build());
+        }
+
+        // 이미지를 조합하는데 사용한 옷 리스트
+        if(dto.getClothesList() != null) {
+            for (Long clothesId : dto.getClothesList()) {
+                commentClothesRepository.save(CommentClothes.builder()
+                        .comment(comment)
+                        .clothes(clothesRepository.findById(clothesId).orElseThrow())
+                        .build());
+            }
         }
 
         return true;
@@ -254,10 +267,19 @@ public class CommentService {
         CommentPhoto cp = commentPhotoRepository.findByCommentId(commentNo);
         if(cp != null) imageUrl = cp.getImageUrl();
 
+        List<CommentClothes> cc = commentClothesRepository.findAllByCommentId(commentNo);
+        List<String> result = new ArrayList<>();
+        if(cc != null) {
+            for (CommentClothes commentClothes : cc) {
+                result.add(clothesRepository.findById(commentClothes.getClothes().getId()).orElseThrow()
+                        .getImageUrl());
+            }
+        }
         return CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .like(likeCo)
                 .imageUrl(imageUrl)
+                .itemUrlList(result)
                 .build();
     }
 

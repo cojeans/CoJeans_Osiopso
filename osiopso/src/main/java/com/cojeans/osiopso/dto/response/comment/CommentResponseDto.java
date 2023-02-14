@@ -13,6 +13,7 @@ public class CommentResponseDto {
     private Long userId;
     private String userName;
     private String imageUrl;
+    private List<String> itemUrlList;
     private Float pastTime;
     private boolean like;
     private String time;
