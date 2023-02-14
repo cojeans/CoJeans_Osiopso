@@ -88,6 +88,20 @@ public class CommentApiController {
 
     // ====================== UPDATE ========================
 
+
+    @PutMapping("/select/{commentno}")
+    public ResponseEntity<?> selectComment(@PathVariable("commentno") Long commentNo,
+                                           @AuthenticationPrincipal UserDetail user){
+
+        // 채택을 완료한 경우
+        if (commentService.selectComment(commentNo, user.getId())) {
+            return new ResponseEntity(new ApiResponseDto(true, "selectComment Success", null), HttpStatus.OK);
+        } else { // 채택에 실패한 경우
+            return new ResponseEntity(new ApiResponseDto(false, "selectComment Fail", null), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+
     @PutMapping("/{articleno}/{commentno}")
     public ResponseEntity<?> editComment(@PathVariable("articleno") Long articleNo,
                                          @PathVariable("commentno") Long commentNo,
