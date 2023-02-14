@@ -125,7 +125,7 @@ public class UserService {
         for(Advice advice : adviceList){
             ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(advice.getId());
 
-            ootds.add(HotOotdResponseDto.builder()
+            advices.add(HotOotdResponseDto.builder()
                     .id(advice.getId())
                     .imageUrl(ap.getImageUrl())
                     .build());
