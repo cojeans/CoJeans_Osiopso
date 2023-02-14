@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword  } from './login.stlyes'
+import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
 import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
@@ -54,7 +54,7 @@ const Login = () => {
   
   const navigate = useNavigate()
   const LoginFunc = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
       axios({
         method: "post",
         url: `${process.env.REACT_APP_AXIOS_URL}user/login`,
@@ -75,6 +75,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err)
+        alert('이메일이나 비밀번호를 확인해주세요.')
         navigate("/login")
       })
   }
@@ -87,6 +88,12 @@ const Login = () => {
     navigate('/find')
     
   }
+
+  const onKeyPress = (e)=> {
+    if(e.key == 'Enter') {
+      LoginFunc();
+    }
+  }
   return (
     <SignInContainer>
 
@@ -97,41 +104,51 @@ const Login = () => {
         <Bodoni>Osiopso</Bodoni>
         &nbsp;내 옷장을 앱속으로
         </Osiopso>
-        <FormInput
-          label='Email'
-          type='email'
-          required
-          onChange={handleChange}
-          name='email'
-          value={email}
-        />
 
-        <FormInput
-          label='Password'
-          type='password'
-          required
-          onChange={handleChange}
-          name='password'
-          value={password}
-        />
-        
+        <ContentBox>
+        <IdPasswordBox>
+          <div>
+          <FormInput
+            label='Email'
+            type='email'
+            required
+            onChange={handleChange}
+            name='email'
+            value={email}
+          />
+
+          <FormInput
+            label='Password'
+            type='password'
+            required
+            onChange={handleChange}
+            name='password'
+            value={password}
+            onKeyPress = {onKeyPress}
+          />
+          </div>
+          <FindIdPassword onClick={goToFindPage}>아이디 / 비밀번호 찾기 > </FindIdPassword>
+        </IdPasswordBox>
+
+        <MarginBox>
         <ButtonsContainer>
         <Button
           type='submit'
           size={'md'}
           variant={ 'success'}
           onClick={LoginFunc}
-          >Sign In</Button>
+          ><ChangeFontColor>Sign In</ChangeFontColor></Button>
 
         <Button
           type='submit'
           size={'md'}
           variant={ 'success'}
           onClick={SignUp}
-          >Join</Button>
+          ><ChangeFontColor>Join</ChangeFontColor></Button>
         
         </ButtonsContainer>
-        <p onClick={goToFindPage}>아이디 / 비밀번호 찾기 > </p>
+        </MarginBox>
+        </ContentBox>
     </SignInContainer>
   );
 };

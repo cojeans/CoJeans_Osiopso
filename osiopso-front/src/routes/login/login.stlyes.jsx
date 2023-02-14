@@ -23,6 +23,7 @@ export const ButtonsContainer = styled.div`
 export const Osiopso = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 export const Bodoni = styled.div`
@@ -33,8 +34,22 @@ export const Bodoni = styled.div`
 
 export const FindIdPassword = styled.div`
 display:flex;
-margin: auto;
+// margin-top: 5%;
+justify-content: flex-end;
+
 
 `
-
-
+export const IdPasswordBox = styled.div`
+display: flex;
+flex-direction: column;
+// height: 50%;
+`
+export const MarginBox = styled.div`
+margin-top: 10%;
+`
+export const ContentBox = styled.div`
+margin-top: 10%;
+`
+export const ChangeFontColor = styled.div`
+// :hover{ color:#000000 }
+`
