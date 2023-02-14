@@ -171,7 +171,13 @@ public class CommentService {
             // 2. 삭제하려는 댓글의 좋아요 모두 삭제
             commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
 
-            // 3. 댓글 삭제
+            // 3. 삭제하려는 댓글의 CommentClothes 모두 삭제
+            commentClothesRepository.deleteAllByCommentId(commentno);
+
+            // 4. 삭제하려는 댓글의 CommentPhoto 모두 삭제
+            commentPhotoRepository.deleteAllByCommentId(commentno);
+
+            // 4. 댓글 삭제
             for (Cocomment cocomment : rootIdList) {
                 // 2. 삭제하려는 댓글의 대댓글의 좋아요 모두 삭제
                 commentLikeRepository.deleteByComment_IdAndArticle_Id(cocomment.getComment().getId(), articleno);

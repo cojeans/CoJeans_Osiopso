@@ -4,6 +4,7 @@ package com.cojeans.osiopso.service.article;
 
 import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentClothes;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.feed.ArticleTag;
@@ -32,6 +33,8 @@ public class ArticleService {
     private final ArticleLikeRepository articleLikeRepository;
     private final CommentUpRepository commentUpRepository;
     private final CommentDownRepository commentDownRepository;
+    private final CommentClothesRepository commentClothesRepository;
+    private final CommentPhotoRepository commentPhotoRepository;
 
 
     // 1번 article 을 지울 때..
@@ -70,6 +73,17 @@ public class ArticleService {
 
         // 게시물과 관련된 대댓글들 삭제
         cocommentRepository.deleteAllByArticle_Id(articleNo);
+
+        // 게시물에 달린 댓글들의 commentClothes 삭제
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        for (Comment comment : commentList) {
+            commentClothesRepository.deleteAllByCommentId(comment.getId());
+        }
+
+        // 게시물에 달린 댓글들의 commentPhoto 삭제
+        for (Comment comment : commentList) {
+            commentPhotoRepository.deleteAllByCommentId(comment.getId());
+        }
 
         // 게시물과 관련된 댓글들 삭제
         commentRepository.deleteAllByArticle_Id(articleNo);
