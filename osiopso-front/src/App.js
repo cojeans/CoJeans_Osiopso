@@ -53,8 +53,7 @@ function App() {
         <Route path="/*" element={<ErrorPage/>} />
         <Route path="mypage/*" element={<Mypage />} />
         <Route path='disclosurescope' element={<DisclosureScope/>}/>
-        <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
-        <Route path='joincomplete' element={<JoinComplete/>}/>
+
         <Route path='test' element={<Test/>}/>
         <Route path='selectbox/*' element={<SelectboxPage/>}/>
         
