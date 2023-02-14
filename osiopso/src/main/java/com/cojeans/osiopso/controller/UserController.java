@@ -67,9 +67,6 @@ public class UserController{
     @GetMapping("/{userId}")
     @Operation(summary = "다른회원조회")
     public ResponseEntity<UserDto> getUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetail userDetail) {
-//        UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
-//
-//        return new ResponseEntity<>(userDto, HttpStatus.OK);
         return new ResponseEntity<>(userService.getUser(userId, userDetail), HttpStatus.OK);
     }
 
@@ -112,7 +109,6 @@ public class UserController{
     @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getEmail(),
@@ -203,21 +199,6 @@ public class UserController{
                         ,HttpStatus.ACCEPTED);
 
     }
-
-//    @Operation(summary = "언팔로우하기", description = "언팔로우하기 버튼을 누르면 팔로잉-팔로워 관계 삭제")
-//    @DeleteMapping("/unfollow")
-//    public ResponseEntity<ApiResponseDto> unfollowUser(@RequestParam String email, @AuthenticationPrincipal UserDetail userDetail){
-//        // 지금은 이메일로 받습니다... 추후에 id를 받는 것으로 수정할 수 있습니다.
-//        userService.unfollowUser(email, userDetail);
-//
-//        return new ResponseEntity<>(
-//                ApiResponseDto.builder()
-//                        .success(true)
-//                        .message("언팔로우 완료")
-//                        .build()
-//                ,HttpStatus.ACCEPTED);``
-//
-//    }
 
     @Operation(summary = "팔로워 리스트", description = "특정 유저를 팔로우하고 있는 계정 리스트")
     @PostMapping("/followers")

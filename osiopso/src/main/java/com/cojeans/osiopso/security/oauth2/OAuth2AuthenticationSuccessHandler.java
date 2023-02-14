@@ -4,6 +4,7 @@ import com.cojeans.osiopso.config.AppProperties;
 import com.cojeans.osiopso.exception.BadRequestException;
 import com.cojeans.osiopso.security.TokenProvider;
 import com.cojeans.osiopso.util.CookieUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -15,12 +16,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Optional;
 
 import static com.cojeans.osiopso.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
+@Slf4j
     public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         private TokenProvider tokenProvider;
@@ -46,6 +47,7 @@ import static com.cojeans.osiopso.security.oauth2.HttpCookieOAuth2AuthorizationR
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
+        log.info("Target URL====================> {}", targetUrl);
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
