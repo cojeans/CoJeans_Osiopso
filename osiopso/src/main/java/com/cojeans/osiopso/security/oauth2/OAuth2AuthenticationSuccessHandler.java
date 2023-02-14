@@ -51,6 +51,7 @@ import static com.cojeans.osiopso.security.oauth2.HttpCookieOAuth2AuthorizationR
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        log.info("After sendRedirect Target URL====================> {}", targetUrl);
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
