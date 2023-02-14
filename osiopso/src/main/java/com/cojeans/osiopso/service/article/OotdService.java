@@ -110,18 +110,24 @@ public class OotdService {
 
         while (matcher.find()) {
             String hashTag = matcher.group();
+            Tag findTag = tagRepository.findByKeyword(hashTag);
+            Tag saveTag;
 
-            Tag tagSaved = tagRepository.save(Tag.builder()
-                    .keyword(hashTag)
-                    .type("H")
-                    .build());
+            if (findTag == null) {
+                Tag tagSaved = tagRepository.save(Tag.builder()
+                        .keyword(hashTag)
+                        .type("H")
+                        .build());
 
-            ArticleTag articleTagE = ArticleTag.builder()
+                saveTag = tagSaved;
+            } else {
+                saveTag = tagRepository.findById(findTag.getId()).orElseThrow();
+            }
+
+            articleTagRepository.save(ArticleTag.builder()
                     .article(ootdSaved)
-                    .tag(tagSaved)
-                    .build();
-
-            articleTagRepository.save(articleTagE);
+                    .tag(saveTag)
+                    .build());
         }
 
 
@@ -132,11 +138,8 @@ public class OotdService {
     public List<OotdListResponseDto> listOotd(Pageable pageable, Long idx) {
         List<Ootd> Ootds;
 
-        if (pageable == null) { // 필터링용
-            Ootds = ootdRepository.findAllByDtype("O");
-        } else {
-            Ootds = articleScrollQdslRepositoryImpl.findNoOffsetOotdPaging(pageable, idx);
-        }
+
+        Ootds = articleScrollQdslRepositoryImpl.findNoOffsetOotdPaging(pageable, idx);
 
         List<OotdListResponseDto> list = new ArrayList<>();
         Date date = new Date();
@@ -506,77 +509,121 @@ public class OotdService {
     }
 
 
-    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter) {
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx) {
+        // 1. StyleTag, TpoTag, Gender, Age
+        // 2. 적용된 필터들을 통해 ootd 를 찾아오자!
+        //        select distinct at.article_id
+        //        from article_tag at
+        //        left join tag t
+        //        on t.id = at.tag_id
+        //        where t.keyword="데일리" or t.keyword="캐주얼" or t.keyword="특별한날"
+        //        ;
+
         List<String> styleTag = filter.getStyleTag();
         List<String> tpoTag = filter.getTpo();
         Long age = filter.getAge();
         Gender gender = filter.getGender();
-
-
-        List<OotdListResponseDto> listOotd = listOotd(null, 0L);
         List<OotdListResponseDto> responseOotdList = new ArrayList<>();
+        Date date = new Date();
 
-        // 아무 필터도 적용되지 않은 경우
+        System.out.println(styleTag + ", " + tpoTag + ", " + age + ", " + gender);
+
+        // case:
+        // 1. 아무 필터도 적용되지 않은 경우
+        // 2. (styleTag or tpoTag)
+        // 3. (styleTag or tpoTag) + ageTag
+        // 4. (styleTag or tpoTag) + genderTag
+        // 5. (styleTag or tpoTag) + ageTag + genderTag
+        // 6. ageTag
+        // 7. genderTag
+        // 8. ageTag + genderTag
+
+
+        // 1. 아무 필터도 적용되지 않은 경우
         if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
             return null;
         }
 
+        // 2. styleTag, tpoTag 둘 중 하나라도 null 이 아니어야 한다.
+        if ((styleTag.size() >= 1) || (tpoTag.size() >= 1)) {
+            System.out.println(styleTag);
+            List<Long> articleList = articleTagRepositoryImpl.findArticleByTags(styleTag, tpoTag, pageable, idx);
 
-        // 전체 게시물 목록을 뒤져보자
-        for (OotdListResponseDto dto : listOotd) {
-            // 태그가 존재할 때에만..
-            if (styleTag != null || tpoTag != null) {
-                // 해당 게시물에 등록된 태그들을 가져오자
-                List<ArticleTag> articleTagList = articleTagRepository.findAllByArticle_Id(dto.getId());
-                List<String> tagList = new ArrayList<>();
-                int styleCnt = 0, tpoCnt = 0;
+            for (Long id : articleList) {
+                System.out.println(id);
+                // 태그 필터를 통해 찾은 게시물
+                Ootd ootd = ootdRepository.findById(id).orElseThrow();
+                User user = userRepository.findById(ootd.getUser().getId()).orElseThrow();
 
-
-                // 게시물에 등록된 태그들의 모든 keyword 들을 가져온다.
-                for (ArticleTag articleTag : articleTagList) {
-                    String keyword = tagRepository.findById(articleTag.getTag().getId()).orElseThrow().getKeyword();
-                    tagList.add(keyword);
-                }
-
-                // style 태그가 존재할 때에만..
-                if (styleTag != null) {
-                    // 필터링 할 스타일 태그가 기존 태그들에 포함되어있다면 cnt ++
-                    for (String keyword : styleTag) {
-                        if (tagList.contains(keyword)) styleCnt++;
+                // 3. 연령대 필터가 있는 경우
+                if (age != null) {
+                    // 필터 조건에 맞지 않다면
+                    if (user.getAge() / 10 != age / 10) {
+                        continue;
                     }
                 }
 
-
-                if (tpoTag != null) {
-                    // 필터링 할 tpo 태그가 기존 태그들에 포함되어있다면 cnt ++
-                    for (String keyword : tpoTag) {
-                        if (tagList.contains(keyword)) tpoCnt++;
+                // 4. 성별 필터가 있는 경우
+                if (gender != null) {
+                    // 필터 조건에 맞지 않다면
+                    if (user.getGender() != gender) {
+                        continue;
                     }
                 }
 
-                User user = userRepository.findById(dto.getUserId()).orElseThrow();
+                // 5. 연령대, 성별 필터를 모두 통과한 경우
 
-                // 성별을 선택하지 않은경우
-                if (gender == null) {
-                    gender = user.getGender();
-                }
+                GapTimeVo gapTime = articleService.getGapTime(ootd, date);
+                List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
 
-                // 나이를 선택하지 않은경우
-                if (age == null) {
-                    age = (long) (user.getAge() / 10);
-                }
+                // 모든 필터 조건을 만족했을 때
+                responseOotdList.add(OotdListResponseDto.builder()
+                        .id(ootd.getId())
+                        .hit(ootd.getHit())
+                        .content(ootd.getContent())
+                        .imageUrl(responsePhoto.get(0).getImageUrl())
+                        .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                        .time(gapTime.getTimeGapToString())
+                        .pastTime(gapTime.getPastTime())
+                        .userId(ootd.getUser().getId())
+                        .build());
+            }
 
-                // 스타일, tpo 태그들 모두 다 찾고, 성별과 나이대도 일치할 경우..
-                if (styleTag.size() == styleCnt &&
-                        tpoTag.size() == tpoCnt &&
-                        user.getGender() == gender &&
-                        user.getAge() / 10 == age) {
-                    responseOotdList.add(dto);
-                }
+        } else { // 둘 다 null 인 경우 (태그 필터링이 아닌 경우)
+            List<Ootd> ootdList = new ArrayList<>();
+
+            System.out.println(gender);
+            System.out.println(age);
+
+            // 8. 연령대, 성별 모두 필터링이 된 경우
+            if (age != null && gender != null) {
+                ootdList = articleTagRepositoryImpl.findArticleByAgeAndGender(age, gender, pageable, idx);
+            } else if (age != null && gender == null) { // 6. 연령대 필터만 적용된 경우
+                ootdList = articleTagRepositoryImpl.findArticleByAge(age, pageable, idx);
+            } else if (age == null && gender != null) { // 7. 성별 필터만 적용된 경우
+                ootdList = articleTagRepositoryImpl.findArticleByGender(gender, pageable, idx);
+            }
+
+
+            for (Ootd ootd : ootdList) {
+                GapTimeVo gapTime = articleService.getGapTime(ootd, date);
+                List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
+
+                responseOotdList.add(OotdListResponseDto.builder()
+                        .id(ootd.getId())
+                        .hit(ootd.getHit())
+                        .content(ootd.getContent())
+                        .imageUrl(responsePhoto.get(0).getImageUrl())
+                        .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                        .time(gapTime.getTimeGapToString())
+                        .pastTime(gapTime.getPastTime())
+                        .userId(ootd.getUser().getId())
+                        .build());
             }
         }
         return responseOotdList;
     }
+
 
     // 전제 : article_tag에 createTime 컬럼 추가
     // 1개월 내로 생성된 article_tag 리스트 뽑기

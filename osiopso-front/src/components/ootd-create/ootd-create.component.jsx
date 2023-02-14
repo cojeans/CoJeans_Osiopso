@@ -7,7 +7,6 @@ import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
 import { SlExclamation } from "react-icons/sl";
 
-
 import Swal from "sweetalert2";
 
 import {
@@ -26,8 +25,8 @@ import {
   StyleTagButton,
   TagBox,
   Note,
+  ExclamationMark,
   NoteBox,
-  ExclamationMark
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -124,6 +123,7 @@ const OotdCreate = () => {
     AlertCreateOotd()
   }
 
+
   const AlertCreateOotd = () => {
 
   Swal.fire({
@@ -196,6 +196,17 @@ const OotdCreate = () => {
             }
           </TagBox>
         </MarginDiv>
+        <NoteBox>
+          <Note>
+            <ExclamationMark>
+              <SlExclamation />
+            </ExclamationMark>
+            <div onClick={CautionMessage}>
+              작성 시 유의사항
+            </div>
+          </Note>
+        </NoteBox>
+
         <MarginDiv>
           <textarea
             name="content"

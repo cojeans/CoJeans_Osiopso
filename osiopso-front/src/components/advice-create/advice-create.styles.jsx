@@ -104,3 +104,7 @@ export const TextBox = styled.div`
 display: flex;
 margin-left: 2%;
 `
+export const ExclamationMark = styled.div`
+display: flex;
+margin-right: 1%;
+`

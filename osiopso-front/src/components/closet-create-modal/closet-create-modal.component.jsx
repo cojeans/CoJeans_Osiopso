@@ -32,23 +32,24 @@ const defaultClosetFields = {
 }
 
 
-const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
+const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
 	const { closetName } = closetField
 
 	const Token = useSelector(selectUser)
 	const closetData  = useSelector(selectCloset)
-
 	const dispatch = useDispatch()
 
 	 // 모달 끄기 
 	const closeModal = () => {
 		setModalOpen(false);
 		openScroll()
+	
 	};
 	const modalRef = useRef(null); 
 	
-	const AlertHandler = () => {
+	const AlertHandler = (closetName) => {
+		
 	Swal.fire({
 		icon: 'success',
 		confirmButtonColor: "#DD6B55", 
@@ -57,8 +58,22 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
 		`,
 		showCancelButton: false,
 		confirmButtonText: "확인",
+	}).then(()=>{
+					axios({
+					method: "post",
+					url: `${process.env.REACT_APP_AXIOS_URL}closet/mylist`,
+					headers: {
+					Authorization: `Bearer ${Token.token}`,
+					},
+				})
+					.then((res) => {
+						setClosetList(res.data.reverse())
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		
 	})
-	getClosetList() // 리스트 갱신
 
 }
 
@@ -119,9 +134,10 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, getClosetList }) => {
       console.log(err);
     });
 
+
+		AlertHandler(closetName) // alert창 띄우기
 		dispatch(resetCloset()) // redux 옷장 정보 초기화
 		
-		AlertHandler() // alert창 띄우기
 
 	}
 	

@@ -18,5 +18,4 @@ public class ClothesDetailResponseDto {
     private List<ClosetResponseDto> closets;
     private List<ColorResponseDto> colors;
     private List<SeasonResponseDto> seasons;
-    private List<ClothesTagResponseDto> tags;
 }

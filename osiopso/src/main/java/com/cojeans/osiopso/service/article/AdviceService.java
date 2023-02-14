@@ -284,19 +284,22 @@ public class AdviceService {
     public List<AdviceSearchResponseDto> searchAdviceBySubject(String subject) {
         List<Advice> adviceList = adviceRepository.findAllBySubjectContaining(subject);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
+        Date date = new Date();
 
         for (Advice advice : adviceList) {
             List<ArticlePhoto> articlePhotoList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
             ArticlePhoto articlePhoto = articlePhotoList.get(0);
 
+            GapTimeVo gapTime = articleService.getGapTime(advice, date);
+
             list.add(AdviceSearchResponseDto.builder()
                     .articleNo(advice.getId())
                     .subject(advice.getSubject())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(articlePhoto.getImageUrl())
-                            .build())
+                    .imageUrl(articlePhoto.getImageUrl())
                     .isSelected(advice.isSelected())
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
                     .build());
         }
 
@@ -307,19 +310,22 @@ public class AdviceService {
     public List<AdviceSearchResponseDto> searchAdviceByContent(String content) {
         List<Advice> adviceList = adviceRepository.findAllByContentContaining(content);
         List<AdviceSearchResponseDto> list = new ArrayList<>();
+        Date date = new Date();
 
         for (Advice advice : adviceList) {
             List<ArticlePhoto> articlePhotoList = articlePhotoRepository.findAllByArticle_Id(advice.getId());
             ArticlePhoto articlePhoto = articlePhotoList.get(0);
 
+            GapTimeVo gapTime = articleService.getGapTime(advice, date);
+
             list.add(AdviceSearchResponseDto.builder()
                     .articleNo(advice.getId())
                     .subject(advice.getSubject())
                     .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(articlePhoto.getImageUrl())
-                            .build())
+                    .imageUrl(articlePhoto.getImageUrl())
                     .isSelected(advice.isSelected())
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
                     .build());
         }
 

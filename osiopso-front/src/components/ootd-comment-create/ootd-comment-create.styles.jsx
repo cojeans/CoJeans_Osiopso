@@ -83,6 +83,7 @@ export const UpperComment = styled.div`
   border:none;
   border-bottom:solid 1px gray;
   padding: 0  10px 0 10px;
+  font-family: 'LINESeedKR-Bd';
   &:focus{
     outline:none;
   }

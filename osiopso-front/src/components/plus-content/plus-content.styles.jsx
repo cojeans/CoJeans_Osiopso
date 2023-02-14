@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const PlusModalContainer = styled.div`
-	width:250px;
+	border-radius: 10px;
+	width:215px;
 	height:200px;
 	background-color:white;
-	padding:20px;
+	padding:10px;
 	display:flex;
 	flex-direction:column;
 	align-items: center;

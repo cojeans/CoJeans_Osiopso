@@ -11,16 +11,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-// 파라미터 : 카테고리, 사진1, 누구? / 옷장, 색깔, 태그(스타일태그, TPO태그)
 @Data
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class ClothesRequestDto {
     private String category;
     private String imageUrl;
-    private List<ClosetResponseDto> closets;
-    private List<ColorResponseDto> colors;
-    private List<SeasonResponseDto> seasons;
-    private List<ClothesTagResponseDto> tags;
+    private List<String> closets;
+    private List<String> colors;
+    private List<String> seasons;
 }
 

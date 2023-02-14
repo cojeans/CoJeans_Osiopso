@@ -57,10 +57,11 @@ public class UserController{
     public ResponseEntity<UserDto> getCurrentUser(Authentication authentication) {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 
-        User user = userRepository.findById(userDetail.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+//        User user = userRepository.findById(userDetail.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
 
-        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
+//        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getMine(userDetail), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
@@ -278,6 +279,14 @@ public class UserController{
                 .message("공개범위 변경 성공")
                 .build()
                 , HttpStatus.OK);
+    }
+
+    @Operation(summary = "임시비밀번호 이메일로 보내기", description = "임시비밀번호를 해당 이메일로 보내주고 비밀번호도 임시비밀번호로 바꿔줍니다. 프론트에서 호출전에 이메일 존재체크를 해주고 보내주세요")
+    @GetMapping("/generateTemporaryPassword/{email}")
+    public ResponseEntity<?> generateTemporaryPassword(@PathVariable String email){
+
+
+        return null;
     }
 }
 

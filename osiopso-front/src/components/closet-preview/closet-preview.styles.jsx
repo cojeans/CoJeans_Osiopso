@@ -32,13 +32,15 @@ export const PrevBox = styled.div`
 	div{
 		width:3em;
 		height:3em;
+		justify-content: center;
+    align-items: center;
 	}
 `
 
 export const ImgPrevBox = styled.div`
 	
 	img{
-		width: 100%;
-		height: 100%;
+		width: 95%;
+		height: 95%;
 	}
 `

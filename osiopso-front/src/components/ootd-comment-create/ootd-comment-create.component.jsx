@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 
 import { useEffect, useState } from 'react';
 import {
-  CommentProfileImage,
   UpperComment,
   ClosetInput,
   InputBox
@@ -101,7 +100,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
     <div>
       <UpperComment>
         <ProfileImageBox >
-          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+          <img src={  !userInfo.imageUrl? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
         </ProfileImageBox >
 
         {

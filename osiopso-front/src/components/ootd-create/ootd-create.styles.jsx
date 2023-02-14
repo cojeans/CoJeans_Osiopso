@@ -92,4 +92,8 @@ margin-left: 12%;
 export const ExclamationMark = styled.div`
 display: flex;
 margin-right: 1%;
+<<<<<<< HEAD
 `
+=======
+`
+>>>>>>> 25e048c632ea308d7930ea7135f817fc26be4ec0

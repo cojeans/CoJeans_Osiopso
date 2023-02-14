@@ -1,5 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+
+import { SideBar } from "../side-bar/side-bar.component"
+
+import { Fragment } from "react"
+
 import {
 	TopBarContainer,
 	TopBarContent,
@@ -7,8 +12,9 @@ import {
 	CategoryContainer
 } from "./top-bar.styles"
 
-import { ReactComponent as BackButton } from '../../assets/back.svg'
-import { SideBar } from "../side-bar/side-bar.component"
+import { MdArrowBackIosNew } from "react-icons/md";
+
+import { BiSearch } from "react-icons/bi";
 
 
 const TopBar = () => {
@@ -16,6 +22,11 @@ const TopBar = () => {
 
 	const [topName, setTopName] = useState('Osiopso')
 	const location = useLocation()
+
+	const searchHandler = () => {
+		navigate('/search')
+	}
+	
 	useEffect(() => {
 		switch (location.pathname) {
 			case '/join':
@@ -33,26 +44,68 @@ const TopBar = () => {
 			case '/advice/create':
 				setTopName('훈수 등록')
 				break
+			case '/advice/ootdCommentCreate':
+			setTopName('훈수 등록')
+				break
+			case '/advice':
+			setTopName('훈수')
+				break
 			default:
 				setTopName('Osiopso')
+		}
+		if (location.pathname.includes('ootd/detail')) {
+			setTopName('OOTD 게시글')
+		} else if (location.pathname.includes('profile')) {
+			setTopName('Profile')
 		}
 }, [location ])
 
 	return (
-		<TopBarContainer>
-			<ButtonContainer onClick={() =>{
-				navigate(-1)
-			}}>
-				<BackButton />
-			</ButtonContainer>	
-
+		<Fragment>
+		{
+				topName ==='Osiopso' || topName==='훈수'?
+		<TopBarContainer page={'two'}>
+			<div>
+			</div>
 			<TopBarContent>
 				{ topName }
-			</TopBarContent>
-			<CategoryContainer >
-        		<SideBar/>
-			</CategoryContainer>
+						</TopBarContent>
+						<CategoryContainer >
+						<BiSearch onClick={searchHandler}/>	
+						</CategoryContainer>
 		</TopBarContainer>
+					: topName === 'Profile'
+				?				<TopBarContainer>
+									<ButtonContainer onClick={() =>{
+										navigate(-1)
+									}}>
+								<MdArrowBackIosNew color='white' />
+									</ButtonContainer>	
+
+									<TopBarContent>
+										{ topName }
+									</TopBarContent>
+									<CategoryContainer >
+												<SideBar/>
+									</CategoryContainer>
+								</TopBarContainer>
+						:	<TopBarContainer>
+									<ButtonContainer onClick={() =>{
+										navigate(-1)
+									}}>
+										<MdArrowBackIosNew color='white' />
+									</ButtonContainer>	
+
+									<TopBarContent>
+										{ topName }
+									</TopBarContent>
+									<div></div>
+								</TopBarContainer>
+								
+	
+			}
+
+		</Fragment>
 	)
 }
 
