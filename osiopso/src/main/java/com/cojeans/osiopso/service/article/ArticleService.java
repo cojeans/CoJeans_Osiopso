@@ -23,7 +23,6 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleTagRepository articleTagRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final CocommentRepository cocommentRepository;
