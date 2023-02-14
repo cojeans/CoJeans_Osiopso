@@ -18,9 +18,11 @@ const defaultFormFields = {
   password: '',
 };
 
+
 const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -49,8 +51,8 @@ const Login = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
-  const navigate = useNavigate();
-
+  
+  const navigate = useNavigate()
   const LoginFunc = (e) => {
     e.preventDefault();
       axios({
@@ -75,8 +77,10 @@ const Login = () => {
         console.log(err)
         navigate("/login")
       })
-  
+  }
 
+  const SignUp = ()=>{
+    navigate('/join')
   }
   return (
     <SignInContainer>
@@ -113,7 +117,14 @@ const Login = () => {
           variant={ 'success'}
           onClick={LoginFunc}
           >Sign In</Button>
-        </ButtonsContainer>
+
+        <Button
+          type='submit'
+          size={'md'}
+          variant={ 'success'}
+          onClick={SignUp}
+          >Join</Button>
+          </ButtonsContainer>
     </SignInContainer>
   );
 };

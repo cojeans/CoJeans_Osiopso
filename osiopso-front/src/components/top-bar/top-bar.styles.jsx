@@ -1,8 +1,11 @@
-import styled from 'styled-components'
-
+import styled, { css } from 'styled-components'
 
 
 export const TopBarContainer = styled.div`
+	.osiopso{
+		font-family: 'Bodoni';
+		font-size:28px;
+	}
 	height: 60px;
   width: 100%;
 	max-width:430px;

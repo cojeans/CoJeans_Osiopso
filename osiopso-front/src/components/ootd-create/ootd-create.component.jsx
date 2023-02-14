@@ -43,6 +43,9 @@ const defaultOotdForm = {
 
 
 const OotdCreate = () => {
+  const CautionMessage = ()=> {
+    alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
+  }
   const Token = useSelector(selectUser)
   
   const [ootdImg, setOotdImg] = useState('')
@@ -120,9 +123,6 @@ const OotdCreate = () => {
     AlertCreateOotd()
   }
 
-  const CautionMessage = ()=> {
-    alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
-  }
 
   const AlertCreateOotd = () => {
 
@@ -176,16 +176,6 @@ const OotdCreate = () => {
             ref={imgRef}
           />
         </OotdImgContainer>
-        <MarginDiv>
-          <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
-          <TagBox>
-            {
-              ootdTags.map((tag) => {
-                return <div>#{tag.type}</div>
-              })
-            }
-          </TagBox>
-        </MarginDiv>
         <NoteBox>
           <Note>
             <ExclamationMark>
@@ -196,6 +186,16 @@ const OotdCreate = () => {
             </div>
           </Note>
         </NoteBox>
+        <MarginDiv>
+          <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+          <TagBox>
+            {
+              ootdTags.map((tag) => {
+                return <div>#{tag.type}</div>
+              })
+            }
+          </TagBox>
+        </MarginDiv>
 
         <MarginDiv>
           <textarea
@@ -204,7 +204,7 @@ const OotdCreate = () => {
             id=""
             cols="30"
             rows="10" 
-            placeholder='#코딩이 #힘들다'
+            placeholder='착용 아이템 및 스타일을 소개해주세요.'
             onChange={handleChange}
           >
           </textarea>

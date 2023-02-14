@@ -83,6 +83,7 @@ const AdviceCreate = ()=> {
     const goToHome = ()=> {
         navigate('/')
     }
+
   
     const submitAdviceCreate = (e) => {
       e.preventDefault();
@@ -188,10 +189,18 @@ const AdviceCreate = ()=> {
               ref={imgRef}
             />
           </OotdImgContainer>
+          <NoteBox>
+          <Note>
+            <CautionBox onClick={CautionMessage}>
+              <SlExclamation />
+              <TextBox>작성 시 유의사항</TextBox>
+            </CautionBox>
+          </Note>
+        </NoteBox>
           <MarginDiv>
             <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
           </MarginDiv>
-          <NoteBox>
+          {/* <NoteBox>
           <Note>
             <ExclamationMark>
               <SlExclamation />
@@ -200,7 +209,7 @@ const AdviceCreate = ()=> {
               작성 시 유의사항
             </div>
           </Note>
-        </NoteBox>
+        </NoteBox> */}
           <MarginDiv>
             <textarea
               name="content"
