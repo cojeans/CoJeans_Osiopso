@@ -77,8 +77,8 @@ const Navigation = () => {
 				>	
 					{
 						`${location.pathname}${location.hash}` === '/#top'
-							? <IoHomeSharp/>
-							:<IoHomeOutline />
+							? <IoHomeSharp />
+							:<IoHomeOutline color="#D3D3D3"/>
 					}
 					
 					<span>Home</span>
@@ -88,7 +88,7 @@ const Navigation = () => {
 					
 						`${location.pathname}` === '/advice'
 					?<IoHandRightSharp />
-					:<IoHandRightOutline />
+					:<IoHandRightOutline color="#D3D3D3"/>
 					}
 					<span>Advice</span>
 				</LogoContainer>

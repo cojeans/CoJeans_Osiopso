@@ -42,13 +42,13 @@ const TopBar = () => {
 				setTopName('OOTD 등록')
 				break
 			case '/advice/create':
-				setTopName('훈수 등록')
+				setTopName('Advice 등록')
 				break
 			case '/advice/ootdCommentCreate':
-			setTopName('훈수 등록')
+			setTopName('Advice 등록')
 				break
 			case '/advice':
-			setTopName('훈수')
+			setTopName('Advice')
 				break
 			default:
 				setTopName('Osiopso')
@@ -63,13 +63,13 @@ const TopBar = () => {
 	return (
 		<Fragment>
 		{
-				topName ==='Osiopso' || topName==='훈수'?
+				topName ==='Osiopso' || topName==='Advice'?
 		<TopBarContainer page={'two'}>
 			<div>
 			</div>
-			<TopBarContent>
+			<TopBarContent className={topName==='Osiopso'?'osiopso':''}>
 				{ topName }
-						</TopBarContent>
+			</TopBarContent>
 						<CategoryContainer >
 						<BiSearch onClick={searchHandler}/>	
 						</CategoryContainer>
