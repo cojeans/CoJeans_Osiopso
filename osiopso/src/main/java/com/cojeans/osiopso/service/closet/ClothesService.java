@@ -5,6 +5,7 @@ import com.cojeans.osiopso.dto.response.closet.*;
 import com.cojeans.osiopso.entity.closet.*;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.closet.*;
+import com.cojeans.osiopso.repository.comment.CommentClothesRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class ClothesService {
     private final ClosetClothesRepository closetClothesRepository;
     private final ClothesColorRepository clothesColorRepository;
     private final ClothesSeasonRepository clothesSeasonRepository;
+    private final CommentClothesRepository commentClothesRepository;
 
     // 연결 Repo 단독
     private final ColorRepository colorRepository;
@@ -228,7 +230,10 @@ public class ClothesService {
         // 3. ClothesSeason
         clothesSeasonRepository.deleteAllByClothesId(id);
 
-        // 4. Clothes
+        // 4. CommentClothes
+        commentClothesRepository.deleteAllByClothesId(id);
+
+        // 5. Clothes
         clothesRepository.deleteById(id);
     }
 
