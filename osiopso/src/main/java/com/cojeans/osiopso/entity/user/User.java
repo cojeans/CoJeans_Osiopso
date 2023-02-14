@@ -71,6 +71,7 @@ public class User {
                 .bio(this.getBio())
                 .role(this.getRole())
                 .isProfilePublic(this.getIsProfilePublic())
+                .grade(this.grade)
                 .build();
     }
     /* userPk값을 가져와서 업데이트 후 User객체 다시반환 -> toDto호출해서 Dto로 변환*/

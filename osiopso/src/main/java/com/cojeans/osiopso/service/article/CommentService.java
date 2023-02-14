@@ -45,6 +45,7 @@ public class CommentService {
                 .report(0L)
                 .up(0L)
                 .down(0L)
+                .isSelected(false)
                 .build();
 
         commentRepository.save(comment);
