@@ -98,6 +98,8 @@ const ClothesSelectBox = () => {
       method: "post",
       url: "http://localhost:8080/api/closet/clothes",
       data: {
+
+        //////보내야할 데이터 형식/////
         // clothesTag: {
         //   category: '',
         //   url: '',
@@ -105,20 +107,17 @@ const ClothesSelectBox = () => {
         //   colors:[],
         //   seasons:[],
         //   }
+        //////////////////////////////
         url : saveData,
         tags: saveTag,
         // closets:
         // saveTag
         // url: saveData,
-        // closets: [{id:1}],
-        // colors: [{tag.tags.colors}],
-        // seasons: [tag.tags.seasons],
-        // tags: [tag.tags.seasons],
-        // category: '1',
-        // closets: [{ id: 1 }],
-        // colors: [{ id: 1 }],
-        // seasons: [{ id: 1 }],
-        // tags: [{ id: 1 }],
+        category: '1',
+        closets: [{ id: 1 }],
+        colors: [{ id: 1 }],
+        seasons: [{ id: 1 }],
+        tags: [{ id: 1 }],
       },
       headers: {
         Authorization: `Bearer ${Token.token}`,
