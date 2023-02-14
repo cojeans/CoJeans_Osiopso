@@ -22,8 +22,17 @@ const SIZES = {
 const VARIANTS = {
   success: css`
     --button-color: #ffffff;
-    --button-bg-color: #28a745;
-    --button-hover-bg-color: #218838;
+    // --button-bg-color: #28a745;
+    --button-bg-color: #000000;
+    // --button-hover-bg-color: #218838;
+    --button-hover-bg-color: #FFFFFF;
+    // --button-hover-text-color: #000000;
+    :hover{ 
+      color:#000000;
+      border: 2px solid gray;
+    
+    }
+    
   `,
   error: css`
     --button-color: #ffffff;
