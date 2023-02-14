@@ -77,8 +77,8 @@ const Navigation = () => {
 				>	
 					{
 						`${location.pathname}${location.hash}` === '/#top'
-							? <IoHomeSharp/>
-							:<IoHomeOutline />
+							? <IoHomeSharp />
+							:<IoHomeOutline color="#D3D3D3"/>
 					}
 					
 					<span>Home</span>
@@ -88,7 +88,7 @@ const Navigation = () => {
 					
 						`${location.pathname}` === '/advice'
 					?<IoHandRightSharp />
-					:<IoHandRightOutline />
+					:<IoHandRightOutline color="#D3D3D3"/>
 					}
 					<span>Advice</span>
 				</LogoContainer>
@@ -104,12 +104,12 @@ const Navigation = () => {
 					to="/#OOTD"
 				 className={`${location.pathname}${location.hash}` === '/#OOTD' ? "active" : ""}
 				>
-					<GiLargeDress />
+					<GiLargeDress color="#D3D3D3"/>
 					<span>OOTD</span>
 				</HashLinkContainer>
 				{/* </LogoContainer> */}
 				<LogoContainer  to='/profile'>
-					<FaUserCircle />
+					<FaUserCircle color="#D3D3D3" />
 					<span>Profile</span>
 				</LogoContainer>
 				{/* <Link to='/login'>Login</Link> 
