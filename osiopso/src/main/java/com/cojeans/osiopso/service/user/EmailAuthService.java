@@ -3,6 +3,7 @@ package com.cojeans.osiopso.service.user;
 
 import com.cojeans.osiopso.dto.user.MailContentBuilder;
 import com.cojeans.osiopso.dto.user.NotificationEmail;
+import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.entity.user.VerificationToken;
 import com.cojeans.osiopso.exception.CustomMailException;
@@ -43,7 +44,7 @@ public class EmailAuthService {
         /*랜덤 문자열을 만들고 해당 유저의 비밀번호를 변경하고 이메일로 임시비밀번호를 보내준다. */
         String passwordBeforeEncoded = RandomStringUtils.randomAlphanumeric(PASSWORD_SIZE);
         String encodedPassword = passwordEncoder.encode(passwordBeforeEncoded);
-        userRepository.findByEmail(userEmail).get().setPassword(encodedPassword);
+        userRepository.findByEmailAndProvider(userEmail, AuthProvider.local).get().setPassword(encodedPassword);
         String mailContent = mailContentBuilder.buildPasswordEmail(passwordBeforeEncoded); //html파일로 링크에 변수 넣어서 만든다.
 
         mailService.sendMail(NotificationEmail
@@ -92,7 +93,7 @@ public class EmailAuthService {
     @Transactional
     public void setUserEnabled(VerificationToken verificationToken) {
         String email = verificationToken.getUserEmail();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomMailException("유저를 찾을 수 없음 " + email));
+        User user = userRepository.findByEmailAndProvider(email,AuthProvider.local).orElseThrow(() -> new CustomMailException("유저를 찾을 수 없음 " + email));
         user.setEmailVerified(true);
         userRepository.save(user);
         log.info("setUserEnabled user ={}",user);
