@@ -96,6 +96,8 @@ public class CommentService {
                     .content(dto.getContent())
                     .article(article)
                     .report(0L)
+                    .up(0L)
+                    .down(0L)
                     .build());
 
             cocommentRepository.save(Cocomment.builder()
@@ -113,6 +115,8 @@ public class CommentService {
                     .content(dto.getContent())
                     .article(article)
                     .report(0L)
+                    .up(0L)
+                    .down(0L)
                     .build());
 
             cocommentRepository.save(Cocomment.builder()
@@ -153,6 +157,7 @@ public class CommentService {
 
     public boolean deleteComment(Long articleno, Long commentno, Long userId) {
 //        Article article = articleRepository.findById(userId).orElseThrow();
+
         Comment comment = commentRepository.findById(commentno).orElseThrow();
 
         // 댓글 작성자만 삭제권한이 있다.
@@ -196,19 +201,6 @@ public class CommentService {
             commentRepository.deleteById(commentno);
         }
 
-
-//            // 삭제하려는 댓글의 좋아요(commentLikes) 먼제 삭제
-//            // 최상위 commnet의 Pk를 root_id로 사용하는 모든 댓글들을 삭제한다.
-//            commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
-//            cocommentRepository.deleteAllByRootId(commentno);
-//        } // 원석게이게이야
-
-        // 제대로 지워졌다면?
-//        if (commentRepository.findByIdAndArticle_Id(articleno, commentno) == null) {
-//            return true;
-//        } else {
-//            return false;
-//        }
         return true;
     }
 
