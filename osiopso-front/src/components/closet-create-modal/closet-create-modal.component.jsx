@@ -51,11 +51,11 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 	const AlertHandler = (closetName) => {
 		
 	Swal.fire({
-		icon: 'success',
-		confirmButtonColor: "#DD6B55", 
+		confirmButtonColor: "black", 
 		html: `
 		새 옷장이 생성되었습니다.
 		`,
+			width: '300px',
 		showCancelButton: false,
 		confirmButtonText: "확인",
 	}).then(()=>{

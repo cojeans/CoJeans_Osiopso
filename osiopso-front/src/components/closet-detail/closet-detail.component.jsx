@@ -49,8 +49,7 @@ const ClosetDetail = () => {
 		})
 
 		Swal.fire({
-		icon: 'success',
-		confirmButtonColor: "#DD6B55", 
+		confirmButtonColor: "black", 
 		html: `
 		옷장이 삭제되었습니다.
 		`,

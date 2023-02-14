@@ -1,9 +1,22 @@
-import styled from "styled-components"
+import styled, { css} from "styled-components"
+
+export const Three = css`
+		grid-template-columns: 1fr 1fr 1fr;
+
+`
+export const Two = css`
+		grid-template-columns: 1fr 1fr;
+
+`
+
 
 
 export const TabMenue = styled.div`
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr;
+	${({isUser}) => isUser==='three' && Three}
+	${({isUser}) => isUser==='two' && Two}
+
 	width: 80%;
 	p{
 			text-align:center;
