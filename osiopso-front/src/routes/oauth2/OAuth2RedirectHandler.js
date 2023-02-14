@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ACCESS_TOKEN } from '../../constants';
-import { Redirect, Link} from 'react-router-dom'
-
+import { Link} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 class OAuth2RedirectHandler extends Component {
     getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -14,9 +14,10 @@ class OAuth2RedirectHandler extends Component {
     render() {        
         const token = this.getUrlParameter('token');
         const error = this.getUrlParameter('error');
-
+        console.log(token, 'social token')
         if(token) {
             localStorage.setItem(ACCESS_TOKEN, token);
+            localStorage.setItem('token', token);
             // return <Redirect to={{
             //     pathname: "/",
             //     state: { from: this.props.location }

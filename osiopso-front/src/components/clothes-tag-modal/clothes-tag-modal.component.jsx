@@ -92,13 +92,14 @@ const ClothesTagModal = ({ closeModal }) => {
 	// } 
 	// FashionAi()
 	const submitHandler = () => {
-		let newArr = []
+		let newArr = {'category':'', closets:[], colors:[], seasons:[]} 
 		selectedTag['Category'].forEach((el) => {
-			newArr = [...newArr, {
-				category: el,
+			newArr.category = el
 				// type: el
-			}]
+			console.log(el)
+			
 		})
+		
 
 		// selectedTag['Category'].forEach((el) => {
 		// 	newArr = [...newArr, {
@@ -107,12 +108,12 @@ const ClothesTagModal = ({ closeModal }) => {
 		// 	}]
 		// })
 		
-		selectedTag['Color'].forEach((el) => {
-			newArr = [...newArr, {
-				colors: el,
-				// type: el
-			}]
-		})
+		// selectedTag['Color'].forEach((el) => {
+		// 	newArr = [...newArr, {
+		// 		colors: el,
+		// 		// type: el
+		// 	}]
+		// })
 		
 		// selectedTag['Color'].forEach((el) => {
 		// 	newArr = [...newArr, {
@@ -121,18 +122,18 @@ const ClothesTagModal = ({ closeModal }) => {
 		// 	}]
 		// })
 
-		selectedTag['Season'].forEach((el) => {
-			newArr = [...newArr, {
-				keyword: "Season",
-				type: el
-			}]
-		})
-		selectedTag['TPO'].forEach((el) => {
-			newArr = [...newArr, {
-				keyword: "TPO",
-				type: el
-			}]
-		})
+		// selectedTag['Season'].forEach((el) => {
+		// 	newArr = [...newArr, {
+		// 		keyword: "Season",
+		// 		type: el
+		// 	}]
+		// })
+		// selectedTag['TPO'].forEach((el) => {
+		// 	newArr = [...newArr, {
+		// 		keyword: "TPO",
+		// 		type: el
+		// 	}]
+		// })
 
 		console.log(newArr, 'newArr')
 

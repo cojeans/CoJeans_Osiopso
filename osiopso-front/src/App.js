@@ -1,5 +1,5 @@
 import { Routes, Route, } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, Component } from "react";
 
 import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
@@ -45,7 +45,7 @@ function App() {
         <Route path='joincomplete' element={<JoinComplete/>}/>
         <Route path='test' element={<Test/>}/>
         <Route path='selectbox/*' element={<SelectboxPage/>}/>
-        <Route path="/oauth2/redirect" element={OAuth2RedirectHandler}></Route>  
+        <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>  
       </Route>
     </Routes>
   );
