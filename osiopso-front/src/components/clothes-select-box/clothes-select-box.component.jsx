@@ -175,7 +175,7 @@ const ClothesSelectBox = () => {
               dispatch(createAutoTag(payload))
               dispatch(checkLocal(true));
             };
-        dispatch(upload("")); // redux 옷장 정보 초기화
+        // dispatch(upload("")); // redux 옷장 정보 초기화
 
         // AlertHandler() // alert창 띄우기
 
