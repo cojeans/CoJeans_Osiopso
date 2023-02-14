@@ -23,10 +23,10 @@ const defaultOotdForm = {
     tags: [],
 };
 
-const ClosetSelectEdit = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const saveData = useSelector(selectClothes);
+const ClothesSelectEdit = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const saveData = useSelector(selectClothes);
 
     const beforeData = saveData;
     const onNavigateHandler = () => {
@@ -182,4 +182,4 @@ const ClosetSelectEdit = () => {
     );
 };
 
-export default ClosetSelectEdit;
+export default ClothesSelectEdit;

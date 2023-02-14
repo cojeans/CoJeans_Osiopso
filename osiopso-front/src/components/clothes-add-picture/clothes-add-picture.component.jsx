@@ -3,6 +3,7 @@ import {
   PrevUploadImg,
   ExampleContainer,
   ExampleBox,
+  LinkContainer,
   ImageInput,
 } from "./clothes-add-picture.styles";
 
@@ -123,7 +124,9 @@ const ClothesAddPicture = () => {
           <span>배경 제거</span>
         </ExampleBox> */}
       </ExampleContainer>
-      <Button onClick={onNavigateHandler2}>선택 완료</Button>
+      <LinkContainer to='/selectbox'>
+        <Button>선택 완료</Button>
+      </LinkContainer>
     </AddPictureBody>
   );
 };
