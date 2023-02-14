@@ -8,6 +8,7 @@ import {
 	ItemInfo
 } from "./closet.styles"
 
+import { FaLock } from "react-icons/fa";
 
 const Closet = ({ closet }) => {
 	const { name, count, thumbnails, isSelected } = closet
@@ -30,6 +31,7 @@ const Closet = ({ closet }) => {
 					{ name }<br/>
 					<span>{count}</span>
 				</p>
+				{!isSelected && <FaLock />}
 			</ItemInfo>
 		</ItemContainer>
 	)

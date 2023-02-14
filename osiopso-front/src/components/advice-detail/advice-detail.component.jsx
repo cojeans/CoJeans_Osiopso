@@ -32,10 +32,13 @@ const defaultForm = {
 }
 
 const AdviceDetail = () => {
+  const location = useLocation();
+  const id = location.state.id
+  
   const navigate = useNavigate();
 
-  const goToAdviceComment = ()=> {
-    navigate("/advice/comment", {
+  const goToComment = ()=> {
+    navigate("/advice/commentlist/"+id, {
       state: {
         id: id
       }
@@ -43,8 +46,6 @@ const AdviceDetail = () => {
   }
 
 
-  const location = useLocation();
-  const id= location.state.id
 
   const Token = useSelector(selectUser)
   const [advicedDetail, setAdviceDetail] = useState('')
@@ -85,7 +86,7 @@ const AdviceDetail = () => {
       }
     })
     .then((res)=>{
-      // console.log(res.data.responseData)
+      console.log(res.data.responseData)
       const result = res.data.responseData
       setAdviceDetail(result)
       setPhotoUrl(result.photos[0].imageUrl)
@@ -118,7 +119,6 @@ const AdviceDetail = () => {
       }
     })
     .then((res)=>{
-      console.log(res.data)
       Delete()
     })
     .catch((err)=> {
@@ -143,6 +143,15 @@ const AdviceDetail = () => {
     getDetailAdvice()
   },[])
 
+
+  const goToCreateComment = () => {
+    navigate('/advice/create-comment/', {
+      state: {
+        articleId: id,
+        userId : advicedDetail.userId
+      }
+    })
+  }
 
 
 
@@ -199,7 +208,7 @@ const AdviceDetail = () => {
             </IconContainer>
             <IconContainer
               onClick={() => {
-                // clickCommentIcon()
+                goToComment()
               }
               }
             >
@@ -223,7 +232,7 @@ const AdviceDetail = () => {
         </DetailContainer>
         </UpperImage>
         <Buttoncontainer>
-          <Button write={true} size='lg'>Advice</Button>
+          <Button write={true} size='lg' onClick={goToCreateComment}>Advice</Button>
         </Buttoncontainer>
       </div>
     </Fragment>

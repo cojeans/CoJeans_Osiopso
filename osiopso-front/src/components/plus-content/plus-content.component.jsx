@@ -59,7 +59,7 @@ const PlusModal = ({ closeModal }) => {
 					<IoHandRightOutline/>
 				</PlusLogoContainer>
 				<span>
-					훈수 등록
+					Advice 요청
 				</span>
 			</PlusContent>
 		</PlusModalContainer>

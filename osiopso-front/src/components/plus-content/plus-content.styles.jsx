@@ -13,7 +13,7 @@ export const PlusModalContainer = styled.div`
 `
 
 export const PlusContent = styled.div`
-	width:70%;
+	width:80%;
 	height:33%;
 	display:flex;
 	align-items: center;
