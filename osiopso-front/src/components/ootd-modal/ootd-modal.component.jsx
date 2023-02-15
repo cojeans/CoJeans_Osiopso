@@ -10,16 +10,18 @@ import {
 	SaveBox,
 } from "./ootd-modal.styles"
 
+import Button from "../button/button.component"
+
 const tags = {
-	'Season': ['봄', '여름', '가을', '겨울'],
+	// 'Season': ['봄', '여름', '가을', '겨울'],
 	'TPO': ['데일리','직장','데이트','경조사','여행','홈웨이','파티','운동','학교'],
-	'Category' : ['상의','하의','바지','치마','신발','아우터','모자',]
+	'STYLE' : ['상의','하의','바지','치마','신발','아우터','모자',]
 }
 
 const defaultSelect = {
-	Season: [],
+	// Season: [],
 	TPO: [],
-	Category : [],
+	STYLE : [],
 }
 
 
@@ -31,21 +33,21 @@ const OotdModal = ({ closeModal }) => {
 
 	const submitHandler = () => {
 		let newArr = []
-		selectedTag['Season'].forEach((el) => {
-			newArr = [...newArr, {
-				keyword: "Season",
-				type: el
-			}]
-		})
+		// selectedTag['Season'].forEach((el) => {
+		// 	newArr = [...newArr, {
+		// 		keyword: "Season",
+		// 		type: el
+		// 	}]
+		// })
 		selectedTag['TPO'].forEach((el) => {
 			newArr = [...newArr, {
 				keyword: "TPO",
 				type: el
 			}]
 		})
-		selectedTag['Category'].forEach((el) => {
+		selectedTag['STYLE'].forEach((el) => {
 			newArr = [...newArr, {
-				keyword: "Category",
+				keyword: "STYLE",
 				type: el
 			}]
 		})
@@ -73,12 +75,12 @@ const OotdModal = ({ closeModal }) => {
 
 	return (
 		<CategoryModalContainer>
-			<CategoryBox>
+			{/* <CategoryBox>
 					<Title>계절</Title>
 					{tags.Season.map((el, idx) => {
 						return <Tag key={idx} onClick={() => selectHandler('Season', el)} select={ selectedTag['Season'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
-			</CategoryBox>
+			</CategoryBox> */}
 			<CategoryBox>
 					<Title>TPO</Title>
 					{tags.TPO.map((el, idx) => {
@@ -86,14 +88,14 @@ const OotdModal = ({ closeModal }) => {
 					}) }
 			</CategoryBox>
 			<CategoryBox>
-						<Title>카테고리</Title>
-					{tags.Category.map((el, idx) => {
-						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+						<Title>STYLE</Title>
+					{tags.STYLE.map((el, idx) => {
+						return <Tag key={idx} onClick={()=> selectHandler('STYLE', el) } select={ selectedTag['STYLE'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
 			
 			<SaveBox>
-				<button onClick={submitHandler}>저장</button>
+				<Button onClick={submitHandler}>저장</Button>
 			</SaveBox>
 		</CategoryModalContainer>
 	)

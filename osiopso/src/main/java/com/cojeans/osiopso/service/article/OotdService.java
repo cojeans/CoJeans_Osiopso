@@ -23,9 +23,12 @@ import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.CocommentRepository;
 import com.cojeans.osiopso.repository.comment.CommentLikeRepository;
 import com.cojeans.osiopso.repository.comment.CommentRepository;
+import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.UserDetail;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = false)
@@ -54,6 +58,7 @@ public class OotdService {
     private final CommentLikeRepository commentLikeRepository;
     private final OotdRepositoryImpl ootdRepositoryImpl;
     private final ArticleScrollQdslRepositoryImpl articleScrollQdslRepositoryImpl;
+    private final FollowRepository followRepository;
 
 
     public boolean createOotd(OotdRequestDto ootdRequestDto, Long id) {
@@ -509,22 +514,34 @@ public class OotdService {
     }
 
 
-    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx) {
-        // 1. StyleTag, TpoTag, Gender, Age
-        // 2. 적용된 필터들을 통해 ootd 를 찾아오자!
-        //        select distinct at.article_id
-        //        from article_tag at
-        //        left join tag t
-        //        on t.id = at.tag_id
-        //        where t.keyword="데일리" or t.keyword="캐주얼" or t.keyword="특별한날"
-        //        ;
+
+//            select distinct at.article_id
+//            from article_tag at
+//            left join tag t
+//            on t.id = at.tag_id
+//            where t.keyword="데일리" or t.keyword="캐주얼" or t.keyword="특별한날";
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx, Long userId) {
+
 
         List<String> styleTag = filter.getStyleTag();
         List<String> tpoTag = filter.getTpo();
+        List<String> totalTags = new ArrayList<>();
+        List<OotdListResponseDto> responseOotdList = new ArrayList<>();
+        List<Long> followings = followRepository.findAllByFollowerId(userId).stream()
+                .map(a -> a.getFollowing().getId())
+                .collect(Collectors.toList());
+
         Long age = filter.getAge();
         Gender gender = filter.getGender();
-        List<OotdListResponseDto> responseOotdList = new ArrayList<>();
         Date date = new Date();
+
+        for (String s : styleTag) {
+            totalTags.add(s);
+        }
+
+        for (String s : tpoTag) {
+            totalTags.add(s);
+        }
 
         System.out.println(styleTag + ", " + tpoTag + ", " + age + ", " + gender);
 
@@ -538,18 +555,47 @@ public class OotdService {
         // 7. genderTag
         // 8. ageTag + genderTag
 
-
         // 1. 아무 필터도 적용되지 않은 경우
-        if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
+        if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null && filter.getCategory() == null) {
             return null;
+        }
+
+        // 팔로우 필터만 적용된 경우
+        if(filter.getCategory().equals("follow")){
+            if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
+                System.out.println("only category : follow");
+                System.out.println(followOotd(userId));
+                return followOotd(userId);
+            }
         }
 
         // 2. styleTag, tpoTag 둘 중 하나라도 null 이 아니어야 한다.
         if ((styleTag.size() >= 1) || (tpoTag.size() >= 1)) {
-            System.out.println(styleTag);
-            List<Long> articleList = articleTagRepositoryImpl.findArticleByTags(styleTag, tpoTag, pageable, idx);
+            HashMap<Long, Long> map = new HashMap<>();
 
+            List<Long> articleList = articleTagRepositoryImpl.findArticleByTags(styleTag, tpoTag, pageable, idx);
+            List<Long> articleList2 = new ArrayList<>();
+
+            // 필터링 하려는 태그들과 게시물의 각 태그들이 일치할 때마다 id값을 저장하여 map에 저장.
             for (Long id : articleList) {
+                if (map.get(id) == null) {
+                    map.put(id, 1L);
+                } else {
+                    map.put(id, map.get(id) + 1);
+                }
+            }
+
+            // keySet 을 가져와 해당 게시물의 태그들을 모두 가져온다.
+            for (Long key : map.keySet()) {
+                Long tagCnt = map.get(key);
+
+                if (tagCnt >= totalTags.size()) { // 반드시 개수가 같거나 큰 경우는 필터링 성공
+                    articleList2.add(key);
+                }
+            }
+
+
+            for (Long id : articleList2) {
                 System.out.println(id);
                 // 태그 필터를 통해 찾은 게시물
                 Ootd ootd = ootdRepository.findById(id).orElseThrow();
@@ -573,8 +619,12 @@ public class OotdService {
 
                 // 5. 연령대, 성별 필터를 모두 통과한 경우
 
+                // 팔로우 필터
+                if(!followings.contains(ootd.getUser().getId())) continue;
+
                 GapTimeVo gapTime = articleService.getGapTime(ootd, date);
                 List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
+
 
                 // 모든 필터 조건을 만족했을 때
                 responseOotdList.add(OotdListResponseDto.builder()
@@ -589,6 +639,8 @@ public class OotdService {
                         .build());
             }
 
+            return responseOotdList;
+
         } else { // 둘 다 null 인 경우 (태그 필터링이 아닌 경우)
             List<Ootd> ootdList = new ArrayList<>();
 
@@ -596,6 +648,7 @@ public class OotdService {
             System.out.println(age);
 
             // 8. 연령대, 성별 모두 필터링이 된 경우
+
             if (age != null && gender != null) {
                 ootdList = articleTagRepositoryImpl.findArticleByAgeAndGender(age, gender, pageable, idx);
             } else if (age != null && gender == null) { // 6. 연령대 필터만 적용된 경우
@@ -604,25 +657,46 @@ public class OotdService {
                 ootdList = articleTagRepositoryImpl.findArticleByGender(gender, pageable, idx);
             }
 
-
+            List<Ootd> result = new ArrayList<>();
             for (Ootd ootd : ootdList) {
-                GapTimeVo gapTime = articleService.getGapTime(ootd, date);
-                List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
+                // 팔로우 필터
+                if(!followings.contains(ootd.getUser().getId())) continue;
+                else result.add(ootd);
+            }
+            toOotdList(responseOotdList, date, result);
+        }
 
-                responseOotdList.add(OotdListResponseDto.builder()
-                        .id(ootd.getId())
-                        .hit(ootd.getHit())
-                        .content(ootd.getContent())
-                        .imageUrl(responsePhoto.get(0).getImageUrl())
-                        .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
-                        .time(gapTime.getTimeGapToString())
-                        .pastTime(gapTime.getPastTime())
-                        .userId(ootd.getUser().getId())
-                        .build());
+        if (filter.getCategory() != null && filter.getCategory().equals("인기순")) {
+            // 카테고리 필터만 적용 된 경우
+            if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
+                List<Ootd> ootdList = articleTagRepositoryImpl.findArticleByPop(pageable, idx);
+                toOotdList(responseOotdList, date, ootdList);
+            } else {
+                Collections.sort(responseOotdList, new CompareOotd(articleLikeRepository));
             }
         }
+
         return responseOotdList;
     }
+
+    private void toOotdList(List<OotdListResponseDto> responseOotdList, Date date, List<Ootd> ootdList) {
+        for (Ootd ootd : ootdList) {
+            GapTimeVo gapTime = articleService.getGapTime(ootd, date);
+            List<ArticlePhoto> responsePhoto = articlePhotoRepository.findAllByArticle_Id(ootd.getId());
+
+            responseOotdList.add(OotdListResponseDto.builder()
+                    .id(ootd.getId())
+                    .hit(ootd.getHit())
+                    .content(ootd.getContent())
+                    .imageUrl(responsePhoto.get(0).getImageUrl())
+                    .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
+                    .time(gapTime.getTimeGapToString())
+                    .pastTime(gapTime.getPastTime())
+                    .userId(ootd.getUser().getId())
+                    .build());
+        }
+    }
+
 
 
     // 전제 : article_tag에 createTime 컬럼 추가
@@ -644,8 +718,11 @@ public class OotdService {
                     .build());
         }
 
-        List<HotOotdResponseDto> hotList = hotIssueList(result.get(0).getId());
-        result.get(0).setHotList(hotList);
+        if(result.size() != 0){
+            List<HotOotdResponseDto> hotList = hotIssueList(result.get(0).getId());
+            result.get(0).setHotList(hotList);
+        }
+        
         return result;
     }
 
@@ -665,12 +742,12 @@ public class OotdService {
 
         return result;
     }
-    public List<OotdListResponseDto> followOotd(UserDetail userDetail) {
+    public List<OotdListResponseDto> followOotd(Long id) {
 //        select * from article
 //        where user_id
 //        in (select following_id from follow where follower_id = 2)
 //        order by id desc;
-        List<Article> articles = ootdRepositoryImpl.findByUserId(userDetail.getId());
+        List<Article> articles = ootdRepositoryImpl.findByUserId(id);
         List<OotdListResponseDto> result = new ArrayList<>();
 
         Date date = new Date();
@@ -690,5 +767,25 @@ public class OotdService {
         }
 
         return result;
+    }
+}
+
+
+@AllArgsConstructor
+class CompareOotd implements Comparator<OotdListResponseDto> {
+    private final ArticleLikeRepository articleLikeRepository;
+
+    @Override
+    public int compare(OotdListResponseDto o1, OotdListResponseDto o2) {
+//        articleLikeRepository.findAllByArticle_Id(o1.getId()).size(); // 좋아요 수
+//        o1.getHit(); // 조회수
+//        o1.getCommentCnt(); // 댓글수
+
+        long score1 = (o1.getCommentCnt() * 3) + (articleLikeRepository.findAllByArticle_Id(o1.getId()).size() * 2) + (o1.getHit());
+        long score2 = (o2.getCommentCnt() * 3) + (articleLikeRepository.findAllByArticle_Id(o2.getId()).size() * 2) + (o2.getHit());
+
+        if (score1 >= score2)
+            return -1;
+        return 1;
     }
 }

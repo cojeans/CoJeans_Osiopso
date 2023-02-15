@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor @NoArgsConstructor
 @ToString @Getter @Setter @Builder
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "user")
 @DynamicInsert @DynamicUpdate
 public class User {
 
@@ -28,7 +28,7 @@ public class User {
     private String name;
     
     @Column(nullable = true)
-    private int age;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -64,6 +64,7 @@ public class User {
                 .email(this.getEmail())
 //                .password(this.getPassword())
                 .age(this.getAge())
+                .imageUrl(this.getImageUrl())
                 .gender(this.getGender())
                 .provider(this.getProvider())
                 .providerId(this.getProviderId())

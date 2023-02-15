@@ -49,13 +49,25 @@ export const Loading = styled.div`
 `
 export const SocialSignup = styled.div`
 display:grid;
-grid-template-columns: 2fr 2fr 2fr;
+grid-template-columns: 1fr 1fr 1fr;
+width: 90%;
 justify-content: center;
 justify-items: center;
-margin-top: 30px;
-img{
+margin:  20px auto 0 auto;
+/* img{
     width: 80px;
     height: 80px;
+} */
+.imgBox{
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 70%;
+  border:3px solid black;
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 
 

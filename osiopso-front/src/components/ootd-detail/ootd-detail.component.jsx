@@ -13,9 +13,7 @@ import {
   ContentBox,
 } from "./ootd-detail.styles";
 
-// import { ReactComponent as Like } from "../../assets/like.svg";
-// import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
-// import {ReactComponent as Alert} from "../../assets/alert.svg"
+
 import Swal from "sweetalert2";
   
 import axios from "axios";
@@ -107,12 +105,12 @@ const OotdDetail = () => {
     })
       .then((res) => {
         const result = res.data.responseData
-        console.log(result)
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
+        
         const likeList = result.articleLikes
-        console.log(likeList, userInfo.id)
+
         if (likeList.length) {
           likeList.forEach((like) => {
             if (like.userId === userInfo.id) {
@@ -312,7 +310,6 @@ const OotdDetail = () => {
         getDetailOotd={getDetailOotd}
         isCocomment={isCocomment}
         setOpenCoco={setOpenCoco}
-
         />
       </div>
 

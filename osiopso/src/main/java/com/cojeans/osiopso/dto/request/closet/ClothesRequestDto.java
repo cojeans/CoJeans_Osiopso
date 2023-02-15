@@ -17,7 +17,7 @@ import java.util.List;
 public class ClothesRequestDto {
     private String category;
     private String imageUrl;
-    private List<String> closets;
+    private List<Long> closets;
     private List<String> colors;
     private List<String> seasons;
 }

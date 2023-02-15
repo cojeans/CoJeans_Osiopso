@@ -54,9 +54,9 @@ public class ClothesService {
         Long clothesId = clothes.getId();
 
         // 옷장
-        List<String> closets = clothesRequestDto.getClosets();
-        for(String name :closets){
-            Closet closet = closetRepository.findByName(name);
+        List<Long> closets = clothesRequestDto.getClosets();
+        for(Long id :closets){
+            Closet closet = closetRepository.findById(id).orElseThrow();
 
             closetClothesRepository.save(new ClosetClothes().builder()
                     .closet(closet)
@@ -154,24 +154,24 @@ public class ClothesService {
         // 수정 리스트만큼 돌면서 기존.contains(수정) = false면 추가
         // 기존.length만큼 돌면서 수정.contains(기존) = false면 삭제
         // 옷장
-        List<String> oldClosets = closetClothesRepository.findAllByClothesId(id).stream()
+        List<Long> oldClosets = closetClothesRepository.findAllByClothesId(id).stream()
                 .map(a -> closetRepository.findById(a.getCloset().getId()).orElseThrow())
-                .map(b -> b.getName())
+                .map(b -> b.getId())
                 .collect(Collectors.toList());
-        List<String> newClosets = clothesRequestDto.getClosets();
+        List<Long> newClosets = clothesRequestDto.getClosets();
 
-        for(String name : newClosets){
-            if(!oldClosets.contains(name)) {
+        for(Long cid : newClosets){
+            if(!oldClosets.contains(cid)) {
                 closetClothesRepository.save(ClosetClothes.builder()
                         .clothes(clothes)
-                        .closet(closetRepository.findByName(name))
+                        .closet(closetRepository.findById(cid).orElseThrow())
                         .build());
             }
         }
 
         int length = oldClosets.size();
         for(int i = 0; i < length; i++){
-            if(!newClosets.contains(oldClosets.get(i))) deleteClosetClothes(id, closetRepository.findByName(oldClosets.get(i)).getId());
+            if(!newClosets.contains(oldClosets.get(i))) deleteClosetClothes(id, closetRepository.findById(oldClosets.get(i)).orElseThrow().getId());
         }
 
         // 색깔
@@ -209,7 +209,7 @@ public class ClothesService {
 
         length = oldSeasons.size();
         for(int i = 0; i < length; i++){
-            if(!newSeasons.contains(oldSeasons.get(i))) deleteClothesSeason(id, colorRepository.findByName(oldSeasons.get(i)).getId());
+            if(!newSeasons.contains(oldSeasons.get(i))) deleteClothesSeason(id, seasonRepository.findByName(oldSeasons.get(i)).getId());
         }
 
     }

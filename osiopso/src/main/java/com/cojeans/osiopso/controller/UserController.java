@@ -3,9 +3,7 @@ package com.cojeans.osiopso.controller;
 import com.cojeans.osiopso.dto.ApiRequestDto;
 import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.user.*;
-import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.exception.BadRequestException;
-import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
 import com.cojeans.osiopso.security.UserDetail;
@@ -25,6 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 
 
 @RestController
@@ -67,9 +66,6 @@ public class UserController{
     @GetMapping("/{userId}")
     @Operation(summary = "다른회원조회")
     public ResponseEntity<UserDto> getUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetail userDetail) {
-//        UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
-//
-//        return new ResponseEntity<>(userDto, HttpStatus.OK);
         return new ResponseEntity<>(userService.getUser(userId, userDetail), HttpStatus.OK);
     }
 
@@ -80,7 +76,7 @@ public class UserController{
     @Operation(summary = "회원수정", description = "변경후 변경 완료된 userDto를 반환해서 그대로 redux에 저장된 유저객체에 덮어씌우면 될듯합니다.")
     @PutMapping("")
     public ResponseEntity<UserDto> EditUser(@RequestBody UserModifyDto userModifyDto) {
-        log.info("userModifyDto: {}",userModifyDto);
+        log.info("[Controller] userModifyDto: {}",userModifyDto);
         UserDto userDto = userService.editUser(userModifyDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
@@ -112,7 +108,6 @@ public class UserController{
     @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getEmail(),
@@ -137,7 +132,6 @@ public class UserController{
     @PostMapping("/signUp")
     public ResponseEntity<ApiResponseDto> registerUser(@RequestBody SignUpRequestDto signUpRequest) {
         log.info("signUpRequest: {}",signUpRequest);
-
         userService.saveUser(signUpRequest);
         emailAuthService.sendVerificationEmail(signUpRequest.getEmail());
 
@@ -163,7 +157,7 @@ public class UserController{
     }
 
     @Operation(summary = "이메일 중복체크")
-    @PostMapping("/isEmailExist") //GET? POST? 민우랑 상의
+    @PostMapping("/isEmailExist")
     public ResponseEntity<ApiResponseDto> isEmailExist(@RequestBody ApiRequestDto apiRequestDto) {
         String email = apiRequestDto.getMessage(); //null, trim 체크 앞단에서 하고 들어와야
         if(userService.isEmailExist(email)){
@@ -204,21 +198,6 @@ public class UserController{
                         ,HttpStatus.ACCEPTED);
 
     }
-
-//    @Operation(summary = "언팔로우하기", description = "언팔로우하기 버튼을 누르면 팔로잉-팔로워 관계 삭제")
-//    @DeleteMapping("/unfollow")
-//    public ResponseEntity<ApiResponseDto> unfollowUser(@RequestParam String email, @AuthenticationPrincipal UserDetail userDetail){
-//        // 지금은 이메일로 받습니다... 추후에 id를 받는 것으로 수정할 수 있습니다.
-//        userService.unfollowUser(email, userDetail);
-//
-//        return new ResponseEntity<>(
-//                ApiResponseDto.builder()
-//                        .success(true)
-//                        .message("언팔로우 완료")
-//                        .build()
-//                ,HttpStatus.ACCEPTED);
-//
-//    }
 
     @Operation(summary = "팔로워 리스트", description = "특정 유저를 팔로우하고 있는 계정 리스트")
     @PostMapping("/followers")
@@ -282,11 +261,17 @@ public class UserController{
     }
 
     @Operation(summary = "임시비밀번호 이메일로 보내기", description = "임시비밀번호를 해당 이메일로 보내주고 비밀번호도 임시비밀번호로 바꿔줍니다. 프론트에서 호출전에 이메일 존재체크를 해주고 보내주세요")
-    @GetMapping("/generateTemporaryPassword/{email}")
-    public ResponseEntity<?> generateTemporaryPassword(@PathVariable String email){
+    @GetMapping("/generateTemporaryPassword")
+    public ResponseEntity<?> generateTemporaryPassword(@RequestParam String email){
+        log.info("generateTemporaryPassword email :", email);
+        emailAuthService.sendPasswordEmail(email);
 
-
-        return null;
+        return new ResponseEntity<>(ApiResponseDto
+                .builder()
+                .success(true)
+                .message("임시비밀번호 전송완료")
+                .build()
+                , HttpStatus.ACCEPTED);
     }
 }
 

@@ -43,7 +43,8 @@ const ProfileCloset = ({ id }) => {
 					Authorization: `Bearer ${Token.token}`,
 					},
 				})
-					.then((res) => {
+			.then((res) => {
+						console.log(res.data)
 						setClosetList(res.data.reverse())
 				})
 				.catch((err) => {

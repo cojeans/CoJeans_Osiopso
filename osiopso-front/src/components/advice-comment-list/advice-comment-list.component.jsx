@@ -1,26 +1,91 @@
+import { useState } from "react";
+
+import { useLocation } from "react-router";
+import { useSelector } from "react-redux";
+import { selectUser, selectUserInfo } from "../../store/user/user.selector";
+
+// slick
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import Slider from "react-slick";
+//
 import Swal from "sweetalert2";
+
 import {
-  ProfileImageBox,
-  UpperProfile,
-  ProfileName,
-  AdviceBox,
-  LikeDislikeBox,
-  LikeContainer,
-  AlertContainer,
-  Box,
-  ProfileAndName,
-  AdviceContent,
-  BottomBox,
-  AdviceClothes,
-  WearLikeThisBox,
-  TotalContentBox,
+  CommentListContainer,
+  AdviceImgBox,
+  ContentBox,
+  UserBox,
+  UserInfo,
+  IconContainer
 } from "./advice-commnet-list.styles";
-import { ReactComponent as Advice_like } from "../../assets/advice_like.svg";
-import { ReactComponent as Advice_dislike } from "../../assets/advice_dislike.svg";
-import { ReactComponent as Pink_alert } from "../../assets/pink_alert.svg";
+
+import { RiThumbDownLine, RiThumbUpLine } from "react-icons/ri";
+import { VscTrash, VscWarning } from "react-icons/vsc";
+import axios from "axios";
+import { useEffect } from "react";
+import { Fragment } from "react";
 
 const AdviceCommentList = () => {
-  const Report = ()=>{
+  	//slick
+	const settings = {
+      dots: false,
+      infinite: false,
+      slidesToShow: 3,
+			slidesToScroll: 1,
+		variableWidth: true,
+	};
+	//slick
+
+  const location = useLocation()
+  const Token = useSelector(selectUser)
+  const userInfo = useSelector(selectUserInfo)
+  const id = location.state.id
+  const [userImg, setUserImg] = useState(require('../../assets/defaultuser.png'))
+  const [commentArr, setCommentArr] = useState([])
+  const deleteComment = (coId) => {
+    console.log(id, coId)
+      axios({
+      method: 'delete',
+       url: `${process.env.REACT_APP_AXIOS_URL}comment/${id}/${coId}`,
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+        },
+    })
+    .then((res)=>{
+      console.log(res)
+      getComment()
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  
+  }
+  const getComment = () => {
+  axios({
+      method: 'get',
+       url: `${process.env.REACT_APP_AXIOS_URL}feed/advice/${id}`,
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+        },
+    })
+    .then((res)=>{
+      console.log(res)
+      const result = res.data.responseData
+      setCommentArr(result.comments)
+      
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  useEffect(()=>{
+    getComment()
+  },[])
+
+  const Report = () => {
     Swal.fire({
       title:'신고',
       text: "해당 훈수를 신고하시겠습니까?",
@@ -37,104 +102,66 @@ const AdviceCommentList = () => {
       }
     })
   }
+  
   return (
     <div>
-      <h1>훈수목록</h1>
-      <hr />
-      <TotalContentBox>
-        <UpperProfile>
-          <WearLikeThisBox>
-            <img
-              src={require("../../assets/advice_wear_like_this.png")}
-              alt=""
-            />
-          </WearLikeThisBox>
-          <ProfileAndName>
-            <ProfileImageBox />
-            <ProfileName>MyNameIsMr.Umm</ProfileName>
-          </ProfileAndName>
-          <AdviceBox>
-            <Box>
-              <LikeContainer>
-                <LikeDislikeBox>
-                  <Advice_like />
-                </LikeDislikeBox>
-                <LikeDislikeBox>
-                  <Advice_dislike />
-                </LikeDislikeBox>
-              </LikeContainer>
-              <AlertContainer>
-                <Pink_alert onClick={Report}/>
-              </AlertContainer>
-            </Box>
-            <AdviceContent>여기에 글이 옵니다.</AdviceContent>
-          </AdviceBox>
-        </UpperProfile>
-        <BottomBox>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_shirt.png")} alt="" />
-          </AdviceClothes>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_shirt2.png")} alt="" />
-          </AdviceClothes>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_pant.png")} alt="" />
-          </AdviceClothes>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_shoes.png")} alt="" />
-          </AdviceClothes>
-        </BottomBox>
-      </TotalContentBox>
-      <hr />
+      {
+      commentArr.length ?
+        commentArr.map((comment) => {
+          return (
+            <Fragment>
+          <CommentListContainer>
+              <AdviceImgBox>
 
-      <TotalContentBox>
-        <UpperProfile>
-          <WearLikeThisBox>
-            <img
-              src={require("../../assets/advice_wear_like_this.png")}
-              alt=""
-            />
-          </WearLikeThisBox>
-          <ProfileAndName>
-            <ProfileImageBox />
-            <ProfileName>MyNameIsMr.Umm</ProfileName>
-          </ProfileAndName>
-          <AdviceBox>
-            <Box>
-              <LikeContainer>
-                <LikeDislikeBox>
-                  <Advice_like />
-                </LikeDislikeBox>
-                <LikeDislikeBox>
-                  <Advice_dislike />
-                </LikeDislikeBox>
-              </LikeContainer>
-              <AlertContainer>
-                <Pink_alert onClick={Report}/>
-              </AlertContainer>
-            </Box>
-            <AdviceContent>여기에 글이 옵니다.</AdviceContent>
-          </AdviceBox>
-        </UpperProfile>
-        <BottomBox>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_shirt.png")} alt="" />
-          </AdviceClothes>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_shirt2.png")} alt="" />
-          </AdviceClothes>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_pant.png")} alt="" />
-          </AdviceClothes>
-          <AdviceClothes>
-            <img src={require("../../assets/advice_shoes.png")} alt="" />
-          </AdviceClothes>
-        </BottomBox>
-      </TotalContentBox>
-      <hr />
+                <img src={ comment.imageUrl } alt="" />
+              </AdviceImgBox>
+              <ContentBox>
+                <UserInfo>
+                  <UserBox>
+                    <img src={ userImg} alt="" />
+                  </UserBox>
+                  <div>username</div>
+                </UserInfo>
+                <IconContainer>
+                  <div className="outer">
+                    <div className="flex">
+                      <RiThumbUpLine size='24' />
+                      <div>{ comment.up}</div>
+                    </div>
+                    <div className="flex">
+                      <RiThumbDownLine size='24'/>
+                      <div>{ comment.down}</div>
+                    </div>
+                  </div>
+                  <VscWarning size="24" onClick={Report} />
+                    {
+                      comment.userId === userInfo.id
+                      ?<VscTrash size="23" onClick={()=>deleteComment(comment.commentId)}/>
+                      : ''
+                    }
+                </IconContainer>
+                <div className="content">
+                  { comment.content}
+                </div>
+                <div className="time">
+                  { comment.time}
+                </div>
+              </ContentBox>
+         
+            </CommentListContainer>
+            <Slider {...settings}>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+            </Slider>
+            </Fragment>
+        )
+        })
+          :<div style={{textAlign:'center'}}>Advice가 없습니다.</div>
+          
+      }
 
-    
-
+   
     </div>
   );
 };

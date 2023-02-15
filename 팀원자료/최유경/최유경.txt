@@ -1,0 +1,52 @@
+2023-01-18(수)
+- tech 아키텍처 생성
+- 컨설팅 회의
+- 피그마 수정
+
+2023-01-19(목)
+- 피그마 유저플로우(마이페이지, 훈수페이지) 생성
+
+2023-01-20(금)
+- 리액트 사진 캡쳐 기능 연습
+
+2023-01-25(수)
+- 금 발표 PPT 제작
+- 프론트엔드 기능 테스트(Drawing)
+
+2023-01-26(목)
+- 금 발표 PPT 제작
+- 프론트엔드 기능 테스트(Moveable)
+
+
+2023-01-30(월)
+- 전체적인 레이아웃 구성
+	- 상단바, 하단바 구현
+- 마이페이지 구현 시작
+- 회원가입 구현
+
+2023-02-03(금)
+- 백과 axios 성공
+- 옷장 등록 성공
+- 옷 등록 페이지 구현
+
+2023-02-06(월)
+- redux toolkit 사용 공부해야함... axios랑 동시에 하는거.. 
+- 오늘 기필코 옷장 등록 완료하기(토글, 옷 이름)
+
+2023-02-07(수)
+- ootd create/read 완료
+- css는 다같이 나중에 고치기
+- react icon 처음부터 쓸걸.. 
+- 민우 누끼 성공 기쁨
+- url 절대경로로 보내면 파일이 안열린다. 
+//formdata형식의 value는 무조건 스트링으로 변환된다.
+// blob객체와 텍스트 형식 데이터만 append할 수 있는 것 같다. (File도 blob객체에 속합)
+// 그렇기에 formdata 타입으로 json타입 데이터를 보낼 때에는 blob함수로 감싸고, 두번째 인자로type: 'application/json'을 같이 넣어줘야 한다.
+    const json = JSON.stringify(ootd)
+    const blob = new Blob([json], { type: "application/json" })
+    
+    formData.append("picture", picture)
+    formData.append("ootd", blob)
+
+- firebase에 저장하기 
+

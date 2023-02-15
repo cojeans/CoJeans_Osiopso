@@ -8,7 +8,7 @@ export const BaseButton = styled.button`
   line-height: 50px;
   padding: 0 35px 0 35px;
   font-size: 20px;
-  background-color: #BCF0E0;
+  background-color: #7272ba;
   color: #32144f;
   text-transform: uppercase;
   font-weight: bolder;
@@ -33,7 +33,7 @@ export const StyleButton = styled.button`
   font-size: var(--button-font-size, 1rem);
   padding: var(--button-padding, 12px 16px);
   border-radius: var(--button-radius, 8px);
-  background: var(--button-bg-color,  #BCF0E0);
+  background: var(--button-bg-color,  #7272ba);
   color: var(--button-color, #ffffff);
 
   &:active,

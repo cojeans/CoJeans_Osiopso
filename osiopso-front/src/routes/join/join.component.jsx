@@ -24,7 +24,8 @@ import githubLogo from '../../assets/github-logo.png';
 import './join.stlyes'
 // import './join.css';
 
-// import Alert from 'react-s-alert';
+import { Audio } from  'react-loader-spinner'
+
 
 const defaultformFields = {
   displayName: "",
@@ -38,7 +39,13 @@ const Join = () => {
 
   const [formFields, setFormFields] = useState(defaultformFields);
   const { displayName, email, password, confirmPassword } = formFields;
+  const [isCheckEmailFirst, setIsCheckEmailFirst] = useState(false);
 
+  // const goToSignUp = (e)=> {
+  //   e.preventDefault()
+  //   if (isCheckEmailFirst) {
+  //     fetch()
+  //   }
   // const handleSubmit = async (event) => {
   // 	event.preventDefault();
 
@@ -46,54 +53,55 @@ const Join = () => {
   //   alert('passwords do not match');
   //   return;
   // }
-  const onLoading = ()=> {
-    
 
-  }
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
     setFormFields({ ...formFields, [name]: value });
   };
+
   // const dispatch = useDispatch();
   const JoinFunc = (e) => {
     // onLoading()
     e.preventDefault();
+    // axios({
+    //   method: "post",
+    //   url: `${process.env.REACT_APP_AXIOS_URL}user/signUp`,
+    //   data: {
+    //     email: email,
+    //     name: displayName,
+    //     password: password,
+    //   },
+    // })
+
+  Swal.fire({
+
+  html: '회원가입 진행 중 입니다.',
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading()
     axios({
-      method: "post",
-      url: `${process.env.REACT_APP_AXIOS_URL}user/signUp`,
-      data: {
-        email: email,
-        name: displayName,
-        password: password,
-      },
-    })
-
-    let timerInterval
-    Swal.fire({
-      title: '회원가입을 진행중입니다!',
-      html: ' 천 분의 <b></b>초 후에 닫힙니다.',
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading()
-        const b = Swal.getHtmlContainer().querySelector('b')
-        timerInterval = setInterval(() => {
-          b.textContent = Swal.getTimerLeft()
-        }, 100)
-      },
-      willClose: () => {
-        clearInterval(timerInterval)
-      }
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        console.log('I was closed by the timer')
-      }
-    })    
-
-      // onLoading()
+    method: "post",
+    url: `${process.env.REACT_APP_AXIOS_URL}user/signUp`,
+    data: {
+      email: email,
+      name: displayName,
+      password: password,
+    },
+    }).then((res) => {
+      console.log(res)
+      Swal("Success", "Request sent successfully.", "success")
+    }).catch((err) => {
+      console.log(err)
+  })
+  },
+    willClose: () => {
+    navigate('/login')
+  }
+})    // onLoading()
       .then((res) => {
         console.log(res);
         // localStorage.clear()
@@ -107,7 +115,8 @@ const Join = () => {
           icon: 'success',
           confirmButtonColor:"#000000",
           html: `
-          회원가입이 완료되었습니다.`,     
+          회원가입이 완료되었습니다.
+          이메일 인증을 진행해주세요.`,     
           showCancelButton: false,
           confirmButtonText: "확인",
           
@@ -131,14 +140,6 @@ const Join = () => {
       </Osiopso>
       {/* <img src={require("../../assets/The_Great_Gatsby.gif")} alt="" /> */}
       <form>
-        <FormInput
-          label="아이디"
-          type="text"
-          required
-          onChange={handleChange}
-          name="displayName"
-          value={displayName}
-        />
 
         <FormInput
           label="이메일"
@@ -147,6 +148,14 @@ const Join = () => {
           onChange={handleChange}
           name="email"
           value={email}
+        />
+          <FormInput
+          label="닉네임"
+          type="text"
+          required
+          onChange={handleChange}
+          name="displayName"
+          value={displayName}
         />
         <FormInput
           label="비밀번호"
@@ -165,6 +174,7 @@ const Join = () => {
           name="confirmPassword"
           value={confirmPassword}
         />
+
         <ButtonContainer>
           <Button
           type='submit'
@@ -173,14 +183,6 @@ const Join = () => {
           onClick={JoinFunc}>가입하기</Button>
         </ButtonContainer>
       </form>
-				
-				<TextContainer>간편 회원가입</TextContainer>
-					<SocialSignup>
-						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
-						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
-						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
-					</SocialSignup>
-				
 		</SignUpContainer>
 	)
 }

@@ -63,6 +63,7 @@ public class UserService {
     /*
     회원 기본값들이 들어가고, 비밀번호를 인코딩해서 저장한다.
      */
+    @Transactional
     public UserDto saveUser(SignUpRequestDto signUpRequest){
         UserDto userDto = userRepository.save(User.builder()
                         .name(signUpRequest.getName())
@@ -92,7 +93,7 @@ public class UserService {
 
     public boolean isEmailExist(String email) {
         //중복된 Email로 등록을하면
-        if(userRepository.existsByEmail(email)) {
+        if(userRepository.existsByEmailAndProvider(email,AuthProvider.local)) {
             return true;
         }
         return false;
@@ -179,11 +180,20 @@ public class UserService {
                 .findById(userModifyDto.getId())
                 .orElseThrow(()-> new BadRequestException("없는 유저입니다."))
                 .toDto();
+        log.info("[회원수정Service]userModifyDto: {}",userModifyDto);
 
-        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userDto.getName());
-        if(userDto.getGender()!=null) userDto.setGender(userDto.getGender());
-        userDto.setAge(userModifyDto.getAge());
-        if(userDto.getImageUrl()!=null) userDto.setImageUrl(userDto.getImageUrl());
+        userDto.setName(userModifyDto.getName());
+        userDto.setBio(userModifyDto.getBio());
+//        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
+        if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
+        userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
+        if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
+
+        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
+        if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
+        userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
+        if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
+
 
         return userRepository.save(User.builder()
                         .id(userDto.getId())
@@ -199,6 +209,7 @@ public class UserService {
                         .bio(userDto.getBio())
                         .isProfilePublic(userDto.getIsProfilePublic())
                         .role(userDto.getRole())
+                        .grade(userDto.getGrade())
                 .build()).toDto();
     }
 
@@ -280,7 +291,7 @@ public class UserService {
     /* 이메일 인증이 되어있는지. 되어있지 않다면 false 반환*/
     public boolean isEmailVerified(String email) {
         if(userRepository.existsByEmail(email)){
-            return userRepository.findByEmail(email).orElse(null).getEmailVerified();
+            return userRepository.findByEmailAndProvider(email,AuthProvider.local).orElse(null).getEmailVerified();
         }
         return false;
     }

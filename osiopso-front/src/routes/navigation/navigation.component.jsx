@@ -16,13 +16,11 @@ import {
 import TopBar from "../../components/top-bar/top-bar.component"
 import Modal from "../../components/modal/modal.component"
 
-import { GiMirrorMirror } from "react-icons/gi";
-import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
 import { GiLargeDress } from "react-icons/gi";
-
+import { FaMagic } from "react-icons/fa";
 
 
 import { useSelector, } from 'react-redux'
@@ -52,7 +50,7 @@ const Navigation = () => {
 	};
 
 	useEffect(() => {
-		if (location.pathname ==='/login' || location.pathname ==='/search' || location.pathname ==='join' ) {
+		if (location.pathname ==='/login' || location.pathname ==='/search' || location.pathname ==='/join' ) {
 			setCurRoute(false)
 		} else {
 			setCurRoute(true)
@@ -87,8 +85,8 @@ const Navigation = () => {
 					{
 					
 						`${location.pathname}` === '/advice'
-					?<IoHandRightSharp />
-					:<IoHandRightOutline color="#D3D3D3"/>
+					?<FaMagic />
+					:<FaMagic color="#D3D3D3"/>
 					}
 					<span>Advice</span>
 				</LogoContainer>
@@ -96,7 +94,7 @@ const Navigation = () => {
 					// to='mypage/add-clothes'
 					onClick={showModal}
 				>
-					<AiFillPlusCircle color="#BCF0E0 "/>
+					<AiFillPlusCircle color="#7272ba "/>
 				</PlusContainer>
 				{/* <LogoContainer to='/ootd'> */}
 				<HashLinkContainer

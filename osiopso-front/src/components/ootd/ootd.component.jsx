@@ -13,8 +13,8 @@ import {
 } from "./ootd.styles";
 
 import { RiFilter2Fill } from "react-icons/ri";
+import { VscComment } from "react-icons/vsc";
 
-import { ReactComponent as Comment } from "../../assets/comment.svg";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 
@@ -82,12 +82,12 @@ const Ootd = () => {
     <TopDiv>
       <OotdTopBar>
         <OotdCategory>
-          <h3>최신</h3>
-          <h3>인기</h3>
-          <h3>팔로잉</h3>
+          <div>최신</div>
+          <div>인기</div>
+          <div>팔로잉</div>
         </OotdCategory>
         <FilterContainer>
-          <RiFilter2Fill onClick={showModal}/>
+          <RiFilter2Fill onClick={showModal} color='#7272ba'/>
         </FilterContainer>
       </OotdTopBar>
 
@@ -97,13 +97,13 @@ const Ootd = () => {
             <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
               <img src={el.imageUrl} alt="" />
               <UpperupperCommentContainer>
+                <p>{ el.time }</p>
                 <UpperCommentContainer>
                   <CommentContainer>
-                    <Comment />
+                    <VscComment size="13" />
                   </CommentContainer>
                   <p>{ el.commentCnt}</p>
                 </UpperCommentContainer>
-                <p>{ el.time }</p>
               </UpperupperCommentContainer>
             </Container>
           );

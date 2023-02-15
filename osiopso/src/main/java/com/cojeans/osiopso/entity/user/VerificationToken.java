@@ -16,8 +16,6 @@ public class VerificationToken {
     private Long id;
     @Column
     private String token;
-
-
     @Column
     private String userEmail;
 }

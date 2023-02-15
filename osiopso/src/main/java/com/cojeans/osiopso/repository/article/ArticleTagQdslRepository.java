@@ -11,7 +11,11 @@ public interface ArticleTagQdslRepository {
     public List<Long> findByArticleId(LocalDate now);
 
     List<Long> findArticleByTags(List<String> styleTag, List<String> tpoTag, Pageable pageable, Long idx);
+
     List<Ootd> findArticleByAge(Long age, Pageable pageable, Long idx);
+
     List<Ootd> findArticleByGender(Gender gender, Pageable pageable, Long idx);
+
     List<Ootd> findArticleByAgeAndGender(Long age, Gender gender, Pageable pageable, Long idx);
+    List<Ootd> findArticleByPop(Pageable pageable, Long idx);
 }

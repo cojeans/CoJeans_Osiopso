@@ -4,6 +4,7 @@ import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constant
 import kakaoLogo from '../../assets/kakao-logo.png';
 import googleLogo from '../../assets/google-logo.png';
 import githubLogo from '../../assets/github-logo.png';
+
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
@@ -143,7 +144,7 @@ const Login = () => {
         <Button
           type='submit'
           size={'md'}
-          variant={ 'success'}
+          variant={'success'}
           onClick={LoginFunc}
           ><ChangeFontColor>Sign In</ChangeFontColor></Button>
 
@@ -158,10 +159,12 @@ const Login = () => {
         </MarginBox>
         </ContentBox>
         <TextContainer>간편 로그인</TextContainer>
-					<SocialSignup>
-						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
-						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
-						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
+      <SocialSignup>
+        <a href={KAKAO_AUTH_URL}> <div className='imgBox'><img src={kakaoLogo} alt="Kakao" /> </div></a>
+        <a href={GOOGLE_AUTH_URL}><div className='imgBox'>
+						<img src={googleLogo} alt="Google" />
+        </div> </a>
+						<a href={GITHUB_AUTH_URL}><div className='imgBox'><img src={githubLogo} alt="Github" />  </div></a>
 					</SocialSignup>
     </SignInContainer>
   );
