@@ -26,7 +26,7 @@ const ChangePassword = () => {
       비밀번호 변경이 완료되었습니다.`,
       showCancelButton: false,
       confirmButtonText: "확인",
-    }).then(()=> {
+  }).then(()=> {
       navigate('/')
     })
   }
