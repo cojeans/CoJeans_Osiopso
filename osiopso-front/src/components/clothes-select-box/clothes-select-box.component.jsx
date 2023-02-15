@@ -195,6 +195,7 @@ const ClothesSelectBox = () => {
               console.log(res)
                 console.log("clothes-select-box에서 post axios 요청");
                 console.log(res.data);
+                navigate('/mypage')
             })
             .catch((err) => {
                 console.log(err);
@@ -295,9 +296,8 @@ const ClothesSelectBox = () => {
         />
       )}
       {/* <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/> */}
-      <LinkContainer to="/mypage">
         <Button onClick={handleSubmit}>저장</Button>
-      </LinkContainer>
+
     </>
     );
 
