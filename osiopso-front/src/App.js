@@ -30,6 +30,7 @@ import "./App.scss";
 const theme = createTheme({
   typography: {
     fontFamily: "LINESeedKR-Bd",
+    fontSize:'12'
   },
 });
 function App() {
