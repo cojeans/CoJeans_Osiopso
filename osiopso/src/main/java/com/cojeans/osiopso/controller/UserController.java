@@ -80,7 +80,7 @@ public class UserController{
     @Operation(summary = "회원수정", description = "변경후 변경 완료된 userDto를 반환해서 그대로 redux에 저장된 유저객체에 덮어씌우면 될듯합니다.")
     @PutMapping("")
     public ResponseEntity<UserDto> EditUser(@RequestBody UserModifyDto userModifyDto) {
-        log.info("userModifyDto: {}",userModifyDto);
+        log.info("[Controller] userModifyDto: {}",userModifyDto);
         UserDto userDto = userService.editUser(userModifyDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }

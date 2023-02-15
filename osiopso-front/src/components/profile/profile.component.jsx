@@ -18,13 +18,14 @@ import { AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import { useEffect } from "react";
 
+import Swal from "sweetalert2";
 
 const defaultState = {
 	lst: [],
 	cnt: 0
 }
 
-const Profile = ({ id }) => {
+const Profile = ({ id, showModal }) => {
 
   const Token = useSelector(selectUser);
 	const userInfo = useSelector(selectUserInfo)
@@ -33,6 +34,7 @@ const Profile = ({ id }) => {
 	const [following, setFollowing] = useState(defaultState)
 	const [followed, setFollowed] = useState(defaultState)
 	const [followState, setFollowState] = useState(false)
+
 	
 	const getMyProfileData = (urlString) => {
 
@@ -158,7 +160,7 @@ const Profile = ({ id }) => {
 								Follow
 							</Button>
 						:
-						<Followcon>
+						<Followcon onClick={showModal}>
 							<AiFillEdit color="BCF0E0"/>
 							<span>edit</span>
 						</Followcon>

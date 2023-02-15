@@ -11,23 +11,40 @@ margin: 0px 20px 0px
 `
 export const TextToLeft = styled.div`
 display: flex;
-align-items: center
+align-items: center;
 text-align: left;
 font-size: 140%;
 margin: 5% 0% 2% 0%;
 `
 export const HomeOotdImage = styled.div`
-display:grid;
-grid-template-columns: 1fr 1fr 1fr;
+width: 95%;
+/* display: flex;
+
 justify-content: center;
-justify-items: center;
+justify-items: center; */
 margin: auto;
-img{
-    width: 97%;
-    height: 74%;
-    border-radius: 4%;
+
+.hotTitle{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start
+}
+.slick-list{
+    .imgBox{
+        display: flex;
+        justify-content: center;
+        img{
+            height: 110px;
+            width: 110px;
+            border-radius: 6px;
+        }
+    }
+}
+.slick-arrow{
+    display: none !important;
 }
 `
+
 export const UserUploadList = styled.div`
 display: grid;
 grid-gap: 10px;
@@ -52,7 +69,7 @@ height: 100%;
 justify-content: center;
 `
 export const SelectedTag = styled.div`
-display: inline
+display: inline;
 
 width: 100%;
 height: 100%;
@@ -70,4 +87,7 @@ display: flex;
 text-align: left;
 font-size: 80%;
 margin: 1% 2% 2% 0%;
+&:focus{
+    color:red;
+}
 `

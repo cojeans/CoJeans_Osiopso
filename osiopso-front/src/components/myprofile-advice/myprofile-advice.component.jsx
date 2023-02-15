@@ -23,6 +23,7 @@ const MyProfileAdvice = ({ userAdvice }) => {
 					{	
 						userAdvice.map((advice) => {
 							return (
+								
 								<img src={advice.imageUrl} alt="" onClick={()=>goToAdviceDetail(advice.id)} />
 							)
 						})

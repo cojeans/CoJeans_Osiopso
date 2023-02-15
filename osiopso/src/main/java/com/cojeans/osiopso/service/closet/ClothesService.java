@@ -54,9 +54,9 @@ public class ClothesService {
         Long clothesId = clothes.getId();
 
         // 옷장
-        List<String> closets = clothesRequestDto.getClosets();
-        for(String name :closets){
-            Closet closet = closetRepository.findByName(name);
+        List<Long> closets = clothesRequestDto.getClosets();
+        for(Long id :closets){
+            Closet closet = closetRepository.findById(id).orElseThrow();
 
             closetClothesRepository.save(new ClosetClothes().builder()
                     .closet(closet)
