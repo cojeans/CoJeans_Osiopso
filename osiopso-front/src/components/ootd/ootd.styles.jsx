@@ -12,13 +12,12 @@ export const OotdTopBar = styled.div`
     display: flex;
     justify-content: space-between;
     height:60px;
-    width: 100%;
+    width: 90%;
+    margin: auto;
 `
 export const OotdCategory = styled.div`
 display: grid;
 grid-template-columns: 1fr 1fr 1fr;
-margin-left: 10px;
-
 `
 export const FilterContainer = styled.div`
   display:flex;
@@ -29,7 +28,6 @@ export const FilterContainer = styled.div`
   svg{
     width: 30px;
     height: 46px;
-    margin-right: 20px;
   }
   `
 // 최상위 0

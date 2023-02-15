@@ -9,8 +9,8 @@ import {
 import { ReactComponent as Clothes } from '../../assets/clothes.svg'
 
 import { GiLargeDress } from "react-icons/gi";
-import { IoHandRightOutline } from "react-icons/io5";
-
+import { FaMagic } from "react-icons/fa";
+import { MdCheckroom } from "react-icons/md";
 
 const PlusModal = ({ closeModal }) => {
 	const navigate = useNavigate()
@@ -38,7 +38,7 @@ const PlusModal = ({ closeModal }) => {
 			{/* <button onClick={closeModal}>닫기</button> */}
 			<PlusContent onClick={onNavigateHandler1}>
 				<PlusLogoContainer>
-					<Clothes/>
+					<MdCheckroom color="#afb2f0 "/>
 				</PlusLogoContainer>
 				<span>
 					옷 등록
@@ -56,7 +56,7 @@ const PlusModal = ({ closeModal }) => {
 
 			<PlusContent onClick={onNavigateHandler2}>
 				<PlusLogoContainer>
-					<IoHandRightOutline/>
+					<FaMagic color="#afb2f0" />
 				</PlusLogoContainer>
 				<span>
 					Advice 요청

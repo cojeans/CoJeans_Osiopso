@@ -21,10 +21,7 @@ import {
 	OotdTagDiv,
 	TagBox
 } from './home.styles'
-import { ReactComponent as Fire } from "../../assets/fire.svg"
-import { ReactComponent as User2 } from "../../assets/userFashion.svg"
-// import DoSwiper from '../../components/swiper/swiper.component'
-import { ootd } from '../../store/ootd/ootd.reducer'
+
 
 import { MdLocalFireDepartment } from "react-icons/md";
 import Ootd from '../../components/ootd/ootd.component'
@@ -45,6 +42,8 @@ const Home = () => {
 	};
 	//slick
 	const [tagData, setTagData] = useState([])
+
+	const [hotTagData, setHotTagData] = useState([])
 
 	const [hotOotd, setHotOotd] = useState([])
 
@@ -90,13 +89,14 @@ const Home = () => {
 			.then((res) => {
 				console.log(res,'❤')
 				setTagData(res.data.responseData)
-
+				setHotTagData(res.data.responseData[0].hotList)
 
 			})
 			.catch((er) => {
 				console.log(er)
 			})
 	}
+
 
 	useEffect(() => {
 		if (!Token.token) {
@@ -161,6 +161,21 @@ const Home = () => {
 			</TextToLeft>
 
 			<HomeOotdImage>
+
+				<Slider	 {...settings}>
+				{
+					hotTagData.map((hot)=>{
+						return (
+							<div className='imgBox'>
+								<img src={hot.imageUrl} alt="" onClick={()=>goToAdviceDetail(hot.id)}/>
+							</div>
+						)
+					})
+				}
+				</Slider>
+			</HomeOotdImage>
+
+			<HomeOotdImage>
 				<div className='hotTitle'>
 					<MdLocalFireDepartment color='red' size='30' />
 					<div>Hot Potato</div>
@@ -177,20 +192,9 @@ const Home = () => {
 				}
 				</Slider>
 			</HomeOotdImage>
-			{/* <DoSwiper></DoSwiper> */}
-			
-			{/* <SelectedTagContainer>
-				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
-			</SelectedTagContainer> */}
-
-			{/* <TextToLeft><Fire/>훈수 토론장</TextToLeft>
-			<HomeOotdImage>
-				
-			</HomeOotdImage> */}
-
-
-			{/* <Category ><h4>최신순</h4> <h4>인기순</h4> <h4>논란순</h4></Category> */}
-			<OotdTagDiv  id="OOTD">
+			<div id='OOTD'>
+				</div>
+			<OotdTagDiv>
 				<Ootd />
 
 			</OotdTagDiv>

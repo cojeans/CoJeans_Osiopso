@@ -87,7 +87,7 @@ const Ootd = () => {
           <h3>팔로잉</h3>
         </OotdCategory>
         <FilterContainer>
-          <RiFilter2Fill onClick={showModal}/>
+          <RiFilter2Fill onClick={showModal} color='#afb2f0'/>
         </FilterContainer>
       </OotdTopBar>
 
