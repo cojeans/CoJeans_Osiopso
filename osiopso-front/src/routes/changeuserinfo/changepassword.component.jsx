@@ -21,19 +21,19 @@ import { useSelector } from "react-redux";
 const ChangePassword = () => {
   const Token = useSelector(selectUser)
   
-  // const AlertHandler = ()=> {
+  const AlertHandler = ()=> {
 
-  //   Swal.fire({
-  //     icon:'success',
-  //     confirmButtonColor: "DD6B55",
-  //     html: `
-  //     비밀번호 변경이 완료되었습니다.`,
-  //     showCancelButton: false,
-  //     confirmButtonText: "확인",
-  // }).then(()=> {
-  //     navigate('/')
-  //   })
-  // }
+    Swal.fire({
+      icon:'success',
+      confirmButtonColor: "DD6B55",
+      html: `
+      비밀번호 변경이 완료되었습니다.`,
+      showCancelButton: false,
+      confirmButtonText: "확인",
+  }).then(()=> {
+      navigate('/')
+    })
+  }
 
   const [inputPassword1, setInputPassword1] = useState("");
   const [inputPassword2, setInputPassword2] = useState("");
@@ -74,11 +74,14 @@ const ChangePassword = () => {
     .then((res)=> {
       console.log(res)
       Swal.fire({
-        position: 'top-end',
+        // position: 'top-end',
         icon: 'success',
         title: 'Your work has been saved',
         showConfirmButton: false,
-        timer: 2000
+        timer: 1500
+      })
+      .then(()=>{
+        navigate('/mypage')
       })
     })
     .catch((er)=> {
