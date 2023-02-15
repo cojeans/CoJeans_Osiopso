@@ -155,10 +155,12 @@ const Login = () => {
         </MarginBox>
         </ContentBox>
         <TextContainer>간편 로그인</TextContainer>
-					<SocialSignup>
-						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
-						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
-						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
+      <SocialSignup>
+        <a href={KAKAO_AUTH_URL}> <div className='imgBox'><img src={kakaoLogo} alt="Kakao" /> </div></a>
+        <a href={GOOGLE_AUTH_URL}><div className='imgBox'>
+						<img src={googleLogo} alt="Google" />
+        </div> </a>
+						<a href={GITHUB_AUTH_URL}><div className='imgBox'><img src={githubLogo} alt="Github" />  </div></a>
 					</SocialSignup>
     </SignInContainer>
   );
