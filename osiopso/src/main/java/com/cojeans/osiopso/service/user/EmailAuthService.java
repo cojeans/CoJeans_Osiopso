@@ -70,6 +70,7 @@ public class EmailAuthService {
                 .build());
     }
 
+    @Transactional
     private String generateVerificationToken(String userEmail) {
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();

@@ -114,12 +114,12 @@ public class UserController{
                         loginRequestDto.getPassword()
                 )
         );
-        /*이메일 인증 체크*/
-        if(!userService.isEmailVerified(loginRequestDto.getEmail())){
-            return new ResponseEntity<>(AuthResponseDto.builder()
-                    .success(false)
-                    .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
-        }
+//        /*이메일 인증 체크*/
+//        if(!userService.isEmailVerified(loginRequestDto.getEmail())){
+//            return new ResponseEntity<>(AuthResponseDto.builder()
+//                    .success(false)
+//                    .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
+//        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.createToken(authentication);
