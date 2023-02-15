@@ -4,12 +4,14 @@ import * as tf from '@tensorflow/tfjs';
 import { useState } from "react"
 
 import { selectCloset } from '../../store/closet/closet.selector';
-
-import { loadGraphModel } from "@tensorflow/tfjs-converter"
+import { selectUser,selectUserInfo } from '../../store/user/user.selector';
+import { selectClosetList } from '../../store/closet/closet.selector';
+import { loadGraphModel } from "@tensorflow/tfjs-converter";
 import { useSelector, useDispatch } from "react-redux"
 import { selectorOotdCategory } from "../../store/ootd/ootd.selector"
 import { selectOotdCategory } from "../../store/ootd/ootd.reducer"
 import { createTag, createAutoTag, upload, checkLocal } from "../../store/clothes/clothes.reducer"
+import ProfileCloset from "../profile-closet/profile-closet.component"
 
 import {
 	CategoryModalContainer,
@@ -25,11 +27,11 @@ import {
   } from "../../store/clothes/clothes.selector";
 import { buffer } from '@tensorflow/tfjs';
 import exampleImage from '../../../src/00000001.jpg'
+
 const tags = {
 	'Category' : ['원피스','바지','상의','신발','치마','아우터','모자',],
 	'Color' : ['검정', '파랑', '빨강'],
 	'Season': ['봄', '여름', '가을', '겨울'],
-	'TPO': ['데일리','직장','데이트','경조사','여행','홈웨이','파티','운동','학교'],
 }
 
 // const defaultSelect = {
@@ -42,16 +44,19 @@ const tags = {
 const ClothesTagModal = ({ closeModal }) => {
 	// const closetData  = useSelector(selectCloset)
 	// console.log(closetData, 'closet_list')
+	const curUser = useSelector(selectUserInfo)// 현재 유저 정보를 가져옵니다. 
+	const curClosetList = useSelector(selectClosetList)
 	const saveAutoTag = useSelector(selectAutoTag)
+	// console.log(curClosetList, 'curclosetList')
 	console.log(saveAutoTag, 'saveAutoTag')
 	// console.log(saveTag, 'saveTag')
 	const defaultSelect = {
 		// Category : [tags.Category[saveTag.category]],
 		// Color: [tags.Color[saveTag.colors]],
+		Closet: [],
 		Category : [tags.Category[saveAutoTag.category]],
 		Color: [tags.Color[saveAutoTag.colors]],
 		Season: [],
-		TPO : [],
 	}
 	const isAutoTag = useSelector(localPhoto);
 
@@ -62,46 +67,20 @@ const ClothesTagModal = ({ closeModal }) => {
 	// console.log('selector', useSelector(selectorOotdCategory))
 	const [selectedTag, setSelectedTag] = useState(defaultSelect)
 	const dispatch = useDispatch()
-	// const FashionAi = async() => {
-	// 	// const model = await loadGraphModel(AiModel)
-	// 	const model = await loadGraphModel('./model/model.json')
-	// 	const image = new Image(96, 96)
-	// 	// const newimg = buffer.from(saveData, 'base64')
-	// 	// const t = tf.node.decdeImage(newimg)
-	// 	// console.log(t)
-	// 	// const b = atob(saveData)
-	// 	// console.log(b)
-	// 	// image.src = saveData;
-	// 	image.src = exampleImage;
-	// 	tf.browser.fromPixels(image).print();
-	// 	let tfTensor = tf.browser.fromPixels(image)
-	// 	tfTensor = tfTensor.div(255.0);
-	// 	tfTensor = tfTensor.expandDims(0);
-	// 	tfTensor = tfTensor.cast("float32");
-		
-	// 	const pred = model.predict(tfTensor)[0];
-	// 	const temp = Array.from(pred.argMax(1).dataSync())
-		
-	// 	const pred2 = model.predict(tfTensor)[1];
-	// 	const temp2 = Array.from(pred2.argMax(1).dataSync())
-	// 	console.log(temp, temp2)
 
-
-
-
-	// } 
-	// FashionAi()
 	const submitHandler = () => {
-		let newArr = {'category':'', closets:[], colors:[], seasons:[]} 
+		let newArr = {category:'', closets: [], colors:[], seasons:[]} 
 
-		
-		selectedTag['Category'].forEach((el) => {
-			newArr.category = el
-				// type: el
-			// console.log(el)
+		console.log(curClosetList, 'this is current closetlist')
+		selectedTag['Closet'].forEach((el) => {
+			newArr.closets = el
 			
 		})
 		
+		
+		selectedTag['Category'].forEach((el) => {
+			newArr.category = el
+		})
 
 		// selectedTag['Category'].forEach((el) => {
 		// 	newArr = [...newArr, {
@@ -129,7 +108,7 @@ const ClothesTagModal = ({ closeModal }) => {
 			newArr.seasons.push(el)
 		})
 
-
+		// console.log(curClosetList, 'curclosetList')
 		console.log(newArr, 'newArr')
 		console.log(newArr.colors, 'category')
 		dispatch(createTag(newArr))
@@ -141,8 +120,23 @@ const ClothesTagModal = ({ closeModal }) => {
 		closeModal()
 
 }
+	const testButton = () => {
+		console.log(curClosetList, 'test button')
+		console.log(curUser, 'this is curUser')
+	}
 
-
+	const selectOneHandler = (key, e) => {
+		const selectCate = [...selectedTag[key]]
+		const idxTag =selectCate.indexOf(e)
+		
+		if (idxTag === -1) {
+			const addList = [e]
+			setSelectedTag({...selectedTag, [key]:addList})
+		} else {
+			selectCate.splice(idxTag, 1)
+			setSelectedTag({...selectedTag, [key]:selectCate})
+		}
+	}
 	const selectHandler = (key, e) => {
 		const selectCate = [...selectedTag[key]]
 		const idxTag =selectCate.indexOf(e)
@@ -157,11 +151,22 @@ const ClothesTagModal = ({ closeModal }) => {
 	}
 
 	return (<>
+					<button onClick={testButton}>
+					옷장리스트 테스트
+				</button>
+				{/* <button onClick={testButton}> 옷장리스트 테스트 <button/> */}
 		{<CategoryModalContainer>
+
+			<CategoryBox>
+						<Title>옷장</Title>
+					{tags.Category.map((el, idx) => {
+						return <Tag key={idx} onClick={()=> selectOneHandler('Closet', el) } select={ selectedTag['Closet'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+					}) }
+			</CategoryBox>
 			<CategoryBox>
 						<Title>카테고리</Title>
 					{tags.Category.map((el, idx) => {
-						return <Tag key={idx} onClick={()=> selectHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+						return <Tag key={idx} onClick={()=> selectOneHandler('Category', el) } select={ selectedTag['Category'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
 			<CategoryBox>

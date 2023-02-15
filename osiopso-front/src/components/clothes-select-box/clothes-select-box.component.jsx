@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { resetOotdCategory } from "../../store/ootd/ootd.reducer";
 import exampleImage from '../../../src/00000001.jpg'
 import { selectUser } from "../../store/user/user.selector";
+import { selectClosetList } from "../../store/closet/closet.selector";
+import { uploadClosetList } from "../../store/closet/closet.reducer";
 import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component";
 import { loadGraphModel } from "@tensorflow/tfjs-converter"
@@ -47,20 +49,39 @@ const defaultClothesForm = {
 
 const ClothesSelectBox = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [closetList, setClosetList] = useState([])
+    
     const Token = useSelector(selectUser);
     const isAutoTag = useSelector(localPhoto);
     useEffect(() => {
       FashionAi();
     }, [isAutoTag]);
+
+    useEffect(() => {
+      getClosetList();
+    }, []);
+    
+    // useEffect(() => {
+    //   if(closetList) {
+    //     console.log(closetList, 'this is closetList')
+    //     dispatch(uploadClosetList(closetList))
+    //   }
+
+    // }, [closetList]);
+
+
+
     const saveData = useSelector(selectClothes);
     // console.log(saveData);
 
-    const dispatch = useDispatch();
+
     // const saveData = useSelector(selectClothes);
     const onNavigateHandler = () => {
       navigate("update/");
     };
     const [ootdFormData, setOotdFormData] = useState(defaultClothesForm);
+    // const [closetList, setClosetList] = useState([])
     const [clothesFormData, setClothesFormData] = useState(defaultClothesForm);
     const { picture, tags } = clothesFormData
     const [modalOpen, setModalOpen] = useState(false);
@@ -68,11 +89,36 @@ const ClothesSelectBox = () => {
 
     const saveTag = useSelector(selectAutoTag)
     const finalTag = useSelector(selectTag)
+    console.log(finalTag, 'this is finalTag')
     const showModal = () => {
         window.scrollTo(0, 0);
         setModalOpen(true);
         lockScroll();
     };
+
+    const getClosetList = () => {
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_AXIOS_URL}closet/mylist`,
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.reverse(), 'axios output')
+        // setClosetList(res.data.reverse())
+        dispatch(uploadClosetList(1))
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      
+    }
+    const hellotest = () => {
+      console.log('hello')
+    }
+    // getClosetList()
+
     const handleSubmit = () => {
         // https://firebase.google.com/docs/storage/web/upload-files?hl=ko#web-version-9_3
         // fref.putString(saveData, "base64").then(function (snapshot) {
@@ -91,6 +137,9 @@ const ClothesSelectBox = () => {
         // });
 
         // Data URL string
+        console.log(finalTag.category)
+        console.log(finalTag.colors)
+        console.log(finalTag.seasons)
 
         uploadString(storageRef, saveData, "data_url").then((snapshot) => {
             console.log("Uploaded a data_url string!");
@@ -113,18 +162,20 @@ const ClothesSelectBox = () => {
             method: "post",
             url: `${process.env.REACT_APP_AXIOS_URL}closet/clothes`,
             data: {
-                category: 1,
+              // finalTag
+                category: finalTag.category,
                 imageUrl: saveData,
-                closets: [{ id: 7 }],
-                colors: [{ id: 1 }],
-                seasons: [{ id: 1 }],
-                tags: [{ id: 1 }],
+                closets: ['third'],
+                colors: finalTag.colors,
+                seasons: finalTag.seasons,
+        
             },
             headers: {
                 Authorization: `Bearer ${Token.token}`,
             },
         })
             .then((res) => {
+              console.log(res)
                 console.log("clothes-select-box에서 post axios 요청");
                 console.log(res.data);
             })

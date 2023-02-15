@@ -3,6 +3,7 @@ import { Fragment } from "react"
 
 import { useSelector } from "react-redux"
 import { selectUser, selectUserInfo } from "../../store/user/user.selector"
+import { selectClosetList } from '../../store/closet/closet.selector';
 
 
 import ProfileCloset from "../profile-closet/profile-closet.component"
@@ -19,6 +20,7 @@ import { useEffect } from "react"
 const ProfileBody = ({ id }) => {
 	const Token = useSelector(selectUser);
 	const userInfo = useSelector(selectUserInfo)
+	const curClosetList = useSelector(selectClosetList)
 
 	const [profilePage, setProfilePage] = useState('closet')
 	const [userOotd, setUserOotd] = useState([])
@@ -39,7 +41,9 @@ const ProfileBody = ({ id }) => {
 			console.log(err)
 		})
 	}
-
+	const testButton = () => {
+		console.log(curClosetList, 'test button')
+	}
 	useEffect(() => {
 		if (id > 0) {
 			getUserData(`${process.env.REACT_APP_AXIOS_URL}user/${id}`)
@@ -50,7 +54,11 @@ const ProfileBody = ({ id }) => {
 	},[])
 
 	return (
+		
 		<Fragment>
+								<button onClick={testButton}>
+					옷장리스트 테스트
+				</button>
 			<TabMenue>
 				<p onClick={() => setProfilePage('closet')} page={profilePage === 'closet'}
 					className={ profilePage==='closet' ? 'select' : ''}
