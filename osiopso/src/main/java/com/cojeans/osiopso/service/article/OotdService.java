@@ -520,7 +520,7 @@ public class OotdService {
 //            left join tag t
 //            on t.id = at.tag_id
 //            where t.keyword="데일리" or t.keyword="캐주얼" or t.keyword="특별한날";
-    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx) {
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx, Long userId) {
 
 
         List<String> styleTag = filter.getStyleTag();
@@ -639,6 +639,8 @@ public class OotdService {
                         .build());
             }
 
+            return responseOotdList;
+
         } else { // 둘 다 null 인 경우 (태그 필터링이 아닌 경우)
             List<Ootd> ootdList = new ArrayList<>();
 
@@ -654,8 +656,6 @@ public class OotdService {
             } else if (age == null && gender != null) { // 7. 성별 필터만 적용된 경우
                 ootdList = articleTagRepositoryImpl.findArticleByGender(gender, pageable, idx);
             }
-            toOotdList(responseOotdList, date, ootdList);
-        }
 
             List<Ootd> result = new ArrayList<>();
             for (Ootd ootd : ootdList) {
