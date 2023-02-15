@@ -1,5 +1,5 @@
-import { Routes, Route, } from "react-router-dom";
-import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useEffect, Component } from "react";
 
 import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
@@ -18,6 +18,9 @@ import JoinComplete from "./routes/join/join-complete.component";
 import Test from "./components/test/test.component"
 import SelectboxPage from "./routes/selectbox/selectbox.component";
 import OAuth2RedirectHandler from "./routes/oauth2/OAuth2RedirectHandler";
+import OAuth2Test from "./routes/oauth2/OAuth2Test";
+import { getCurrentUser } from './utils/APIUtils';
+
 import "./App.scss";
 
 function App() {
@@ -29,6 +32,7 @@ function App() {
     setScreenSize();
   });
   return (
+      <>
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
@@ -46,9 +50,13 @@ function App() {
         <Route path='joincomplete' element={<JoinComplete/>}/>
         <Route path='test' element={<Test/>}/>
         <Route path='selectbox/*' element={<SelectboxPage/>}/>
-        <Route path="/oauth2/redirect" element={OAuth2RedirectHandler}></Route>  
+        {/* <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>}></Route>  */}
+        <Route path="/oauth2/redirect" element={<OAuth2Test/>}></Route> 
+ 
       </Route>
     </Routes>
+
+    </>
   );
 }
 
