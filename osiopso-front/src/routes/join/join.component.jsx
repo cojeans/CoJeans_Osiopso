@@ -140,14 +140,6 @@ const Join = () => {
       </Osiopso>
       {/* <img src={require("../../assets/The_Great_Gatsby.gif")} alt="" /> */}
       <form>
-        <FormInput
-          label="아이디"
-          type="text"
-          required
-          onChange={handleChange}
-          name="displayName"
-          value={displayName}
-        />
 
         <FormInput
           label="이메일"
