@@ -47,7 +47,7 @@ const PlusModal = ({ closeModal }) => {
 			
 			<PlusContent  onClick={onNavigateHandler3}>
 				<PlusLogoContainer>
-					<GiLargeDress color="#BCF0E0 "/>
+					<GiLargeDress color="#afb2f0 "/>
 				</PlusLogoContainer>
 				<span>
 					OOTD 등록

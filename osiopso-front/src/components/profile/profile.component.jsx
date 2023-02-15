@@ -161,7 +161,7 @@ const Profile = ({ id, showModal }) => {
 							</Button>
 						:
 						<Followcon onClick={showModal}>
-							<AiFillEdit color="BCF0E0"/>
+							<AiFillEdit color="#afb2f0"/>
 							<span>edit</span>
 						</Followcon>
 				}
