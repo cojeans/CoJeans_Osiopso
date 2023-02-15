@@ -28,7 +28,7 @@ export const UserImageBox = styled.div`
     right: 15px;
     color: white;
 }
-	}
+	
 	img{
 		width: 100%;
 		height: 100%;

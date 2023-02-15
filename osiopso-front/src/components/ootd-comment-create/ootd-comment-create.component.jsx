@@ -104,7 +104,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
           <ProfileImageBox >
             <img src={  !userInfo.imageUrl || userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
           </ProfileImageBox >
-          <span>
+          <span className='username'>
             { userInfo.name}
           </span>
         </div>

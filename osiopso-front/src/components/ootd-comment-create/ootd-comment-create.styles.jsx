@@ -78,9 +78,10 @@ export const UpperComment = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    span{
-      font-size: 15px;
+    .username{
+      font-size: 30%;
     }
+
   }
   `
 
