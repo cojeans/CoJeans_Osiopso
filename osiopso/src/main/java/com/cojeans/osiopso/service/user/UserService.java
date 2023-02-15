@@ -180,9 +180,11 @@ public class UserService {
                 .findById(userModifyDto.getId())
                 .orElseThrow(()-> new BadRequestException("없는 유저입니다."))
                 .toDto();
-        log.info("userModifyDto: {}",userModifyDto);
+        log.info("[회원수정Service]userModifyDto: {}",userModifyDto);
 
-        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
+        userDto.setName(userModifyDto.getName());
+        userDto.setBio(userModifyDto.getBio());
+//        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
         if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
         userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
         if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
