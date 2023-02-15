@@ -51,7 +51,7 @@ const Navigation = () => {
 	};
 
 	useEffect(() => {
-		if (location.pathname ==='/login' || location.pathname ==='/search' || location.pathname ==='join' ) {
+		if (location.pathname ==='/login' || location.pathname ==='/search' || location.pathname ==='/join' ) {
 			setCurRoute(false)
 		} else {
 			setCurRoute(true)

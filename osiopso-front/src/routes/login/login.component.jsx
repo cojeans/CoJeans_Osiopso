@@ -7,17 +7,30 @@ import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
 import { login } from '../../store/user/user.reducer'
-// import {
-//   signInAuthUserWithEmailAndPassword,
-//   signInWithGooglePopup,
-// } from '../../utils/firebase/firebase.utils';
-
-
+import Swal from 'sweetalert2';
+  
 const defaultFormFields = {
   email: '',
   password: '',
 };
 
+  const loginAlert = () => {
+    Swal.fire({
+      title:'신고',
+      text: "해당 훈수를 신고하시겠습니까?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '신고하기'    
+    }).then((result)=>{
+      if (result.isConfirmed) {
+        Swal.fire(
+          "신고하였습니다."
+        )
+      }
+    })
+  }
 
 const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
@@ -28,20 +41,6 @@ const Login = () => {
     setFormFields(defaultFormFields);
   };
 
-  // const signInWithGoogle = async () => {
-  //   await signInWithGooglePopup();
-  // };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     await signInAuthUserWithEmailAndPassword(email, password);
-  //     resetFormFields();
-  //   } catch (error) {
-  //     console.log('user sign in failed', error);
-  //   }
-  // };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -90,7 +89,7 @@ const Login = () => {
   }
 
   const onKeyPress = (e)=> {
-    if(e.key == 'Enter') {
+    if(e.key === 'Enter') {
       LoginFunc();
     }
   }
