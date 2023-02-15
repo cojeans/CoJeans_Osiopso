@@ -64,6 +64,7 @@ function App() {
 
           <Route path="test" element={<Test />} />
           <Route path="selectbox/*" element={<SelectboxPage />} />
+          <Route path="/oauth2/redirect" element={<OAuth2Test/>}></Route> 
         </Route>
       </Routes>
     </ThemeProvider>
