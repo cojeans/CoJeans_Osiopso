@@ -32,8 +32,6 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
         Date start = Date.valueOf(localStart);
         Date end = Date.valueOf(localEnd);
 
-        System.out.println(start + " : " + end);
-
         // select article_id, count(*)
         // from article_tag
         // where article_id

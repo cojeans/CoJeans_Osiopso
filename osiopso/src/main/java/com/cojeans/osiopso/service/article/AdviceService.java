@@ -16,6 +16,7 @@ import com.cojeans.osiopso.repository.article.*;
 import com.cojeans.osiopso.repository.comment.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.PriorityQueue;
 
 @Service
 @Transactional(readOnly = false)
@@ -42,6 +44,7 @@ public class AdviceService {
     private final ArticleService articleService;
     private final ArticleScrollQdslRepositoryImpl articleScrollQdslRepositoryImpl;
     private final CommentPhotoRepository commentPhotoRepository;
+    private final AdviceRepositoryImpl adviceRepositoryImpl;
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -345,27 +348,70 @@ public class AdviceService {
         // group by article_id
         // order by count desc;
 
-        List<Long> list = commentRepositoryImpl.findByArticleId(LocalDate.now());
+//        List<Long> list = commentRepositoryImpl.findByArticleId(LocalDate.now());
+//
+//        List<BurningAdviceResponseDto> result = new ArrayList<>();
+//
+//        for (Long id : list) {
+//            System.out.println("id : ---- " + id);
+//            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
+//            Advice advice = adviceRepository.findById(id).orElseThrow();
+//            BurningAdviceResponseDto responseDto = BurningAdviceResponseDto.builder()
+//                    .id(advice.getId())
+//                    .photo(ArticlePhotoResponseDto.builder()
+//                            .imageUrl(ap.getImageUrl())
+//                            .build())
+//                    .hit(advice.getHit())
+//                    .subject(advice.getSubject())
+//                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+//                    .build();
+//
+//            result.add(responseDto);
+//        }
 
+        List<Article> adviceList = adviceRepositoryImpl.findByDate(LocalDate.now());
         List<BurningAdviceResponseDto> result = new ArrayList<>();
 
-        for (Long id : list) {
-            System.out.println("id : ---- " + id);
-            ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
-            Advice advice = adviceRepository.findById(id).orElseThrow();
-            BurningAdviceResponseDto responseDto = BurningAdviceResponseDto.builder()
-                    .id(advice.getId())
-                    .photo(ArticlePhotoResponseDto.builder()
-                            .imageUrl(ap.getImageUrl())
-                            .build())
-                    .hit(advice.getHit())
-                    .subject(advice.getSubject())
-                    .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
-                    .build();
+        if(adviceList.size() != 0) {
+            List<Long> commentCount = new ArrayList<>();
+            for (Article article : adviceList) {
+                commentCount.add(commentRepository.countByArticleId(article.getId()));
+            }
 
-            result.add(responseDto);
+            PriorityQueue<Long[]> pq = new PriorityQueue<>((o1, o2) -> Math.toIntExact(o2[1] - o1[1]));
+            for (int i = 0; i < adviceList.size(); i++) {
+                pq.add(new Long[]{adviceList.get(i).getId(), commentCount.get(i)});
+            }
+
+            List<Long> idList = new ArrayList<>();
+            if(pq.size() > 8){
+                for (int i = 0; i < 8; i++) {
+                    idList.add(pq.poll()[0]);
+                }
+            } else{
+                int index = pq.size();
+                for (int i = 0; i < index; i++) {
+                    idList.add(pq.poll()[0]);
+                }
+            }
+
+            for (Long id : idList) {
+                System.out.println("???? : " + id);
+                ArticlePhoto ap = articlePhotoRepository.findTopByArticleId(id);
+                Advice advice = adviceRepository.findById(id).orElseThrow();
+                BurningAdviceResponseDto responseDto = BurningAdviceResponseDto.builder()
+                        .id(advice.getId())
+                        .photo(ArticlePhotoResponseDto.builder()
+                                .imageUrl(ap.getImageUrl())
+                                .build())
+                        .hit(advice.getHit())
+                        .subject(advice.getSubject())
+                        .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
+                        .build();
+
+                result.add(responseDto);
+            }
         }
-
         return result;
     }
 }
