@@ -20,9 +20,6 @@ import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constant
 import kakaoLogo from '../../assets/kakao-logo.png';
 import googleLogo from '../../assets/google-logo.png';
 import githubLogo from '../../assets/github-logo.png';
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux'
-import axios from 'axios';
 import './join.stlyes'
 // import './join.css';
 
