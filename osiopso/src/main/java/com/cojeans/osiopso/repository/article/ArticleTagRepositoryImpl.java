@@ -165,11 +165,7 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
                 .on(ootd.id.eq(articleLike.article.id))
                 .where(ootd.id.lt(idx))
                 .groupBy(ootd.id)
-<<<<<<< Updated upstream
-                .orderBy(aliasQuantity.desc())
-=======
                 .orderBy(aliasQuantity.desc(), ootd.id.desc())
->>>>>>> Stashed changes
                 .limit(pageable.getPageSize())
                 .fetch();
 
