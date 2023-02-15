@@ -18,7 +18,6 @@ import { AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import { useEffect } from "react";
 
-import Swal from "sweetalert2";
 
 
 const defaultState = {

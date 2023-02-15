@@ -17,6 +17,18 @@ export const UserImageBox = styled.div`
 	width: 4em;
 	height: 4em;
 	overflow: hidden;
+	position: relative;
+	input{
+		display: none;
+	}
+	.edit{
+		position: absolute;
+    top: 43px;
+    font-size: 14px;
+    right: 15px;
+    color: white;
+}
+	}
 	img{
 		width: 100%;
 		height: 100%;
