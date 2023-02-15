@@ -113,14 +113,16 @@ public class ArticleService {
         String timeGapToString = "";
 
         // l/1000 는 초 단위
-        if (timeGap < 60) {
-            timeGapToString = timeGap + "s";
+        if (timeGap < 20) {
+            timeGapToString = "방금";
+        } else if (timeGap < 60){
+            timeGapToString = timeGap + "초 전";
         } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-            timeGapToString = timeGap / 60 + "m";
+            timeGapToString = timeGap / 60 + "분 전";
         } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-            timeGapToString = timeGap / 3600 + "h";
+            timeGapToString = timeGap / 3600 + "시간 전";
         } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-            timeGapToString = timeGap / 84000 + "d";
+            timeGapToString = timeGap / 84000 + "일 전";
         }
 
         return GapTimeVo.builder()

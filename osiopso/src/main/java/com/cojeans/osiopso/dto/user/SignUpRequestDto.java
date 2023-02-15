@@ -28,5 +28,7 @@ public class SignUpRequestDto {
 
     private String imageUrl = "UNKNOWN";
 
+    private Long grade = 0L;
+
 
 }

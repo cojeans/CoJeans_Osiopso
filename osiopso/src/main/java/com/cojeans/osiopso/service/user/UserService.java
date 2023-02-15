@@ -1,7 +1,6 @@
 package com.cojeans.osiopso.service.user;
 
 import com.cojeans.osiopso.dto.response.feed.HotOotdResponseDto;
-import com.cojeans.osiopso.dto.response.feed.OotdListResponseDto;
 import com.cojeans.osiopso.dto.response.feed.UserSearchResponseDto;
 import com.cojeans.osiopso.dto.user.FollowResponseDto;
 import com.cojeans.osiopso.dto.user.SignUpRequestDto;
@@ -23,7 +22,6 @@ import com.cojeans.osiopso.repository.user.FollowRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
 import com.cojeans.osiopso.security.UserDetail;
-import com.cojeans.osiopso.service.article.OotdService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -80,6 +77,7 @@ public class UserService {
                         .bio("")
                         .isProfilePublic(true)
                         .providerId("local")
+                        .grade(0L)
                         .build()
         ).toDto();
 

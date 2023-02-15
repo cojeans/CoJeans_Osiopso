@@ -101,8 +101,6 @@ const TopBar = () => {
 									</TopBarContent>
 									<div></div>
 								</TopBarContainer>
-								
-	
 			}
 
 		</Fragment>
