@@ -127,7 +127,7 @@ const Login = () => {
             onKeyPress = {onKeyPress}
           />
           </div>
-          <FindIdPassword onClick={goToFindPage}>아이디 / 비밀번호 찾기 > </FindIdPassword>
+          <FindIdPassword onClick={goToFindPage}>아이디 / 비밀번호 찾기  </FindIdPassword>
         </IdPasswordBox>
 
         <MarginBox>

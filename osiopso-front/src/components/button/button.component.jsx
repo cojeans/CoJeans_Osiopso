@@ -29,8 +29,7 @@ const VARIANTS = {
     // --button-hover-text-color: #000000;
     :hover{ 
       color:#000000;
-      border: 2px solid gray;
-    
+      border: 2px solid gray;    
     }
     
   `,

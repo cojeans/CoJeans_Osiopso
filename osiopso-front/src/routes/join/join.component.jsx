@@ -7,10 +7,12 @@ import {
 	SignUpContainer,
 	Osiopso,
 	Bodoni,
+  ButtonContainer,
+  
 
 } from "./join.stlyes";
 import axios from "axios";
-import "./join.stlyes";
+
 
 const defaultformFields = {
   displayName: "",
@@ -108,7 +110,13 @@ const Join = () => {
           name="confirmPassword"
           value={confirmPassword}
         />
-        <Button onClick={JoinFunc}>가입하기</Button>
+        <ButtonContainer>
+          <Button
+          type='submit'
+          size={'md'}
+          variant={ 'success' }
+          onClick={JoinFunc}>가입하기</Button>
+        </ButtonContainer>
       </form>
     </SignUpContainer>
   );
