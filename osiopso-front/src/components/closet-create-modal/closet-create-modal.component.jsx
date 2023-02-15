@@ -53,7 +53,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 	Swal.fire({
 		confirmButtonColor: "black", 
 		html: `
-		새 옷장이 생성되었습니다.
+		${closetName} 옷장이 생성되었습니다.
 		`,
 			width: '300px',
 		showCancelButton: false,
@@ -155,10 +155,11 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 						<ClosetInput
 							type="text"
 							autoFocus
-							maxLength={25}
+							maxLength={10}
 							name='closetName'
 							value={closetName}
 							onChange={handleChange}
+							placeholder='ex 봄 옷장'
 						/>
 						<ToggleContainer>
 							<p>공개 설정</p>

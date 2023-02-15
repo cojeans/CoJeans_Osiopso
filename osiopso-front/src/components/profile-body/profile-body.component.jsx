@@ -33,6 +33,7 @@ const ProfileBody = ({ id }) => {
         Authorization: `Bearer ${Token.token}`,
       },
 		}).then((res) => {
+			console.log(res.data)
 			setUserOotd(res.data.ootdList)
 			setUserAdvice(res.data.adviceList)
 		}).catch((err) => {

@@ -4,9 +4,6 @@ export const ClosetBodyContainer = styled.div`
 	display:grid;
 	grid-template-columns:1fr 1fr;
 	justify-items: center;
-	grid-gap:20px;
-
-
 `
 
 

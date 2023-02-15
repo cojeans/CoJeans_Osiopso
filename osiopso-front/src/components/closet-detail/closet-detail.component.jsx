@@ -49,7 +49,7 @@ const ClosetDetail = () => {
 		})
 
 		Swal.fire({
-		confirmButtonColor: "black", 
+		confirmButtonCxolor: "black", 
 		html: `
 		옷장이 삭제되었습니다.
 		`,
@@ -57,8 +57,9 @@ const ClosetDetail = () => {
 		confirmButtonText: "확인",
 		width: '300px'
 
-	})
-		navigate('/profile')
+		}).then(() => {
+			navigate('/profile')	
+		})
 	}
 
 	useEffect(() => {
