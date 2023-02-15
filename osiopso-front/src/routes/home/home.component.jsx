@@ -70,6 +70,7 @@ const Home = () => {
 					age: res.data.age,
 					gender: res.data.gender,
 					imageUrl: res.data.imageUrl,
+					bio:res.data.bio,
 				}
 				dispatch(userInfo(payload))
 			})

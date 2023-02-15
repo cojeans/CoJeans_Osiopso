@@ -11,8 +11,9 @@ import {
 } from '@material-ui/core';
 import { useState } from "react";
 
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { selectUser } from "../../store/user/user.selector";
+import { userInfo } from "../../store/user/user.reducer";
 
 import axios from "axios";
 import { useEffect } from "react";
@@ -20,6 +21,7 @@ import { useEffect } from "react";
 import Button from "../button/button.component";
 
 import Swal from "sweetalert2";
+
 
 const defaultData = {
 	id:'',
@@ -32,6 +34,7 @@ const defaultData = {
 
 const EditProfile = () => {
 	const [userValue, setuserValue] = useState(defaultData)
+	const dispatch = useDispatch()
 
 	const validation = () => {
 		if (userValue.age < 0 || userValue.age > 120) {
@@ -88,6 +91,8 @@ const EditProfile = () => {
 				}
 			}).then((res) => {
 				console.log(res, '회원정보수정입니다.')
+				dispatch(userInfo(res.data))
+
 			}).then(() => {
 				Swal.fire({
 					icon: 'success',

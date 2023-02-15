@@ -115,7 +115,7 @@ const ClothesSelectBox = () => {
             data: {
                 category: 1,
                 imageUrl: saveData,
-                closets: [{ id: 7 }],
+                closets: [{ id: 1 }],
                 colors: [{ id: 1 }],
                 seasons: [{ id: 1 }],
                 tags: [{ id: 1 }],

@@ -10,6 +10,7 @@ import {
 import { ProfileImageBox } from '../ootd-detail/ootd-detail.styles';
 import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
+import Button from '../button/button.component';
 
 const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd, isCocomment,setOpenCoco }) => {
   
@@ -99,10 +100,14 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
   return (
     <div>
       <UpperComment>
-        <ProfileImageBox >
-          <img src={  !userInfo.imageUrl? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
-        </ProfileImageBox >
-
+        <div className='userBox' >
+          <ProfileImageBox >
+            <img src={  !userInfo.imageUrl || userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+          </ProfileImageBox >
+          <span>
+            { userInfo.name}
+          </span>
+        </div>
         {
           !isCocomment.check
             ?
@@ -115,7 +120,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
                 onChange={ handleChangeState}
                 value={content}
               />
-              <button onClick={handleSubmit}>게시</button>
+              <Button onClick={handleSubmit}>게시</Button>
             </InputBox>
 
             :
@@ -128,7 +133,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
                 onChange={handleChangeCocoment}
                 value={cocoment}
               />
-              <button onClick={createCocoment}>게시</button>
+              <Button onClick={createCocoment}>게시</Button>
             </InputBox>
         }
 
