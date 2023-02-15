@@ -53,7 +53,7 @@ const ClothesSelectBox = () => {
       FashionAi();
     }, [isAutoTag]);
     const saveData = useSelector(selectClothes);
-    console.log(saveData);
+    // console.log(saveData);
 
     const dispatch = useDispatch();
     // const saveData = useSelector(selectClothes);
@@ -134,7 +134,7 @@ const ClothesSelectBox = () => {
 
           };
             const FashionAi = async () => {
-              console.log(exampleImage)
+              // console.log(exampleImage)
               // const model = await loadGraphModel(AiModel)
               const model = await loadGraphModel("model/model.json");
               // const modelpath = require('../../../src/model/model.json')

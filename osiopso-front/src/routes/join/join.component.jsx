@@ -9,10 +9,22 @@ import {
 	Bodoni,
   ButtonContainer,
   Loading,
+  SocialSignup,
+	TextContainer
+  
+
 } from "./join.stlyes";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constants';
+// import { signup } from '../../utils/APIUtils';
+import kakaoLogo from '../../assets/kakao-logo.png';
+import googleLogo from '../../assets/google-logo.png';
+import githubLogo from '../../assets/github-logo.png';
+import './join.stlyes'
+// import './join.css';
 
+// import Alert from 'react-s-alert';
 
 const defaultformFields = {
   displayName: "",
@@ -136,7 +148,6 @@ const Join = () => {
           name="email"
           value={email}
         />
-
         <FormInput
           label="비밀번호"
           type="password"
@@ -162,8 +173,16 @@ const Join = () => {
           onClick={JoinFunc}>가입하기</Button>
         </ButtonContainer>
       </form>
-    </SignUpContainer>
-  );
-};
+				
+				<TextContainer>간편 회원가입</TextContainer>
+					<SocialSignup>
+						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
+						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
+						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
+					</SocialSignup>
+				
+		</SignUpContainer>
+	)
+}
 
 export default Join;
