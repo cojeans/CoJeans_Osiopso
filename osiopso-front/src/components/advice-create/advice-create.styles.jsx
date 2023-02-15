@@ -91,7 +91,6 @@ export const NoteBox = styled.div`
 display: flex;
 width: 100%;
 height: 100%;
-margin-left: 12%;
 `
 
 export const CautionBox = styled.div`

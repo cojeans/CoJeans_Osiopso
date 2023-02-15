@@ -34,6 +34,7 @@ import Modal from '../modal/modal.component';
 
 import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../utils/utils';
+import Button from '../button/button.component';
 
 const defaultOotdForm = {
   content: '',
@@ -151,12 +152,12 @@ const OotdCreate = () => {
 
   return (
     <div>
-      <TopContainer>
+      {/* <TopContainer>
         <Xcontainer>
           <img src={require("../../assets/X.png")} alt="" onClick={goToMain}/>
         </Xcontainer>
         <h3>새 게시물</h3>
-      </TopContainer>
+      </TopContainer> */}
       <BottomContainer>
         <OotdImgContainer>
           <label htmlFor="profileImg">
@@ -209,7 +210,7 @@ const OotdCreate = () => {
           >
           </textarea>
         </MarginDiv>
-        <button onClick={submitOotdCreate}>저장</button>
+        <Button onClick={submitOotdCreate}>저장</Button>
       </BottomContainer>
 
 

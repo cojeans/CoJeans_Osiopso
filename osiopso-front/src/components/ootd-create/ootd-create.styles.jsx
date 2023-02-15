@@ -26,12 +26,14 @@ textarea{
     height:100px;
     padding:10px;
     border-bottom:solid 1px gray;
+    font-family: LINESeedKR-Bd;
 }
 `
 export const BottomContainer = styled.div`
 display:flex;
 flex-direction: column;
 align-items: center;
+padding-top: 30px;
 `
 
 export const OotdInput = styled.input`
@@ -87,7 +89,6 @@ export const NoteBox = styled.div`
 display: flex;
 width: 100%;
 height: 100%;
-margin-left: 12%;
 `
 export const ExclamationMark = styled.div`
 display: flex;

@@ -16,13 +16,8 @@ import Slider from "react-slick";
 //
 
 import {
-	ImageBox,
 	TextToLeft,
-	Category,
 	HomeOotdImage,
-	SelectedTagContainer,
-	SelectedTag,
-	UserUploadList,
 	OotdTagDiv,
 	TagBox
 } from './home.styles'
@@ -118,7 +113,7 @@ const Home = () => {
 		console.log(e)
 		
 	}
-
+	// 뜨거운감자
 	const hotBurning = () => {
 			axios({
 			method: 'get',
@@ -129,7 +124,7 @@ const Home = () => {
 			})
 				.then((res) => {
 					const result = res.data.responseData
-					console.log(result,'⭐')
+					// console.log(result,'⭐') 
 					setHotOotd(result)
 
 				}).catch((err) => {
