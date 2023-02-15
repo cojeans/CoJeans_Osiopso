@@ -17,7 +17,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 //
 
-import Swal from "sweetalert2"
+// import Swal from "sweetalert2"
 
 //style
 import {

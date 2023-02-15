@@ -113,7 +113,7 @@ const Join = () => {
 
         Swal.fire({
           icon: 'success',
-          confirmButtonColor:"#000000",
+          confirmButtonColor:"#7272ba",
           html: `
           회원가입이 완료되었습니다.
           이메일 인증을 진행해주세요.`,     

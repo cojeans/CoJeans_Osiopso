@@ -87,7 +87,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
   const commentCreateAlert = ()=>{
     Swal.fire({
      icon: 'success',
-      confirmButtonColor: "#DD6B55", 
+      confirmButtonColor: "#7272ba", 
       html: `
         댓글이 작성되었습니다.
       `,

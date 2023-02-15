@@ -29,10 +29,15 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 
 const Home = () => {
+	const [tagData, setTagData] = useState([])
+	const [hotTagData, setHotTagData] = useState([])
+	const [hotOotd, setHotOotd] = useState([])
+	const Token = useSelector(selectUser)
+
 		//slick
-	const settings = {
+	const settings1 = {
 		dots: false,
-		infinite: true,
+		infinite: hotTagData && hotTagData.length > 3,
 		speed: 500,
 		slidesToShow: 3,
 		slidesToScroll: 1,	
@@ -40,14 +45,18 @@ const Home = () => {
 		autoplaySpeed: 3000,
 		pauseOnHover: true
 	};
+
+	const settings2 = {
+		dots: false,
+		infinite: tagData && tagData.length > 3,
+		speed: 500,
+		slidesToShow: 3,
+		slidesToScroll: 1,	
+		autoplay: true,
+		autoplaySpeed: 3500,
+		pauseOnHover: true
+	};
 	//slick
-	const [tagData, setTagData] = useState([])
-
-	const [hotTagData, setHotTagData] = useState([])
-
-	const [hotOotd, setHotOotd] = useState([])
-
-	const Token = useSelector(selectUser)
 
 	const dispatch = useDispatch()
 
@@ -163,7 +172,7 @@ const Home = () => {
 
 			<HomeOotdImage>
 
-				<Slider	 {...settings}>
+				<Slider	 {...settings1}>
 				{
 					hotTagData.map((hot)=>{
 						return (
@@ -181,7 +190,7 @@ const Home = () => {
 					<MdLocalFireDepartment color='red' size='30' />
 					<div>Hot Potato</div>
 				</div>
-				<Slider	 {...settings}>
+				<Slider	 {...settings2}>
 				{
 					hotOotd.map((hot)=>{
 						return (

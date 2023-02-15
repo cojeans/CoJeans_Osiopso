@@ -121,7 +121,7 @@ const EditProfile = () => {
 			}).then(() => {
 				Swal.fire({
 					icon: 'success',
-					confirmButtonColor: "#DD6B55",
+					confirmButtonColor: "#7272ba",
 					html: `
         회원정보가 수정되었습니다.
       `,

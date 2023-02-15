@@ -130,7 +130,7 @@ const OotdCreate = () => {
 
   Swal.fire({
     icon: 'success',
-    confirmButtonColor: "#DD6B55", 
+    confirmButtonColor: "#7272ba", 
     html: `
       OOTD 게시물이 작성되었습니다.
     `,

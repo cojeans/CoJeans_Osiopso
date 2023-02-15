@@ -108,8 +108,9 @@ const OotdDetail = () => {
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
-        
+        setootdUserUrl(result.imageUrl)
         const likeList = result.articleLikes
+        console.log(result)
 
         if (likeList.length) {
           likeList.forEach((like) => {
@@ -167,7 +168,7 @@ const OotdDetail = () => {
   useEffect(() => {
     getDetailOotd()
 
-  },[])
+  },[openCoco])
 
   const Report = ()=>{
     Swal.fire({
@@ -193,7 +194,7 @@ const OotdDetail = () => {
        html: `
         OOTD 게시물이 삭제되었습니다.
       `,
-      confirmButtonColor: "#DD6B55", 
+      confirmButtonColor: "#7272ba", 
     })
       .then(() => {
         navigate("/#ootd")

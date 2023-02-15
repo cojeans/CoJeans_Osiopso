@@ -1,7 +1,7 @@
 import styled,  {css} from "styled-components";
 
 export const modalStyle = css`
-  padding-bottom:60px;
+  padding-bottom:75px;
 `
 
 export const modalStyle2 = css`

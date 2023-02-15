@@ -55,9 +55,10 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 		html: `
 		${closetName} 옷장이 생성되었습니다.
 		`,
-			width: '300px',
+		width: '300px',
 		showCancelButton: false,
 		confirmButtonText: "확인",
+		confirmButtonColor: "#7272ba", 
 	}).then(()=>{
 					axios({
 					method: "post",
