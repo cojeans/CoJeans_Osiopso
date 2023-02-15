@@ -36,22 +36,7 @@ class ToggleButton extends React.Component {
           </Label>
         </Sample>
 
-        {/* <Sample>
-          <Label htmlFor="toggle-3">
-            Left Label
-            <Toggle
-              leftBackgroundColor="tomato"
-              rightBackgroundColor="green"
-              borderColor="black"
-              knobColor="white"
-              onChange={e => this.handleChange1(e.target.checked)}
-              checked={this.state.check}
-              name="toggle-3"
-            />
-            Right label
-          </Label>
-          <span>{this.state.check ? "on" : "off"}</span>
-        </Sample> */}
+    
       </Fragment>
     );
   }

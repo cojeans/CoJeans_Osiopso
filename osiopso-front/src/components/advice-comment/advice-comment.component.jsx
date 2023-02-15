@@ -1,7 +1,7 @@
 import { selectUser } from "../../store/user/user.selector"
 import { useSelector } from "react-redux"
 import {  useEffect, useState } from "react"
-
+import { useLocation } from "react-router-dom"
 
 import axios from "axios"
 import html2canvas from "html2canvas";
@@ -16,6 +16,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 import Slider from "react-slick";
 //
+
+import Swal from "sweetalert2"
 
 //style
 import {
@@ -54,6 +56,10 @@ const AdviectComment = () => {
 	const [content, setContent] = useState('')
 	const [imgUrl, setImgUrl] = useState('')
 
+	const location = useLocation()
+	const articleId = location.state.articleId
+	const userId = location.state.userId
+
 	const inputHandler = (e) => {
 
 		setContent(e.target.value)
@@ -62,13 +68,14 @@ const AdviectComment = () => {
 	const getUserCloset = () => {
 		axios({
 			method: "post",
-			url: `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=7`,
+			url: `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=${userId}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
 			},
 
 		}).then((res) => {
 			console.log(res)
+			
 			setClosetList(res.data)
 		}).catch((err) => {
 			console.log(err)
@@ -86,10 +93,9 @@ const onCapture = () => {
 	
 }
 	const submitCommentCreate = () => {
-		console.log('통신보냄	')
 		axios({
 			method: "post",
-			url: `${process.env.REACT_APP_AXIOS_URL}comment/8`,
+			url: `${process.env.REACT_APP_AXIOS_URL}comment/${articleId}`,
 			headers: {
 				Authorization: `Bearer ${Token.token}`,
 			},
@@ -102,6 +108,8 @@ const onCapture = () => {
 		}).catch((err) => {
 			console.log(err)
 		})
+
+
 }
 	useEffect(() => {
 		getUserCloset()

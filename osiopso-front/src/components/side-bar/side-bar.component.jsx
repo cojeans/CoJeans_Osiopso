@@ -25,7 +25,7 @@ export const SideBar = () => {
   
   useEffect(()=>{
     const handleResize = ()=>{
-      if(window.innerWidth < 600 && isSideOpen){
+      if(isSideOpen){
         setIsSideOpen(false);
       }
     };
@@ -58,30 +58,27 @@ export const SideBar = () => {
           : div
         )} */}
         <ul>
-          <LinkContainer to='/'>
-            Home
-          </LinkContainer>
-          {!isLogin && <LinkContainer to='/join'>
+          {/* {!isLogin && <LinkContainer to='/join'>
             회원가입
           </LinkContainer>}
 
           {!isLogin && <LinkContainer to='/login'>
             로그인
-          </LinkContainer>}
+          </LinkContainer>} */}
 
-          {isLogin && <LinkContainer to='/membershipwithdrawal'>
+          {<LinkContainer to='/membershipwithdrawal'>
             회원탈퇴
           </LinkContainer>}
           
-          {isLogin && <LinkContainer onClick={signOut}to='/login'>
+          {<LinkContainer onClick={signOut}to='/login'>
             로그아웃
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/changePassword'>
+          {<LinkContainer to='/changePassword'>
             비밀번호 변경
           </LinkContainer>}
 
-          {isLogin && <LinkContainer to='/disclosurescope'>
+          {<LinkContainer to='/disclosurescope'>
             공개범위 설정
           </LinkContainer>}
           {/* <button onClick={signOut}>토큰삭제</button> */}

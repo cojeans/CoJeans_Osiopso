@@ -198,9 +198,6 @@ const AdviceCreate = ()=> {
             </CautionBox>
           </Note>
         </NoteBox>
-          <MarginDiv>
-            <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
-          </MarginDiv>
           {/* <NoteBox>
           <Note>
             <ExclamationMark>

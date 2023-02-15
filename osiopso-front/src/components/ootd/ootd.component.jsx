@@ -13,8 +13,8 @@ import {
 } from "./ootd.styles";
 
 import { RiFilter2Fill } from "react-icons/ri";
+import { VscComment } from "react-icons/vsc";
 
-import { ReactComponent as Comment } from "../../assets/comment.svg";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 
@@ -99,7 +99,7 @@ const Ootd = () => {
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>
-                    <Comment />
+                    <VscComment size="24" />
                   </CommentContainer>
                   <p>{ el.commentCnt}</p>
                 </UpperCommentContainer>

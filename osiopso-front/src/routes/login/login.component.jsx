@@ -1,23 +1,41 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constants';
+import kakaoLogo from '../../assets/kakao-logo.png';
+import googleLogo from '../../assets/google-logo.png';
+import githubLogo from '../../assets/github-logo.png';
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
+import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor,   } from './login.stlyes'
 import { useDispatch } from 'react-redux'
+import { TextContainer, SocialSignup } from '../join/join.stlyes';
 import './login.stlyes'
 import axios from 'axios';
 import { login } from '../../store/user/user.reducer'
-// import {
-//   signInAuthUserWithEmailAndPassword,
-//   signInWithGooglePopup,
-// } from '../../utils/firebase/firebase.utils';
-
-
+import Swal from 'sweetalert2';
+  
 const defaultFormFields = {
   email: '',
   password: '',
 };
 
+  const loginAlert = () => {
+    Swal.fire({
+      title:'신고',
+      text: "해당 훈수를 신고하시겠습니까?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '신고하기'    
+    }).then((result)=>{
+      if (result.isConfirmed) {
+        Swal.fire(
+          "신고하였습니다."
+        )
+      }
+    })
+  }
 
 const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
@@ -28,20 +46,6 @@ const Login = () => {
     setFormFields(defaultFormFields);
   };
 
-  // const signInWithGoogle = async () => {
-  //   await signInWithGooglePopup();
-  // };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     await signInAuthUserWithEmailAndPassword(email, password);
-  //     resetFormFields();
-  //   } catch (error) {
-  //     console.log('user sign in failed', error);
-  //   }
-  // };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -90,7 +94,7 @@ const Login = () => {
   }
 
   const onKeyPress = (e)=> {
-    if(e.key == 'Enter') {
+    if(e.key === 'Enter') {
       LoginFunc();
     }
   }
@@ -149,6 +153,14 @@ const Login = () => {
         </ButtonsContainer>
         </MarginBox>
         </ContentBox>
+        <TextContainer>간편 로그인</TextContainer>
+      <SocialSignup>
+        <a href={KAKAO_AUTH_URL}> <div className='imgBox'><img src={kakaoLogo} alt="Kakao" /> </div></a>
+        <a href={GOOGLE_AUTH_URL}><div className='imgBox'>
+						<img src={googleLogo} alt="Google" />
+        </div> </a>
+						<a href={GITHUB_AUTH_URL}><div className='imgBox'><img src={githubLogo} alt="Github" />  </div></a>
+					</SocialSignup>
     </SignInContainer>
   );
 };
