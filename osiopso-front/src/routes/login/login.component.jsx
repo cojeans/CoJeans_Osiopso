@@ -6,8 +6,9 @@ import googleLogo from '../../assets/google-logo.png';
 import githubLogo from '../../assets/github-logo.png';
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
+import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor,   } from './login.stlyes'
 import { useDispatch } from 'react-redux'
+import { TextContainer, SocialSignup } from '../join/join.stlyes';
 import './login.stlyes'
 import axios from 'axios';
 import { login } from '../../store/user/user.reducer'

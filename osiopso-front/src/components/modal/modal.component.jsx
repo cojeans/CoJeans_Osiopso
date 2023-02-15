@@ -54,7 +54,7 @@ const Modal = ({ setModalOpen, openScroll, page, autoCategory, autoColor }) => {
 				{(page === 2) && (<OotdModal closeModal={closeModal} />)}
 				{(page === 3) && (<AdviceModal closeModal={closeModal} />)}
 				{(page === 4) && (<ClothesTagModal closeModal={closeModal} />)}
-				{(page === 5) && (< EditProfile closeModal={closeModal} />)}
+				{(page === 5) && (< EditProfile closeModal={closeModal}  />)}
 				{/* {
 					page
 						? <PlusModal closeModal={closeModal} />
