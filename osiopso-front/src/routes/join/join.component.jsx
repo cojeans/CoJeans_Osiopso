@@ -8,8 +8,7 @@ import {
 	Osiopso,
 	Bodoni,
   ButtonContainer,
-  
-
+  Loading,
 } from "./join.stlyes";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -35,6 +34,10 @@ const Join = () => {
   //   alert('passwords do not match');
   //   return;
   // }
+  const onLoading = ()=> {
+    
+
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -43,6 +46,7 @@ const Join = () => {
   };
   // const dispatch = useDispatch();
   const JoinFunc = (e) => {
+    // onLoading()
     e.preventDefault();
     axios({
       method: "post",
@@ -53,6 +57,31 @@ const Join = () => {
         password: password,
       },
     })
+
+    let timerInterval
+    Swal.fire({
+      title: '회원가입을 진행중입니다!',
+      html: ' 천 분의 <b></b>초 후에 닫힙니다.',
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+        const b = Swal.getHtmlContainer().querySelector('b')
+        timerInterval = setInterval(() => {
+          b.textContent = Swal.getTimerLeft()
+        }, 100)
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+    })    
+
+      // onLoading()
       .then((res) => {
         console.log(res);
         // localStorage.clear()
@@ -61,16 +90,19 @@ const Join = () => {
 
         // const value = {email, token: res.data.accessToken}
         // dispatch(login(value))
+
         Swal.fire({
           icon: 'success',
-          confirmButtonColor:"DD6B55",
+          confirmButtonColor:"#000000",
           html: `
           회원가입이 완료되었습니다.`,     
           showCancelButton: false,
           confirmButtonText: "확인",
+          
+          // navigate("/")
         })
-        
-        navigate("/");
+       
+
       })
       .catch((err) => {
         console.log(err);
