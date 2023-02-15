@@ -14,7 +14,8 @@ import {
 	SelectedTagContainer,
 	SelectedTag,
 	UserUploadList,
-	OotdTagDiv
+	OotdTagDiv,
+	TagBox
 } from './home.styles'
 import { ReactComponent as Fire } from "../../assets/fire.svg"
 import { ReactComponent as User2 } from "../../assets/userFashion.svg"
@@ -22,8 +23,14 @@ import { ReactComponent as User2 } from "../../assets/userFashion.svg"
 import { ootd } from '../../store/ootd/ootd.reducer'
 import Ootd from '../../components/ootd/ootd.component'
 import { useEffect } from 'react'
+import { useState } from 'react'
+
+
 
 const Home = () =>{
+	const [ tagData, setTagData ] = useState([]) 
+
+
 	const mainList = [
 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwg8K7tx_mGdIZoaNVV3_cqYX-ONqq33Mp6pn4MD_YLgAuDxSfm5jIUjPm1boPfXc2f1c&usqp=CAU',
 		'https://i.pinimg.com/originals/74/4a/dc/744adc2d4e8aafbd57d050ce07809c40.jpg',
@@ -37,7 +44,7 @@ const Home = () =>{
 	]
 
 	const tags = [
-		'고프코어',
+		'고프코어였던것',
 		'미니멀',
 		'놈코어',
 		'스트릿',
@@ -49,6 +56,8 @@ const Home = () =>{
 		'https://images.soco.id/877-157520981_886592098801448_5005490940673514409_n.jpg.jpeg',
 
 	]
+
+
 
 	const Token = useSelector(selectUser)
 
@@ -78,27 +87,65 @@ const Home = () =>{
     })
 	}
 
+	const getFamousTags = ()=> {
+		axios({
+			method: 'get',
+			url: `${process.env.REACT_APP_AXIOS_URL}main/preview`,
+			headers: {
+				Authorization: `Bearer ${Token.token}`,
+			}
+		})
+		.then((res)=>{
+			console.log("엑시오스 결과",res.data)
+			
+			setTagData(res.data.responseData)
+			// res.data.responseData.map((el)=>{
+			// 	console.log(el.keyword)
+			// })
+
+		})
+		.catch((er)=> {
+			console.log(er)
+		})
+	}
+
 	useEffect(() => {
-		getCurrentUser()
+		if (!Token.token) {
+			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+			navigate('/login')
+		} else {
+			getCurrentUser()
+			getFamousTags()
+		}
 	},[])
+
+	const goToTag = (e)=>{
+		console.log(e)		
+		
+	}
 
 	return (
 		<div>
+
 			<TextToLeft>
-				{tags.map((el)=>{
+				
+				{
+				tagData.map((tag, idx)=>{
 					return (
-						'#'+el+' '
-					)
-					 
-				})}
+						<TagBox key={idx} onClick={()=> goToTag(tag.keyword)}>{tag.keyword}</TagBox>
+					)	
+				})
+				}
 			</TextToLeft>
 
 			<HomeOotdImage>
-				{mainList.map((el)=>{
+				{
+				mainList.map((el)=>{
 					return(
 						<img src={el}/>
 					)
-				})}
+				})
+				}
 			</HomeOotdImage>
 			{/* <DoSwiper></DoSwiper> */}
 			
@@ -106,7 +153,7 @@ const Home = () =>{
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
 			</SelectedTagContainer>
 
-			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
+			<TextToLeft><Fire/>훈수 토론장</TextToLeft>
 			<HomeOotdImage>
 				{hunsuImages.map((el)=>{
 					return (

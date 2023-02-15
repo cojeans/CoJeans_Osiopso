@@ -1,11 +1,18 @@
 package com.cojeans.osiopso.repository.article;
 
+import com.cojeans.osiopso.entity.feed.Ootd;
 import com.cojeans.osiopso.entity.feed.QArticle;
 import com.cojeans.osiopso.entity.feed.QArticleTag;
+import com.cojeans.osiopso.entity.feed.QOotd;
+import com.cojeans.osiopso.entity.tag.QTag;
+import com.cojeans.osiopso.entity.user.Gender;
+import com.cojeans.osiopso.entity.user.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
@@ -54,6 +61,88 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
                 .groupBy(articleTag.tag)
                 .orderBy(articleTag.tag.count().desc())
                 .limit(5)
+                .fetch();
+    }
+
+    @Override
+    public List<Long> findArticleByTags(List<String> styleTag, List<String> tpoTag, Pageable pageable, Long idx) {
+        QArticleTag articleTag = QArticleTag.articleTag;
+        QTag tag = QTag.tag;
+
+        List<String> tags = new ArrayList<>();
+
+        for (String s : styleTag) {
+            tags.add(s);
+        }
+
+        for (String s : tpoTag) {
+            tags.add(s);
+        }
+
+        return jpaQueryFactory.select(articleTag.article.id)
+                .distinct()
+                .from(articleTag)
+                .leftJoin(tag)
+                .on(tag.id.eq(articleTag.tag.id))
+                .where(tag.keyword.in(tags).and(articleTag.article.id.lt(idx)))
+                .orderBy(articleTag.article.id.desc())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    @Override
+    public List<Ootd> findArticleByAge(Long age, Pageable pageable, Long idx) {
+        QOotd ootd = QOotd.ootd;
+        QUser user = QUser.user;
+//        select *
+//        from article a
+//        left join user u
+//        on a.id = u.id
+//        where u.age = 0
+//        ;
+        age /= 10;
+
+        return jpaQueryFactory.selectFrom(ootd)
+                .leftJoin(user)
+                .on(ootd.user.id.eq(user.id))
+                .where(user.age.divide(10).eq(Math.toIntExact(age)).and(ootd.id.lt(idx)))
+                .orderBy(ootd.id.desc())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    @Override
+    public List<Ootd> findArticleByGender(Gender gender, Pageable pageable, Long idx) {
+        QOotd ootd = QOotd.ootd;
+        QUser user = QUser.user;
+
+        return jpaQueryFactory.selectFrom(ootd)
+                .leftJoin(user)
+                .on(ootd.user.id.eq(user.id))
+                .where(user.gender.eq(gender).and(ootd.id.lt(idx)))
+                .orderBy(ootd.id.desc())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    @Override
+    public List<Ootd> findArticleByAgeAndGender(Long age, Gender gender, Pageable pageable, Long idx) {
+        QOotd ootd = QOotd.ootd;
+        QUser user = QUser.user;
+//        select *
+//        from article a
+//        left join user u
+//        on a.id = u.id
+//        where u.age = 0
+//        ;
+        age /= 10;
+
+        return jpaQueryFactory.selectFrom(ootd)
+                .leftJoin(user)
+                .on(ootd.user.id.eq(user.id))
+                .where(user.age.divide(10).eq(Math.toIntExact(age)).and(user.gender.eq(gender)).and(ootd.id.lt(idx)))
+                .orderBy(ootd.id.desc())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 

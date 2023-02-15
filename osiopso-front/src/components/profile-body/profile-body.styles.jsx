@@ -1,14 +1,36 @@
-import styled from "styled-components"
+import styled, { css} from "styled-components"
+
+export const Three = css`
+		grid-template-columns: 1fr 1fr 1fr;
+
+`
+export const Two = css`
+		grid-template-columns: 1fr 1fr;
+
+`
+
+
 
 export const TabMenue = styled.div`
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr;
+	${({isUser}) => isUser==='three' && Three}
+	${({isUser}) => isUser==='two' && Two}
+
 	width: 80%;
-		p{
+	p{
 			text-align:center;
+			margin:0;
+			padding:10px;
+			
+		}
+		.select{
+			border-bottom: solid 2px black;
 		}
 	margin:0 auto;
-	padding-bottom:15px;
+	margin-bottom:15px;
+	border-bottom:1px solid black;
+
 `
 
 export const TabBody = styled.div`

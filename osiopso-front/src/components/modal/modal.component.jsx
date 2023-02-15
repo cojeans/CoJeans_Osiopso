@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import {  useEffect, useRef } from 'react';
 
 import { ModalPage } from "./modal.styles"
 import { useSelector, useDispatch } from "react-redux"

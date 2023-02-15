@@ -6,7 +6,7 @@ import { useState, useCallback, useEffect } from "react"
 import { useSelector } from 'react-redux';
 
 import { selectUser } from '../../store/user/user.selector';
-import { selectCloset } from '../../store/closet/closet.selector';
+// import { selectCloset } from '../../store/closet/closet.selector';
 
 import ClosetCreateModal from "../closet-create-modal/closet-create-modal.component"
 import {
@@ -15,6 +15,7 @@ import {
 	PlusCloset
 } from "./profile-closet.styles"
 import { ClosetItem } from "../closet/closet.styles"
+// import { selectClothes } from '../../store/clothes/clothes.selector';
 
 
 export function useBodyScrollLock() {
@@ -30,14 +31,14 @@ export function useBodyScrollLock() {
 }
 
 
-const ProfileCloset = () => {
+const ProfileCloset = ({ id }) => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
-
-	const getClosetList = () => {
+	const getClosetList = (urlString) => {
+		console.log('옷장리스트가져오기')
 		axios({
 					method: "post",
-					url: "http://localhost:8080/api/closet/mylist",
+					url: urlString,
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},
@@ -65,15 +66,27 @@ const ProfileCloset = () => {
 		lockScroll();
 	};
 
+	useEffect(() => {
+		if (id > 0) {
+		getClosetList( `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=${id}`)
+
+		} else {
+			getClosetList( `${process.env.REACT_APP_AXIOS_URL}closet/mylist`)
+		}
+	},[])
+
 	
 	return (
 		<ClosetBodyContainer>
-			<ClosetItem onClick={showModal}>
-				<LogoContainer2>
-					<PlusCloset/>
-				</LogoContainer2>
-				<p> 옷장 만들기</p>
-			</ClosetItem>
+			{
+				! id>0 &&
+				<ClosetItem page={ 'profile'} onClick={showModal}>
+					<LogoContainer2>
+						<PlusCloset/>
+					</LogoContainer2>
+					<p> 옷장 만들기</p>
+				</ClosetItem>
+			}
 			{
 				closetList.map((closet, idx) => {
 					return <Closet closet={ closet } key={idx} />
@@ -85,7 +98,7 @@ const ProfileCloset = () => {
 				<ClosetCreateModal
 					setModalOpen={setModalOpen}
 					openScroll={openScroll}
-					getClosetList={getClosetList}
+					setClosetList={ setClosetList }
 				/>
 			}
 

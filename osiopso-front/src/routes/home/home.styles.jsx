@@ -13,6 +13,8 @@ export const TextToLeft = styled.div`
 display: flex;
 align-items: center
 text-align: left;
+font-size: 140%;
+margin: 5% 0% 2% 0%;
 `
 export const HomeOotdImage = styled.div`
 display:grid;
@@ -21,8 +23,9 @@ justify-content: center;
 justify-items: center;
 margin: auto;
 img{
-    width: 110px;
-    height: 167px
+    width: 97%;
+    height: 74%;
+    border-radius: 4%;
 }
 `
 export const UserUploadList = styled.div`
@@ -60,4 +63,11 @@ border: 4px solid black;
 
 export const OotdTagDiv = styled.div`
     padding-top:60px;
+`
+export const TagBox = styled.div`
+display: flex;
+// align-items: center
+text-align: left;
+font-size: 80%;
+margin: 1% 2% 2% 0%;
 `

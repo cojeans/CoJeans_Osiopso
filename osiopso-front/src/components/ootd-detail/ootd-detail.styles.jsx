@@ -138,3 +138,28 @@ export const IconMessageBox = styled.div`
       font-size:13px;
     }
   `
+
+export const CommentIcon = styled(HashLink)`
+    display :flex;
+    align-items: center;
+    width:50%;
+    justify-content: space-evenly;
+    div{
+      font-size:13px;
+    }
+`
+
+export const CommentListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;;
+  align-items: center;
+`
+export const ContentBox = styled.div`
+display: flex;
+width: 90%;
+height: 100%;
+margin: 10px 20px 10px;
+white-space: normal;
+word-break: break-all;
+`

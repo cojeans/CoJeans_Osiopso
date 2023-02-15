@@ -58,10 +58,11 @@ public class UserController{
     public ResponseEntity<UserDto> getCurrentUser(Authentication authentication) {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 
-        User user = userRepository.findById(userDetail.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
+//        User user = userRepository.findById(userDetail.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetail.getId()));
 
-        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
+//        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getMine(userDetail), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")

@@ -6,7 +6,7 @@ import googleLogo from '../../assets/google-logo.png';
 import githubLogo from '../../assets/github-logo.png';
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignInContainer, ButtonsContainer  } from './login.stlyes'
+import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
 import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
@@ -23,9 +23,11 @@ const defaultFormFields = {
   password: '',
 };
 
+
 const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -54,10 +56,10 @@ const Login = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
-  const navigate = useNavigate();
-
+  
+  const navigate = useNavigate()
   const LoginFunc = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
       axios({
         method: "post",
         url: 'http://localhost:8080/api/user/login',
@@ -78,40 +80,77 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err)
+        alert('이메일이나 비밀번호를 확인해주세요.')
         navigate("/login")
       })
-  
+  }
 
+  const SignUp = ()=>{
+    navigate('/join')
+  }
+
+  const goToFindPage = ()=> {
+    navigate('/find')
+    
+  }
+
+  const onKeyPress = (e)=> {
+    if(e.key == 'Enter') {
+      LoginFunc();
+    }
   }
   return (
     <SignInContainer>
 
       <hr />
       {/* <h2>Already have an account?</h2> */}
-      <span>이메일과 비밀번호를 입력하세요.</span>
-        <FormInput
-          label='Email'
-          type='email'
-          required
-          onChange={handleChange}
-          name='email'
-          value={email}
-        />
+      {/* <span>이메일과 비밀번호를 입력하세요.</span> */}
+      <Osiopso>
+        <Bodoni>Osiopso</Bodoni>
+        &nbsp;내 옷장을 앱속으로
+        </Osiopso>
 
-        <FormInput
-          label='Password'
-          type='password'
-          required
-          onChange={handleChange}
-          name='password'
-          value={password}
-        />
-        
+        <ContentBox>
+        <IdPasswordBox>
+          <div>
+          <FormInput
+            label='Email'
+            type='email'
+            required
+            onChange={handleChange}
+            name='email'
+            value={email}
+          />
+
+          <FormInput
+            label='Password'
+            type='password'
+            required
+            onChange={handleChange}
+            name='password'
+            value={password}
+            onKeyPress = {onKeyPress}
+          />
+          </div>
+          <FindIdPassword onClick={goToFindPage}>아이디 / 비밀번호 찾기  </FindIdPassword>
+        </IdPasswordBox>
+
+        <MarginBox>
         <ButtonsContainer>
-          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
-          {/* <button onClick={LoginFunc}>
-            test
-          </button> */}
+        <Button
+          type='submit'
+          size={'md'}
+          variant={ 'success'}
+          onClick={LoginFunc}
+          ><ChangeFontColor>Sign In</ChangeFontColor></Button>
+
+        <Button
+          type='submit'
+          size={'md'}
+          variant={ 'success'}
+          onClick={SignUp}
+          ><ChangeFontColor>Join</ChangeFontColor></Button>
+        
         </ButtonsContainer>
         <TextContainer>간편 로그인</TextContainer>
 					<SocialSignup>
@@ -119,6 +158,8 @@ const Login = () => {
 						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
 						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
 					</SocialSignup>
+        </MarginBox>
+        </ContentBox>
     </SignInContainer>
   );
 };

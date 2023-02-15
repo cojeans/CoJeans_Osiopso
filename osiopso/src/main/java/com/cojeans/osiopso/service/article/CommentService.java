@@ -7,6 +7,7 @@ import com.cojeans.osiopso.entity.comment.*;
 import com.cojeans.osiopso.entity.feed.Article;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
+import com.cojeans.osiopso.repository.closet.ClothesRepository;
 import com.cojeans.osiopso.repository.comment.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class CommentService {
     private final CommentUpRepository commentUpRepository;
     private final CommentDownRepository commentDownRepository;
     private final CommentPhotoRepository commentPhotoRepository;
+    private final CommentClothesRepository commentClothesRepository;
+    private final ClothesRepository clothesRepository;
 
     public boolean createComment(CommentRequestDto dto, Long articleNo, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -42,6 +45,7 @@ public class CommentService {
                 .report(0L)
                 .up(0L)
                 .down(0L)
+                .isSelected(false)
                 .build();
 
         commentRepository.save(comment);
@@ -53,6 +57,16 @@ public class CommentService {
                     .article(article)
                     .comment(comment)
                     .build());
+        }
+
+        // 이미지를 조합하는데 사용한 옷 리스트
+        if(dto.getClothesList() != null) {
+            for (Long clothesId : dto.getClothesList()) {
+                commentClothesRepository.save(CommentClothes.builder()
+                        .comment(comment)
+                        .clothes(clothesRepository.findById(clothesId).orElseThrow())
+                        .build());
+            }
         }
 
         return true;
@@ -83,6 +97,9 @@ public class CommentService {
                     .content(dto.getContent())
                     .article(article)
                     .report(0L)
+                    .up(0L)
+                    .down(0L)
+                    .isSelected(false)
                     .build());
 
             cocommentRepository.save(Cocomment.builder()
@@ -100,6 +117,9 @@ public class CommentService {
                     .content(dto.getContent())
                     .article(article)
                     .report(0L)
+                    .up(0L)
+                    .down(0L)
+                    .isSelected(false)
                     .build());
 
             cocommentRepository.save(Cocomment.builder()
@@ -133,6 +153,9 @@ public class CommentService {
                 .createTime(comment.getCreateTime())
                 .user(comment.getUser())
                 .report(comment.getReport())
+                .down(comment.getDown())
+                .up(comment.getUp())
+                .isSelected(comment.getIsSelected())
                 .build());
 
         return true;
@@ -140,6 +163,7 @@ public class CommentService {
 
     public boolean deleteComment(Long articleno, Long commentno, Long userId) {
 //        Article article = articleRepository.findById(userId).orElseThrow();
+
         Comment comment = commentRepository.findById(commentno).orElseThrow();
 
         // 댓글 작성자만 삭제권한이 있다.
@@ -158,7 +182,13 @@ public class CommentService {
             // 2. 삭제하려는 댓글의 좋아요 모두 삭제
             commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
 
-            // 3. 댓글 삭제
+            // 3. 삭제하려는 댓글의 CommentClothes 모두 삭제
+            commentClothesRepository.deleteAllByCommentId(commentno);
+
+            // 4. 삭제하려는 댓글의 CommentPhoto 모두 삭제
+            commentPhotoRepository.deleteAllByCommentId(commentno);
+
+            // 4. 댓글 삭제
             for (Cocomment cocomment : rootIdList) {
                 // 2. 삭제하려는 댓글의 대댓글의 좋아요 모두 삭제
                 commentLikeRepository.deleteByComment_IdAndArticle_Id(cocomment.getComment().getId(), articleno);
@@ -177,19 +207,6 @@ public class CommentService {
             commentRepository.deleteById(commentno);
         }
 
-
-//            // 삭제하려는 댓글의 좋아요(commentLikes) 먼제 삭제
-//            // 최상위 commnet의 Pk를 root_id로 사용하는 모든 댓글들을 삭제한다.
-//            commentLikeRepository.deleteByComment_IdAndArticle_Id(commentno, articleno);
-//            cocommentRepository.deleteAllByRootId(commentno);
-//        } // 원석게이게이야
-
-        // 제대로 지워졌다면?
-//        if (commentRepository.findByIdAndArticle_Id(articleno, commentno) == null) {
-//            return true;
-//        } else {
-//            return false;
-//        }
         return true;
     }
 
@@ -250,9 +267,23 @@ public class CommentService {
             likeCo = true;
         }
 
+        String imageUrl = null;
+        CommentPhoto cp = commentPhotoRepository.findByCommentId(commentNo);
+        if(cp != null) imageUrl = cp.getImageUrl();
+
+        List<CommentClothes> cc = commentClothesRepository.findAllByCommentId(commentNo);
+        List<String> result = new ArrayList<>();
+        if(cc != null) {
+            for (CommentClothes commentClothes : cc) {
+                result.add(clothesRepository.findById(commentClothes.getClothes().getId()).orElseThrow()
+                        .getImageUrl());
+            }
+        }
         return CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .like(likeCo)
+                .imageUrl(imageUrl)
+                .itemUrlList(result)
                 .build();
     }
 
@@ -268,6 +299,7 @@ public class CommentService {
                 .createTime(comment.getCreateTime())
                 .modifyTime(comment.getModifyTime())
                 .article(comment.getArticle())
+                .isSelected(comment.getIsSelected())
                 .build());
     }
 
@@ -348,5 +380,51 @@ public class CommentService {
 
             commentDownRepository.deleteByComment_Id(commentNo);
         }
+    }
+
+    // 댓글 채택
+    public boolean selectComment(Long commentNo, Long userId) {
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        // 본인의 댓글은 채택할 수 없다.
+        // 해당 댓글의 작성자가 본인일 경우.. 채택 x
+        if (comment.getUser().getId() == userId) {
+            return false;
+        }
+
+        commentRepository.save(comment.builder()
+                .id(commentNo)
+                .content(comment.getContent())
+                .user(comment.getUser())
+                .report(comment.getReport())
+                .createTime(comment.getCreateTime())
+                .modifyTime(comment.getModifyTime())
+                .article(comment.getArticle())
+                .up(comment.getUp())
+                .down(comment.getDown())
+                .isSelected(true)
+                .build());
+
+        // 채택이 된 유저의 점수를 올려줘야한다.
+        User user = userRepository.findById(userId).orElseThrow();
+
+        userRepository.save(user.builder()
+                .id(user.getId())
+                .age(user.getAge())
+                .bio(user.getBio())
+                .email(user.getEmail())
+                .emailVerified(user.getEmailVerified())
+                .gender(user.getGender())
+                .imageUrl(user.getImageUrl())
+                .grade(user.getGrade() + 5)
+                .isProfilePublic(user.getIsProfilePublic())
+                .name(user.getName())
+                .password(user.getPassword())
+                .provider(user.getProvider())
+                .providerId(user.getProviderId())
+                .role(user.getRole())
+                .build());
+
+        return true;
     }
 }

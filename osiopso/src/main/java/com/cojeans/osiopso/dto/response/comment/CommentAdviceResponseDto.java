@@ -13,10 +13,11 @@ public class CommentAdviceResponseDto {
     private String profileImageUrl;
     private String imageUrl;
     private Float pastTime;
-    private boolean like;
+    private Boolean like;
     private String time;
     private String content;
     private Long report;
     private Long up;
     private Long down;
+    private Boolean isSelected;
 }

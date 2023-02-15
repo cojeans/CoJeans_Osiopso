@@ -102,6 +102,8 @@ public class FeedApiController {
             @RequestParam(value = "idx", defaultValue = "0") long idx,
             @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
 
+
+
         // 최초 로딩시점
         if (idx == 0) {
             idx = Long.MAX_VALUE;
@@ -176,8 +178,16 @@ public class FeedApiController {
 
     // Ootd (스타일 태그, TPO ,나이, 성별) 별 분류
     @GetMapping("/ootd/filter")
-    public ResponseEntity<?> filterOotd(@RequestBody FilterOotdRequestDto filter) {
-        List<OotdListResponseDto> ootdListResponseDtos = ootdService.filterOotd(filter);
+    public ResponseEntity<?> filterOotd(@RequestBody FilterOotdRequestDto filter,
+                                        @RequestParam(value = "idx", defaultValue = "0") long idx,
+                                        @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        // 최초 로딩시점
+        if (idx == 0) {
+            idx = Long.MAX_VALUE;
+        }
+
+        List<OotdListResponseDto> ootdListResponseDtos = ootdService.filterOotd(filter, pageable, idx);
 
         return new ResponseEntity(new ApiResponseDto(true, "filterOotd Success", ootdListResponseDtos), HttpStatus.OK);
     }

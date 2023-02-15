@@ -13,9 +13,9 @@ img{
 }
 `
 export const TopTag = styled.div`
-width: 30%;
+width: 100%;
 display:flex;
-justify-content: space-around;
+justify-content: space-evenly;
 `
 export const Container = styled.div`
 width: 150px;
@@ -23,6 +23,7 @@ display:flex;
 // flex-direction: column;
 justify-content: space-between;
 align-items:center;
+margin-top: 20px;
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;

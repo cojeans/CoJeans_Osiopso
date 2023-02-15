@@ -1,7 +1,5 @@
 package com.cojeans.osiopso.service.article;
 
-//import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-
 import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.Advice;
@@ -25,13 +23,14 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleTagRepository articleTagRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final CocommentRepository cocommentRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final CommentUpRepository commentUpRepository;
     private final CommentDownRepository commentDownRepository;
+    private final CommentClothesRepository commentClothesRepository;
+    private final CommentPhotoRepository commentPhotoRepository;
 
 
     // 1번 article 을 지울 때..
@@ -51,25 +50,35 @@ public class ArticleService {
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(articleNo);
         for (ArticleTag at : articleTag) {
             articleTagRepository.deleteById(at.getId());
-//            tagRepository.deleteById(at.getTag().getId());
         }
 
         // 게시물과 관련된 사진삭제
         articlePhotoRepository.deleteByArticle_Id(articleNo);
         Long articleId = articleRepository.findById(articleNo).orElseThrow().getId();
 
+        // 게시물과 관련된 좋아요들 삭제
+        articleLikeRepository.deleteAllByArticle_Id(articleNo);
+
         // 게시물과 관련된 up, down 삭제
         commentUpRepository.deleteByArticle_Id(articleNo);
         commentDownRepository.deleteByArticle_Id(articleNo);
-
-        // 게시물과 관련된 좋아요들 삭제
-        articleLikeRepository.deleteAllByArticle_Id(articleNo);
 
         // 댓글과 관련된 좋아요들 삭제
         commentLikeRepository.deleteAllByArticle_Id(articleNo);
 
         // 게시물과 관련된 대댓글들 삭제
         cocommentRepository.deleteAllByArticle_Id(articleNo);
+
+        // 게시물에 달린 댓글들의 commentClothes 삭제
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        for (Comment comment : commentList) {
+            commentClothesRepository.deleteAllByCommentId(comment.getId());
+        }
+
+        // 게시물에 달린 댓글들의 commentPhoto 삭제
+        for (Comment comment : commentList) {
+            commentPhotoRepository.deleteAllByCommentId(comment.getId());
+        }
 
         // 게시물과 관련된 댓글들 삭제
         commentRepository.deleteAllByArticle_Id(articleNo);
@@ -104,14 +113,16 @@ public class ArticleService {
         String timeGapToString = "";
 
         // l/1000 는 초 단위
-        if (timeGap < 60) {
-            timeGapToString = timeGap + "s";
+        if (timeGap < 20) {
+            timeGapToString = "방금";
+        } else if (timeGap < 60){
+            timeGapToString = timeGap + "초 전";
         } else if (timeGap < 3600) { // 60초 ~ 3600초(1분 ~ 60분) 는 분 단위
-            timeGapToString = timeGap / 60 + "m";
+            timeGapToString = timeGap / 60 + "분 전";
         } else if (timeGap < 84000) { // 3601초 ~ 84000초 (1시간 ~ 24시간) 는 시간 단위
-            timeGapToString = timeGap / 3600 + "h";
+            timeGapToString = timeGap / 3600 + "시간 전";
         } else if (timeGap < 2520000) { // 84001초 ~  (1일 ~ 30일) 는 일단위
-            timeGapToString = timeGap / 84000 + "d";
+            timeGapToString = timeGap / 84000 + "일 전";
         }
 
         return GapTimeVo.builder()

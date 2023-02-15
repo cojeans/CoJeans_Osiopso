@@ -26,14 +26,15 @@ import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import Modal from "../modal/modal.component";
 import {
   selectClothes,
   localPhoto,
 } from "../../store/clothes/clothes.selector";
-import Modal from "../modal/modal.component";
 import { selectCloset } from '../../store/closet/closet.selector';
 
 import Test from "../test/test.component";
+import { ref as fref, getStorage, uploadString } from "firebase/storage";
 const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
 const color = ['검정', '파랑', '빨강']
 
@@ -43,146 +44,145 @@ const defaultClothesForm = {
   tags: [],
 };
 
+
 const ClothesSelectBox = () => {
-  const closetData  = useSelector(selectCloset)
-	// console.log(closetData, 'closet_list')
-  const saveData = useSelector(selectClothes);
-  const navigate = useNavigate();
-  // console.log(saveData)
-  // const [isAutoTag, setIsAutoTag] = useState(false); 
-  const Token = useSelector(selectUser);
-  const isAutoTag = useSelector(localPhoto);
-  useEffect(() => {
-    FashionAi();
-  }, [isAutoTag]);
-  const dispatch = useDispatch();
-  // const saveData = useSelector(selectClothes);
-  const onNavigateHandler = () => {
-    navigate("update/");
-  };
-  const [ootdFormData, setOotdFormData] = useState(defaultClothesForm);
-  const [clothesFormData, setClothesFormData] = useState(defaultClothesForm);
-  const { picture, tags } = clothesFormData
-  const [modalOpen, setModalOpen] = useState(false);
-  const { lockScroll, openScroll } = useBodyScrollLock();
-  // const [authCategory, setAutoCategory] = useState('');
-  // const [authColor, setAutoColor] = useState('');
-  const showModal = () => {
-    window.scrollTo(0, 0);
-    setModalOpen(true);
-    lockScroll();
-  };
-  const saveTag = useSelector(selectAutoTag)
-  const finalTag = useSelector(selectTag)
-  // const handleAutoTag = () => {
-  //   setIsAutoTag(!isAutoTag)
-  // }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // const saveTag2 = useSelector(selectTag)
+    const navigate = useNavigate();
+    const Token = useSelector(selectUser);
+    const isAutoTag = useSelector(localPhoto);
+    useEffect(() => {
+      FashionAi();
+    }, [isAutoTag]);
+    const saveData = useSelector(selectClothes);
+    console.log(saveData);
 
-    console.log('this is tag', finalTag)
-    console.log(finalTag[0])
-    // const closetData  = useSelector(selectCloset)
-    console.log(closetData, 'closetlist')
-    // console.log('저장?')
-    // console.log(closetField)
-    // const payload = { ...closetData.closet }
-    // payload.name = closetName
-    // console.log(payload)
+    const dispatch = useDispatch();
+    // const saveData = useSelector(selectClothes);
+    const onNavigateHandler = () => {
+      navigate("update/");
+    };
+    const [ootdFormData, setOotdFormData] = useState(defaultClothesForm);
+    const [clothesFormData, setClothesFormData] = useState(defaultClothesForm);
+    const { picture, tags } = clothesFormData
+    const [modalOpen, setModalOpen] = useState(false);
+    const { lockScroll, openScroll } = useBodyScrollLock();
 
-    // dispatch(createCloset(payload))
+    const saveTag = useSelector(selectAutoTag)
+    const finalTag = useSelector(selectTag)
+    const showModal = () => {
+        window.scrollTo(0, 0);
+        setModalOpen(true);
+        lockScroll();
+    };
+    const handleSubmit = () => {
+        // https://firebase.google.com/docs/storage/web/upload-files?hl=ko#web-version-9_3
+        // fref.putString(saveData, "base64").then(function (snapshot) {
+        //     console.log("base64 문자열을 업로드했습니다!");
 
-    // console.log(Token)
-    axios({
-      method: "post",
-      url: "http://localhost:8080/api/closet/clothes",
-      data: {
-        // clothesTag: {
-        //   category: '',
-        //   url: '',
-        //   closets:[],
-        //   colors:[],
-        //   seasons:[],
-        //   }
-        url : saveData,
-        tags: saveTag,
-        // closets:
-        // saveTag
-        // url: saveData,
-        // closets: [{id:1}],
-        // colors: [{tag.tags.colors}],
-        // seasons: [tag.tags.seasons],
-        // tags: [tag.tags.seasons],
-        // category: '1',
-        // closets: [{ id: 1 }],
-        // colors: [{ id: 1 }],
-        // seasons: [{ id: 1 }],
-        // tags: [{ id: 1 }],
-      },
-      headers: {
-        Authorization: `Bearer ${Token.token}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        const storage = getStorage();
+        const storageRef = fref(storage, "some-child");
+        // // Base64 formatted string
+        // uploadString(storageRef, saveData, "base64").then((snapshot) => {
+        //     console.log("Uploaded a base64 string!");
+        // });
 
-    // dispatch(resetCloset()) // redux 옷장 정보 초기화
+        // // Base64url formatted string
+        // uploadString(storageRef, saveData, "base64url").then((snapshot) => {
+        //     console.log("Uploaded a base64url string!");
+        // });
 
-    // AlertHandler() // alert창 띄우기
+        // Data URL string
 
-    // getClosetList() // 리스트 갱신
-  };
-  const FashionAi = async () => {
-    console.log(exampleImage)
-    // const model = await loadGraphModel(AiModel)
-    const model = await loadGraphModel("model/model.json");
-    // const modelpath = require('../../../src/model/model.json')
-    // const model = await loadGraphModel(modelpath);
-    const image = new Image(96, 96);
-    // const newimg = buffer.from(saveData, 'base64')
-    // const t = tf.node.decdeImage(newimg)
-    // console.log(t)
-    // const b = atob(saveData)
-    // console.log(b)
-    // image.src = saveData;
-    image.crossOrigin = 'anonymous'
-    image.src = saveData;
-    tf.browser.fromPixels(image).print();
-    let tfTensor = tf.browser.fromPixels(image);
-    tfTensor = tfTensor.div(255.0);
-    tfTensor = tfTensor.expandDims(0);
-    tfTensor = tfTensor.cast("float32");
+        uploadString(storageRef, saveData, "data_url").then((snapshot) => {
+            console.log("Uploaded a data_url string!");
+        });
 
-    const pred = model.predict(tfTensor)[0];
-    const temp = Array.from(pred.argMax(1).dataSync());
+        // storage.ref.putString(saveData, "base64").then(function (snapshot) {
+        //     console.log("Uploaded a data_url string!");
+        // });
 
-    const pred2 = model.predict(tfTensor)[1];
-    const temp2 = Array.from(pred2.argMax(1).dataSync());
-		console.log(category[temp])
-		console.log(color[temp2])
-    // setAutoCategory(category[temp])
-    // setAutoColor(color[temp2])
-    const payload = {
-      // category: category[temp],
-      // colors: color[temp2]
-      category: temp,
-      colors: temp2
-    }
-    // console.log(saveData)
-    // setClothesFormData(payload)
-    console.log(payload, 'payload')
-    dispatch(createAutoTag(payload))
-    dispatch(checkLocal(true));
-  };
+        // const response = storage.ref().putString(saveData, "base64")
+
+        // storage
+        //     .ref()
+        //     .putString(saveData, "base64")
+        //     .then(function (snapshot) {
+        //         console.log("육사업로드");
+        //     });
+
+        axios({
+            method: "post",
+            url: `${process.env.REACT_APP_AXIOS_URL}closet/clothes`,
+            data: {
+                category: 1,
+                imageUrl: saveData,
+                closets: [{ id: 7 }],
+                colors: [{ id: 1 }],
+                seasons: [{ id: 1 }],
+                tags: [{ id: 1 }],
+            },
+            headers: {
+                Authorization: `Bearer ${Token.token}`,
+            },
+        })
+            .then((res) => {
+                console.log("clothes-select-box에서 post axios 요청");
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+          };
+            const FashionAi = async () => {
+              console.log(exampleImage)
+              // const model = await loadGraphModel(AiModel)
+              const model = await loadGraphModel("model/model.json");
+              // const modelpath = require('../../../src/model/model.json')
+              // const model = await loadGraphModel(modelpath);
+              const image = new Image(96, 96);
+              // const newimg = buffer.from(saveData, 'base64')
+              // const t = tf.node.decdeImage(newimg)
+              // console.log(t)
+              // const b = atob(saveData)
+              // console.log(b)
+              // image.src = saveData;
+              image.crossOrigin = 'anonymous'
+              image.src = saveData;
+              tf.browser.fromPixels(image).print();
+              let tfTensor = tf.browser.fromPixels(image);
+              tfTensor = tfTensor.div(255.0);
+              tfTensor = tfTensor.expandDims(0);
+              tfTensor = tfTensor.cast("float32");
+          
+              const pred = model.predict(tfTensor)[0];
+              const temp = Array.from(pred.argMax(1).dataSync());
+          
+              const pred2 = model.predict(tfTensor)[1];
+              const temp2 = Array.from(pred2.argMax(1).dataSync());
+              console.log(category[temp])
+              console.log(color[temp2])
+              // setAutoCategory(category[temp])
+              // setAutoColor(color[temp2])
+              const payload = {
+                // category: category[temp],
+                // colors: color[temp2]
+                category: temp,
+                colors: temp2
+              }
+              // console.log(saveData)
+              // setClothesFormData(payload)
+              console.log(payload, 'payload')
+              dispatch(createAutoTag(payload))
+              dispatch(checkLocal(true));
+            };
+        // dispatch(upload("")); // redux 옷장 정보 초기화
+
+        // AlertHandler() // alert창 띄우기
+
+        // getClosetList() // 리스트 갱신
   
-  // FashionAi()
-  return (
-    <>
+    return (
+      <>
       {/* <div>
     {saveTag}
     <button onClick={FashionAi}> button</button>
@@ -231,7 +231,7 @@ const ClothesSelectBox = () => {
         <Button onClick={handleSubmit}>저장</Button>
       </LinkContainer>
     </>
-  );
-};
+    );
 
+      };
 export default ClothesSelectBox;

@@ -33,8 +33,6 @@ const Ootd = () => {
   const { lockScroll, openScroll } = useBodyScrollLock()
   const [ootdFormData, setOotdFormData] = useState(defaultOotdForm)
 
-
-
   const showModal = ()=> {
     window.scrollTo(0,0);
     setModalOpen(true);
@@ -65,7 +63,7 @@ const Ootd = () => {
     })
       .then((res) => {
         console.log(res.data.responseData)
-        setOotdArticle(res.data.responseData.reverse())
+        setOotdArticle(res.data.responseData)
       })
       .catch((err) => {
       console.log(err)

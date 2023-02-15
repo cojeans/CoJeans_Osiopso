@@ -32,6 +32,24 @@ const defaultForm = {
   cnt: 0,
   list : []
 }
+
+const isCocomentDefaultData = {
+  check: false,
+  selectCommentId: '',
+  selectCommentName: '',
+}
+
+// const openCocoDefaultData = {
+//   check: false,
+//   selectCommentId: '',
+// }
+
+const likeDefaultData = {
+  check: false,
+  cnt: 0,
+  lst:[]
+}
+
 const OotdDetail = () => {
   const navigate = useNavigate();
  
@@ -40,11 +58,17 @@ const OotdDetail = () => {
   const id = location.state.id;
 
   const Token = useSelector(selectUser)
+  
   const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
   const [openComment, setOpenComment] = useState(false)
+  // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
+  const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
+  const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
+  const [openCoco, setOpenCoco] = useState(false)
+
   
   const userInfo = useSelector(selectUserInfo)
 
@@ -144,14 +168,44 @@ const OotdDetail = () => {
         navigate("/#ootd")
     })
   }
+  const sccurRef1 = () => curRef1.current.scrollIntoView({ behavior: 'smooth' }); 
+
+  const clickCommentIcon = () => {
+    if (openComment) {
+      setOpenComment(false)
+    } else {
+      setOpenComment(true)
+    }
+  }
+
+  const goUserProfile = () => {
+    if (ootdDetail.userId === userInfo.id) {
+     navigate('/profile/')
+    } else {
+      navigate(
+        '/profile/' + ootdDetail.userId,
+        {
+          state: {
+		      id:ootdDetail.userId
+    	}}
+      )
+   }
+  }
+  
+  useEffect(() => {
+    sccurRef1()
+  },[openComment])
 
 
   return (
     <div>
-      <UpperProfile
+      <div>
+
+      <UpperProfile 
+      onClick={goUserProfile}
       >
-        <ProfileImageBox >
-          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+        <ProfileImageBox  >
+          <img src={  ootdUserUrl} alt="" />
         </ProfileImageBox >
         {userInfo.name}
       </UpperProfile>
