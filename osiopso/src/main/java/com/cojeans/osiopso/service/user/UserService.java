@@ -189,22 +189,27 @@ public class UserService {
         userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
         if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
 
+        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
+        if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
+        userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
+        if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
+
 
         return userRepository.save(User.builder()
-                .id(userDto.getId())
-                .email(userDto.getEmail())
-                .name(userDto.getName())
-                .password(userDto.getPassword())
-                .gender(userDto.getGender())
-                .age(userDto.getAge())
-                .imageUrl(userDto.getImageUrl())
-                .provider(userDto.getProvider())
-                .providerId(userDto.getProviderId())
-                .emailVerified(userDto.getEmailVerified())
-                .bio(userDto.getBio())
-                .isProfilePublic(userDto.getIsProfilePublic())
-                .role(userDto.getRole())
-                .grade(userDto.getGrade())
+                        .id(userDto.getId())
+                        .email(userDto.getEmail())
+                        .name(userDto.getName())
+                        .password(userDto.getPassword())
+                        .gender(userDto.getGender())
+                        .age(userDto.getAge())
+                        .imageUrl(userDto.getImageUrl())
+                        .provider(userDto.getProvider())
+                        .providerId(userDto.getProviderId())
+                        .emailVerified(userDto.getEmailVerified())
+                        .bio(userDto.getBio())
+                        .isProfilePublic(userDto.getIsProfilePublic())
+                        .role(userDto.getRole())
+                        .grade(userDto.getGrade())
                 .build()).toDto();
     }
 
@@ -286,7 +291,7 @@ public class UserService {
     /* 이메일 인증이 되어있는지. 되어있지 않다면 false 반환*/
     public boolean isEmailVerified(String email) {
         if(userRepository.existsByEmail(email)){
-            return userRepository.findByEmail(email).orElse(null).getEmailVerified();
+            return userRepository.findByEmailAndProvider(email,AuthProvider.local).orElse(null).getEmailVerified();
         }
         return false;
     }

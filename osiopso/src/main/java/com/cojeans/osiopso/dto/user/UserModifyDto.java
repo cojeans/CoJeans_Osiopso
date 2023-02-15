@@ -19,4 +19,5 @@ public class UserModifyDto {
     private String bio;
 
     private String imageUrl;
+
 }

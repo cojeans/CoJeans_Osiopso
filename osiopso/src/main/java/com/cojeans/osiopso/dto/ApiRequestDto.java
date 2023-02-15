@@ -4,8 +4,8 @@ import lombok.*;
 
 @ToString @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
 public class ApiRequestDto {
-    public boolean success;
-    public String message;
+    protected boolean success;
+    protected String message;
 
 
 

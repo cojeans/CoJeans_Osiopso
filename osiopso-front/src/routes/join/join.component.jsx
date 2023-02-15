@@ -39,6 +39,20 @@ const Join = () => {
 
   const [formFields, setFormFields] = useState(defaultformFields);
   const { displayName, email, password, confirmPassword } = formFields;
+  const [isCheckEmailFirst, setIsCheckEmailFirst] = useState(false);
+
+  // const goToSignUp = (e)=> {
+  //   e.preventDefault()
+  //   if (isCheckEmailFirst) {
+  //     fetch()
+  //   }
+  // const handleSubmit = async (event) => {
+  // 	event.preventDefault();
+
+  // if (password !== confirmPassword) {
+  //   alert('passwords do not match');
+  //   return;
+  // }
 
 
 
@@ -127,6 +141,15 @@ const Join = () => {
       {/* <img src={require("../../assets/The_Great_Gatsby.gif")} alt="" /> */}
       <form>
         <FormInput
+          label="아이디"
+          type="text"
+          required
+          onChange={handleChange}
+          name="displayName"
+          value={displayName}
+        />
+
+        <FormInput
           label="이메일"
           type="email"
           required
@@ -168,14 +191,6 @@ const Join = () => {
           onClick={JoinFunc}>가입하기</Button>
         </ButtonContainer>
       </form>
-				
-				{/* <TextContainer>간편 회원가입</TextContainer>
-					<SocialSignup>
-						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
-						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
-						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
-					</SocialSignup>
-				 */}
 		</SignUpContainer>
 	)
 }

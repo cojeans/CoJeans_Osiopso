@@ -13,10 +13,14 @@ import {
   ButtonBox,
   TextBox,
 } from "./changepassword.styles";
-
+import axios from "axios";
+import { selectUser } from "../../store/user/user.selector";
+import { useSelector } from "react-redux";
 
 
 const ChangePassword = () => {
+  const Token = useSelector(selectUser)
+  
   const AlertHandler = ()=> {
 
     Swal.fire({
@@ -53,8 +57,37 @@ const ChangePassword = () => {
     
     // navigate('/')
   }
-
-
+  
+  const changeFunc = (password)=> {
+    console.log(password)
+    axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_AXIOS_URL}user/modifyPassword`,
+      data: {
+        "success" : true,
+        "message": password
+      },
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      },
+    })
+    .then((res)=> {
+      console.log(res)
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      .then(()=>{
+        navigate('/mypage')
+      })
+    })
+    .catch((er)=> {
+      console.log(er)
+    })
+  }
 
   return (
     <div>
@@ -111,13 +144,14 @@ const ChangePassword = () => {
             </Box>
           </UpperBox>
           <ButtonBox>
-            {inputPassword1 === inputPassword2 &&
+            {/* {inputPassword1 === inputPassword2 &&
             inputPassword1 > 7 &&
             inputPassword2 > 7 ? (
-              <button onClick={ChangeConfirm}>저장</button>
-            ) : (
-              ""
-            )}
+              <button onClick={()=>{changeFunc(inputPassword2)}}>저장</button>
+              ) : (
+                ""
+                )} */}
+                <button onClick={()=>{changeFunc(inputPassword2)}}>저장</button>
           </ButtonBox>
         </div>
       )}

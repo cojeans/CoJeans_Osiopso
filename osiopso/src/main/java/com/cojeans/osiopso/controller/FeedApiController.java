@@ -5,6 +5,7 @@ import com.cojeans.osiopso.dto.request.feed.AdviceRequestDto;
 import com.cojeans.osiopso.dto.request.feed.OotdRequestDto;
 import com.cojeans.osiopso.dto.request.filter.FilterOotdRequestDto;
 import com.cojeans.osiopso.dto.response.feed.*;
+import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.ArticleRepository;
 import com.cojeans.osiopso.security.UserDetail;
 import com.cojeans.osiopso.service.article.AdviceService;
@@ -180,14 +181,15 @@ public class FeedApiController {
     @GetMapping("/ootd/filter")
     public ResponseEntity<?> filterOotd(@RequestBody FilterOotdRequestDto filter,
                                         @RequestParam(value = "idx", defaultValue = "0") long idx,
-                                        @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable) {
+                                        @PageableDefault(size = 8, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable,
+                                        @AuthenticationPrincipal UserDetail user) {
 
         // 최초 로딩시점
         if (idx == 0) {
             idx = Long.MAX_VALUE;
         }
 
-        List<OotdListResponseDto> ootdListResponseDtos = ootdService.filterOotd(filter, pageable, idx);
+        List<OotdListResponseDto> ootdListResponseDtos = ootdService.filterOotd(filter, pageable, idx, user.getId());
 
         return new ResponseEntity(new ApiResponseDto(true, "filterOotd Success", ootdListResponseDtos), HttpStatus.OK);
     }
@@ -195,7 +197,7 @@ public class FeedApiController {
     // 현재 로그인한 유저가 팔로잉 중인 사람들의 ootd만 보여주기
     @GetMapping("/ootd/follow")
     public ResponseEntity<?> followOotd(@AuthenticationPrincipal UserDetail userDetail){
-        return new ResponseEntity(new ApiResponseDto(true, "followOotdList Success", ootdService.followOotd(userDetail)), HttpStatus.OK);
+        return new ResponseEntity(new ApiResponseDto(true, "followOotdList Success", ootdService.followOotd(userDetail.getId())), HttpStatus.OK);
     }
 
     // ====================== UPDATE ========================
