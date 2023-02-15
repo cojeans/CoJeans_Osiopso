@@ -169,13 +169,13 @@ const Join = () => {
         </ButtonContainer>
       </form>
 				
-				<TextContainer>간편 회원가입</TextContainer>
+				{/* <TextContainer>간편 회원가입</TextContainer>
 					<SocialSignup>
 						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
 						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
 						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
 					</SocialSignup>
-				
+				 */}
 		</SignUpContainer>
 	)
 }
