@@ -27,7 +27,7 @@ const AdvicePage = () => {
       <Route index element={<Advice/>}/>
       <Route path="/create" element={<AdviceCreate/>}/>
       <Route path="/detail/*" element={<AdviceDetail/>}/>
-      <Route path="/commentlist" element={<AdviceCommentList />} />
+      <Route path="/commentlist/*" element={<AdviceCommentList />} />
       <Route path="/comment" element={<AdviectComment />} />
       <Route path='/create-comment' element={ <AdviectComment/>} />
 

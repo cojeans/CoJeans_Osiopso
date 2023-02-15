@@ -31,6 +31,7 @@ export const ClosetInput = styled.input`
   height:40px;
   border:none;
   border-bottom:solid 1px gray;
+  font-family: 'LINESeedKR-Bd';
   &:focus{
     outline:none;
   }

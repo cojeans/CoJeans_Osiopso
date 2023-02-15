@@ -5,7 +5,7 @@ import { HashLink } from 'react-router-hash-link'
 const main = "black"
 
 export const isPadding = css`
-		padding:65px 0;
+		padding:55px 0;
 
 `
 

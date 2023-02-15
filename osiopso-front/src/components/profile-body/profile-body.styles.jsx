@@ -29,12 +29,12 @@ export const TabMenue = styled.div`
 		}
 	margin:0 auto;
 	margin-bottom:15px;
-	border-bottom:1px solid black;
+	/* border-bottom:1px solid black; */
 
 `
 
 export const TabBody = styled.div`
-	width: 80%;
+	width: 100%;
 	margin:0 auto
 `
 
