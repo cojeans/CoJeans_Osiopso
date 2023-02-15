@@ -63,6 +63,7 @@ public class UserService {
     /*
     회원 기본값들이 들어가고, 비밀번호를 인코딩해서 저장한다.
      */
+    @Transactional
     public UserDto saveUser(SignUpRequestDto signUpRequest){
         UserDto userDto = userRepository.save(User.builder()
                         .name(signUpRequest.getName())
@@ -179,6 +180,7 @@ public class UserService {
                 .findById(userModifyDto.getId())
                 .orElseThrow(()-> new BadRequestException("없는 유저입니다."))
                 .toDto();
+        log.info("userModifyDto: {}",userModifyDto);
 
         if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
         if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
