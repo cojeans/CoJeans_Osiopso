@@ -13,15 +13,39 @@ import {
 } from "./passwordcheck.styles";
 
 import Button from '../../components/button/button.component'
+import axios from "axios";
 
 
 const PasswordCheck = ({setConfirm}) => {
    
   const [inputPassword, setInputPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const handleInput = (event) => {
     const {value} = event.target
     setInputPassword(value)
     console.log(value)
+  }
+  const checkFunc = (password)=> {
+    console.log(password)
+    axios({
+      method: 'post',
+      url:`${process.env.REACT_APP_AXIOS_URL}user/checkPassword`,
+      data: {
+        "success": true,
+        "message": password,
+        confirmPassword: password,
+        responseData:{
+          confirmPassword : password,
+        }
+      }
+    })
+    .then((res)=> {
+      console.log(res)
+      setConfirmPassword(res)
+    })
+    .catch((er)=> {
+      console.log(er)
+    })
   }
 
   // const checkFunc = (e) => {
@@ -64,9 +88,13 @@ const PasswordCheck = ({setConfirm}) => {
         </Box>
       </UpperBox>
       <ButtonsContainer>
-        <Button onClick={()=>setConfirm(true)}>
-          확인
-        </Button>
+        <Button 
+        type='submit'
+        size={'md'}
+        variant={'success'}
+        value={inputPassword}
+        onClick={()=>checkFunc(inputPassword)}
+        >확인</Button>
       </ButtonsContainer>
 
     </div>
