@@ -1,13 +1,15 @@
 package com.cojeans.osiopso.repository.article;
 
-import com.cojeans.osiopso.entity.feed.Ootd;
-import com.cojeans.osiopso.entity.feed.QArticle;
-import com.cojeans.osiopso.entity.feed.QArticleTag;
-import com.cojeans.osiopso.entity.feed.QOotd;
+import com.cojeans.osiopso.entity.comment.QComment;
+import com.cojeans.osiopso.entity.feed.*;
 import com.cojeans.osiopso.entity.tag.QTag;
 import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.user.QUser;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.eclipse.jdt.internal.compiler.ast.Expression;
 import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
@@ -79,8 +81,10 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
             tags.add(s);
         }
 
+        // tags 필터링할 태그
+
+
         return jpaQueryFactory.select(articleTag.article.id)
-                .distinct()
                 .from(articleTag)
                 .leftJoin(tag)
                 .on(tag.id.eq(articleTag.tag.id))
@@ -144,6 +148,39 @@ public class ArticleTagRepositoryImpl implements ArticleTagQdslRepository {
                 .orderBy(ootd.id.desc())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    @Override
+    public List<Ootd> findArticleByPop(Pageable pageable, Long idx) {
+        QOotd ootd = QOotd.ootd;
+        QArticleLike articleLike = QArticleLike.articleLike;
+
+        StringPath aliasQuantity = Expressions.stringPath("score");
+        List<Ootd> ootdList = new ArrayList<>();
+
+
+        List<Tuple> ootdTuple = jpaQueryFactory.select(ootd, (articleLike.article.id.count()).as("score"))
+                .from(ootd)
+                .leftJoin(articleLike)
+                .on(ootd.id.eq(articleLike.article.id))
+                .where(ootd.id.lt(idx))
+                .groupBy(ootd.id)
+                .orderBy(aliasQuantity.desc())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+
+        for (Tuple tuple : ootdTuple) {
+            ootdList.add(Ootd.builder()
+                    .id(tuple.get(ootd).getId())
+                    .user(tuple.get(ootd).getUser())
+                    .content(tuple.get(ootd).getContent())
+                    .createTime(tuple.get(ootd).getCreateTime())
+                    .hit(tuple.get(ootd).getHit())
+                    .build());
+        }
+
+        return ootdList;
     }
 
 }
