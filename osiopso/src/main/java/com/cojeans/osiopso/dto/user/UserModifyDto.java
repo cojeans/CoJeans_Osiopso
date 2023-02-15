@@ -17,4 +17,6 @@ public class UserModifyDto {
     private Gender gender;
 
     private String bio;
+
+    private String imageUrl;
 }

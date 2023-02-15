@@ -180,25 +180,27 @@ public class UserService {
                 .orElseThrow(()-> new BadRequestException("없는 유저입니다."))
                 .toDto();
 
-        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userDto.getName());
-        if(userDto.getGender()!=null) userDto.setGender(userDto.getGender());
-        userDto.setAge(userModifyDto.getAge());
-        if(userDto.getImageUrl()!=null) userDto.setImageUrl(userDto.getImageUrl());
+        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
+        if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
+        userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
+        if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
+
 
         return userRepository.save(User.builder()
-                        .id(userDto.getId())
-                        .email(userDto.getEmail())
-                        .name(userDto.getName())
-                        .password(userDto.getPassword())
-                        .gender(userDto.getGender())
-                        .age(userDto.getAge())
-                        .imageUrl(userDto.getImageUrl())
-                        .provider(userDto.getProvider())
-                        .providerId(userDto.getProviderId())
-                        .emailVerified(userDto.getEmailVerified())
-                        .bio(userDto.getBio())
-                        .isProfilePublic(userDto.getIsProfilePublic())
-                        .role(userDto.getRole())
+                .id(userDto.getId())
+                .email(userDto.getEmail())
+                .name(userDto.getName())
+                .password(userDto.getPassword())
+                .gender(userDto.getGender())
+                .age(userDto.getAge())
+                .imageUrl(userDto.getImageUrl())
+                .provider(userDto.getProvider())
+                .providerId(userDto.getProviderId())
+                .emailVerified(userDto.getEmailVerified())
+                .bio(userDto.getBio())
+                .isProfilePublic(userDto.getIsProfilePublic())
+                .role(userDto.getRole())
+                .grade(userDto.getGrade())
                 .build()).toDto();
     }
 
