@@ -76,8 +76,8 @@ const ClosetDetail = () => {
 					:
 					<ClothesContainer>	
 						{
-							thumbnails.map((el, idx)=>{
-								return <ClothesItemContainer key={idx}><img src={el}/></ClothesItemContainer>
+							allClothes.map((el, idx)=>{
+								return <ClothesItemContainer key={idx}><img src={el.imageUrl}/></ClothesItemContainer>
 							})
 						}
 					</ClothesContainer>

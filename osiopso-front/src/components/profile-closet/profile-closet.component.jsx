@@ -50,10 +50,7 @@ const ProfileCloset = ({ id }) => {
 					console.log(err);
 				});
 	}
-	
-	useEffect(() => {
-			getClosetList()
-	}, [])
+
 	
 	console.log(closetList)
 

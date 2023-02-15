@@ -16,7 +16,7 @@ const ClothesAdd = () => {
 
 	return (
 		<Fragment>
-			<AddClothesTopContainer>
+			{/* <AddClothesTopContainer>
 				<LogoButtonBox id={'album'} onClick={() => setPage('album')}>
 					<LogoContainer3>
 						<GallaryLogo/>
@@ -29,7 +29,7 @@ const ClothesAdd = () => {
 					</LogoContainer3>
 					<span>쇼핑몰에서 찾기</span>
 				</LogoButtonBox>
-			</AddClothesTopContainer>
+			</AddClothesTopContainer> */}
 			<ClothesAddBody page={page} />
 		</Fragment>
 	)

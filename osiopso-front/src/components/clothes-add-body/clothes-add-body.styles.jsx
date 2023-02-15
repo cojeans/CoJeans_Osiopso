@@ -6,5 +6,6 @@ export const ClothesAddBodyContainer = styled.div`
 	display:flex;
 	flex-direction:column;
 	align-items: center;
-	height:70vh;
+	justify-content: center;
+	height:80vh;
 `

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { HashLink } from 'react-router-hash-link';
+
 
 export const RoundProfileImage = styled.div`
 

@@ -61,7 +61,6 @@ export const ProfileImageBox = styled.img.attrs({
   `
   export const UpperComment = styled.div`
   display: flex; 
-  padding-left: 30px;
   width: 90%;
   height: 100%;
   margin: 10px 20px 20px;

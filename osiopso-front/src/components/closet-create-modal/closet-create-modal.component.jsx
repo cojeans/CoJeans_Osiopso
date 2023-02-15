@@ -31,18 +31,6 @@ const defaultClosetFields = {
 	closetName: '',
 }
 
-export const AlertHandler = () => {
-	Swal.fire({
-		icon: 'success',
-		confirmButtonColor: "#DD6B55", 
-		html: `
-		새 옷장이 생성되었습니다.
-		`,
-		showCancelButton: false,
-		confirmButtonText: "확인",
-	})
-}
-
 
 const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 	const [closetField, setClosetField] = useState(defaultClosetFields)
@@ -130,7 +118,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 
 		axios({
 			method: "post",
-			url: "http://localhost:8080/api/closet",
+			url: `${process.env.REACT_APP_AXIOS_URL}closet`,
 			data: {
 				name: payload.name,
 				isSelected:payload.isSelected,
@@ -151,7 +139,6 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 		dispatch(resetCloset()) // redux 옷장 정보 초기화
 		
 
-		getClosetList() // 리스트 갱신
 	}
 	
     return (

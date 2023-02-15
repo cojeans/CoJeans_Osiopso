@@ -74,16 +74,11 @@ export const UpperComment = styled.div`
   width:95%;
   align-items:center;
   justify-content: space-between;
-  button{
-    background-color:white;
-    color:#4D184C;
-    border:none;
-    height:40px;
-  }
+
   `
 
   export const ClosetInput = styled.input`
-  width:75%;
+  width:80%;
   height:40px;
   border:none;
   border-bottom:solid 1px gray;
@@ -91,5 +86,17 @@ export const UpperComment = styled.div`
   font-family: 'LINESeedKR-Bd';
   &:focus{
     outline:none;
+  }
+  `
+  
+  export const InputBox = styled.div`
+    width:80%;
+    display: flex;
+    justify-content: space-around;
+    button{
+    background-color:white;
+    color:#4D184C;
+    border:none;
+    height:40px;
   }
   `

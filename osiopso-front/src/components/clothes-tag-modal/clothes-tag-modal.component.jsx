@@ -40,8 +40,8 @@ const tags = {
 
 
 const ClothesTagModal = ({ closeModal }) => {
-	const closetData  = useSelector(selectCloset)
-	console.log(closetData, 'closet_list')
+	// const closetData  = useSelector(selectCloset)
+	// console.log(closetData, 'closet_list')
 	const saveAutoTag = useSelector(selectAutoTag)
 	console.log(saveAutoTag, 'saveAutoTag')
 	// console.log(saveTag, 'saveTag')
@@ -96,7 +96,7 @@ const ClothesTagModal = ({ closeModal }) => {
 		selectedTag['Category'].forEach((el) => {
 			newArr.category = el
 				// type: el
-			console.log(el)
+			// console.log(el)
 			
 		})
 		
@@ -108,12 +108,13 @@ const ClothesTagModal = ({ closeModal }) => {
 		// 	}]
 		// })
 		
-		// selectedTag['Color'].forEach((el) => {
-		// 	newArr = [...newArr, {
-		// 		colors: el,
-		// 		// type: el
-		// 	}]
-		// })
+		selectedTag['Color'].forEach((el) => {
+			
+			newArr.colors.push(el)
+				// colors: el,
+				// type: el
+			
+		})
 		
 		// selectedTag['Color'].forEach((el) => {
 		// 	newArr = [...newArr, {
@@ -136,10 +137,10 @@ const ClothesTagModal = ({ closeModal }) => {
 		// })
 
 		console.log(newArr, 'newArr')
-
+		console.log(newArr.colors, 'category')
 		dispatch(createTag(newArr))
 
-		console.log(newArr)
+		// console.log(newArr)
 		// dispatch(selectOotdCategory(newArr))
 		dispatch(checkLocal(false));
 

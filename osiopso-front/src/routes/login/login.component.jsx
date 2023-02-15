@@ -62,7 +62,7 @@ const Login = () => {
     // e.preventDefault();
       axios({
         method: "post",
-        url: 'http://localhost:8080/api/user/login',
+        url: `${process.env.REACT_APP_AXIOS_URL}user/login`,
         data: {
           email,
           password,
@@ -152,14 +152,16 @@ const Login = () => {
           ><ChangeFontColor>Join</ChangeFontColor></Button>
         
         </ButtonsContainer>
-        <TextContainer>간편 로그인</TextContainer>
-					<SocialSignup>
-						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
-						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
-						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
-					</SocialSignup>
         </MarginBox>
         </ContentBox>
+        <TextContainer>간편 로그인</TextContainer>
+      <SocialSignup>
+        <a href={KAKAO_AUTH_URL}> <div className='imgBox'><img src={kakaoLogo} alt="Kakao" /> </div></a>
+        <a href={GOOGLE_AUTH_URL}><div className='imgBox'>
+						<img src={googleLogo} alt="Google" />
+        </div> </a>
+						<a href={GITHUB_AUTH_URL}><div className='imgBox'><img src={githubLogo} alt="Github" />  </div></a>
+					</SocialSignup>
     </SignInContainer>
   );
 };

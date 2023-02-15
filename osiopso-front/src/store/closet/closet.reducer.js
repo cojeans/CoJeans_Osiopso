@@ -5,6 +5,7 @@ const initialState = {
     name: "",
     isSelected: false,
   },
+  closetList: []
 };
 
 export const closet = createSlice({
@@ -17,8 +18,11 @@ export const closet = createSlice({
     resetCloset(state) {
       Object.assign(state, initialState);
     },
+    uploadClosetList(state, action) {
+      state.closetList = [...state.closetList, action.payload]
+    }
   },
 });
 
-export const { createCloset, resetCloset } = closet.actions;
+export const { createCloset, resetCloset, uploadClosetList } = closet.actions;
 export default closet.reducer

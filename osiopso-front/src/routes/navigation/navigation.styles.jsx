@@ -30,7 +30,7 @@ export const NavigationContainer = styled.div`
 	right: 0;
 	bottom: 0; 
 	
-	}
+	
 `
 
 export const LogoContainer = styled(NavLink)`
@@ -69,7 +69,7 @@ export const BodyContainer = styled.div`
 	width: 100%;
 	max-width:430px;
 	margin:auto;
-	min-height:100%;
+	min-height:100vh;
 	display:flex;
 	flex-direction:column;
 `

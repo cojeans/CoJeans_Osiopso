@@ -8,7 +8,8 @@ export const PlusModalContainer = styled.div`
 	padding:10px;
 	display:flex;
 	flex-direction:column;
-	align-items: center
+	align-items: center;
+
 `
 
 export const PlusContent = styled.div`

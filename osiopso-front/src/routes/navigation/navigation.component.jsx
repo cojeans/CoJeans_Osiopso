@@ -17,11 +17,8 @@ import TopBar from "../../components/top-bar/top-bar.component"
 import Modal from "../../components/modal/modal.component"
 
 import { GiMirrorMirror } from "react-icons/gi";
-import { IoHandRightOutline } from "react-icons/io5";
+import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
-import { TfiHome } from "react-icons/tfi";
-
-import { ReactComponent as Plus } from '../../assets/plusNav.svg'
 import { AiFillPlusCircle } from "react-icons/ai";
 import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
 import { GiLargeDress } from "react-icons/gi";
@@ -99,7 +96,7 @@ const Navigation = () => {
 					// to='mypage/add-clothes'
 					onClick={showModal}
 				>
-					<Plus />
+					<AiFillPlusCircle color="#BCF0E0 "/>
 				</PlusContainer>
 				{/* <LogoContainer to='/ootd'> */}
 				<HashLinkContainer

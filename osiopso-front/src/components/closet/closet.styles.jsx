@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const ItemContainer = styled.div`
 	cursor:pointer;
@@ -7,9 +7,20 @@ export const ItemContainer = styled.div`
 	}
 `
 
-export const ClosetItem = styled.div`
+export const adviceStyles = css`
+	width:100px;
+	height:100px;
+` 
+
+export const profileStyles = css`
 	width:8em;
-	height:8em;
+	height:8em;;
+` 
+
+export const ClosetItem = styled.div`
+	${({page}) => page==='advice' && adviceStyles}
+	${({page}) => page==='profile' && profileStyles}
+
 	border-radius:10px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 	p{
