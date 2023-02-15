@@ -93,7 +93,7 @@ public class UserService {
 
     public boolean isEmailExist(String email) {
         //중복된 Email로 등록을하면
-        if(userRepository.existsByEmail(email)) {
+        if(userRepository.existsByEmailAndProvider(email,AuthProvider.local)) {
             return true;
         }
         return false;
