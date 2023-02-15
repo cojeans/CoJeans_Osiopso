@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom"
 import {
 	PlusModalContainer,
 	PlusContent,
-	PlusLogoContainer
+	PlusLogoContainer,
+	MagicLogoContainer
 } from "./plus-content.styles"
 
-import { ReactComponent as Clothes } from '../../assets/clothes.svg'
 
 import { GiLargeDress } from "react-icons/gi";
 import { FaMagic } from "react-icons/fa";
@@ -38,7 +38,7 @@ const PlusModal = ({ closeModal }) => {
 			{/* <button onClick={closeModal}>닫기</button> */}
 			<PlusContent onClick={onNavigateHandler1}>
 				<PlusLogoContainer>
-					<MdCheckroom color="#afb2f0 "/>
+					<MdCheckroom color="#7272ba "/>
 				</PlusLogoContainer>
 				<span>
 					옷 등록
@@ -47,7 +47,7 @@ const PlusModal = ({ closeModal }) => {
 			
 			<PlusContent  onClick={onNavigateHandler3}>
 				<PlusLogoContainer>
-					<GiLargeDress color="#afb2f0 "/>
+					<GiLargeDress color="#7272ba "/>
 				</PlusLogoContainer>
 				<span>
 					OOTD 등록
@@ -55,9 +55,9 @@ const PlusModal = ({ closeModal }) => {
 			</PlusContent>
 
 			<PlusContent onClick={onNavigateHandler2}>
-				<PlusLogoContainer>
-					<FaMagic color="#afb2f0" />
-				</PlusLogoContainer>
+				<MagicLogoContainer>
+					<FaMagic color="#7272ba" />
+				</MagicLogoContainer>
 				<span>
 					Advice 요청
 				</span>
