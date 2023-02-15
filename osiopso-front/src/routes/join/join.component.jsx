@@ -39,6 +39,14 @@ const Join = () => {
 
   const [formFields, setFormFields] = useState(defaultformFields);
   const { displayName, email, password, confirmPassword } = formFields;
+  const [isCheckEmailFirst, setIsCheckEmailFirst] = useState(false);
+
+  // const goToSignUp = (e)=> {
+  //   e.preventDefault()
+  //   if (isCheckEmailFirst) {
+  //     fetch()
+  //   }
+  // }
 
 
 
