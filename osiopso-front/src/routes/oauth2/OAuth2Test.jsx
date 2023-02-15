@@ -1,16 +1,21 @@
 import { React, useState, useEffect } from 'react';
 import { ACCESS_TOKEN } from '../../constants';
 import { useLocation, useNavigate } from 'react-router-dom'
-
+import { useDispatch } from 'react-redux'
+import { login } from '../../store/user/user.reducer'
 
 export const OAuth2Test = () => {
     const [Token, setToken] = useState("")
 
     const [Error, setError] = useState("")
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if(Token) {
+            localStorage.setItem('token', Token)
+            const value = {token: Token}
+            dispatch(login(value))
             navigate('/')
         }
     },[Token])

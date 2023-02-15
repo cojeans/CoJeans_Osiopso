@@ -45,4 +45,23 @@ export const Loading = styled.div`
   to {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
+
+`
+export const SocialSignup = styled.div`
+display:grid;
+grid-template-columns: 2fr 2fr 2fr;
+justify-content: center;
+justify-items: center;
+margin-top: 30px;
+img{
+    width: 80px;
+    height: 80px;
+}
+
+
+`
+
+export const TextContainer = styled.div`
+margin-top: 20px;
+color: gray;
 `
