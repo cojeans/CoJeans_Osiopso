@@ -23,8 +23,6 @@ export const ModalPage = styled.div`
   transform: translate(-50%, -50%);
   /* 모달창 디자인 */
   background: rgba(0, 0, 0, 0.4);
-  transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-
   overflow:hidden;
 
 `

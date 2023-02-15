@@ -2,8 +2,6 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 
-const main = "#BCF0E0"
-
 export const Container = styled.div`
   width: 100%;
 	max-width:430px;
@@ -25,7 +23,7 @@ export const NavigationContainer = styled.div`
 	right: 0;
 	bottom: 0; 
 	
-	
+	}
 `
 
 export const LogoContainer = styled(NavLink)`
@@ -52,8 +50,8 @@ export const LogoContainer = styled(NavLink)`
 	
   &.active {
 		svg{
-			fill:${main};
-			stroke::${main};
+			fill:#8A689A;
+			stroke:#8A689A
 		}
   }
 	
@@ -64,7 +62,7 @@ export const BodyContainer = styled.div`
 	width: 100%;
 	max-width:430px;
 	margin:auto;
-	min-height:100vh;
+	min-height:100%;
 	display:flex;
 	flex-direction:column;
 `
@@ -121,8 +119,8 @@ export const HashContainer = styled.div`
 	
   &.active {
 		svg{
-			fill:#BCF0E0;
-			stroke:#BCF0E0
+			fill:#8A689A;
+			stroke:#8A689A
 		}
   }
 `
@@ -151,8 +149,8 @@ export const HashLinkContainer = styled(HashLink)`
 	
   &.active {
 		svg{
-			fill:${main};;
-			stroke:${main};
+			fill:#8A689A;
+			stroke:#8A689A
 		}
   }
 	

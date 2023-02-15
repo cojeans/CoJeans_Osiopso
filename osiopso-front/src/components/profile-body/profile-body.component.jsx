@@ -5,7 +5,7 @@ import {
 	TabBody
 } from "./profile-body.styles"
 
-const ProfileBody = ({ id }) => {
+const ProfileBody = () => {
 	return (
 		<Fragment>
 			<TabMenue>
@@ -14,7 +14,7 @@ const ProfileBody = ({ id }) => {
 				<p>훈수</p>
 			</TabMenue>
 			<TabBody>
-				<ProfileCloset id={id } />
+					<ProfileCloset/>
 			</TabBody>
 		</Fragment>
 	)

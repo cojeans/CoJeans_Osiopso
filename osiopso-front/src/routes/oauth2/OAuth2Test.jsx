@@ -11,6 +11,7 @@ export const OAuth2Test = () => {
 
     useEffect(() => {
         if(Token) {
+            localStorage.setItem('token', Token)
             navigate('/')
         }
     },[Token])
@@ -37,6 +38,7 @@ export const OAuth2Test = () => {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(location.search);
+        // console.log('hello')
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 

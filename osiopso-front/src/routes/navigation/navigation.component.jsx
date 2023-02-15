@@ -17,39 +17,26 @@ import TopBar from "../../components/top-bar/top-bar.component"
 import Modal from "../../components/modal/modal.component"
 
 import { GiMirrorMirror } from "react-icons/gi";
-import { IoHandRightOutline,IoHandRightSharp } from "react-icons/io5";
+import { IoHandRightOutline } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
+import { TfiHome } from "react-icons/tfi";
 
-
-import { useSelector, } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { selectUser } from '../../store/user/user.selector'
+import { ReactComponent as Plus } from '../../assets/plusNav.svg'
 
 
 const Navigation = () => {
 	const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock()
-	let location = useLocation();
-	const Token = useSelector(selectUser)
-  const navigate = useNavigate()
+	 let location = useLocation();
 
 
 	const showModal = () => {
-		if (!Token.token) {
-		alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
-		navigate('/login')
-		} else {
-			window.scrollTo(0, 0);
-			setModalOpen(true);
-				lockScroll();
-	}
-		
+	window.scrollTo(0, 0);
+	setModalOpen(true);
+	lockScroll();
 	};
 
 	return (
-		
 		<Container>
 			<TopBar />
 			<BodyContainer>
@@ -61,28 +48,18 @@ const Navigation = () => {
 					to="/#top"
 					className={`${location.pathname}${location.hash}` === '/#top' ? "active" : ""}
 				>	
-					{
-						`${location.pathname}${location.hash}` === '/#top'
-							? <IoHomeSharp/>
-							:<IoHomeOutline />
-					}
-					
+					<TfiHome />
 					<span>홈</span>
 				</HashLinkContainer>	
 				<LogoContainer to='/advice'>
-					{
-					
-						`${location.pathname}` === '/advice'
-					?<IoHandRightSharp />
-					:<IoHandRightOutline />
-					}
+					<IoHandRightOutline/>
 					<span>훈수</span>
 				</LogoContainer>
 				<PlusContainer
 					// to='mypage/add-clothes'
 					onClick={showModal}
 				>
-					<AiFillPlusCircle color="#BCF0E0 "/>
+					<Plus />
 				</PlusContainer>
 				{/* <LogoContainer to='/ootd'> */}
 				<HashLinkContainer
@@ -94,7 +71,7 @@ const Navigation = () => {
 					<span>OOTD</span>
 				</HashLinkContainer>
 				{/* </LogoContainer> */}
-				<LogoContainer  to='/profile'>
+				<LogoContainer  to='/mypage'>
 					<FaUserCircle />
 					<span>프로필</span>
 				</LogoContainer>

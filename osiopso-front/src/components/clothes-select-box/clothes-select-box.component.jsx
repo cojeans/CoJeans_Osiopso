@@ -93,26 +93,36 @@ const ClothesSelectBox = () => {
 
     // dispatch(createCloset(payload))
 
-		// console.log(Token)
-
-		axios({
-			method: "post",
-			url: `${process.env.REACT_APP_AXIOS_URL}closet/clothes`,
-			data: {
-				category: 1,
-				imageUrl:saveData,
-        closets: [{"id": 3}],
-        colors:[{"id": 1}],
-        seasons:[{"id": 1}],
-        tags:[{"id": 1}],
-
-			},
-			headers: {
-     	 Authorization: `Bearer ${Token.token}`,
-			}
-		})
-		 .then((res) => {
-      console.log(res.data);
+    // console.log(Token)
+    axios({
+      method: "post",
+      url: "http://localhost:8080/api/closet/clothes",
+      data: {
+        // clothesTag: {
+        //   category: '',
+        //   url: '',
+        //   closets:[],
+        //   colors:[],
+        //   seasons:[],
+        //   }
+        url : saveData,
+        tags: saveTag,
+        // closets:
+        // saveTag
+        // url: saveData,
+        // closets: [{id:1}],
+        // colors: [{tag.tags.colors}],
+        // seasons: [tag.tags.seasons],
+        // tags: [tag.tags.seasons],
+        // category: '1',
+        // closets: [{ id: 1 }],
+        // colors: [{ id: 1 }],
+        // seasons: [{ id: 1 }],
+        // tags: [{ id: 1 }],
+      },
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      },
     })
       .then((res) => {
         console.log(res.data);
@@ -121,9 +131,7 @@ const ClothesSelectBox = () => {
         console.log(err);
       });
 
-		dispatch(upload('')) // redux 옷장 정보 초기화
-		
-		// AlertHandler() // alert창 띄우기
+    // dispatch(resetCloset()) // redux 옷장 정보 초기화
 
     // AlertHandler() // alert창 띄우기
 

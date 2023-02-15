@@ -15,7 +15,6 @@ import {
 	PlusCloset
 } from "./profile-closet.styles"
 import { ClosetItem } from "../closet/closet.styles"
-import { selectClothes } from '../../store/clothes/clothes.selector';
 
 
 export function useBodyScrollLock() {
@@ -31,15 +30,14 @@ export function useBodyScrollLock() {
 }
 
 
-const ProfileCloset = ({ id }) => {
+const ProfileCloset = () => {
 	const Token = useSelector(selectUser)
 	const [closetList, setClosetList] = useState([])
-	const check = useSelector(selectClothes)
-	const getClosetList = (urlString) => {
-		console.log('옷장리스트가져오기')
+
+	const getClosetList = () => {
 		axios({
 					method: "post",
-					url: urlString,
+					url: "http://localhost:8080/api/closet/mylist",
 					headers: {
 					Authorization: `Bearer ${Token.token}`,
 					},
@@ -51,7 +49,10 @@ const ProfileCloset = ({ id }) => {
 					console.log(err);
 				});
 	}
-
+	
+	useEffect(() => {
+			getClosetList()
+	}, [])
 	
 	console.log(closetList)
 
@@ -64,19 +65,10 @@ const ProfileCloset = ({ id }) => {
 		lockScroll();
 	};
 
-	useEffect(() => {
-		if (id > 0) {
-		getClosetList( `${process.env.REACT_APP_AXIOS_URL}closet/list?userId=${id}`)
-
-		} else {
-			getClosetList( `${process.env.REACT_APP_AXIOS_URL}closet/mylist`)
-		}
-	},[])
-
 	
 	return (
 		<ClosetBodyContainer>
-			<ClosetItem page={ 'profile'} onClick={showModal}>
+			<ClosetItem onClick={showModal}>
 				<LogoContainer2>
 					<PlusCloset/>
 				</LogoContainer2>

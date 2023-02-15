@@ -11,11 +11,9 @@ import {
   UpperCommentContainer,
   UpperupperCommentContainer,
 } from "./ootd.styles";
-
-import { RiFilter2Fill } from "react-icons/ri";
-
+import { ReactComponent as Filter } from "../../assets/filter.svg";
 import { ReactComponent as Comment } from "../../assets/comment.svg";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../../store/user/user.selector';
 
 import axios from 'axios'
@@ -23,7 +21,6 @@ import Modal from '../modal/modal.component'
 
 import { useEffect, useState } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
-
 
 const defaultOotdForm = {
   content: '',
@@ -61,7 +58,7 @@ const Ootd = () => {
   const getOotdAxios = () => {
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_AXIOS_URL}feed/ootd`,
+      url: "http://localhost:8080/api/feed/ootd",
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -89,7 +86,7 @@ const Ootd = () => {
           <h3>팔로잉</h3>
         </OotdCategory>
         <FilterContainer>
-          <RiFilter2Fill onClick={showModal}/>
+          <Filter onClick={showModal}/>
         </FilterContainer>
       </OotdTopBar>
 
@@ -97,7 +94,7 @@ const Ootd = () => {
         {ootdArticle.map((el, idx) => {
           return (
             <Container key={idx} onClick={()=>goToOotdDetail(el.id)}>
-              <img src={el.imageUrl} alt="" />
+              <img src={el.photo.imageUrl} alt="" />
               <UpperupperCommentContainer>
                 <UpperCommentContainer>
                   <CommentContainer>

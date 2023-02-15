@@ -63,7 +63,7 @@ const Join = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_AXIOS_URL}user/signUp`,
+        url: 'http://localhost:8080/api/user/signUp',
         data: {
           email: email,
           name: displayName,

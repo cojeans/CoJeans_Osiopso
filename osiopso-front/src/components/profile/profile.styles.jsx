@@ -23,7 +23,6 @@ export const FollowBox = styled.div`
 	p{
 		font-size:16px;
 		padding:5px 10px;
-		margin:10px;
 	}
 `
 
@@ -37,10 +36,3 @@ export const ProfileImageBox = styled.div`
 		height:100%;
 	}
 `;
-
-export const ProfileBottom = styled.div`
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	padding:5px;
-`
