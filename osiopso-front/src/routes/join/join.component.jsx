@@ -12,6 +12,7 @@ import {
 
 } from "./join.stlyes";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 
 const defaultformFields = {
@@ -60,13 +61,24 @@ const Join = () => {
 
         // const value = {email, token: res.data.accessToken}
         // dispatch(login(value))
-        navigate("/joincomplete");
+        Swal.fire({
+          icon: 'success',
+          confirmButtonColor:"DD6B55",
+          html: `
+          회원가입이 완료되었습니다.`,     
+          showCancelButton: false,
+          confirmButtonText: "확인",
+        })
+        
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
         navigate("/join");
       });
   };
+
+
   return (
     <SignUpContainer>
       <Osiopso>
