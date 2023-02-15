@@ -42,7 +42,7 @@ justify-items: center;
 margin: auto;
 img{
     width: 150px;   
-    height: 200px;
+    height: 150px;
 }
 `
 // 상위 1`

@@ -55,8 +55,23 @@ const OotdComment = () => {
           </AlertContainer>
         </UpperLikeContainer>
       </UpperProfile>
-        <OotdCommentList commentList={data}/>
 
+    <OotdCommentList commentList={data}/>
+    {/* <OotdCommentCreate articleId={articleId}/> */}
+     
+      {/* <UpperComment>
+        <CommentProfileImage></CommentProfileImage>
+
+        <ClosetInput
+          type="text"
+          autoFocus
+          maxLength={50}
+          placeholder="댓글 달기..."
+          value={value.content}
+          onChange={onChange}
+        />
+        <button type="submit">저장</button>
+      </UpperComment> */}
     </div>
   );
 };

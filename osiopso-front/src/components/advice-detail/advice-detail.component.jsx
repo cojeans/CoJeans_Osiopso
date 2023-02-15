@@ -57,7 +57,7 @@ const AdviceDetail = () => {
   const getDetailAdvice = ()=>{
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_AXIOS_URL}feed/advice/${id}`,
+      url: `http://localhost:8080/api/feed/advice/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`
       }
@@ -75,23 +75,10 @@ const AdviceDetail = () => {
     })
   }
 
-  // const putData= ()=> {
-  //   axios({
-  //     method: "put",
-  //     url: `http://localhost:8080/api/feed/article/${id}`,
-  //     headers: {
-  //       Authorization: `Bearer ${Token.token}`,
-  //     }
-  //   })
-  //   .then((res)=> {
-      
-  //   })
-  // }
-
   const deleteAdvice = ()=> {
     axios({
       method: "delete",
-      url: `${process.env.REACT_APP_AXIOS_URL}feed/article/${id}`,
+      url: `http://localhost:8080/api/feed/article/${id}`,
       headers: {
         Authorization: `Bearer ${Token.token}`,
       }
@@ -189,7 +176,7 @@ const AdviceDetail = () => {
       </UpperImage>
 
       <UpperComment>
-      {advicedDetail.content}
+        <h5>여기가 게시글 내용</h5>
       </UpperComment>
 
       <HunsuButton>

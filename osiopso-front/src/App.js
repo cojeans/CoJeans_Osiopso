@@ -6,7 +6,7 @@ import Navigation from "./routes/navigation/navigation.component";
 import Login from "./routes/login/login.component";
 import Join from "./routes/join/join.component";
 import Mypage from "./routes/mypage/mypage.component";
-import AdvicePage from './routes/advice/advice.component';
+import Advice from './routes/advice/advice.component';
 import OOTDPage from './routes/ootd/ootd.component'
 import PasswordCheck from './routes/passwordcheck/passwordcheck.component'
 import ChangePassword from './routes/changeuserinfo/changepassword.component'
@@ -14,7 +14,6 @@ import PwdComplete from './routes/changeuserinfo/pwdchangecomplete'
 import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
 import JoinComplete from "./routes/join/join-complete.component";
-  
 import Test from "./components/test/test.component"
 import SelectboxPage from "./routes/selectbox/selectbox.component";
 import OAuth2RedirectHandler from "./routes/oauth2/OAuth2RedirectHandler";
@@ -34,18 +33,18 @@ function App() {
   return (
       <>
     <Routes>
+
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="join" element={<Join />} />
-        <Route path="passwordcheck" element={<PasswordCheck />} />
-        <Route path="profile/*" element={<Mypage />} />
-        <Route path="advice/*" element={<AdvicePage />} />
-        <Route path="disclosurescope" element={<DisclosureScope />} />
-        <Route path="mypage/*" element={<Mypage />} />   
+        <Route path='passwordcheck' element={<PasswordCheck/>}/>
+        <Route path="mypage/*" element={<Mypage />} />
+        <Route path="advice/*" element={<Advice />} />        
         <Route path='ootd/*' element={<OOTDPage/>}/>
         <Route path='changePassword' element={<ChangePassword/>}/>
         <Route path='pwdchangecomplete' element={<PwdComplete/>}/>
+        <Route path='disclosurescope' element={<DisclosureScope/>}/>
         <Route path='membershipwithdrawal/' element={<MembershipWithdrawal/>}/>
         <Route path='joincomplete' element={<JoinComplete/>}/>
         <Route path='test' element={<Test/>}/>

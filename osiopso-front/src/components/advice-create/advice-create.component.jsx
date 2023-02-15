@@ -107,7 +107,7 @@ const AdviceCreate = ()=> {
       console.log(advice)
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_AXIOS_URL}feed/advice`,
+        url: "http://localhost:8080/api/feed/advice",
         data: {
           tags: advice.tags,
           content: advice.content,

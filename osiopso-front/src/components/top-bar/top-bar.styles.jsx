@@ -1,22 +1,18 @@
 import styled from 'styled-components'
 
-
-
 export const TopBarContainer = styled.div`
 	height: 60px;
   width: 100%;
 	max-width:430px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-	justify-content: center;
-	background-color: black;
-	color:white;
+	  justify-content: center;
+	background-color: #F0E6EE;
 	margin:auto;
 	position: fixed;
   top: 0;
   left: 0;
   right: 0;
-	z-index: 10;
 `
 
 export const ButtonContainer = styled.div`

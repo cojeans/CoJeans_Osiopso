@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectUser } from '../../store/user/user.selector'
 import { userInfo } from '../../store/user/user.reducer'
 
-import { useNavigate } from 'react-router-dom'
-
 import axios from 'axios'
 import './home.styles'
 
@@ -24,14 +22,8 @@ import { ReactComponent as User2 } from "../../assets/userFashion.svg"
 import { ootd } from '../../store/ootd/ootd.reducer'
 import Ootd from '../../components/ootd/ootd.component'
 import { useEffect } from 'react'
-import { useState } from 'react'
-
-
 
 const Home = () =>{
-	const [ tagData, setTagData ] = useState() 
-
-
 	const mainList = [
 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwg8K7tx_mGdIZoaNVV3_cqYX-ONqq33Mp6pn4MD_YLgAuDxSfm5jIUjPm1boPfXc2f1c&usqp=CAU',
 		'https://i.pinimg.com/originals/74/4a/dc/744adc2d4e8aafbd57d050ce07809c40.jpg',
@@ -58,19 +50,15 @@ const Home = () =>{
 
 	]
 
-
-
 	const Token = useSelector(selectUser)
 
 	const dispatch = useDispatch()
-
-	const navigate = useNavigate()
 
 	// 로그인 하고 홈에 들어오면 현재 유저 정보를 전역 상태로 저장합니다.
 	const getCurrentUser = () => {
     axios({
       method: "get", 
-      url: `${process.env.REACT_APP_AXIOS_URL}user`,
+      url: 'http://localhost:8080/api/user',
       headers: {
           Authorization: `Bearer ${Token.token}`,
       }
@@ -78,7 +66,6 @@ const Home = () =>{
       .then((res) => {
 				console.log(res.data)
 				const payload = {
-					id: res.data.id,
 					name: res.data.name,
 					age: res.data.age,
 					gender: res.data.gender,
@@ -91,41 +78,19 @@ const Home = () =>{
     })
 	}
 
-	const getFamousTags = ()=> {
-		axios({
-			method: 'get',
-			url: `${process.env.REACT_APP_AXIOS_URL}main/preview`,
-			headers: {
-				Authorization: `Bearer ${Token.token}`,
-			}
-		})
-		.then((res)=>{
-			console.log("엑시오스 결과",res.data)
-			for (let idx = 0; idx < res.data.responseData.length; idx++) {
-				res.data.responseData[idx].map((el)=>{
-					setTagData({...tagData,el })				
-				})		
-			}
-		})
-		.catch((er)=> {
-			console.log(er)
-		})
-	}
-
 	useEffect(() => {
-		getFamousTags()
-		if (!Token.token) {
-			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
-			navigate('/login')
-		} else {
-			getCurrentUser()
-		}
+		getCurrentUser()
 	},[])
 
 	return (
 		<div>
 			<TextToLeft>
-				{tagData}
+				{tags.map((el)=>{
+					return (
+						'#'+el+' '
+					)
+					 
+				})}
 			</TextToLeft>
 
 			<HomeOotdImage>
@@ -137,9 +102,9 @@ const Home = () =>{
 			</HomeOotdImage>
 			{/* <DoSwiper></DoSwiper> */}
 			
-			{/* <SelectedTagContainer>
+			<SelectedTagContainer>
 				<SelectedTag><span>#블루종 전체보기</span></SelectedTag>
-			</SelectedTagContainer> */}
+			</SelectedTagContainer>
 
 			<TextToLeft><Fire/><h4>훈수 토론장</h4></TextToLeft>
 			<HomeOotdImage>

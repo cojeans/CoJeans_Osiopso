@@ -34,11 +34,3 @@ export const PrevBox = styled.div`
 		height:3em;
 	}
 `
-
-export const ImgPrevBox = styled.div`
-	
-	img{
-		width: 100%;
-		height: 100%;
-	}
-`

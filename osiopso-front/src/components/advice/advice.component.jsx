@@ -20,9 +20,8 @@ import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
 import axios from "axios";
 import Modal from '../modal/modal.component'
 
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
-import AdviectComment from "../advice-comment/advice-comment.component";
 
 const defaultAdviceForm = {
   content:'',
@@ -48,7 +47,7 @@ const Advice = () => {
   const getAdviceAxios = () => {
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_AXIOS_URL}feed/advice`,
+      url: "http://localhost:8080/api/feed/advice",
       headers: {
         Authorization: `Bearer ${Token.token}`,
       },
@@ -85,9 +84,6 @@ const Advice = () => {
   console.log("어드바이스",adviceArticle)
   return (
     <div>
-      
-      {/* <AdviectComment>
-      </AdviectComment> */}
 
       <TextToLeft>
         <Container>
@@ -117,7 +113,7 @@ const Advice = () => {
                   {el.commentCnt}
                 </EachIcon>
               </ThumbBox>
-
+                {/* <FiThumbsDown size="30" /> */}
                 <TimeBox>{ el.time }</TimeBox>
                
               </CommentContainer>
@@ -128,7 +124,7 @@ const Advice = () => {
       {
         modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
       }
- </div>
+    </div>
   );
 };
 

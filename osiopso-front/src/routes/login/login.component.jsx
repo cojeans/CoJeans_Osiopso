@@ -60,7 +60,7 @@ const Login = () => {
     e.preventDefault();
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_AXIOS_URL}user/login`,
+        url: 'http://localhost:8080/api/user/login',
         data: {
           email,
           password,
@@ -108,12 +108,10 @@ const Login = () => {
         />
         
         <ButtonsContainer>
-        <Button
-          type='submit'
-          size={'md'}
-          variant={ 'success'}
-          onClick={LoginFunc}
-          >Sign In</Button>
+          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
+          {/* <button onClick={LoginFunc}>
+            test
+          </button> */}
         </ButtonsContainer>
         <TextContainer>간편 로그인</TextContainer>
 					<SocialSignup>
