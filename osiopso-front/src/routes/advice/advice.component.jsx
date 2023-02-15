@@ -28,7 +28,7 @@ const AdvicePage = () => {
       <Route path="/create" element={<AdviceCreate/>}/>
       <Route path="/detail/*" element={<AdviceDetail/>}/>
       <Route path="/commentlist" element={<AdviceCommentList />} />
-      <Route path="/ootdCommentCreate" element={<AdviectComment />} />
+      {/* <Route path="/ootdCommentCreate" element={<AdviectComment />} /> */}
       
 
       

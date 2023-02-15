@@ -27,12 +27,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "회원 API")
-public class UserController {
+public class UserController{
 
     @Autowired
     private UserRepository userRepository;
@@ -66,20 +67,17 @@ public class UserController {
     @GetMapping("/{userId}")
     @Operation(summary = "다른회원조회")
     public ResponseEntity<UserDto> getUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetail userDetail) {
-//        UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
-//
-//        return new ResponseEntity<>(userDto, HttpStatus.OK);
         return new ResponseEntity<>(userService.getUser(userId, userDetail), HttpStatus.OK);
     }
 
     /*
-     * 리턴타입 수정
-     *
-     * */
+    * 리턴타입 수정
+    *
+    * */
     @Operation(summary = "회원수정", description = "변경후 변경 완료된 userDto를 반환해서 그대로 redux에 저장된 유저객체에 덮어씌우면 될듯합니다.")
     @PutMapping("")
     public ResponseEntity<UserDto> EditUser(@RequestBody UserModifyDto userModifyDto) {
-        log.info("userModifyDto: {}", userModifyDto);
+        log.info("userModifyDto: {}",userModifyDto);
         UserDto userDto = userService.editUser(userModifyDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
@@ -96,7 +94,7 @@ public class UserController {
                     .success(false)
                     .message("비밀번호변경중 오류발생")
                     .build()
-                    , HttpStatus.INTERNAL_SERVER_ERROR);
+                    ,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(ApiResponseDto
@@ -111,7 +109,6 @@ public class UserController {
     @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getEmail(),
@@ -119,10 +116,10 @@ public class UserController {
                 )
         );
         /*이메일 인증 체크*/
-        if (!userService.isEmailVerified(loginRequestDto.getEmail())) {
+        if(!userService.isEmailVerified(loginRequestDto.getEmail())){
             return new ResponseEntity<>(AuthResponseDto.builder()
                     .success(false)
-                    .message("이메일 인증이 필요합니다.").build(), HttpStatus.OK);
+                    .message("이메일 인증이 필요합니다.").build(),HttpStatus.OK);
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -135,8 +132,7 @@ public class UserController {
     @Operation(summary = "회원가입")
     @PostMapping("/signUp")
     public ResponseEntity<ApiResponseDto> registerUser(@RequestBody SignUpRequestDto signUpRequest) {
-        log.info("signUpRequest: {}", signUpRequest);
-
+        log.info("signUpRequest: {}",signUpRequest);
         userService.saveUser(signUpRequest);
         emailAuthService.sendVerificationEmail(signUpRequest.getEmail());
 
@@ -145,34 +141,34 @@ public class UserController {
 
     @Operation(summary = "비밀번호확인", description = "현재로그인되어있는 유저를 토큰에서 꺼내 입력받은 비밀번호를 인코딩해서 비교")
     @PostMapping("/checkPassword")
-    public ResponseEntity<ApiResponseDto> isPasswordMatch(@RequestBody ApiRequestDto apiRequestDto, @AuthenticationPrincipal UserDetail userDetail) {
-        boolean isPasswordMatch = userService.isPasswordMatch(apiRequestDto.getMessage(), userDetail.getPassword());
-        log.info("isPasswordMatch: " + isPasswordMatch);
+    public ResponseEntity<ApiResponseDto> isPasswordMatch(@RequestBody ApiRequestDto apiRequestDto, @AuthenticationPrincipal UserDetail userDetail){
+        boolean isPasswordMatch = userService.isPasswordMatch(apiRequestDto.getMessage(),userDetail.getPassword());
+        log.info("isPasswordMatch: "+isPasswordMatch);
 
-        if (!isPasswordMatch) {
+        if(!isPasswordMatch){
             return new ResponseEntity<>(ApiResponseDto.builder()
                     .success(false)
                     .message("비밀번호 불일치").build()
-                    , HttpStatus.BAD_REQUEST);
+                    ,HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(ApiResponseDto.builder()
                 .success(true)
                 .message("비밀번호 일치").build()
-                , HttpStatus.OK);
+                ,HttpStatus.OK);
     }
 
     @Operation(summary = "이메일 중복체크")
     @PostMapping("/isEmailExist") //GET? POST? 민우랑 상의
     public ResponseEntity<ApiResponseDto> isEmailExist(@RequestBody ApiRequestDto apiRequestDto) {
         String email = apiRequestDto.getMessage(); //null, trim 체크 앞단에서 하고 들어와야
-        if (userService.isEmailExist(email)) {
+        if(userService.isEmailExist(email)){
             return new ResponseEntity<>(ApiResponseDto.builder()
                     .message("존재하는 이메일입니다.")
-                    .success(true).build(), HttpStatus.OK); //존재하면 success를 false 하지만 httpstatus는 ok
+                    .success(true).build(),HttpStatus.OK); //존재하면 success를 false 하지만 httpstatus는 ok
         }
         return new ResponseEntity<>(ApiResponseDto.builder()
                 .message("존재하지 않는 이메일입니다.")
-                .success(false).build(), HttpStatus.OK); //존재하면 success를 false 하지만 httpstatus는 ok
+                .success(false).build(),HttpStatus.OK); //존재하면 success를 false 하지만 httpstatus는 ok
     }
 
 
@@ -184,14 +180,14 @@ public class UserController {
 
         return new ResponseEntity<>(
                 ApiResponseDto.builder()
-                        .success(true)
-                        .message("회원탈퇴완료").build()
+                .success(true)
+                .message("회원탈퇴완료").build()
                 , HttpStatus.ACCEPTED);
     }
 
     @Operation(summary = "팔로우하기", description = "팔로우하기 버튼을 누르면 팔로잉-팔로워 관계 생성/삭제")
     @PostMapping("/follow")
-    public ResponseEntity<ApiResponseDto> followUser(@RequestParam Long followingId, @AuthenticationPrincipal UserDetail userDetail) {
+    public ResponseEntity<ApiResponseDto> followUser(@RequestParam Long followingId, @AuthenticationPrincipal UserDetail userDetail){
         // 지금은 이메일로 받습니다... 추후에 id를 받는 것으로 수정할 수 있습니다.
         userService.followUser(followingId, userDetail);
 
@@ -200,28 +196,13 @@ public class UserController {
                         .success(true)
                         .message("팔로우 상태 갱신 완료")
                         .build()
-                , HttpStatus.ACCEPTED);
+                        ,HttpStatus.ACCEPTED);
 
     }
 
-//    @Operation(summary = "언팔로우하기", description = "언팔로우하기 버튼을 누르면 팔로잉-팔로워 관계 삭제")
-//    @DeleteMapping("/unfollow")
-//    public ResponseEntity<ApiResponseDto> unfollowUser(@RequestParam String email, @AuthenticationPrincipal UserDetail userDetail){
-//        // 지금은 이메일로 받습니다... 추후에 id를 받는 것으로 수정할 수 있습니다.
-//        userService.unfollowUser(email, userDetail);
-//
-//        return new ResponseEntity<>(
-//                ApiResponseDto.builder()
-//                        .success(true)
-//                        .message("언팔로우 완료")
-//                        .build()
-//                ,HttpStatus.ACCEPTED);
-//
-//    }
-
     @Operation(summary = "팔로워 리스트", description = "특정 유저를 팔로우하고 있는 계정 리스트")
     @PostMapping("/followers")
-    public ResponseEntity<ApiResponseDto> listFollower(@RequestParam Long followingId, @AuthenticationPrincipal UserDetail userDetail) {
+    public ResponseEntity<ApiResponseDto> listFollower(@RequestParam Long followingId, @AuthenticationPrincipal UserDetail userDetail){
         // 지금은 이메일로 받습니다... 추후에 id를 받는 것으로 수정할 수 있습니다.
 
         return new ResponseEntity<>(
@@ -230,13 +211,13 @@ public class UserController {
                         .message(followingId + " 의 팔로워 리스트")
                         .responseData(userService.listFollower(followingId))
                         .build()
-                , HttpStatus.OK);
+                ,HttpStatus.OK);
 
     }
 
     @Operation(summary = "팔로잉 리스트", description = "특정 유저가 팔로우하고 있는 계정 리스트")
     @PostMapping("/followings")
-    public ResponseEntity<ApiResponseDto> listFollowing(@RequestParam Long followingId, @AuthenticationPrincipal UserDetail userDetail) {
+    public ResponseEntity<ApiResponseDto> listFollowing(@RequestParam Long followingId, @AuthenticationPrincipal UserDetail userDetail){
         // 지금은 이메일로 받습니다... 추후에 id를 받는 것으로 수정할 수 있습니다.
 
         return new ResponseEntity<>(
@@ -245,10 +226,9 @@ public class UserController {
                         .message(followingId + " 의 팔로잉 리스트")
                         .responseData(userService.listFollowing(followingId))
                         .build()
-                , HttpStatus.OK);
+                ,HttpStatus.OK);
 
     }
-
     @Operation(summary = "이메일 인증", description = "유저가 메일에서 활성화링크 눌렀을 때 오는것으로 백에서 씁니다.")
     @GetMapping("/emailVerification/{code}")
     public ResponseEntity<ApiResponseDto> verifyAccount(@PathVariable String code) {
@@ -259,13 +239,12 @@ public class UserController {
                 .message("계정활성화가 성공적으로 완료됐습니다.")
                 .build(), HttpStatus.OK);
     }
-
     @Operation(summary = "공개범위 바꾸기", description = "IsProfilePublic칼럼을 반대로 토글시켜주고 바뀐 userDto객체를 반환.")
     @GetMapping("/modifyIsProfilePublic/{id}")
     public ResponseEntity<ApiResponseDto> modifyIsProfilePublic(@PathVariable Long id) {
         boolean modifyResult = userService.modifyIsProfilePublic(id);
         /*실패 시*/
-        if (!modifyResult)
+        if(!modifyResult)
             return new ResponseEntity<>(ApiResponseDto
                     .builder()
                     .success(false)
@@ -283,13 +262,18 @@ public class UserController {
     }
 
     @Operation(summary = "임시비밀번호 이메일로 보내기", description = "임시비밀번호를 해당 이메일로 보내주고 비밀번호도 임시비밀번호로 바꿔줍니다. 프론트에서 호출전에 이메일 존재체크를 해주고 보내주세요")
-    @GetMapping("/generateTemporaryPassword/{email}")
-    public ResponseEntity<?> generateTemporaryPassword(@PathVariable String email){
+    @GetMapping("/generateTemporaryPassword")
+    public ResponseEntity<?> generateTemporaryPassword(@RequestParam String email){
+        log.info("generateTemporaryPassword email :", email);
+        emailAuthService.sendPasswordEmail(email);
 
-
-        return null;
+        return new ResponseEntity<>(ApiResponseDto
+                .builder()
+                .success(true)
+                .message("임시비밀번호 전송완료")
+                .build()
+                , HttpStatus.ACCEPTED);
     }
-
 }
 
 

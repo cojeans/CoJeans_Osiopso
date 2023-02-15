@@ -49,6 +49,7 @@ const Navigation = () => {
 	};
 
 	return (
+		
 		<Container>
 			<TopBar />
 			<BodyContainer>
@@ -93,7 +94,7 @@ const Navigation = () => {
 					<span>OOTD</span>
 				</HashLinkContainer>
 				{/* </LogoContainer> */}
-				<LogoContainer  to='/mypage'>
+				<LogoContainer  to='/profile'>
 					<FaUserCircle />
 					<span>프로필</span>
 				</LogoContainer>

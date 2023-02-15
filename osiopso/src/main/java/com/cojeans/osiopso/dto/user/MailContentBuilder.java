@@ -8,13 +8,18 @@ import org.thymeleaf.context.Context;
 @Service
 @AllArgsConstructor
 public class MailContentBuilder {
-
     private final TemplateEngine templateEngine;
 
-    public NotificationEmail build(NotificationEmail message) {
+    public String build(String message) {
         Context context = new Context();
         context.setVariable("link", message);
         return templateEngine.process("mailTemplate", context);
+    }
+
+    public String buildPasswordEmail(String password) {
+        Context context = new Context();
+        context.setVariable("password", password);
+        return templateEngine.process("passwordMailTemplate", context);
     }
 }
 

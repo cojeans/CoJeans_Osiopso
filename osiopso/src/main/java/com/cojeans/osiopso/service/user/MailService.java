@@ -1,7 +1,7 @@
 package com.cojeans.osiopso.service.user;
 
-import com.cojeans.osiopso.dto.user.PasswordRequestEmail;
 import com.cojeans.osiopso.dto.user.NotificationEmail;
+import com.cojeans.osiopso.dto.user.PasswordRequestEmail;
 import com.cojeans.osiopso.exception.CustomMailException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +31,10 @@ public class MailService {
 
         try {
             mailSender.send(messagePreparator);
-            log.info("활성화 메일이 보내졌다 to: {}",notificationEmail);
+            log.info("활성화 메일 전송 to: {}", notificationEmail);
         } catch (MailException e) {
-            log.error(java.lang.String.valueOf(e));
-            throw new CustomMailException("메일을 여기로 보내는 중 에러 발생 :  " + notificationEmail.getTo());
+            log.error(String.valueOf(e));
+            throw new CustomMailException("활성화 메일을 보내는 중 에러 발생 :  " + notificationEmail.getTo());
         }
     }
 
@@ -51,10 +51,10 @@ public class MailService {
 
         try {
             mailSender.send(messagePreparator);
-            log.info("활성화 메일이 보내졌다 to: {}",passwordRequestEmail);
+            log.info("임시 비밀번호메일 전송 to: {}",passwordRequestEmail);
         } catch (MailException e) {
-            log.error(java.lang.String.valueOf(e));
-            throw new CustomMailException("메일을 여기로 보내는 중 에러 발생 :  " + passwordRequestEmail.getTo());
+            log.error(String.valueOf(e));
+            throw new CustomMailException("임시비밀번호를 보내는 중 에러 발생 :  " + passwordRequestEmail.getTo());
         }
     }
 }

@@ -7,10 +7,10 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class AuthResponseDto extends ApiResponseDto {
-    private NotificationEmail accessToken;
-    private NotificationEmail tokenType = "Bearer";
+    private String accessToken;
+    private String tokenType = "Bearer";
 
-    public AuthResponseDto(NotificationEmail accessToken) {
+    public AuthResponseDto(String accessToken) {
         super();
         this.accessToken = accessToken;
     }

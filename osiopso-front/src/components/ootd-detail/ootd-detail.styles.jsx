@@ -163,4 +163,5 @@ width: 90%;
 height: 100%;
 margin: 10px 20px 10px;
 white-space: normal;
+word-break: break-all;
 `

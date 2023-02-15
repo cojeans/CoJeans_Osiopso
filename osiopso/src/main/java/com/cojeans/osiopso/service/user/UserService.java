@@ -196,7 +196,7 @@ public class UserService {
     /* 이메일 인증이 되어있는지. 되어있지 않다면 false 반환*/
     public boolean isEmailVerified(String email) {
         if(userRepository.existsByEmail(email)){
-            return userRepository.findByEmail(email).orElse(null).getEmailVerified();
+            return userRepository.findByEmailAndProvider(email,AuthProvider.local).orElse(null).getEmailVerified();
         }
         return false;
     }

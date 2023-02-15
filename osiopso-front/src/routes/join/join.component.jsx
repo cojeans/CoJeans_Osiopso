@@ -1,11 +1,21 @@
+import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom'
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constants';
+import { signup } from '../../utils/APIUtils';
+import kakaoLogo from '../../assets/kakao-logo.png';
+import googleLogo from '../../assets/google-logo.png';
+import githubLogo from '../../assets/github-logo.png';
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
-import { SignUpContainer } from './join.stlyes'
+import { SignUpContainer, SocialSignup, TextContainer } from './join.stlyes'
 import axios from 'axios';
 import './join.stlyes'
+// import './join.css';
+
+// import Alert from 'react-s-alert';
 
 const defaultformFields = {
 	displayName: '',
@@ -19,7 +29,22 @@ const Join = () => {
 
 	const [formFields, setFormFields] = useState(defaultformFields)
 	const {displayName, email, password, confirmPassword} = formFields
-
+	// class SocialSignup extends Component {
+	// 	render() {
+	// 		return (
+				
+	// 			<div className="social-signup">
+	// 				<div>간편 회원가입</div>
+	// 				<a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
+	// 					<img src={googleLogo} alt="Google" /> </a>
+	// 				<a className="btn btn-block social-btn facebook" href={FACEBOOK_AUTH_URL}>
+	// 					<img src={kakaoLogo} alt="Kakao" /> </a>
+	// 				<a className="btn btn-block social-btn github" href={GITHUB_AUTH_URL}>
+	// 					<img src={githubLogo} alt="Github" /> </a>
+	// 			</div>
+	// 		);
+	// 	}
+	// }
 	// const handleSubmit = async (event) => {
 	// 	event.preventDefault();
 	
@@ -98,6 +123,15 @@ const Join = () => {
 				value={confirmPassword}/>
 				<Button onClick={JoinFunc}>가입하기</Button>
 			</form>
+
+				
+				<TextContainer>간편 회원가입</TextContainer>
+					<SocialSignup>
+						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
+						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
+						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
+					</SocialSignup>
+				
 		</SignUpContainer>
 	)
 }

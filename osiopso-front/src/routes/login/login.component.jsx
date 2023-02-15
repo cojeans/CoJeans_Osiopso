@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constants';
+import kakaoLogo from '../../assets/kakao-logo.png';
+import googleLogo from '../../assets/google-logo.png';
+import githubLogo from '../../assets/github-logo.png';
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignInContainer, ButtonsContainer  } from './login.stlyes'
@@ -7,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
 import { login } from '../../store/user/user.reducer'
+import { SocialSignup, TextContainer } from '../join/join.stlyes'
 // import {
 //   signInAuthUserWithEmailAndPassword,
 //   signInWithGooglePopup,
@@ -103,11 +108,19 @@ const Login = () => {
         />
         
         <ButtonsContainer>
-          <Button type='submit' onClick={LoginFunc}>Sign In</Button>
-          {/* <button onClick={LoginFunc}>
-            test
-          </button> */}
+        <Button
+          type='submit'
+          size={'md'}
+          variant={ 'success'}
+          onClick={LoginFunc}
+          >Sign In</Button>
         </ButtonsContainer>
+        <TextContainer>간편 로그인</TextContainer>
+					<SocialSignup>
+						<a href={GOOGLE_AUTH_URL}><img src={googleLogo} alt="Google" /> </a>
+						<a href={KAKAO_AUTH_URL}><img src={kakaoLogo} alt="Kakao" /> </a>
+						<a href={GITHUB_AUTH_URL}><img src={githubLogo} alt="Github" /> </a>
+					</SocialSignup>
     </SignInContainer>
   );
 };
