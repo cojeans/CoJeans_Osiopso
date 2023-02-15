@@ -10,10 +10,8 @@ import AdvicePage from './routes/advice/advice.component';
 import OOTDPage from './routes/ootd/ootd.component'
 import PasswordCheck from './routes/passwordcheck/passwordcheck.component'
 import ChangePassword from './routes/changeuserinfo/changepassword.component'
-import PwdComplete from './routes/changeuserinfo/pwdchangecomplete'
 import DisclosureScope from './routes/disclosurescopre/disclore-scope.component'
 import MembershipWithdrawal from "./routes/membershipwithdrawal/membershipwithdrawal.component";
-import JoinComplete from "./routes/join/join-complete.component";
 import Search from "./routes/search/search.component";
 import FindPage from "./routes/findpage/findpage.component";
 import ErrorPage from "./routes/errorpage/errorpage.component";
@@ -53,13 +51,11 @@ function App() {
           <Route path="advice/*" element={<AdvicePage />} />
           <Route path="ootd/*" element={<OOTDPage />} />
           <Route path="changePassword" element={<ChangePassword />} />
-          <Route path="pwdchangecomplete" element={<PwdComplete />} />
           <Route path="disclosurescope" element={<DisclosureScope />} />
           <Route
             path="membershipwithdrawal/"
             element={<MembershipWithdrawal />}
           />
-          <Route path="joincomplete" element={<JoinComplete />} />
           <Route path="search" element={<Search />} />
           <Route path="find" element={<FindPage />} />
           <Route path="/*" element={<ErrorPage />} />
