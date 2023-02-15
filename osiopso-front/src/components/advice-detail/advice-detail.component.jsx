@@ -40,7 +40,8 @@ const AdviceDetail = () => {
   const goToComment = ()=> {
     navigate("/advice/commentlist/"+id, {
       state: {
-        id: id
+        id: id, 
+        comments: commentData
       }
     })
   }
