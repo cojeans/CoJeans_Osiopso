@@ -4,6 +4,10 @@ export const modalStyle = css`
   padding-bottom:60px;
 `
 
+export const modalStyle2 = css`
+  align-items: center;
+`
+
 export const ModalPage = styled.div`
  	display:flex;
   justify-content:center;
@@ -13,6 +17,8 @@ export const ModalPage = styled.div`
 	${({page})=> page===1 && modalStyle};
   /* 최상단 위치 */
   z-index: 999;
+  ${({page})=> page===5 && modalStyle2};
+
   
   /* 중앙 배치 */
   /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
