@@ -1,3 +1,3 @@
-export const selectCloset = (state) => state.closet;
+export const selectCloset = (state) => state.closet.closet;
 
-export const selectClosetList = (state) => state.closetList;
+export const selectClosetList = (state) => state.closet.closetList;

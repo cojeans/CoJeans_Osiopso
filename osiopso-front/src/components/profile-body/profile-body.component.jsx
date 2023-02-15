@@ -3,7 +3,7 @@ import { Fragment } from "react"
 
 import { useSelector } from "react-redux"
 import { selectUser, selectUserInfo } from "../../store/user/user.selector"
-import { selectClosetList } from '../../store/closet/closet.selector';
+import { selectClosetList, selectCloset } from '../../store/closet/closet.selector';
 
 
 import ProfileCloset from "../profile-closet/profile-closet.component"
@@ -21,7 +21,7 @@ const ProfileBody = ({ id }) => {
 	const Token = useSelector(selectUser);
 	const userInfo = useSelector(selectUserInfo)
 	const curClosetList = useSelector(selectClosetList)
-
+	const curCloset = useSelector(selectCloset)
 	const [profilePage, setProfilePage] = useState('closet')
 	const [userOotd, setUserOotd] = useState([])
 	const [userAdvice, setUserAdvice] = useState([])
@@ -43,6 +43,8 @@ const ProfileBody = ({ id }) => {
 	}
 	const testButton = () => {
 		console.log(curClosetList, 'test button')
+		console.log(userInfo, 'test button2')
+		console.log(curCloset, 'test button3')
 	}
 	useEffect(() => {
 		if (id > 0) {

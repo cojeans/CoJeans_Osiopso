@@ -29,6 +29,7 @@ import { buffer } from '@tensorflow/tfjs';
 import exampleImage from '../../../src/00000001.jpg'
 
 const tags = {
+	'Closet' : [],
 	'Category' : ['원피스','바지','상의','신발','치마','아우터','모자',],
 	'Color' : ['검정', '파랑', '빨강'],
 	'Season': ['봄', '여름', '가을', '겨울'],
@@ -46,6 +47,8 @@ const ClothesTagModal = ({ closeModal }) => {
 	// console.log(closetData, 'closet_list')
 	const curUser = useSelector(selectUserInfo)// 현재 유저 정보를 가져옵니다. 
 	const curClosetList = useSelector(selectClosetList)
+
+	
 	const saveAutoTag = useSelector(selectAutoTag)
 	// console.log(curClosetList, 'curclosetList')
 	console.log(saveAutoTag, 'saveAutoTag')
@@ -58,6 +61,15 @@ const ClothesTagModal = ({ closeModal }) => {
 		Color: [tags.Color[saveAutoTag.colors]],
 		Season: [],
 	}
+	let ClosetListName = []
+	let ClosetListIdx = []
+	for(let i =0; i < curClosetList.length; i ++){
+		ClosetListName.push(curClosetList[i].name)
+		ClosetListIdx.push(curClosetList[i].id)
+	}
+	console.log(ClosetListIdx, ClosetListName, 'split')
+	tags.Closet = ClosetListName
+	console.log("new tag", tags)
 	const isAutoTag = useSelector(localPhoto);
 
 	const saveData = useSelector(selectClothes);
@@ -73,7 +85,8 @@ const ClothesTagModal = ({ closeModal }) => {
 
 		console.log(curClosetList, 'this is current closetlist')
 		selectedTag['Closet'].forEach((el) => {
-			newArr.closets = el
+			const index = tags.Closet.indexOf(el)
+			newArr.closets = ClosetListIdx[index] 
 			
 		})
 		
@@ -159,7 +172,7 @@ const ClothesTagModal = ({ closeModal }) => {
 
 			<CategoryBox>
 						<Title>옷장</Title>
-					{tags.Category.map((el, idx) => {
+					{tags.Closet.map((el, idx) => {
 						return <Tag key={idx} onClick={()=> selectOneHandler('Closet', el) } select={ selectedTag['Closet'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>

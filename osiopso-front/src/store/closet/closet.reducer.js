@@ -5,7 +5,8 @@ const initialState = {
     name: "",
     isSelected: false,
   },
-  closetList: {}
+
+  closetList: []
 };
 
 export const closet = createSlice({
