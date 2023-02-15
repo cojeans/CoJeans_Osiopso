@@ -93,6 +93,8 @@ const ClothesTagModal = ({ closeModal }) => {
 	// FashionAi()
 	const submitHandler = () => {
 		let newArr = {'category':'', closets:[], colors:[], seasons:[]} 
+
+		
 		selectedTag['Category'].forEach((el) => {
 			newArr.category = el
 				// type: el
@@ -123,18 +125,10 @@ const ClothesTagModal = ({ closeModal }) => {
 		// 	}]
 		// })
 
-		// selectedTag['Season'].forEach((el) => {
-		// 	newArr = [...newArr, {
-		// 		keyword: "Season",
-		// 		type: el
-		// 	}]
-		// })
-		// selectedTag['TPO'].forEach((el) => {
-		// 	newArr = [...newArr, {
-		// 		keyword: "TPO",
-		// 		type: el
-		// 	}]
-		// })
+		selectedTag['Season'].forEach((el) => {
+			newArr.seasons.push(el)
+		})
+
 
 		console.log(newArr, 'newArr')
 		console.log(newArr.colors, 'category')
@@ -182,12 +176,12 @@ const ClothesTagModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={() => selectHandler('Season', el)} select={ selectedTag['Season'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
-			<CategoryBox>
+			{/* <CategoryBox>
 					<Title>TPO</Title>
 					{tags.TPO.map((el, idx) => {
 						return <Tag key={idx} onClick={()=> selectHandler('TPO', el) } select={ selectedTag['TPO'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
-			</CategoryBox>
+			</CategoryBox> */}
 			<button onClick={submitHandler}>저장</button>
 		</CategoryModalContainer>}</>
 	)
