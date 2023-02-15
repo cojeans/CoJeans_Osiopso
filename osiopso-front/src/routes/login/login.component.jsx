@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constants';
+import kakaoLogo from '../../assets/kakao-logo.png';
+import googleLogo from '../../assets/google-logo.png';
+import githubLogo from '../../assets/github-logo.png';
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
@@ -148,6 +152,14 @@ const Login = () => {
         </ButtonsContainer>
         </MarginBox>
         </ContentBox>
+        <TextContainer>간편 로그인</TextContainer>
+      <SocialSignup>
+        <a href={KAKAO_AUTH_URL}> <div className='imgBox'><img src={kakaoLogo} alt="Kakao" /> </div></a>
+        <a href={GOOGLE_AUTH_URL}><div className='imgBox'>
+						<img src={googleLogo} alt="Google" />
+        </div> </a>
+						<a href={GITHUB_AUTH_URL}><div className='imgBox'><img src={githubLogo} alt="Github" />  </div></a>
+					</SocialSignup>
     </SignInContainer>
   );
 };
