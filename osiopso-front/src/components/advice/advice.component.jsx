@@ -153,7 +153,7 @@ const Advice = () => {
               <AdvicecContainer onClick={()=>goToAdviceDetail(at.id)}>
                 <AdviceItemBox>
                   <ContentBox>
-                      <div className="title">title:{ at.subject}</div>
+                      <div className="title">{ at.subject}</div>
                       <div className="content">{ at.content}</div>
                       <div className="comment"><VscComment /><div>{ at.commentCnt}</div></div>
                   </ContentBox>

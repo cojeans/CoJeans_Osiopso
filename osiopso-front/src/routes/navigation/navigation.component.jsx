@@ -95,7 +95,7 @@ const Navigation = () => {
 					// to='mypage/add-clothes'
 					onClick={showModal}
 				>
-					<AiFillPlusCircle color="#BCF0E0 "/>
+					<AiFillPlusCircle color="#afb2f0 "/>
 				</PlusContainer>
 				{/* <LogoContainer to='/ootd'> */}
 				<HashLinkContainer
