@@ -21,13 +21,13 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: REACT_APP_APIKEY,
-  authDomain: REACT_APP_AUTHDOMAIN,
-  projectId: REACT_APP_PROJECTID,
-  storageBucket: REACT_APP_STORAGEBUCKET,
-  messagingSenderId: REACT_APP_MESSAGING_SENDERID,
-  appId: REACT_APP_APPID,
-  measurementId: REACT_APP_MEASUREMENTID,
+  apiKey: "AIzaSyCESE3FBfTVvTQd-Xt2beJJRpfmbfomUZw",
+  authDomain: "osiopso.firebaseapp.com",
+  projectId: "osiopso",
+  storageBucket: "osiopso.appspot.com",
+  messagingSenderId: "679410198207",
+  appId: "1:679410198207:web:97a1ccc4dfe4b9c5e6480a",
+  measurementId: "G-N1XB2BHBXF",
 };
 
 const app = initializeApp(firebaseConfig);
