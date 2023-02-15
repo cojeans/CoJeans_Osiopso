@@ -118,6 +118,8 @@ const Profile = ({ id, showModal }) => {
 		}
 		else {
 			setUserProfile(userInfo)
+			getFollowings(userInfo.id)
+			getFollower(userInfo.id)
 	}
 
 	},[userInfo])
