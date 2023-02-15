@@ -45,8 +45,7 @@ flex-direction: column;
 // height: 50%;
 `
 export const MarginBox = styled.div`
-margin-top: 10%;
-`
+  margin-top: 5%;`
 export const ContentBox = styled.div`
 margin-top: 10%;
 `

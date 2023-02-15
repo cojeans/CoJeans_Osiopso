@@ -127,21 +127,20 @@ const Join = () => {
       {/* <img src={require("../../assets/The_Great_Gatsby.gif")} alt="" /> */}
       <form>
         <FormInput
-          label="아이디"
-          type="text"
-          required
-          onChange={handleChange}
-          name="displayName"
-          value={displayName}
-        />
-
-        <FormInput
           label="이메일"
           type="email"
           required
           onChange={handleChange}
           name="email"
           value={email}
+        />
+          <FormInput
+          label="닉네임"
+          type="text"
+          required
+          onChange={handleChange}
+          name="displayName"
+          value={displayName}
         />
         <FormInput
           label="비밀번호"
@@ -160,6 +159,7 @@ const Join = () => {
           name="confirmPassword"
           value={confirmPassword}
         />
+
         <ButtonContainer>
           <Button
           type='submit'

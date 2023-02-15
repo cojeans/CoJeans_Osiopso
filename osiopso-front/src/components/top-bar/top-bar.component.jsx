@@ -57,6 +57,8 @@ const TopBar = () => {
 			setTopName('OOTD 게시글')
 		} else if (location.pathname.includes('profile')) {
 			setTopName('Profile')
+		} else if (location.pathname.includes('advice/detail')) {
+			setTopName('Advice 게시글')
 		}
 }, [location ])
 

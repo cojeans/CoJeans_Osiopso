@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { useState } from "react"
 
 import Profile from "../../components/profile/profile.component"
@@ -9,9 +9,8 @@ import { useBodyScrollLock } from "../../components/profile-closet/profile-close
 const MypageBody = ({ id }) => {
 	const [modalOpen, setModalOpen] = useState(false);
 	const { lockScroll, openScroll } = useBodyScrollLock()
-
+	
 	const showModal = () => {
-
 			window.scrollTo(0, 0);
 			setModalOpen(true);
 				lockScroll();
