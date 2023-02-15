@@ -643,6 +643,9 @@ public class OotdService {
                     .keyword(tag.getKeyword())
                     .build());
         }
+
+        List<HotOotdResponseDto> hotList = hotIssueList(result.get(0).getId());
+        result.get(0).setHotList(hotList);
         return result;
     }
 

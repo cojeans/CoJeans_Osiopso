@@ -20,4 +20,5 @@ public class FilterOotdRequestDto {
     private List<String> tpo;
     private Gender gender;
     private Long age;
+    private String category;
 }
