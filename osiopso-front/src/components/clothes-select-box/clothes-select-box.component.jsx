@@ -39,8 +39,10 @@ import { selectCloset } from '../../store/closet/closet.selector';
 
 import Test from "../test/test.component";
 import { ref as fref, getStorage, uploadString } from "firebase/storage";
-const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
-const color = ['검정', '파랑', '빨강']
+const category = ["원피스","바지","상의","신발","치마","아우터","모자",] 
+const color = ["검정", "파랑", "빨강"]
+// const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
+// const color = ['검정', '파랑', '빨강']
 
 
 const defaultClothesForm = {
@@ -75,7 +77,7 @@ const ClothesSelectBox = () => {
 
 
     const saveData = useSelector(selectClothes);
-    // console.log(saveData);
+    console.log(saveData);
 
 
     // const saveData = useSelector(selectClothes);
@@ -138,13 +140,14 @@ const ClothesSelectBox = () => {
 
         // Data URL string
         console.log(finalTag.category)
+        console.log(finalTag.closets)
         console.log(finalTag.colors)
         console.log(finalTag.seasons)
 
         uploadString(storageRef, saveData, "data_url").then((snapshot) => {
             console.log("Uploaded a data_url string!");
         });
-
+        
         // storage.ref.putString(saveData, "base64").then(function (snapshot) {
         //     console.log("Uploaded a data_url string!");
         // });
@@ -157,22 +160,36 @@ const ClothesSelectBox = () => {
         //     .then(function (snapshot) {
         //         console.log("육사업로드");
         //     });
+        const payload = {
+          category: finalTag.category,
+          imageUrl: saveData,
+          closets: finalTag.closets,
+          colors: finalTag.colors,
+          seasons: finalTag.seasons,
+        }
 
-        axios({
+        // const temp_obj = 
+        // const payload = JSON.stringify(obj)
+        console.log(payload, 'this is payload')
+        console.log(typeof(payload), 'type of payload')
+          axios({
             method: "post",
             url: `${process.env.REACT_APP_AXIOS_URL}closet/clothes`,
-            data: {
-              finalTag
-                // category: finalTag.category,
-                // imageUrl: saveData,
-                // closets: [{id:2}],
-                // colors: finalTag.colors,
-                // seasons: finalTag.seasons,
-        
-            },
+            data: 
+              
+              {
+                category: finalTag.category,
+                imageUrl: saveData,
+                closets: finalTag.closets,
+                colors: finalTag.colors,
+                seasons: finalTag.seasons,
+              }
+            ,
             headers: {
                 Authorization: `Bearer ${Token.token}`,
-            },
+                contentType : "application/json"
+              },
+
         })
             .then((res) => {
               console.log(res)
@@ -238,7 +255,6 @@ const ClothesSelectBox = () => {
     {saveTag}
     <button onClick={FashionAi}> button</button>
   </div> */}
-      <div>123</div>
 
       <EditContainer>
         <EditBox onClick={onNavigateHandler}>

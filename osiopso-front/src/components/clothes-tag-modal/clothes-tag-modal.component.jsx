@@ -30,9 +30,12 @@ import exampleImage from '../../../src/00000001.jpg'
 
 const tags = {
 	'Closet' : [],
-	'Category' : ['원피스','바지','상의','신발','치마','아우터','모자',],
-	'Color' : ['검정', '파랑', '빨강'],
-	'Season': ['봄', '여름', '가을', '겨울'],
+	'Category' : ["원피스","바지","상의","신발","치마","아우터","모자",],
+	'Color' : ["검정", "파랑", "빨강"],
+	'Season': ["봄", "여름", "가을", "겨울"],
+	// 'Category' : ["원피스","바지","상의","신발","치마","아우터","모자",],
+	// 'Color' : ['검정', '파랑', '빨강'],
+	// 'Season': ['봄', '여름', '가을', '겨울'],
 }
 
 // const defaultSelect = {
@@ -86,7 +89,8 @@ const ClothesTagModal = ({ closeModal }) => {
 		console.log(curClosetList, 'this is current closetlist')
 		selectedTag['Closet'].forEach((el) => {
 			const index = tags.Closet.indexOf(el)
-			newArr.closets = ClosetListIdx[index] 
+			newArr.closets.push(ClosetListIdx[index]) 
+			// newArr.closets = ClosetListIdx[index] 
 			
 		})
 		
