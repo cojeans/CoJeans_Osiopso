@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { resetOotdCategory } from "../../store/ootd/ootd.reducer";
 import exampleImage from '../../../src/00000001.jpg'
 import { selectUser } from "../../store/user/user.selector";
-import { selectClosetList } from "../../store/closet/closet.selector";
 import { uploadClosetList } from "../../store/closet/closet.reducer";
 import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component";
@@ -27,6 +26,7 @@ import axios from "axios";
 import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectClosetList } from '../../store/closet/closet.selector';
 
 import Modal from "../modal/modal.component";
 import {
@@ -80,13 +80,14 @@ const ClothesSelectBox = () => {
     const onNavigateHandler = () => {
       navigate("update/");
     };
+    
     const [ootdFormData, setOotdFormData] = useState(defaultClothesForm);
     // const [closetList, setClosetList] = useState([])
     const [clothesFormData, setClothesFormData] = useState(defaultClothesForm);
     const { picture, tags } = clothesFormData
     const [modalOpen, setModalOpen] = useState(false);
     const { lockScroll, openScroll } = useBodyScrollLock();
-
+    const curClosetList = useSelector(selectClosetList)
     const saveTag = useSelector(selectAutoTag)
     const finalTag = useSelector(selectTag)
     console.log(finalTag, 'this is finalTag')
@@ -107,15 +108,12 @@ const ClothesSelectBox = () => {
       .then((res) => {
         console.log(res.data.reverse(), 'axios output')
         // setClosetList(res.data.reverse())
-        dispatch(uploadClosetList(1))
+        dispatch(uploadClosetList(res.data.reverse()))
       })
       .catch((err) => {
         console.log(err);
       });
       
-    }
-    const hellotest = () => {
-      console.log('hello')
     }
     // getClosetList()
 
@@ -238,6 +236,8 @@ const ClothesSelectBox = () => {
     {saveTag}
     <button onClick={FashionAi}> button</button>
   </div> */}
+      <div>{curClosetList}</div>
+      <div>123</div>
 
       <EditContainer>
         <EditBox onClick={onNavigateHandler}>
