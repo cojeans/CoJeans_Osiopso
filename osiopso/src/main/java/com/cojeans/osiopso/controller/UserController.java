@@ -3,9 +3,7 @@ package com.cojeans.osiopso.controller;
 import com.cojeans.osiopso.dto.ApiRequestDto;
 import com.cojeans.osiopso.dto.ApiResponseDto;
 import com.cojeans.osiopso.dto.user.*;
-import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.exception.BadRequestException;
-import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.TokenProvider;
 import com.cojeans.osiopso.security.UserDetail;
@@ -159,7 +157,7 @@ public class UserController{
     }
 
     @Operation(summary = "이메일 중복체크")
-    @PostMapping("/isEmailExist") //GET? POST? 민우랑 상의
+    @PostMapping("/isEmailExist")
     public ResponseEntity<ApiResponseDto> isEmailExist(@RequestBody ApiRequestDto apiRequestDto) {
         String email = apiRequestDto.getMessage(); //null, trim 체크 앞단에서 하고 들어와야
         if(userService.isEmailExist(email)){
