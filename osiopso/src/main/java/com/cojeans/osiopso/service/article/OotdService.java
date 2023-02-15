@@ -718,8 +718,11 @@ public class OotdService {
                     .build());
         }
 
-        List<HotOotdResponseDto> hotList = hotIssueList(result.get(0).getId());
-        result.get(0).setHotList(hotList);
+        if(result.size() != 0){
+            List<HotOotdResponseDto> hotList = hotIssueList(result.get(0).getId());
+            result.get(0).setHotList(hotList);
+        }
+        
         return result;
     }
 
