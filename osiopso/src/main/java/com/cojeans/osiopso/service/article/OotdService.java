@@ -334,6 +334,7 @@ public class OotdService {
                 .id(ootd.getId())
                 .userId(ootd.getUser().getId())
                 .userName(ootd.getUser().getName())
+                .profileImageUrl(ootd.getUser().getImageUrl())
                 .createTime(ootd.getCreateTime())
                 .modifyTime(ootd.getModifyTime())
                 .commentCnt((long) commentRepository.findAllByArticle_Id(ootd.getId()).size())
