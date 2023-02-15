@@ -41,7 +41,7 @@ const Profile = ({ id, showModal }) => {
 		axios({
 			method: "get",	
   		url: urlString,
-      headers: {
+      headers: {	
         Authorization: `Bearer ${Token.token}`,
       },
 		}).then((res) => {

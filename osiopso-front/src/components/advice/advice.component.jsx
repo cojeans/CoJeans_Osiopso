@@ -138,11 +138,6 @@ const Advice = () => {
   };
   return (
     <div>
-      <TextToLeft>
-        <Container>
-          <span>최신순</span> <span>논란순</span>
-        </Container>
-      </TextToLeft>
 
       <TextToLeft>
         <TopTag>
@@ -156,8 +151,6 @@ const Advice = () => {
           adviceArticle.map((at) => {
             return (
               <AdvicecContainer onClick={()=>goToAdviceDetail(at.id)}>
-                <div className="hori">
-                </div>
                 <AdviceItemBox>
                   <ContentBox>
                       <div className="title">title:{ at.subject}</div>
@@ -168,6 +161,8 @@ const Advice = () => {
                       <img src={ at.photo.imageUrl} alt="" />
                   </ImageContainer>
                 </AdviceItemBox>
+                <div className="hori">
+                </div>
             </AdvicecContainer>
 
             )
