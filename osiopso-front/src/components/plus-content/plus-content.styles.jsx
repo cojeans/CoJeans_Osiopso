@@ -29,3 +29,12 @@ export const PlusLogoContainer = styled.div`
 		height:30px;
 	}
 `
+
+
+export const MagicLogoContainer = styled.div`
+	padding-right:10%;
+	svg{
+		width:25px;
+		height:25px;
+	}
+`

@@ -14,7 +14,10 @@ display: flex;
 align-items: center;
 text-align: left;
 font-size: 140%;
-margin: 5% 0% 2% 0%;
+width: 95%;
+margin: 27px auto 0 auto;
+justify-content: space-around
+
 `
 export const HomeOotdImage = styled.div`
 width: 95%;
@@ -27,7 +30,8 @@ margin: auto;
 .hotTitle{
     display: flex;
     align-items: center;
-    justify-content: flex-start
+    justify-content: flex-start;
+    padding-top:27px;
 }
 .slick-list{
     .imgBox{
@@ -79,15 +83,12 @@ border: 4px solid black;
 `
 
 export const OotdTagDiv = styled.div`
-    padding-top:60px;
+    padding-top:40px;
 `
 export const TagBox = styled.div`
 display: flex;
-// align-items: center
 text-align: left;
 font-size: 80%;
 margin: 1% 2% 2% 0%;
-&:focus{
-    color:red;
-}
+
 `
