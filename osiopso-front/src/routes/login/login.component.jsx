@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, GITHUB_AUTH_URL } from '../../constants';
+import kakaoLogo from '../../assets/kakao-logo.png';
+import googleLogo from '../../assets/google-logo.png';
+import githubLogo from '../../assets/github-logo.png';
+
 import FormInput from '../../components/form-input/form-input.component'
 import Button from '../../components/button/button.component'
 import { SignInContainer, ButtonsContainer, Osiopso, Bodoni, FindIdPassword, IdPasswordBox, MarginBox, ContentBox, ChangeFontColor  } from './login.stlyes'
@@ -7,6 +12,7 @@ import { useDispatch } from 'react-redux'
 import './login.stlyes'
 import axios from 'axios';
 import { login } from '../../store/user/user.reducer'
+import { SocialSignup, TextContainer } from '../join/join.stlyes'
 // import {
 //   signInAuthUserWithEmailAndPassword,
 //   signInWithGooglePopup,
