@@ -23,7 +23,7 @@ import Swal from "sweetalert2";
 
 const defaultData = {
 	id:'',
-	nickName: '',
+	name: '',
 	age: '',
 	gender: '',
 	imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/330px-Image_created_with_a_mobile_phone.png',
@@ -63,7 +63,7 @@ const EditProfile = () => {
 		}).then((res) => {
 			const userData = {
 				id : res.data.id,
-				nickName: res.data.name,
+				name: res.data.name,
 				age: res.data.age,
 				gender: res.data.gender,
 				imageUrl: res.data.imageUrl,
@@ -97,11 +97,11 @@ const EditProfile = () => {
       `,
 					showCancelButton: false,
 					confirmButtonText: "확인",
-				}).catch((err) => {
-					console.log(err)
 				})
 				
-			})
+			}).catch((err) => {
+					console.log(err)
+				})
 		}
 	}
 	useEffect(() => {
@@ -116,10 +116,10 @@ const EditProfile = () => {
 
 			<TextField
 				label="이름"
-				value={userValue.nickName}
+				value={userValue.name}
 				size="small"
 				variant="outlined"
-				name="nickName"
+				name="name"
 				onChange={handleChange} />
 			<TextField
 				label="나이"
