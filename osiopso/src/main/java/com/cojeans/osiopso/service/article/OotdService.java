@@ -520,17 +520,24 @@ public class OotdService {
 //            left join tag t
 //            on t.id = at.tag_id
 //            where t.keyword="데일리" or t.keyword="캐주얼" or t.keyword="특별한날";
+<<<<<<< Updated upstream
     public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx, Long userId) {
+=======
+    public List<OotdListResponseDto> filterOotd(FilterOotdRequestDto filter, Pageable pageable, Long idx) {
+>>>>>>> Stashed changes
 
 
         List<String> styleTag = filter.getStyleTag();
         List<String> tpoTag = filter.getTpo();
         List<String> totalTags = new ArrayList<>();
         List<OotdListResponseDto> responseOotdList = new ArrayList<>();
+<<<<<<< Updated upstream
         List<Long> followings = followRepository.findAllByFollowerId(userId).stream()
                 .map(a -> a.getFollowing().getId())
                 .collect(Collectors.toList());
         System.out.println(" ???????????????? : " + followings);
+=======
+>>>>>>> Stashed changes
 
         Long age = filter.getAge();
         Gender gender = filter.getGender();
@@ -655,7 +662,10 @@ public class OotdService {
             } else if (age == null && gender != null) { // 7. 성별 필터만 적용된 경우
                 ootdList = articleTagRepositoryImpl.findArticleByGender(gender, pageable, idx);
             }
+            toOotdList(responseOotdList, date, ootdList);
+        }
 
+<<<<<<< Updated upstream
             List<Ootd> result = new ArrayList<>();
             for (Ootd ootd : ootdList) {
                 // 팔로우 필터
@@ -665,6 +675,8 @@ public class OotdService {
             toOotdList(responseOotdList, date, result);
         }
 
+=======
+>>>>>>> Stashed changes
         if (filter.getCategory() != null && filter.getCategory().equals("인기순")) {
             // 카테고리 필터만 적용 된 경우
             if (styleTag.size() == 0 && tpoTag.size() == 0 && age == null && gender == null) {
