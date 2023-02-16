@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useRef } from "react";
 import {
   UpperProfile,
   ProfileImageBox,
@@ -11,10 +11,12 @@ import {
   IconBox,
   ContentBox,
   Title,
-  Buttoncontainer
+  Buttoncontainer,
+  CommentTitle
 } from "../ootd-detail/ootd-detail.styles";
 
 import Button from "../button/button.component";
+import AdviceCommentList from "../advice-comment-list/advice-comment-list.component";
 
 import Swal from "sweetalert2";
 
@@ -24,6 +26,7 @@ import { useState, useEffect, Fragment } from "react";
 
 import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
 import { VscTrash, VscComment, VscWarning } from "react-icons/vsc";
+import { FaMagic } from "react-icons/fa";
 
 import axios from "axios";
 const defaultForm = {
@@ -34,24 +37,28 @@ const defaultForm = {
 const AdviceDetail = () => {
   const location = useLocation();
   const id = location.state.id
-  
+  const adviceRef = useRef(null)
+
+  // 댓글 리스트 창으로 이동
+  const sccurRef1 = () => adviceRef.current.scrollIntoView({ behavior: 'smooth' }); 
+
   const navigate = useNavigate();
 
-  const goToComment = ()=> {
-    navigate("/advice/commentlist/"+id, {
-      state: {
-        id: id, 
-        comments: commentData
-      }
-    })
-  }
+  // const goToComment = ()=> {
+  //   navigate("/advice/commentlist/"+id, {
+  //     state: {
+  //       id: id, 
+  //       comments: commentData
+  //     }
+  //   })
+  // }
 
 
 
   const Token = useSelector(selectUser)
   const [advicedDetail, setAdviceDetail] = useState('')
   const [photoUrl, setPhotoUrl] = useState('')
-  const [userData, setUserData] = useState('')
+  // const [userData, setUserData] = useState('')
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
   const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
@@ -175,8 +182,6 @@ const AdviceDetail = () => {
     })
   }
 
-
-
   return (
     <Fragment>
       <div>
@@ -188,8 +193,9 @@ const AdviceDetail = () => {
       >
         <ProfileImageBox  >
               {
-            advicedDetail.selected ?
-              <img src={require('../../assets/defaultuser.png')} alt="" /> : <img src={ootdUserUrl} alt="" />   
+            advicedDetail.selected || advicedDetail.profileImageUrl ==='UNKNOWN'
+            ? <img src={require('../../assets/defaultuser.png')} alt="" /> 
+            :  <img src={ootdUserUrl} alt="" />   
         }
           </ProfileImageBox >
           {
@@ -218,7 +224,7 @@ const AdviceDetail = () => {
             </IconContainer>
             <IconContainer
               onClick={() => {
-                goToComment()
+                sccurRef1()
               }
               }
             >
@@ -244,6 +250,16 @@ const AdviceDetail = () => {
         <Buttoncontainer>
           <Button write={true} size='lg' onClick={goToCreateComment}>Advice</Button>
         </Buttoncontainer>
+        
+        {/* <hr style={{color:'#D3D3D3', width:'90%'}}/> */}
+        <CommentTitle >
+          <div ref={adviceRef}></div>
+          <FaMagic color="#7272ba "/>
+        Advice List
+        </CommentTitle>
+        <AdviceCommentList
+        id={id}
+        /> 
       </div>
     </Fragment>
   );

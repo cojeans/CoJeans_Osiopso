@@ -180,3 +180,9 @@ justify-content: center;
 align-items: center;
 
 `
+
+export const CommentTitle = styled.div`
+  margin: 40px auto 0 auto;
+  width: 90%;
+  font-size: 109%;
+`

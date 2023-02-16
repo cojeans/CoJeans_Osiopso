@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { selectUser, selectUserInfo } from "../../store/user/user.selector";
 
@@ -28,7 +28,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Fragment } from "react";
 
-const AdviceCommentList = () => {
+const AdviceCommentList = ({id}) => {
   	//slick
 	const settings = {
       dots: false,
@@ -41,8 +41,8 @@ const AdviceCommentList = () => {
 
 	//slick
 
-  const location = useLocation()
-  const id = location.state.id
+  // const location = useLocation()
+  // const id = location.state.id
 
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
@@ -124,9 +124,9 @@ const AdviceCommentList = () => {
               <ContentBox>
                 <UserInfo>
                     <UserBox>
-                    <img src={ comment.profileImageUrl==='UNKNOWN'? userImg :comment.profileImageUrl} alt="" />
+                    <img src={  userImg } alt="" />
                   </UserBox>
-                    <div className="username">{ comment.userName}</div>
+                    <div className="username">익명</div>
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">

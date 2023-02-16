@@ -20,7 +20,7 @@ export const ClothesContainer = styled.div`
     align-items: center;
     justify-content: center;
 }
-	}
+	
 
 	.slick-slide {
   margin: 0 10px; // space(여백)/2\

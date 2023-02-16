@@ -95,14 +95,6 @@ const Comment = ({ comment, select, articleId, getDetailOotd }) => {
 					</UpperContent>
 					<div>{comment.content}</div>
 			</ContentBox>
-			<HeartIconBox onClick={handleLikeComment}>
-				{
-					commentLike.check
-					? <AiFillHeart size="16" color="red"/>
-					: <AiOutlineHeart size="16" />
-				}
-				<div className="heartCount"><span>{ commentLike.cnt}</span></div>
-			</HeartIconBox>
 			{
 				curUser.id === comment.userId 
 				?
@@ -111,6 +103,14 @@ const Comment = ({ comment, select, articleId, getDetailOotd }) => {
 					</HeartIconBox>
 				:''
 			}
+			<HeartIconBox onClick={handleLikeComment}>
+				{
+					commentLike.check
+					? <AiFillHeart size="16" color="red"/>
+					: <AiOutlineHeart size="16" />
+				}
+				<div className="heartCount"><span>{ commentLike.cnt}</span></div>
+			</HeartIconBox>
 		</CommentBox>
 	)
  }
