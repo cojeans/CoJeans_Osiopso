@@ -67,7 +67,7 @@ const Comment = ({ comment, select }) => {
 			select={ select}>
 			<UserPorfileBox>
 					<div className="imgBox">
-							<img  src={  comment.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.imageUrl} alt="" />
+							<img  src={  comment.profileImageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.profileImageUrl} alt="" />
 					</div>
 			</UserPorfileBox>
 			<ContentBox>

@@ -12,18 +12,37 @@ import {
 
 import Button from "../button/button.component"
 
-const tags = {
-	// 'Season': ['봄', '여름', '가을', '겨울'],
-	'TPO': ['데일리','직장','데이트','경조사','여행','홈웨이','파티','운동','학교'],
-	'STYLE' : ['상의','하의','바지','치마','신발','아우터','모자',]
-}
+//  (`id`, `keyword`, `type`)
+const styleTag =
+[['1', '캐주얼', 'S',],
+ ['2', '모던/클래식', 'S'],
+ ['3', '스포티', 'S'],
+ ['4', '페미닌', 'S'],
+ ['5', '스트릿', 'S'],
+ ['6', '빈티지/레트로', 'S'],
+ ['7', '럭셔리', 'S'],
+ ['8', '보헤미안', 'S'],
+ ['9', '댄디', 'S'],
+ ['10', '러블리', 'S'],
+ ['11', '미니멀', 'S'],
+ ['12', '비즈니스', 'S'],
+ ['13', '하이틴', 'S'],
+['14', '기타', 'S'],]
+const tpoTag =[
+ ['15', '데일리', 'T'],
+ ['16', '직장', 'T'],
+ ['17', '데이트', 'T'],
+ ['18', '경조사', 'T'],
+ ['19', '여행', 'T'],
+ ['20', '홈웨어', 'T'],
+ ['21', '파티', 'T'],
+ ['22', '운동', 'T'],
+ ['23', '특별한날', 'T'],
+ ['24', '학교', 'T'],
+ ['25', '기타', 'T']
+]
 
-const defaultSelect = {
-	// Season: [],
-	TPO: [],
-	STYLE : [],
-}
-
+const defaultSelect =[]
 
 const OotdModal = ({ closeModal }) => {
 	// console.log('selector', useSelector(selectorOotdCategory))
@@ -33,26 +52,6 @@ const OotdModal = ({ closeModal }) => {
 
 	const submitHandler = () => {
 		let newArr = []
-		// selectedTag['Season'].forEach((el) => {
-		// 	newArr = [...newArr, {
-		// 		keyword: "Season",
-		// 		type: el
-		// 	}]
-		// })
-		selectedTag['TPO'].forEach((el) => {
-			newArr = [...newArr, {
-				keyword: "TPO",
-				type: el
-			}]
-		})
-		selectedTag['STYLE'].forEach((el) => {
-			newArr = [...newArr, {
-				keyword: "STYLE",
-				type: el
-			}]
-		})
-
-		console.log(newArr)
 
 		dispatch(selectOotdCategory(newArr))
 		closeModal()
@@ -60,37 +59,39 @@ const OotdModal = ({ closeModal }) => {
 }
 
 
-	const selectHandler = (key, e) => {
-		const selectCate = [...selectedTag[key]]
-		const idxTag =selectCate.indexOf(e)
-		
-		if (idxTag === -1) {
-			const addList = [...selectCate, e]
-			setSelectedTag({...selectedTag, [key]:addList})
+	const selectHandler = (arr) => {
+		const selectCate = [...selectedTag]
+		console.log(selectCate)
+		if (selectCate) {
+			const idxTag = selectCate.indexOf(arr)
+
+			if (idxTag === -1) {
+				const addList = [...selectCate,arr]
+				setSelectedTag({...selectedTag, addList})
+			} else {
+				selectCate.splice(idxTag, 1)
+				setSelectedTag({...selectedTag, selectCate})
+			}
 		} else {
-			selectCate.splice(idxTag, 1)
-			setSelectedTag({...selectedTag, [key]:selectCate})
+			const addList = [...selectCate,arr]
+			setSelectedTag({...selectedTag, addList})
 		}
+		
 	}
 
 	return (
 		<CategoryModalContainer>
-			{/* <CategoryBox>
-					<Title>계절</Title>
-					{tags.Season.map((el, idx) => {
-						return <Tag key={idx} onClick={() => selectHandler('Season', el)} select={ selectedTag['Season'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
-					}) }
-			</CategoryBox> */}
+
 			<CategoryBox>
 					<Title>TPO</Title>
-					{tags.TPO.map((el, idx) => {
-						return <Tag key={idx} onClick={()=> selectHandler('TPO', el) } select={ selectedTag['TPO'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+				{tpoTag.map((el, idx) => {
+						return <Tag key={idx} onClick={()=> selectHandler(el) } select={ selectedTag.indexOf(el) !== -1 ? true :false}>{ el[1] }</Tag>
 					}) }
 			</CategoryBox>
 			<CategoryBox>
 						<Title>STYLE</Title>
-					{tags.STYLE.map((el, idx) => {
-						return <Tag key={idx} onClick={()=> selectHandler('STYLE', el) } select={ selectedTag['STYLE'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
+					{styleTag.map((el, idx) => {
+						return <Tag key={idx} onClick={()=> selectHandler( el) } select={ selectedTag.indexOf(el) !== -1 ? true :false}>{ el[1] }</Tag>
 					}) }
 			</CategoryBox>
 			
@@ -102,3 +103,6 @@ const OotdModal = ({ closeModal }) => {
 }
 
 export default OotdModal
+
+
+

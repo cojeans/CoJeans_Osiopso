@@ -6,8 +6,8 @@ color:black;
 `
 
 export const CategoryModalContainer = styled.div`
-	width:430px;
-	height:500px;
+	width:100%;
+	height:437px;
 	background-color:white;
 	border-radius:50px 50px 0 0;
 	display:flex;
@@ -41,7 +41,8 @@ export const Tag = styled.div`
 		border:solid 1px gray;
 		cursor:pointer;
 		font-size:13px;
-		${({select})=> select && selectStyle};		
+		${({ select }) => select && selectStyle};
+		border-radius: 4px;	
 `
 export const SaveBox = styled.div`
 margin-top: 30px;

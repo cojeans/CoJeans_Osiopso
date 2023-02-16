@@ -63,7 +63,7 @@ const OotdDetail = () => {
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(likeDefaultData)
   const [commentData, setCommentData] = useState(defaultForm)
-  const [openComment, setOpenComment] = useState(false)
+  const [openComment, setOpenComment] = useState(true)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
   const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
@@ -108,7 +108,7 @@ const OotdDetail = () => {
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
-        setootdUserUrl(result.imageUrl)
+        setootdUserUrl(result.profileImageUrl)
         const likeList = result.articleLikes
         console.log(result)
 

@@ -11,13 +11,10 @@ import Swal from "sweetalert2";
 
 import {
   useState,
-  useEffect,
   useRef,
 } from 'react';
 
 import {
-  Xcontainer,
-  TopContainer,
   BottomContainer,
   MarginDiv,
   OotdInput,
