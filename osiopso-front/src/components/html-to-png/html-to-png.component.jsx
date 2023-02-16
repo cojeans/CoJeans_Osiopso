@@ -15,8 +15,7 @@ const OnHtmlToPng = () => {
 	const onCapture = () => {
 		console.log('onCapture');
 		html2canvas(document.getElementById('div')).then(canvas=>{
-			console.log(canvas.toDataURL('image/png'))
-			// onSaveAs(canvas.toDataURL('image/png'), 'image-download.png')
+			onSaveAs(canvas.toDataURL('image/png'), 'image-download.png')
 		});
 
 		const onSaveAs =(uri, filename)=> {
