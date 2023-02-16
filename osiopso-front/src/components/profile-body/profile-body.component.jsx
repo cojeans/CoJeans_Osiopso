@@ -60,15 +60,20 @@ const ProfileBody = ({ id }) => {
 		
 		<Fragment>
 
-			<TabMenue>
+			<TabMenue isUser={id>0 ? 'two': 'three'}>
 				<p onClick={() => setProfilePage('closet')} page={profilePage === 'closet'}
-					className={ profilePage==='closet' ? 'select' : ''}
+					className={ profilePage==='closet' ? 'select' : ''} 
 				>옷장</p>
 				<p onClick={() => setProfilePage('ootd')} page={profilePage === 'ootd'}
 				className={ profilePage==='ootd' ? 'select' : ''}>OOTD</p>
-				<p onClick={() => setProfilePage('advice')} page={profilePage === 'advice'}
-				className={ profilePage==='advice' ? 'select' : ''}
-				>훈수</p>
+				{
+					id> 0 
+					? '' 
+					:
+					<p onClick={() => setProfilePage('advice')} page={profilePage === 'advice'}
+					className={ profilePage==='advice' ? 'select' : ''}
+					>훈수</p>
+				}
 			</TabMenue>
 			<TabBody>
 				{
