@@ -32,6 +32,7 @@ import Modal from '../modal/modal.component';
 import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../utils/utils';
 
+import { AiFillTag } from "react-icons/ai";
 import Button from '../button/button.component';
 
 const defaultOotdForm = {
@@ -150,20 +151,14 @@ const OotdCreate = () => {
 
   return (
     <div>
-      {/* <TopContainer>
-        <Xcontainer>
-          <img src={require("../../assets/X.png")} alt="" onClick={goToMain}/>
-        </Xcontainer>
-        <h3>새 게시물</h3>
-      </TopContainer> */}
       <BottomContainer>
         <OotdImgContainer>
           <label htmlFor="profileImg">
-            <OotdImgContainer>
+            <OotdImgContainer >
             {
               ootdImg 
                   ? <img src={ootdImg} alt="" />
-                : <div><span>+</span></div>
+                : <div><img src={require("../../assets/plus.png")}/></div>
             }
             </OotdImgContainer>
           </label>
@@ -175,7 +170,6 @@ const OotdCreate = () => {
             ref={imgRef}
           />
         </OotdImgContainer>
-        <NoteBox>
           <Note>
             <ExclamationMark>
               <SlExclamation />
@@ -184,9 +178,8 @@ const OotdCreate = () => {
               작성 시 유의사항
             </div>
           </Note>
-        </NoteBox>
         <MarginDiv>
-          <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+          <StyleTagButton onClick={showModal} ><AiFillTag color='#7272ba' size='25'/>Add Tag</StyleTagButton>
           <TagBox>
             {
               ootdTags.map((tag) => {
@@ -208,7 +201,7 @@ const OotdCreate = () => {
           >
           </textarea>
         </MarginDiv>
-        <Button onClick={submitOotdCreate}>저장</Button>
+        <Button>저장</Button>
       </BottomContainer>
 
 
