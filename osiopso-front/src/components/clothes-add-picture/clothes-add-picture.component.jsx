@@ -11,7 +11,7 @@ import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { upload, checkLocal } from "../../store/clothes/clothes.reducer";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import {
   selectClothes,
   localPhoto,
@@ -21,12 +21,16 @@ import { resetCloset } from "../../store/closet/closet.reducer";
 
 const init_img_url = 'https://pixlr.com/images/index/remove-bg.webp'
 const ClothesAddPicture = () => {
+
   const dispatch = useDispatch();
   const [rawData, setRawData] = useState("");
 
-  
+  const { state } = useLocation();
+  console.log(state, 'this is state')
   useEffect(() => {
-    dispatch(upload(init_img_url))
+    if(!state){
+      dispatch(upload(init_img_url))
+    }
   }, [])
 
   useEffect(() => {

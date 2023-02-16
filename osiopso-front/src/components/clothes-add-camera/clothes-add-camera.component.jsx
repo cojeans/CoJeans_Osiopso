@@ -99,6 +99,7 @@ const CameraPage = () => {
             // "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s',
             // "X-Api-Key":  'RPeTWv3UMQeYg9ZSWfqdJPwC',
             "X-Api-Key": "xCJE6CPZJE3bM8DeC8CpUcrb",
+            // "X-Api-Key": "bQ9R6a8bhNRt4jSm5QG4HQmX",
           },
           responseType: "blob",
           encoding: null,
@@ -106,7 +107,10 @@ const CameraPage = () => {
           .then((response) => {
             setImgData(URL.createObjectURL(response.data));
           })
-          .catch((e) => console.log(e, "something missing"));
+          .catch((e) => {
+            setImgData(captureImg)
+            console.log(e, "something missing")});
+          
       };
 
       const blobBin = atob(captureImg.split(",")[1]);
@@ -127,9 +131,10 @@ const CameraPage = () => {
     });
     // capOff()
   };
-  const onNavigateHandler = () => {
+  const onNavigateHandler = (e) => {
+    // console.log(, 'final camera')
     dispatch(upload(imgData));
-    navigate(-1);
+    navigate('/mypage/add-clothes', { state: imgData});
   };
 
   return (

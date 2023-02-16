@@ -19,6 +19,7 @@ import Test from "./components/test/test.component"
 import SelectboxPage from "./routes/selectbox/selectbox.component";
 import OAuth2RedirectHandler from "./routes/oauth2/OAuth2RedirectHandler";
 import OAuth2Test from "./routes/oauth2/OAuth2Test";
+import OnHtmlToPng from "./components/html-to-png/html-to-png.component"; 
 import { getCurrentUser } from './utils/APIUtils';
 
 import { createTheme, ThemeProvider } from "@material-ui/core";
@@ -65,6 +66,7 @@ function App() {
           <Route path="test" element={<Test />} />
           <Route path="selectbox/*" element={<SelectboxPage />} />
           <Route path="/oauth2/redirect" element={<OAuth2Test/>}></Route> 
+          <Route path="/erase" element={<OnHtmlToPng/>}></Route> 
         </Route>
       </Routes>
     </ThemeProvider>

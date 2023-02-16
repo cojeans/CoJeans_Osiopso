@@ -55,6 +55,18 @@ export const OotdImgContainer = styled.div`
     }
 `
 
+export const Div = styled.div`
+display:flex;
+justify-content: center;
+width: 100%;
+	margin : auto;
+	/* padding : 30px;
+	font-size : 900; */
+	/* background-color : #0006888; */
+	color : white;
+
+
+`
 export const StyleTagButton = styled.button`
     border:none;
     height:40px;
@@ -80,3 +92,4 @@ export const PrevUploadImg = styled.div`
 		height:100%;
 	}
 `;
+
