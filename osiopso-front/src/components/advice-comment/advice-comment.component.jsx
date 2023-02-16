@@ -1,7 +1,7 @@
 import { selectUser } from "../../store/user/user.selector"
 import { useSelector } from "react-redux"
 import {  useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 
 import axios from "axios"
 import html2canvas from "html2canvas";
@@ -35,6 +35,7 @@ import {
 
 //style
 
+import Swal from "sweetalert2"
 
 
 const AdviectComment = () => {
@@ -57,8 +58,10 @@ const AdviectComment = () => {
 	const [imgUrl, setImgUrl] = useState('')
 
 	const location = useLocation()
+	const navigate = useNavigate()
 	const articleId = location.state.articleId
 	const userId = location.state.userId
+
 
 	const inputHandler = (e) => {
 
@@ -87,12 +90,23 @@ const onCapture = () => {
 		const captureImg = canvas.toDataURL("image/png")
 		setImgUrl(captureImg)
 		// onSaveAs(canvas.toDataURL('image/png'), 'image-download/png')
+		submitCommentCreate(captureImg)
 	})
 
-	submitCommentCreate()
 	
 }
-	const submitCommentCreate = () => {
+	const submitCommentCreate = (captureImg) => {
+		
+		// console.log(targetItem)
+		// 사용한 아이템 아이디 배열
+		const itemIdLst = targetItem.map((item) => {
+			return item.id
+		}, [])
+		console.log({
+				"content": content,
+				"imageUrl": captureImg,
+				"clothesList": itemIdLst	 
+			})
 		axios({
 			method: "post",
 			url: `${process.env.REACT_APP_AXIOS_URL}comment/${articleId}`,
@@ -101,11 +115,24 @@ const onCapture = () => {
 			},
 			data: {
 				"content": content,
-				 "imageUrl":imgUrl,
+				"imageUrl": captureImg,
+				"clothesList": itemIdLst	 
 			}
 		}).then((res) => {
 			console.log(res)
-		}).catch((err) => {
+		}).then(() => {
+			Swal.fire({
+      icon: 'success',
+      confirmButtonColor: "#DD6B55", 
+      html: `
+        Advice가 저장되었습니다.
+      `,
+          showCancelButton: false,
+          confirmButtonText: "확인",
+    })
+		navigate('/commentlist/'+articleId)
+		})
+			.catch((err) => {
 			console.log(err)
 		})
 
@@ -133,10 +160,11 @@ const onCapture = () => {
 					{
 						selectCloset.length ?
 						<Slider {...settings}>
-						{
-							selectCloset.map((cloth, idx) => {
+						{		
+								selectCloset.map((cloth, idx) => {
+								
 								return <ImageContainer key={idx} >
-									<img src={cloth.imageUrl} alt="" onClick={() => setTargetItem([...targetItem, cloth.imageUrl])} />
+									<img src={cloth.imageUrl} alt="" onClick={() => setTargetItem([...targetItem, { img: cloth.imageUrl, id: cloth.id }])} />
 								</ImageContainer> 
 							})
 						}

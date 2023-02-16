@@ -132,7 +132,7 @@ const AdviceCreate = ()=> {
       icon: 'success',
       confirmButtonColor: "#DD6B55", 
       html: `
-        훈수 게시물이 작성되었습니다.
+        Advice 요청이 게시되었습니다.
       `,
           showCancelButton: false,
           confirmButtonText: "확인",

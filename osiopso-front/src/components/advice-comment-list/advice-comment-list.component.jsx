@@ -39,11 +39,14 @@ const AdviceCommentList = () => {
 	//slick
 
   const location = useLocation()
+  const id = location.state.id
+
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
-  const id = location.state.id
+
   const [userImg, setUserImg] = useState(require('../../assets/defaultuser.png'))
   const [commentArr, setCommentArr] = useState([])
+
   const deleteComment = (coId) => {
     console.log(id, coId)
       axios({
@@ -71,10 +74,10 @@ const AdviceCommentList = () => {
         },
     })
     .then((res)=>{
-      console.log(res)
       const result = res.data.responseData
+      console.log(result,'😎')
       setCommentArr(result.comments)
-      
+      console.log(result.comments)
     })
     .catch((err)=>{
       console.log(err)
@@ -107,7 +110,7 @@ const AdviceCommentList = () => {
     <div>
       {
       commentArr.length ?
-        commentArr.map((comment) => {
+          commentArr.map((comment) => {
           return (
             <Fragment>
           <CommentListContainer>
@@ -118,22 +121,22 @@ const AdviceCommentList = () => {
               <ContentBox>
                 <UserInfo>
                   <UserBox>
-                    <img src={ userImg} alt="" />
+                    <img src={ comment.profileImageUrl} alt="" />
                   </UserBox>
-                  <div>username</div>
+                    <div className="username">{ comment.userName}</div>
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">
                     <div className="flex">
-                      <RiThumbUpLine size='24' />
+                      <RiThumbUpLine size='22' />
                       <div>{ comment.up}</div>
                     </div>
                     <div className="flex">
-                      <RiThumbDownLine size='24'/>
+                      <RiThumbDownLine size='22'/>
                       <div>{ comment.down}</div>
                     </div>
                   </div>
-                  <VscWarning size="24" onClick={Report} />
+                  <VscWarning size="22" onClick={Report} />
                     {
                       comment.userId === userInfo.id
                       ?<VscTrash size="23" onClick={()=>deleteComment(comment.commentId)}/>
@@ -150,9 +153,9 @@ const AdviceCommentList = () => {
          
             </CommentListContainer>
             <Slider {...settings}>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
+                <div></div>
+                <div></div>
+                <div></div>
             </Slider>
             </Fragment>
         )

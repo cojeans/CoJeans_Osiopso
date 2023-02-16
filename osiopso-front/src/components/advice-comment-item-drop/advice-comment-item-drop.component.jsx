@@ -8,7 +8,7 @@ const DropArea = ({ targetItem }) => {
     <ItemDropContainer ref={container}>
       {
         targetItem.map((item, idx) => {
-          return <MoveItem key={idx} item={item} />
+          return <MoveItem key={idx} item={item.img} />
         })
       }
 
