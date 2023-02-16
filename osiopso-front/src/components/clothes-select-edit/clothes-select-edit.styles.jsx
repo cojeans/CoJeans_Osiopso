@@ -58,7 +58,8 @@ export const OotdImgContainer = styled.div`
 export const Div = styled.div`
 display:flex;
 justify-content: center;
-width: 100%;
+width: 200px;
+height: 200px;
 	margin : auto;
 	/* padding : 30px;
 	font-size : 900; */

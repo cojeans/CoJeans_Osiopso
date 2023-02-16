@@ -56,8 +56,7 @@ const ClothesSelectEdit = () => {
 		console.log('onCapture');
 		html2canvas(document.getElementById('div')).then(canvas=>{
             setChangeImg(canvas.toDataURL('image/png'))
-            // console.log(canvas.toDataURL('image/png'))
-			// onSaveAs(canvas.toDataURL('image/png'), 'image-download.png')
+
 		});
 
 		const onSaveAs =(uri, filename)=> {
@@ -91,39 +90,26 @@ const ClothesSelectEdit = () => {
     useEffect(() => {
         if (croppedImage) {
             console.log(croppedImage);
-            // onSaveAs(croppedImage, 'image-download/png')
-            // const ctx = canvasRef.current.getContext("2d")
-            // ctx.clearRect(0, 0, 500, 500)
+
 
             const image = new Image();
             image.src = croppedImage;
             console.log(image.width);
 
-            setDrawWidth(image.width);
-            setDrawHeight(image.Heigth);
 
-            // image.onload = function() {
-            //   ctx.drawImage(image, 0, 0);
-            // };
+            setDrawWidth(250);
+            setDrawHeight(250);
+
+
         }
     }, [croppedImage]);
 
-    // useEffect(() => {
-    //     if(isCrop) {
-    //         makeCrop()
-    //     }
-    // }, [isCrop])
 
-    // useEffect(() => {
-    //     if(isErase) {
-    //         eraseCrop()
-    //     }
-    // }, [isErase])
     
     const eraseCrop = () => {
-        // console.log(changeImg);
+
         setIsErase(true);
-        // setIsCrop(false);
+
     };
     const makeCrop = () => {
         setIsCrop(true);
@@ -150,37 +136,14 @@ const ClothesSelectEdit = () => {
         setIsErase(false)
         html2canvas(document.getElementById('div')).then(canvas=>{
             setChangeImg(canvas.toDataURL('image/png'))
-            // console.log(canvas.toDataURL('image/png'))
-			// onSaveAs(canvas.toDataURL('image/png'), 'image-download.png')
+
 		});
-        // const base64 = canvasRef.current.canvasContainer.childNodes[1].toDataURL();
-        // setDrawing(base64);
-        
-        // dispatch(upload(croppedImage))
+
     };
-    //////
 
 
-    // const canvas = document.getElementById('canvas')
-    // const canvasValue = canvas.toDataURL()
-    
-    
-    // const printCanvas = () => {
 
-    //     const examplecanvas = document.getElementById('canvas')
-    //     console.log(examplecanvas)
-    // }
-    // const handleExport = () => {
 
-        // setCroppedImage(base64);
-        // setIsCrop(false);
-        // setIsErase(false);
-        // setChangeImg(base64);
-    //   };
-    // 캡쳐이미지가 리사이즈 될때 실행
-    // const erase_image = ReactDOM.createRoot(
-    //   document.getElementById('erase_image')
-    // );
     const onSave = () => {
 
         dispatch(upload(changeImg));
@@ -188,105 +151,90 @@ const ClothesSelectEdit = () => {
     };
     return (
         <>
-        {/* <button onClick={onCapture}>capture</button> */}
+
             <ButtonsContainer>
             <Button 
             type='submit'
             size={'md'}
             variant={'success'}
+            color='#7272ba'
             onClick={reset}>초기화</Button>
-            {!isCrop && isErase && <Button 
+            {!isCrop &&  <Button 
             type='submit'
             size={'md'}
+            color='#7272ba'
             variant={'success'}
             onClick={makeCrop}>자르기</Button>}
             {isCrop && <Button 
             type='submit'
             size={'md'}
+            color='#7272ba'
             variant={'success'}
             onClick={completeCut}>자르기 완료</Button>}
-            {!isErase && isCrop && <Button 
+            {!isErase &&  <Button 
             type='submit'
             size={'md'}
+            color='#7272ba'
             variant={'success'}
             onClick={eraseCrop}>지우기</Button>}
             {isErase && <Button 
             type='submit'
             size={'md'}
+            color='#7272ba'
             variant={'success'}
             onClick={completeErase}>지우기 완료</Button>}
             </ButtonsContainer>
+            {isErase && (<Button
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+
+            variant={'success'}
+        onClick={() => {
+          canvasRef.current.undo();
+        }}
+        >
+        UNDO
+        </Button>)}
+        
+        
+        {isErase && (<Button           
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+
+            variant={'success'}
+        onClick={() => {
+          canvasRef.current.clear();
+        }}
+        >
+        CLEAR
+      </Button>)}
 
             <SaveButtonBox>
                 {<Button
                 type='submit'
                 size={'md'}
-                // variant={'warning'} 
+
                 onClick={onSave}>저장</Button>}
             </SaveButtonBox>
 
-            {/* <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton> */}
 
             <ImgContainer>
                 <PrevUploadImg>
-                    {/* {saveData && (
-            <img
-              src={saveData}
-              alt="https://pixlr.com/images/index/remove-bg.webp"
-            />
-          )} */}
-                    {/* {canvasValue && <img src = {canvasValue} alt=''/>} */}
-                    {/* {afterCrop && <img src={croppedImage} alt={saveData} />} */}
-                   
-
-                    {/* <img src={saveData} alt="" /> */}
                         <Div>
                         <img src={changeImg} alt="" />
-                        
                         </Div>
-                    {/* {croppedImage ? (<img src={croppedImage} />):(<img src={saveData} />)} */}
-                    {/* <img src={croppedImage} /> */}
+
                     {isCrop && <Div>
                         <Cropper src={changeImg} crop={onCrop} ref={cropperRef} />
                         </Div>}
                         
                 </PrevUploadImg>
-                {/* <ExampleBox onClick={callAxios}>
-          <img src={require("../../assets/background.jpg")} alt="" />
-          <span>이미지 자르기</span>
-        </ExampleBox> */}
-                {/* {canvasRef && <img src={canvasRef} alt="" />} */}
 
-                {/* {isErase && (
-                    <CanvasDraw imgSrc={changeImg} brushColor={"white"} hideGridX={true} hideGridY={true} hideInterface={true} ref={canvasRef} canvasWidth={drawWidth} canvasHeight={drawHeight} />
-                )} */}
             </ImgContainer>
 
-            {/* {
-        modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
-			} */}
-        {/* <button
-        type="button"
-        style={{ backgroundColor: "#0A71F1", color: "white" }}
-        onClick={handleExport}
-      >
-        지우기 완료
-      </button> */}
-      {/* <img src={drawing} alt="exported drawing" /> */}
-        {/* {isErase && 
-                <CanvasDraw 
-        id="div"
-        imgSrc={changeImg}        
-        brushColor={'white'}
-        hideGridX={true}
-        hideGridY={true}
-        hideInterface={true}
-        ref={canvasRef}
-        canvasWidth={drawWidth}
-        canvasHeight={drawHeight}
-        
-        />
-        } */}
+
         {isErase && (<Div id="div">
                 <CanvasDraw 
         
@@ -302,22 +250,6 @@ const ClothesSelectEdit = () => {
         />
         </Div>)}
 
-            {isErase && (<button
-        onClick={() => {
-          canvasRef.current.undo();
-        }}
-        >
-        UNDO
-        </button>)}
-        
-        
-        {isErase && (<button
-        onClick={() => {
-          canvasRef.current.clear();
-        }}
-        >
-        CLEAR
-      </button>)}
 
         </>
     );

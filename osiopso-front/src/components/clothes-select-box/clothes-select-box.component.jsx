@@ -41,7 +41,10 @@ import Test from "../test/test.component";
 import { ref as fref, getStorage, uploadString } from "firebase/storage";
 import { AiFillTag } from "react-icons/ai";
 const category = ["원피스","바지","상의","신발","치마","아우터","모자",] 
-const color = ["베이지", "검정", "파랑", '회색', '네이비', '핑크', '빨강', '흰색']
+const color = ["검정", "파랑", "빨강"]
+
+// const category = ["원피스","바지","상의","신발","치마","아우터","모자",] 
+// const color = ["베이지", "검정", "파랑", '회색', '네이비', '핑크', '빨강', '흰색']
 
 
 
@@ -282,20 +285,19 @@ const ClothesSelectBox = () => {
         <Modal
         page={4}
         isAutoTag={isAutoTag}
-          // handleAutoTag={handleAutoTag}
-          // authCategory={authCategory}
-          // authColor={authColor}
+
           setModalOpen={setModalOpen}
           openScroll={openScroll}
           clothesFormData={clothesFormData}
           setClothesFormData={setClothesFormData}
           />
           )}
-      {/* <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/> */}
 
 
 
-        <Button onClick={handleSubmit}>저장</Button>
+
+        <Button 
+             onClick={handleSubmit}>저장</Button>
     </>
     );
 
