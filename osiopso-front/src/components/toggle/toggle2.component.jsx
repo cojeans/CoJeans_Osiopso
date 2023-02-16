@@ -20,9 +20,9 @@ const ToggleButton2 = () => {
 	const checkHandler = () => {
 		setCheck(checked)
 		setChecked(check)
-
-		const payload = { ...closetData.closet }
+		const payload = { ...closetData }
 		payload.isSelected = check
+		console.log(payload)
 
 		dispatch(createCloset(payload))
 	}
