@@ -6,11 +6,11 @@ import CanvasDraw from "react-canvas-draw";
 import html2canvas from 'html2canvas';
 // import Grid from "@material-ui/core/Grid";
 
-import { selectUser } from "../../store/user/user.selector";
-import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
+// import { selectUser } from "../../store/user/user.selector";
+// import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component";
 
-import Button from "../button/button.component";
+// import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { upload } from "../../store/clothes/clothes.reducer";
@@ -170,13 +170,13 @@ const ClothesSelectEdit = () => {
     //     const examplecanvas = document.getElementById('canvas')
     //     console.log(examplecanvas)
     // }
-    const handleExport = () => {
+    // const handleExport = () => {
 
         // setCroppedImage(base64);
         // setIsCrop(false);
         // setIsErase(false);
         // setChangeImg(base64);
-      };
+    //   };
     // 캡쳐이미지가 리사이즈 될때 실행
     // const erase_image = ReactDOM.createRoot(
     //   document.getElementById('erase_image')
@@ -211,7 +211,7 @@ const ClothesSelectEdit = () => {
                     {<button onClick={onSave}>저장</button>}
 
                     {/* <img src={saveData} alt="" /> */}
-                    <Div>
+                        <Div>
                         <img src={changeImg} alt="" />
                         
                         </Div>
