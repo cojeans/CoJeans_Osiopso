@@ -189,10 +189,10 @@ public class UserService {
         userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
         if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
 
-        if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
+        /*if(StringUtils.isNotBlank(userModifyDto.getName())) userDto.setName(userModifyDto.getName());
         if(userModifyDto.getGender()!=null) userDto.setGender(userModifyDto.getGender());
         userDto.setAge(userModifyDto.getAge()); //앞단에서 검증 통과
-        if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());
+        if(userModifyDto.getImageUrl()!=null) userDto.setImageUrl(userModifyDto.getImageUrl());*/
 
 
         return userRepository.save(User.builder()
