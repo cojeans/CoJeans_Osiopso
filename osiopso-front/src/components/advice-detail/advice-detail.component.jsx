@@ -91,6 +91,7 @@ const AdviceDetail = () => {
       const result = res.data.responseData
       setAdviceDetail(result)
       setPhotoUrl(result.photos[0].imageUrl)
+      setootdUserUrl(result.profileImageUrl)
       setCommentData({cnt : result.comments.length, list: result.comments})
       const likeList = result.articleLikes
 
@@ -186,14 +187,22 @@ const AdviceDetail = () => {
       // onClick={}
       >
         <ProfileImageBox  >
-          <img src={ ootdUserUrl  } alt="" />
-        </ProfileImageBox >
-        {advicedDetail.userName}
+              {
+            advicedDetail.selected ?
+              <img src={require('../../assets/defaultuser.png')} alt="" /> : <img src={ootdUserUrl} alt="" />   
+        }
+          </ProfileImageBox >
+          {
+            advicedDetail.selected ?
+              '익명' : advicedDetail.userName    
+        }
+        
       </UpperProfile>
 
       <UpperImage>
-        <OotdDetailImage>
-          <img src={photoUrl } alt="" />
+          <OotdDetailImage>
+           
+          <img src={photoUrl } alt="" /> 
         </OotdDetailImage>
         <DetailContainer>
           <IconMessageBox>
