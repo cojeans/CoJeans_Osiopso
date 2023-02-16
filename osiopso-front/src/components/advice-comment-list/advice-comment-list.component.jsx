@@ -115,23 +115,38 @@ const AdviceCommentList = ({id, userId}) => {
 
   const upComment = (coId) => {
     axios({
-        method: 'get',
+        method: 'put',
          url: `${process.env.REACT_APP_AXIOS_URL}comment/up/${coId}`,
           headers: {
             Authorization: `Bearer ${Token.token}`,
           },
       })
       .then((res)=>{
-        const result = res.data.responseData
-        console.log(result,'😎')
-        setCommentArr(result.comments)
-        console.log(result.comments)
+        console.log(res)
+        getComment()
       })
       .catch((err)=>{
         console.log(err)
       })
     }
   
+
+    const downComment = (coId) => {
+      axios({
+          method: 'put',
+           url: `${process.env.REACT_APP_AXIOS_URL}comment/down/${coId}`,
+            headers: {
+              Authorization: `Bearer ${Token.token}`,
+            },
+        })
+        .then((res)=>{
+          console.log(res)
+          getComment()
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }
   return (
     <div>
       {
@@ -167,7 +182,7 @@ const AdviceCommentList = ({id, userId}) => {
                       <RiThumbUpLine size='17' />
                       <div>{ comment.up}</div>
                     </div>
-                    <div className="flex" onClick={()=>upComment(comment.commentId)}>
+                    <div className="flex" onClick={()=>downComment(comment.commentId)}>
                       <RiThumbDownLine size='17'/>
                       <div>{ comment.down}</div>
                     </div>
