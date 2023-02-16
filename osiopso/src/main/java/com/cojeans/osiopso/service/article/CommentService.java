@@ -384,6 +384,7 @@ public class CommentService {
     }
 
     // 댓글 채택
+    @Transactional
     public boolean selectComment(Long commentNo, Long userId) {
         Comment comment = commentRepository.findById(commentNo).orElseThrow();
 

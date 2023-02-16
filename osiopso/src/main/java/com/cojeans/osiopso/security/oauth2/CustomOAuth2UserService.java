@@ -4,6 +4,7 @@ import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.Gender;
 import com.cojeans.osiopso.entity.user.Role;
 import com.cojeans.osiopso.entity.user.User;
+import com.cojeans.osiopso.exception.BadRequestException;
 import com.cojeans.osiopso.exception.OAuth2AuthenticationProcessingException;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import com.cojeans.osiopso.security.UserDetail;
@@ -22,6 +23,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -54,6 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("해당하는 플랫폼의 OAuth2 provider가 없습니다.");
         }
 
+        AuthProvider provider = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId());
         //이메일과 플랫폼 기준으로 구분
         Optional<User> userOptional = userRepository.findByEmailAndProvider(oAuth2UserInfo.getEmail()
                 ,AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
@@ -66,15 +69,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
             }
-            user = updateExistingUser(user, oAuth2UserInfo);
+            user = updateExistingUser(user, oAuth2UserInfo,provider ); //있으면 기존유저
         } else {
-            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo); //없으면 새 유저
         }
 
         return UserDetail.create(user, oAuth2User.getAttributes());
     }
 
-    private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+    @Transactional
+    User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
         User user = new User();
 
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
@@ -93,10 +97,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return userRepository.save(user);
     }
 
-    private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
+    @Transactional
+    User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo, AuthProvider provider) {
+        log.info("updateExistingUser ****existingUser: {}", existingUser);
+        log.info("****oAuth2UserInfo: {}", oAuth2UserInfo);
+        log.info("****provider: {}", provider);
+
         existingUser.setName(oAuth2UserInfo.getName());
         existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
-        return userRepository.save(existingUser);
+        return existingUser;
     }
 
 }

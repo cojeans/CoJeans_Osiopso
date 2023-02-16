@@ -1,9 +1,6 @@
 package com.cojeans.osiopso.dto.user;
 
 
-/**
- * Created by rajeevkumarsingh on 02/08/17.
- */
 public class LoginRequestDto {
     private String email;
 
