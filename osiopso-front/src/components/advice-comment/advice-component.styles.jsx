@@ -45,22 +45,19 @@ export const ClothesContainer = styled.div`
 
 export const ItemDropContainer = styled.div`
 	width: 340px;
-	height: 220px;
+	/* height: 220px; */
 	display: flex;
 	margin: auto;
 	justify-content: center;
 	align-items: center;
-	min-height: 140px;
+	min-height: 220px;
 	border:dotted;
 	.imageExample{
 		width: 100%;
 		height: 100%;
 		opacity: 0.2;
 	}
-	
 `
-
-
 
 export const ImageContainer = styled.div`
 	width:100%;
