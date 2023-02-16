@@ -10,7 +10,7 @@ import html2canvas from 'html2canvas';
 // import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component";
 
-// import Button from "../button/button.component";
+import Button from "../button/button.component";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { upload } from "../../store/clothes/clothes.reducer";
