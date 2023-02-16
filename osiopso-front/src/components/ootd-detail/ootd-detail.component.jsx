@@ -239,11 +239,11 @@ const OotdDetail = () => {
           onClick={goUserProfile}
         >
         <ProfileImageBox  >
-          <img src={  ootdUserUrl} alt="" />
+          <img src={ ootdDetail.profileImageUrl==='UNKNOWN' ? require('../../assets/defaultuser.png') : ootdUserUrl} alt="" />
         </ProfileImageBox >
         {ootdDetail.userName}
       </UpperProfile>
-
+      <hr style={{ width:'90%'}}/>
       <UpperImage>
         <OotdDetailImage>
           <img src={phtoUrl } alt="" />
