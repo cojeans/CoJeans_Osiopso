@@ -44,8 +44,20 @@ const ProfileCloset = ({ id }) => {
 					},
 				})
 			.then((res) => {
-						console.log(res.data)
-						setClosetList(res.data.reverse())
+				console.log(res.data)
+				const result = res.data.reverse()
+				if (id > 0) {
+					const newClosetList = result.filter((res) => {
+						if (res.isSelected === true) {
+								return res
+							}
+					})
+						setClosetList(newClosetList)
+
+				} else {
+					
+					setClosetList(res.data.reverse())
+					}
 				})
 				.catch((err) => {
 					console.log(err);

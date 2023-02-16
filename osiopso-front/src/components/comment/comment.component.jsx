@@ -10,7 +10,7 @@ import {
  import { VscTrash } from "react-icons/vsc";
 
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { selectUser,selectUserInfo } from '../../store/user/user.selector';
 import axios from "axios";
@@ -26,7 +26,8 @@ const Comment = ({ comment, select, articleId, getDetailOotd }) => {
 	const [commentLike, SetCommentLike] = useState(defaultCommentLike)
 	const curUser = useSelector(selectUserInfo)// 현재 유저 정보를 가져옵니다. 
 	const Token = useSelector(selectUser) // 현재 유저의 토큰 정보를 가져옵니다.
-
+	
+	const navigate = useNavigate()
 	//처음 댓글 렌더링이 될때 좋아요 상태를 불러옵니다.
 	useEffect(() => {
 		const lst = comment.commentLikes
@@ -79,12 +80,26 @@ const Comment = ({ comment, select, articleId, getDetailOotd }) => {
 			console.log(err);
 		})
 	}
+	
+	  const goUserProfile = () => {
+    if (comment.userId === curUser.id) {
+     navigate('/profile/')
+    } else {
+      navigate(
+        '/profile/' + comment.userId,
+        {
+          state: {
+		      id:comment.userId
+    	}}
+      )
+   }
+  }
 
 	return (
 		<CommentBox
 			select={ select}>
 			<UserPorfileBox>
-					<div className="imgBox">
+					<div className="imgBox"   onClick={goUserProfile}>
 							<img  src={  comment.profileImageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.profileImageUrl} alt="" />
 					</div>
 			</UserPorfileBox>

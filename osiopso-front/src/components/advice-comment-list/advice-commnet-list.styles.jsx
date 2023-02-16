@@ -32,7 +32,19 @@ export const ContentBox = styled.div`
   flex-direction: column;
   justify-content: center;
 
-
+  .select{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 90%;
+    div{
+      display: flex;
+      width: 45%;
+      justify-content: flex-end;
+      svg{
+        margin-right:2%
+      }
+    }
+  }
   .content{
     height: 30%;
     padding:10px;

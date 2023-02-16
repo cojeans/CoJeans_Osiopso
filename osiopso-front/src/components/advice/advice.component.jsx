@@ -111,9 +111,6 @@ const Advice = () => {
       .catch((err) => {
         console.log(err);
       });
-    
-
-    
   };
 
   useEffect(() => {
