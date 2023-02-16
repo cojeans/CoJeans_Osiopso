@@ -110,3 +110,14 @@ export const ExclamationMark = styled.div`
 display: flex;
 margin-right: 1%;
 `
+
+
+export const TagConatainer = styled.div`
+margin: 10px;
+display:flex;
+width:350px;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+
+`

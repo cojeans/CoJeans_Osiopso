@@ -25,6 +25,7 @@ import {
   TagBox,
   Note,
   ExclamationMark,
+  TagConatainer
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -179,7 +180,7 @@ const OotdCreate = () => {
               작성 시 유의사항
             </div>
           </Note>
-        <MarginDiv>
+        <TagConatainer>
           <StyleTagButton onClick={showModal} ><AiFillTag color='#7272ba' size='25'/>Add Tag</StyleTagButton>
           <TagBox>
             {
@@ -188,7 +189,7 @@ const OotdCreate = () => {
               })
             }
           </TagBox>
-        </MarginDiv>
+        </TagConatainer>
 
         <MarginDiv>
           <Input

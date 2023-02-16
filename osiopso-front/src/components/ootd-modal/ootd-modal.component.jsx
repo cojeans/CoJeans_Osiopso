@@ -30,14 +30,14 @@ const OotdModal = ({ closeModal }) => {
 		let newArr = []
 		selectedTag['style'].forEach((el) => {
 			newArr = [...newArr, {
-				keyword: "style",
-				type: el
+				type: "style",
+				keyword: el
 			}]
 		})
 		selectedTag['tpo'].forEach((el) => {
 			newArr = [...newArr, {
-				keyword: "tpo",
-				type: el
+				type: "tpo",
+				keyword: el
 			}]
 		})
 
