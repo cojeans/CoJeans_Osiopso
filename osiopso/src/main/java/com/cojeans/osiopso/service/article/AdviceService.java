@@ -6,6 +6,7 @@ import com.cojeans.osiopso.dto.request.feed.ArticlePhotoRequestDto;
 import com.cojeans.osiopso.dto.response.comment.CommentAdviceResponseDto;
 import com.cojeans.osiopso.dto.response.feed.*;
 import com.cojeans.osiopso.entity.comment.Comment;
+import com.cojeans.osiopso.entity.comment.CommentClothes;
 import com.cojeans.osiopso.entity.comment.CommentPhoto;
 import com.cojeans.osiopso.entity.feed.Advice;
 import com.cojeans.osiopso.entity.feed.Article;
@@ -13,6 +14,7 @@ import com.cojeans.osiopso.entity.feed.ArticleLike;
 import com.cojeans.osiopso.entity.feed.ArticlePhoto;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.repository.article.*;
+import com.cojeans.osiopso.repository.closet.ClothesRepository;
 import com.cojeans.osiopso.repository.comment.*;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,8 @@ public class AdviceService {
     private final ArticleScrollQdslRepositoryImpl articleScrollQdslRepositoryImpl;
     private final CommentPhotoRepository commentPhotoRepository;
     private final AdviceRepositoryImpl adviceRepositoryImpl;
+    private final CommentClothesRepository commentClothesRepository;
+    private final ClothesRepository clothesRepository;
 
     public boolean createAdvice(AdviceRequestDto adviceRequestDto, Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -171,6 +175,15 @@ public class AdviceService {
                 likeCo = false;
             }
 
+            List<CommentClothes> cc = commentClothesRepository.findAllByCommentId(comment.getId());
+            List<String> result = new ArrayList<>();
+            if(cc != null) {
+                for (CommentClothes commentClothes : cc) {
+                    result.add(clothesRepository.findById(commentClothes.getClothes().getId()).orElseThrow()
+                            .getImageUrl());
+                }
+            }
+
             GapTimeVo commentGapTime = articleService.getGapTime(comment, date);
 
             // 해당 훈수에 달린 댓글의 사진 가져오기
@@ -202,6 +215,7 @@ public class AdviceService {
                     .up(comment.getUp())
                     .down(comment.getDown())
                     .isSelected(comment.getIsSelected())
+                    .itemList(result)
                     .build());
         }
 
