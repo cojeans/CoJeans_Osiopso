@@ -67,7 +67,7 @@ import static com.cojeans.osiopso.security.oauth2.HttpCookieOAuth2AuthorizationR
         String token = tokenProvider.createToken(authentication);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
+                .queryParam("token", token).encode()
                 .build().toUriString();
     }
 
