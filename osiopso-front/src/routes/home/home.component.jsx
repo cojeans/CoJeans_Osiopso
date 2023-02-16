@@ -149,6 +149,16 @@ const Home = () => {
         id: id,
       },
     });
+	};
+	
+	
+  const goToOotdDetail = (id) => {
+    console.log(id);
+    navigate("ootd/detail/" + id, {
+      state: {
+        id: id,
+      },
+    });
   };
 
 	return (
@@ -177,7 +187,7 @@ const Home = () => {
 					hotTagData.map((hot)=>{
 						return (
 							<div className='imgBox'>
-								<img src={hot.imageUrl} alt="" onClick={()=>goToAdviceDetail(hot.id)}/>
+								<img src={hot.imageUrl} alt="" onClick={()=>goToOotdDetail(hot.id)}/>
 							</div>
 						)
 					})

@@ -48,7 +48,7 @@ const TopBar = () => {
 			setTopName('Advice 등록')
 				break
 			case '/advice':
-			setTopName('Advice')
+			setTopName('Advice 요청')
 				break
 			default:
 				setTopName('Osiopso')
@@ -59,6 +59,8 @@ const TopBar = () => {
 			setTopName('Profile')
 		} else if (location.pathname.includes('advice/detail')) {
 			setTopName('Advice 게시글')
+		} else if (location.pathname.includes('commentlist')) {
+			setTopName('Advice 목록')
 		}
 }, [location ])
 

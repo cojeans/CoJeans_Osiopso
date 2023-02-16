@@ -78,8 +78,16 @@ const AdviectComment = () => {
 
 		}).then((res) => {
 			console.log(res)
-			
-			setClosetList(res.data)
+			const result = res.data
+			const newArr = result.filter((re) => {
+				// console.log(re)
+        if (re.isSelected===true && re.count >0) {
+          return re
+        }
+			})
+			// 카운트가 0개 이상이고, 공개인 옷장만 보여줍니다.
+      // console.log(newArr,'💕')
+			setClosetList(newArr)
 		}).catch((err) => {
 			console.log(err)
 		})

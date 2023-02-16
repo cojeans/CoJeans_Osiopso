@@ -236,8 +236,8 @@ const AdviceDetail = () => {
           </IconBox>
         </DetailContainer>
         <DetailContainer>
-          <ContentBox>t
-          {}
+          <ContentBox>
+          {advicedDetail.content}
           </ContentBox>
         </DetailContainer>
         </UpperImage>
