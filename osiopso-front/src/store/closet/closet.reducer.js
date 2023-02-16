@@ -5,6 +5,7 @@ const initialState = {
     name: "",
     isSelected: false,
   },
+
   closetList: []
 };
 
@@ -19,7 +20,7 @@ export const closet = createSlice({
       Object.assign(state, initialState);
     },
     uploadClosetList(state, action) {
-      state.closetList = [...state.closetList, action.payload]
+      state.closetList = action.payload;
     }
   },
 });

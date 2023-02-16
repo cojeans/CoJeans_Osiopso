@@ -44,7 +44,7 @@ public class ClothesService {
         System.out.println("Create Clothes Service : " + clothesRequestDto);
 
         User user = userRepository.getById(uid);
-
+        System.out.println(clothesRequestDto.getClosets());
         Clothes clothes = clothesRepository.save(new Clothes().builder()
                 .category(clothesRequestDto.getCategory())
                 .imageUrl(clothesRequestDto.getImageUrl())
