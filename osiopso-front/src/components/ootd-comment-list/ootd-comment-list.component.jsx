@@ -10,7 +10,7 @@ import {
 import Comment from "../comment/comment.component";
 
 
-const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, setOpenCoco }) => {
+const OotdCommentList = ({ articleId, commentData, setIsCocomment, isCocomment, openCoco, setOpenCoco, getDetailOotd }) => {
     // const [openCoco, setOpenCoco] = useState(false)
     console.log(commentData)
 
@@ -22,7 +22,8 @@ const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, s
                         {/* comment 컴포넌트 재활용했습니다. */}
                         <Comment
                             comment={comment}
-                            
+                            articleId={articleId}
+                            getDetailOotd={getDetailOotd}
                         />
                         { comment.cocoments.length?
                             <CocomentBox>
@@ -56,6 +57,8 @@ const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, s
                                         {/* comment 컴포넌트 재활용했습니다. */}
                                         return <Comment
                                             comment={coco }
+                                            articleId={articleId}
+                                            getDetailOotd={getDetailOotd}
                                         />
                                     })
                             }

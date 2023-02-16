@@ -223,6 +223,8 @@ const OotdDetail = () => {
       )
    }
   }
+
+
   
   useEffect(() => {
     sccurRef1()
@@ -290,11 +292,13 @@ const OotdDetail = () => {
           ?<CommentListWrapper>
             <div onClick={()=>setOpenComment(false)}>접기</div>
             <OotdCommentList
+              articleId={id}
               commentData={commentData}
               setIsCocomment={setIsCocomment}
               isCocomment={isCocomment}
               setOpenCoco={setOpenCoco}
               openCoco={ openCoco}
+              getDetailOotd={getDetailOotd}
               />
           </CommentListWrapper>
           : ''

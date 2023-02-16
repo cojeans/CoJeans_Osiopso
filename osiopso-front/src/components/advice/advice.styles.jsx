@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from 'styled-components'
 
 export const HunsuImages = styled.div`
 display: grid;
@@ -12,10 +12,18 @@ img{
     // margin: 10px 10px 10px;
 }
 `
+
+
 export const TopTag = styled.div`
-width: 100%;
+width: 80%;
 display:flex;
 justify-content: space-evenly;
+font-size: 80%;
+margin-bottom: 15px;
+.curTab{
+  border-bottom: solid 3px black;
+}
+
 `
 export const Container = styled.div`
 width: 150px;
@@ -68,6 +76,7 @@ export const AdvicecContainer = styled.div`
     border:solid 1px #D3D3D3;
     opacity: 0.5;
   }
+  margin-top:20px;
   width:100%;
   display: flex;
   flex-direction: column;
@@ -77,7 +86,7 @@ export const AdvicecContainer = styled.div`
 
 export const AdviceItemBox = styled.div`
   width:80%;
-  height: 130px;
+  height: 120px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -109,7 +118,7 @@ export const ContentBox = styled.div`
 
 `
 export const ImageContainer = styled.div`
-  width: 30%;
+  width: 40%;
   height: 90%;
   display: flex;
   align-items: center;

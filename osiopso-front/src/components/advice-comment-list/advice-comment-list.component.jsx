@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { selectUser, selectUserInfo } from "../../store/user/user.selector";
 
@@ -30,7 +30,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Fragment } from "react";
 
-const AdviceCommentList = () => {
+const AdviceCommentList = ({id, userId}) => {
   	//slick
 	const settings = {
       dots: false,
@@ -43,14 +43,19 @@ const AdviceCommentList = () => {
 
 	//slick
 
-  const location = useLocation()
-  const id = location.state.id
-  const writeId = location.state.userId
+  // const location = useLocation()
+  // const id = location.state.id
+
+
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
 
   const [userImg, setUserImg] = useState(require('../../assets/defaultuser.png'))
   const [commentArr, setCommentArr] = useState([])
+  const [isComplete, setIsComplete] = useState({
+    check : false,
+    cmt : {}
+  })
 
   const deleteComment = (coId) => {
     console.log(id, coId)
@@ -79,10 +84,22 @@ const AdviceCommentList = () => {
         },
     })
     .then((res)=>{
-      const result = res.data.responseData
+      const result = res.data.responseData.comments
       console.log(result,'😎')
-      setCommentArr(result.comments)
-      console.log(result.comments)
+      const filterArr = result.filter((cmt)=>{
+        if(cmt.isSelected !==true){
+          return cmt
+        }
+      })
+      setCommentArr(filterArr.reverse())
+      result.forEach((cmt)=>{
+        if (cmt.isSelected === true){
+          setIsComplete({
+            check:true,
+            cmt : cmt
+          })
+        }
+      })
     })
     .catch((err)=>{
       console.log(err)
@@ -110,9 +127,130 @@ const AdviceCommentList = () => {
       }
     })
   }
+
+  const upComment = (coId) => {
+    axios({
+        method: 'put',
+         url: `${process.env.REACT_APP_AXIOS_URL}comment/up/${coId}`,
+          headers: {
+            Authorization: `Bearer ${Token.token}`,
+          },
+      })
+      .then((res)=>{
+        console.log(res)
+        getComment()
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
   
+
+    const downComment = (coId) => {
+      axios({
+          method: 'put',
+           url: `${process.env.REACT_APP_AXIOS_URL}comment/down/${coId}`,
+            headers: {
+              Authorization: `Bearer ${Token.token}`,
+            },
+        })
+        .then((res)=>{
+          console.log(res)
+          getComment()
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }
+
+      const selectComment = (coId) => {
+        axios({
+            method: 'put',
+             url: `${process.env.REACT_APP_AXIOS_URL}comment/select/${coId}`,
+              headers: {
+                Authorization: `Bearer ${Token.token}`,
+              },
+          })
+          .then((res)=>{
+            console.log(res,'✔')
+            getComment()
+          })
+          .catch((err)=>{
+            console.log(err)
+          })
+        }
+
+
   return (
     <div>
+            {/* 기술부채.. 담부터는 컴포넌트 분리하셈.. */}
+              {/* 채택된거 */}
+              
+             { isComplete.check ?  <Fragment><CommentListContainer>
+              <AdviceImgBox>
+                <img src={ isComplete.cmt.imageUrl } alt="" />
+              </AdviceImgBox>
+                <ContentBox>
+                    <div className="select" onClick={()=>selectComment(isComplete.cmt.commentId)}>
+                      <div>
+                          <BsCheck2Circle size='17' color="green"/>
+                        <div>
+                          채택
+                        </div>
+                      </div>
+                    </div> 
+                <UserInfo>
+                    <UserBox>
+                    <img src={  userImg } alt="" />
+                  </UserBox>
+                    <div className="username">익명</div>
+                </UserInfo>
+                <IconContainer>
+                  <div className="outer">
+                    <div className="flex" onClick={()=>upComment(isComplete.cmt.commentId)}>
+                      <RiThumbUpLine size='17' />
+                      <div>{ isComplete.cmt.up}</div>
+                    </div>
+                    <div className="flex" onClick={()=>downComment(isComplete.cmt.commentId)}>
+                      <RiThumbDownLine size='17'/>
+                      <div>{ isComplete.cmt.down}</div>
+                    </div>
+                  </div>
+                  <VscWarning size="17" onClick={Report} />
+                    {
+                      isComplete.cmt.userId === userInfo.id
+                      ?<VscTrash size="17" onClick={()=>deleteComment(isComplete.cmt.commentId)}/>
+                      : ''
+                    }
+                </IconContainer>
+                <div className="content">
+                  { isComplete.cmt.content}
+                </div>
+                <div className="time">
+                  { isComplete.cmt.time}
+                </div>
+              </ContentBox>
+         
+              </CommentListContainer>
+              <ItemSlider>
+                <Slider {...settings}>
+                  {
+                    isComplete.cmt.itemList.map((item) => {
+                      return (
+                        <div className='imgBox'>
+                          <img src={ item } alt="" />
+                        </div>
+                      )
+                  })
+                  }
+              
+              </Slider>
+              </ItemSlider>
+              <hr style={{color:'green', width:'90%'}}/>
+              </Fragment>
+            :''
+            }
+                {/* 채택된거 */}
       {
       commentArr.length ?
           commentArr.map((comment) => {
@@ -124,10 +262,10 @@ const AdviceCommentList = () => {
               </AdviceImgBox>
                 <ContentBox>
                   {
-                    writeId === userInfo.id ?
-                    <div className="select">
+                   ! isComplete.check && userId === userInfo.id && userId !== comment.userId?
+                    <div className="select" onClick={()=>selectComment(comment.commentId)}>
                       <div>
-                        <BsCheck2Circle size='17' />
+                        <BsCheck2Circle size='17' /> 
                         <div>
                           채택
                         </div>
@@ -136,17 +274,17 @@ const AdviceCommentList = () => {
                   }
                 <UserInfo>
                     <UserBox>
-                    <img src={ userImg } alt="" />
+                    <img src={  userImg } alt="" />
                   </UserBox>
                     <div className="username">익명</div>
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">
-                    <div className="flex">
+                    <div className="flex" onClick={()=>upComment(comment.commentId)}>
                       <RiThumbUpLine size='17' />
                       <div>{ comment.up}</div>
                     </div>
-                    <div className="flex">
+                    <div className="flex" onClick={()=>downComment(comment.commentId)}>
                       <RiThumbDownLine size='17'/>
                       <div>{ comment.down}</div>
                     </div>
@@ -185,7 +323,7 @@ const AdviceCommentList = () => {
             </Fragment>
         )
         })
-          :<div style={{textAlign:'center'}}>Advice가 없습니다.</div>
+          : !isComplete.check ?<div style={{textAlign:'center', margin:'10px 0'}}>Advice가 없습니다.</div>:''
           
       }
 

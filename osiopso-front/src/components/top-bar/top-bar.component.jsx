@@ -61,6 +61,11 @@ const TopBar = () => {
 			setTopName('Advice 게시글')
 		} else if (location.pathname.includes('commentlist')) {
 			setTopName('Advice 목록')
+		}else if (location.pathname.includes('camera')) {
+			setTopName('옷 등록')
+		}
+		else if (location.pathname.includes('selectbox')) {
+			setTopName('옷 등록')
 		}
 }, [location ])
 

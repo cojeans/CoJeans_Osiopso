@@ -7,6 +7,8 @@ import {
  } from "../ootd-comment-list/ootd-comment-list.styles";
 
  import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+ import { VscTrash } from "react-icons/vsc";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
@@ -20,7 +22,7 @@ const defaultCommentLike = {
 	check: false,
 }
 
-const Comment = ({ comment, select }) => {
+const Comment = ({ comment, select, articleId, getDetailOotd }) => {
 	const [commentLike, SetCommentLike] = useState(defaultCommentLike)
 	const curUser = useSelector(selectUserInfo)// 현재 유저 정보를 가져옵니다. 
 	const Token = useSelector(selectUser) // 현재 유저의 토큰 정보를 가져옵니다.
@@ -63,6 +65,22 @@ const Comment = ({ comment, select }) => {
 		})
 	}
 
+	//댓글 삭제
+	const deleteComment = () => {
+		axios({
+			method: 'delete',
+			url: `${process.env.REACT_APP_AXIOS_URL}comment/${articleId}/${comment.commentId}`,
+			headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+		}).then((res) => {
+			console.log(res);
+			getDetailOotd()
+		}).catch((err) => {
+			console.log(err);
+		})
+	}
+	
 	  const goUserProfile = () => {
     if (comment.userId === curUser.id) {
      navigate('/profile/')
@@ -92,13 +110,21 @@ const Comment = ({ comment, select }) => {
 					</UpperContent>
 					<div>{comment.content}</div>
 			</ContentBox>
+			{
+				curUser.id === comment.userId 
+				?
+					<HeartIconBox onClick={deleteComment}>
+						<VscTrash size="16"/>
+					</HeartIconBox>
+				:''
+			}
 			<HeartIconBox onClick={handleLikeComment}>
 				{
 					commentLike.check
 					? <AiFillHeart size="16" color="red"/>
 					: <AiOutlineHeart size="16" />
 				}
-				<div className="heartCount">{ commentLike.cnt}</div>
+				<div className="heartCount"><span>{ commentLike.cnt}</span></div>
 			</HeartIconBox>
 		</CommentBox>
 	)
