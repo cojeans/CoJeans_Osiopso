@@ -246,7 +246,7 @@ const AdviceCommentList = ({id, userId}) => {
               
               </Slider>
               </ItemSlider>
-              <hr style={{color:'#D3D3D3', width:'90%'}}/>
+              <hr style={{color:'green', width:'90%'}}/>
               </Fragment>
             :''
             }
@@ -323,7 +323,7 @@ const AdviceCommentList = ({id, userId}) => {
             </Fragment>
         )
         })
-          : !isComplete.check ?<div style={{textAlign:'center', marginTop:'10px 0'}}>Advice가 없습니다.</div>:''
+          : !isComplete.check ?<div style={{textAlign:'center', margin:'10px 0'}}>Advice가 없습니다.</div>:''
           
       }
 
