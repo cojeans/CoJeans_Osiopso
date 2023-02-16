@@ -9,10 +9,11 @@ import {
 	Radio,
 	TextField,
 } from '@material-ui/core';
-import { useState } from "react";
+import { useState, useRef } from "react";
 
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { selectUser } from "../../store/user/user.selector";
+import { userInfo } from "../../store/user/user.reducer";
 
 import axios from "axios";
 import { useEffect } from "react";
@@ -21,17 +22,24 @@ import Button from "../button/button.component";
 
 import Swal from "sweetalert2";
 
+import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../utils/utils';
+
+
 const defaultData = {
 	id:'',
 	name: '',
 	age: '',
 	gender: '',
-	imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/330px-Image_created_with_a_mobile_phone.png',
+	imageUrl: '',
 	bio:'',
 }
 
 const EditProfile = () => {
 	const [userValue, setuserValue] = useState(defaultData)
+	const dispatch = useDispatch()
+	const imgRef = useRef();
+
 
 	const validation = () => {
 		if (userValue.age < 0 || userValue.age > 120) {
@@ -76,6 +84,26 @@ const EditProfile = () => {
 		})
 	}
 
+	const [profileImg, setProfileImg] = useState('')
+
+	const saveImgFile = async () => {
+		const file = imgRef.current.files[0];
+    const uploaded_file = await uploadBytes(
+                fref(storage, `images/${file.name}`),
+                file,
+      );
+    console.log(uploaded_file ,'testing')
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onloadend = () => {
+			setProfileImg(reader.result)
+		};
+		const file_url = await getDownloadURL(uploaded_file.ref)
+		console.log(file_url)
+		setuserValue({...userValue, imageUrl:file_url})
+		// setOotdFormData({...ootdFormData, imageUrl:file_url})
+  };
+
 	const submitHandler = () => {
 		if (!validation()) {
 			console.log(userValue)
@@ -88,10 +116,12 @@ const EditProfile = () => {
 				}
 			}).then((res) => {
 				console.log(res, '회원정보수정입니다.')
+				dispatch(userInfo(res.data))
+
 			}).then(() => {
 				Swal.fire({
 					icon: 'success',
-					confirmButtonColor: "#DD6B55",
+					confirmButtonColor: "#7272ba",
 					html: `
         회원정보가 수정되었습니다.
       `,
@@ -111,9 +141,19 @@ const EditProfile = () => {
 	return (
 		<EditContainer>
 			<UserImageBox>
-				<img src={ userValue.imageUrl } alt="" />
-			</UserImageBox>
+				<label htmlFor="profileImg">
+					{!profileImg ? <img src={userValue.imageUrl === 'UNKNOWN' || !userValue.imageUrl ? require('../../assets/defaultuser.png') : userValue.imageUrl} alt="" /> : <img src={ profileImg } />}
+				<div className="edit">click</div>
+				</label>
 
+				<input
+            type="file"
+            accept="image/*"
+            id="profileImg"
+            onChange={saveImgFile}
+            ref={imgRef}
+          />
+			</UserImageBox>
 			<TextField
 				label="이름"
 				value={userValue.name}

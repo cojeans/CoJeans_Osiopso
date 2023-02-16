@@ -55,9 +55,10 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 		html: `
 		${closetName} 옷장이 생성되었습니다.
 		`,
-			width: '300px',
+		width: '300px',
 		showCancelButton: false,
 		confirmButtonText: "확인",
+		confirmButtonColor: "#7272ba", 
 	}).then(()=>{
 					axios({
 					method: "post",
@@ -107,7 +108,7 @@ const ClosetCreateModal = ({ setModalOpen, openScroll, setClosetList }) => {
 	const handleSubmit = () => {
 		console.log('저장?')
 		console.log(closetField)
-		const payload = { ...closetData.closet }
+		const payload = { ...closetData }
 		console.log('this', closetData)
 		payload.name = closetName
 		console.log(payload)

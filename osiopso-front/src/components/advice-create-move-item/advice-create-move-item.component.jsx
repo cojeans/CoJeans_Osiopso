@@ -28,8 +28,8 @@ const MoveItem = ({ item }) => {
 	  const [position, setPosition] = useState({
     x: 0,
     y: 0,
-    width: 70,
-    height: 70
+    width: 80,
+    height: 80
 		});
 	
 	  function onResize(event, direction, ref, delta) {

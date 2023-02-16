@@ -39,7 +39,7 @@ export const ClosetInput = styled.input`
 
 export const ClosetContent = styled.div`
   width:80%;
-  height:80%;
+  height:54%;
 `
 
 export const ButtonContainer = styled.div`
@@ -67,5 +67,5 @@ export const ModalBody = styled.div`
 export const ToggleContainer = styled.div`
   display:flex; 
   justify-content: space-between;
-
+  width: 100%;
   `

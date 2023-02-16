@@ -7,17 +7,16 @@ import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
 import { SlExclamation } from "react-icons/sl";
 
+import Input from '@mui/material/Input';
+
 import Swal from "sweetalert2";
 
 import {
   useState,
-  useEffect,
   useRef,
 } from 'react';
 
 import {
-  Xcontainer,
-  TopContainer,
   BottomContainer,
   MarginDiv,
   OotdInput,
@@ -26,7 +25,6 @@ import {
   TagBox,
   Note,
   ExclamationMark,
-  NoteBox,
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -34,6 +32,8 @@ import Modal from '../modal/modal.component';
 
 import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../utils/utils';
+
+import { AiFillTag } from "react-icons/ai";
 import Button from '../button/button.component';
 
 const defaultOotdForm = {
@@ -129,7 +129,7 @@ const OotdCreate = () => {
 
   Swal.fire({
     icon: 'success',
-    confirmButtonColor: "#DD6B55", 
+    confirmButtonColor: "#7272ba", 
     html: `
       OOTD 게시물이 작성되었습니다.
     `,
@@ -152,20 +152,14 @@ const OotdCreate = () => {
 
   return (
     <div>
-      {/* <TopContainer>
-        <Xcontainer>
-          <img src={require("../../assets/X.png")} alt="" onClick={goToMain}/>
-        </Xcontainer>
-        <h3>새 게시물</h3>
-      </TopContainer> */}
       <BottomContainer>
         <OotdImgContainer>
           <label htmlFor="profileImg">
-            <OotdImgContainer>
+            <OotdImgContainer >
             {
               ootdImg 
                   ? <img src={ootdImg} alt="" />
-                : <div><span>+</span></div>
+                : <div className='imgBox'><img src={require("../../assets/plus.png")}/></div>
             }
             </OotdImgContainer>
           </label>
@@ -177,7 +171,6 @@ const OotdCreate = () => {
             ref={imgRef}
           />
         </OotdImgContainer>
-        <NoteBox>
           <Note>
             <ExclamationMark>
               <SlExclamation />
@@ -186,9 +179,8 @@ const OotdCreate = () => {
               작성 시 유의사항
             </div>
           </Note>
-        </NoteBox>
         <MarginDiv>
-          <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+          <StyleTagButton onClick={showModal} ><AiFillTag color='#7272ba' size='25'/>Add Tag</StyleTagButton>
           <TagBox>
             {
               ootdTags.map((tag) => {
@@ -199,7 +191,14 @@ const OotdCreate = () => {
         </MarginDiv>
 
         <MarginDiv>
-          <textarea
+          <Input
+              name="content"
+              value={ content }
+              placeholder='착용 아이템 및 스타일을 소개해주세요.'
+              onChange={handleChange}
+              style={{height:100, width:320}}
+            ></Input>
+          {/* <textarea
             name="content"
             value={ content }
             id=""
@@ -208,9 +207,9 @@ const OotdCreate = () => {
             placeholder='착용 아이템 및 스타일을 소개해주세요.'
             onChange={handleChange}
           >
-          </textarea>
+          </textarea> */}
         </MarginDiv>
-        <Button onClick={submitOotdCreate}>저장</Button>
+        <Button onClick={ submitOotdCreate }>저장</Button>
       </BottomContainer>
 
 

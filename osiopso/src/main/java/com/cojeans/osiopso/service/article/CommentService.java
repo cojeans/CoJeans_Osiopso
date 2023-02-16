@@ -89,6 +89,7 @@ public class CommentService {
             return false;
         }
 
+        // 대댓글 달기
         // 대댓글을 달려는 댓글 번호가 cocomment DB에 등록되어 있지 않다면, 그 댓글은 rootComment 이다.
         if (cocomment == null) {
             System.out.println("commentNo: " + commentNo);

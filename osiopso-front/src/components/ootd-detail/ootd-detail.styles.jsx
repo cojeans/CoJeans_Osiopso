@@ -161,13 +161,13 @@ export const ContentBox = styled.div`
 display: flex;
 width: 90%;
 height: 100%;
-margin: 10px 20px 10px;
+/* margin: 10px 20px 10px; */
 white-space: normal;
 word-break: break-all;
 `
 
 export const Title = styled.div`
-  font-size: 25px;
+  font-size: 130%;
   width: 90%;
   margin: 13px auto 3px auto;
 `
@@ -179,4 +179,10 @@ display: flex;
 justify-content: center;
 align-items: center;
 
+`
+
+export const CommentTitle = styled.div`
+  margin: 40px auto 0 auto;
+  width: 90%;
+  font-size: 109%;
 `

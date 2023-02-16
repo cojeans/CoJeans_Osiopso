@@ -4,35 +4,38 @@ import { useSelector, useDispatch } from 'react-redux';
 import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
-import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
 import { SlExclamation } from "react-icons/sl";
+import Button from '../button/button.component';
 
 import Swal from "sweetalert2";
 
+import Input from '@mui/material/Input';
+
 import {
   useState,
-  useEffect,
   useRef,
 } from 'react';
 
+import { ToggleContainer } from '../closet-create-modal/closet-create-modal.styles';
+
 import {
-  Xcontainer,
-  TopContainer,
   BottomContainer,
   MarginDiv,
-  OotdInput,
-  OotdImgContainer,
-  StyleTagButton,
   NoteBox,
   CautionBox,
   TextBox,
-  Note,
-  ExclamationMark
-
 } from "./advice-create.styles";
+
+import {
+  OotdImgContainer,
+  Note,
+  OotdInput
+
+} from '../ootd-create/ootd-create.styles';
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
 import Modal from '../modal/modal.component';
+import UnknownToggle from '../toggle/unknown-toggle.component';
 
 import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../utils/utils';
@@ -41,19 +44,19 @@ import { storage } from '../../utils/utils';
 const defaultAdviceForm = {
   content: '',
   imageUrl: '',
-  tags :[]
+  subject: '',
 }
 const AdviceCreate = ()=> {
-
     const Token = useSelector(selectUser)
-  
+    
+    const [check, setCheck] = useState(true)
+    const [checked, setChecked] = useState(false)
     const [adviceImg, setAdviceImg] = useState('')
     const [adviceFormData, setAdviceFormData] = useState(defaultAdviceForm)
-  
-    const { content, imageUrl, tags }= adviceFormData
+    const { content, subject }= adviceFormData
     const imgRef = useRef();
   
-        const saveImgFile = async () => {
+    const saveImgFile = async () => {
     const file = imgRef.current.files[0];
     const uploaded_file = await uploadBytes(
                 fref(storage, `images/${file.name}`),
@@ -72,36 +75,17 @@ const AdviceCreate = ()=> {
   };
     const handleChange = (e) => {
       const { name, value } = e.target
-      setAdviceFormData({...adviceFormData, [name]:value})
+      setAdviceFormData({ ...adviceFormData, [name]: value })
+      console.log(name, value)
     }
-    
-    const adviceTags = useSelector(selectorOotdCategory)
-  
+      
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    const goToHome = ()=> {
-        navigate('/')
-    }
 
   
     const submitAdviceCreate = (e) => {
       e.preventDefault();
-      console.log(adviceTags)
-      // const formData = new FormData()
-      const advice = {
-        tags: adviceTags,
-        content,
-        urls: [
-          {imageUrl}
-        ]
-      }
 
-      const ootd = {
-        tags:adviceTags
-        , content
-      }
-      console.log(ootd)
   
     //formdata형식의 value는 무조건 스트링으로 변환된다.
     // blob객체와 텍스트 형식 데이터만 append할 수 있는 것 같다. (File도 blob객체에 속합)
@@ -112,14 +96,18 @@ const AdviceCreate = ()=> {
       // formData.append("picture", picture)
       // formData.append("advice", blob)
   
-      console.log(advice)
+      console.log(adviceFormData, 'check:', checked)
       axios({
         method: "post",
         url: `${process.env.REACT_APP_AXIOS_URL}feed/advice`,
         data: {
-          tags: advice.tags,
-          content: advice.content,
-          urls: advice.urls
+          subject: adviceFormData.subject,
+          selected:checked,
+          content: adviceFormData.content,
+          urls: [
+            {
+              imageUrl:adviceFormData.imageUrl
+            }]
         },
         headers: {
           Authorization: `Bearer ${Token.token}`,
@@ -144,7 +132,7 @@ const AdviceCreate = ()=> {
       icon: 'success',
       confirmButtonColor: "#DD6B55", 
       html: `
-        훈수 게시물이 작성되었습니다.
+        Advice 요청이 게시되었습니다.
       `,
           showCancelButton: false,
           confirmButtonText: "확인",
@@ -165,12 +153,6 @@ const AdviceCreate = ()=> {
   
     return (
         <div>
-        <TopContainer>
-          <Xcontainer>
-            <img src={require("../../assets/X.png")} alt="" onClick={goToHome}/>
-          </Xcontainer>
-          <h3>새 게시물</h3>
-        </TopContainer>
         <BottomContainer>
           <OotdImgContainer>
             <label htmlFor="profileImg">
@@ -178,7 +160,7 @@ const AdviceCreate = ()=> {
               {
                 adviceImg 
                     ? <img src={adviceImg} alt="" />
-                  : <div><span>+</span></div>
+                  : <div className='imgBox'><img src={require("../../assets/plus.png")}/></div>
               }
               </OotdImgContainer>
             </label>
@@ -198,29 +180,35 @@ const AdviceCreate = ()=> {
             </CautionBox>
           </Note>
         </NoteBox>
-          {/* <NoteBox>
-          <Note>
-            <ExclamationMark>
-              <SlExclamation />
-            </ExclamationMark>
-            <div onClick={CautionMessage}>
-              작성 시 유의사항
-            </div>
-          </Note>
-        </NoteBox> */}
           <MarginDiv>
-            <textarea
+            <Input
+              placeholder="제목을 작성해주세요."
+              value={subject}
+              name='subject'
+              onChange={handleChange}
+              style={{width:320}}
+            />
+            <Input
               name="content"
               value={ content }
-              id=""
-              cols="30"
-              rows="10" 
               placeholder='글을 작성해주세요'
               onChange={handleChange}
+              style={{height:100, width:320}}
             >
-            </textarea>
+            </Input>
+            <div className='toggleLine'>
+              <ToggleContainer>
+                <p>익명 설정</p>
+                <UnknownToggle
+                  setCheck={setCheck}
+                  setChecked={setChecked}
+                  checked={checked}
+                  check={ check}
+                />
+              </ToggleContainer>
+            </div>
           </MarginDiv>
-          <button onClick={submitAdviceCreate}>저장</button>
+          <Button onClick={submitAdviceCreate}>저장</Button>
         </BottomContainer>
         {
           modalOpen && <Modal page={ 3} setModalOpen={setModalOpen} openScroll={openScroll}adviceFormData={ adviceFormData} setAdviceFormData = {setAdviceFormData} />

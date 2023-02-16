@@ -18,7 +18,7 @@ import { AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import { useEffect } from "react";
 
-import Swal from "sweetalert2";
+
 
 const defaultState = {
 	lst: [],
@@ -115,21 +115,21 @@ const Profile = ({ id, showModal }) => {
 			console.log(true)
 			getFollowings(id)
 			getFollower(id)
-		} else {
-			getMyProfileData(`${process.env.REACT_APP_AXIOS_URL}user`)
+		}
+		else {
+			setUserProfile(userInfo)
 			getFollowings(userInfo.id)
 			getFollower(userInfo.id)
-			console.log(false)
 	}
 
-	},[])
+	},[userInfo])
 
 	return (
 		<ProfileBox>
 			<h2>{userProfile.name}</h2>
 			<IntroBox>
 				<ProfileImageBox>
-					<img src={  ! userProfile.imageUrl? require('../../assets/defaultuser.png'):userProfile.imageUrl} alt="" />
+					<img src={  userProfile.imageUrl==='UNKNOWN' || !userProfile.imageUrl? require('../../assets/defaultuser.png'):userProfile.imageUrl} alt="" />
 				</ProfileImageBox>
 				<Intro>
 					{ !userProfile.bio?" 자기소개가 없습니다.😢":userProfile.bio}

@@ -74,11 +74,19 @@ export const UpperComment = styled.div`
   width:95%;
   align-items:center;
   justify-content: space-between;
+  .userBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .username{
+      font-size: 30%;
+    }
 
+  }
   `
 
   export const ClosetInput = styled.input`
-  width:80%;
+  width:78%;
   height:40px;
   border:none;
   border-bottom:solid 1px gray;
@@ -98,5 +106,8 @@ export const UpperComment = styled.div`
     color:#4D184C;
     border:none;
     height:40px;
+      button{
+        font-size: 15px;
+      }
   }
   `

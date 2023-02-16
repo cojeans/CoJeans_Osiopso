@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { selectUser, selectUserInfo } from "../../store/user/user.selector";
 
@@ -12,13 +12,16 @@ import Slider from "react-slick";
 //
 import Swal from "sweetalert2";
 
+import { BsCheck2Circle } from "react-icons/bs";
+
 import {
   CommentListContainer,
   AdviceImgBox,
   ContentBox,
   UserBox,
   UserInfo,
-  IconContainer
+  IconContainer,
+  ItemSlider
 } from "./advice-commnet-list.styles";
 
 import { RiThumbDownLine, RiThumbUpLine } from "react-icons/ri";
@@ -27,7 +30,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Fragment } from "react";
 
-const AdviceCommentList = () => {
+const AdviceCommentList = ({id}) => {
   	//slick
 	const settings = {
       dots: false,
@@ -35,15 +38,22 @@ const AdviceCommentList = () => {
       slidesToShow: 3,
 			slidesToScroll: 1,
 		variableWidth: true,
-	};
+  };
+  
+
 	//slick
 
-  const location = useLocation()
+  // const location = useLocation()
+  // const id = location.state.id
+
+
+  const writeId = location.state.userId
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
-  const id = location.state.id
+
   const [userImg, setUserImg] = useState(require('../../assets/defaultuser.png'))
   const [commentArr, setCommentArr] = useState([])
+
   const deleteComment = (coId) => {
     console.log(id, coId)
       axios({
@@ -71,10 +81,10 @@ const AdviceCommentList = () => {
         },
     })
     .then((res)=>{
-      console.log(res)
       const result = res.data.responseData
+      console.log(result,'😎')
       setCommentArr(result.comments)
-      
+      console.log(result.comments)
     })
     .catch((err)=>{
       console.log(err)
@@ -107,36 +117,46 @@ const AdviceCommentList = () => {
     <div>
       {
       commentArr.length ?
-        commentArr.map((comment) => {
+          commentArr.map((comment) => {
           return (
             <Fragment>
-          <CommentListContainer>
+              <CommentListContainer>
               <AdviceImgBox>
-
                 <img src={ comment.imageUrl } alt="" />
               </AdviceImgBox>
-              <ContentBox>
+                <ContentBox>
+                  {
+                    writeId === userInfo.id ?
+                    <div className="select">
+                      <div>
+                        <BsCheck2Circle size='17' />
+                        <div>
+                          채택
+                        </div>
+                      </div>
+                    </div> : ''
+                  }
                 <UserInfo>
-                  <UserBox>
-                    <img src={ userImg} alt="" />
+                    <UserBox>
+                    <img src={  userImg } alt="" />
                   </UserBox>
-                  <div>username</div>
+                    <div className="username">익명</div>
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">
                     <div className="flex">
-                      <RiThumbUpLine size='24' />
+                      <RiThumbUpLine size='17' />
                       <div>{ comment.up}</div>
                     </div>
                     <div className="flex">
-                      <RiThumbDownLine size='24'/>
+                      <RiThumbDownLine size='17'/>
                       <div>{ comment.down}</div>
                     </div>
                   </div>
-                  <VscWarning size="24" onClick={Report} />
+                  <VscWarning size="17" onClick={Report} />
                     {
                       comment.userId === userInfo.id
-                      ?<VscTrash size="23" onClick={()=>deleteComment(comment.commentId)}/>
+                      ?<VscTrash size="17" onClick={()=>deleteComment(comment.commentId)}/>
                       : ''
                     }
                 </IconContainer>
@@ -148,12 +168,22 @@ const AdviceCommentList = () => {
                 </div>
               </ContentBox>
          
-            </CommentListContainer>
-            <Slider {...settings}>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-            </Slider>
+              </CommentListContainer>
+              <ItemSlider>
+                <Slider {...settings}>
+                  {
+                    comment.itemList.map((item) => {
+                      return (
+                        <div className='imgBox'>
+                          <img src={ item } alt="" />
+                        </div>
+                      )
+                  })
+                  }
+              
+              </Slider>
+              </ItemSlider>
+              <hr style={{color:'#D3D3D3', width:'90%'}}/>
             </Fragment>
         )
         })

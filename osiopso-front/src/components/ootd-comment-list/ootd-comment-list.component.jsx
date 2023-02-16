@@ -8,11 +8,11 @@ import {
 } from "./ootd-comment-list.styles"
 
 import Comment from "../comment/comment.component";
-import { useState } from "react";
 
 
-const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, setOpenCoco }) => {
+const OotdCommentList = ({ articleId, commentData, setIsCocomment, isCocomment, openCoco, setOpenCoco, getDetailOotd }) => {
     // const [openCoco, setOpenCoco] = useState(false)
+    console.log(commentData)
 
     return (
         <CommentList>
@@ -22,7 +22,8 @@ const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, s
                         {/* comment 컴포넌트 재활용했습니다. */}
                         <Comment
                             comment={comment}
-                            
+                            articleId={articleId}
+                            getDetailOotd={getDetailOotd}
                         />
                         { comment.cocoments.length?
                             <CocomentBox>
@@ -51,11 +52,13 @@ const OotdCommentList = ({ commentData, setIsCocomment, isCocomment, openCoco, s
                         {
                             openCoco.selectCommentId === comment.commentId && openCoco.check 
                             ?<CocomentList>
-                                {
+                                    {
                                     comment.cocoments.map((coco) => {
                                         {/* comment 컴포넌트 재활용했습니다. */}
                                         return <Comment
                                             comment={coco }
+                                            articleId={articleId}
+                                            getDetailOotd={getDetailOotd}
                                         />
                                     })
                             }

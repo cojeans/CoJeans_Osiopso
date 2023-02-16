@@ -3,6 +3,8 @@ package com.cojeans.osiopso.dto.response.comment;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @SuperBuilder
 public class CommentAdviceResponseDto {
@@ -20,4 +22,5 @@ public class CommentAdviceResponseDto {
     private Long up;
     private Long down;
     private Boolean isSelected;
+    private List<String> itemList;
 }

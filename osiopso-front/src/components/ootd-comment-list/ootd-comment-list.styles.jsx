@@ -65,12 +65,12 @@ export const UpperContent = styled.div`
 
 export const HeartIconBox = styled.div`
 	display: flex;
-	flex-direction: column;
+	/* flex-direction: column; */
 	justify-content: center;
 	align-items: center;
-	
+	margin: 0 1%;
 	.heartCount{
-		font-size: 13px;
+		font-size: 120%;
 	}
 `
 

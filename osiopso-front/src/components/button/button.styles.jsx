@@ -39,13 +39,13 @@ export const StyleButton = styled.button`
   &:active,
   &:hover,
   &:focus {
-    background: var(--button-hover-bg-color, #025ce2);
+    background: var(--button-hover-bg-color, #7272ba);
   }
 
   &:disabled {
     cursor: default;
     opacity: 0.5;
-    background: var(--button-bg-color, #025ce2);
+    background: var(--button-bg-color, #7272ba);
   }
 `
 

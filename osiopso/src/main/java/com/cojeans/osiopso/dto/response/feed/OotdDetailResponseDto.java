@@ -19,6 +19,7 @@ public class OotdDetailResponseDto {
     private Date createTime;
     private Date modifyTime;
     private Long commentCnt;
+    private String profileImageUrl;
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleTagResponseDto> tags;
     private List<ArticleLikeResponseDto> articleLikes;

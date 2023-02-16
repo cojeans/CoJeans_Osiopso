@@ -63,7 +63,7 @@ const OotdDetail = () => {
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(likeDefaultData)
   const [commentData, setCommentData] = useState(defaultForm)
-  const [openComment, setOpenComment] = useState(false)
+  const [openComment, setOpenComment] = useState(true)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
   const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
@@ -108,8 +108,9 @@ const OotdDetail = () => {
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
-        
+        setootdUserUrl(result.profileImageUrl)
         const likeList = result.articleLikes
+        console.log(result)
 
         if (likeList.length) {
           likeList.forEach((like) => {
@@ -167,7 +168,7 @@ const OotdDetail = () => {
   useEffect(() => {
     getDetailOotd()
 
-  },[])
+  },[openCoco])
 
   const Report = ()=>{
     Swal.fire({
@@ -193,7 +194,7 @@ const OotdDetail = () => {
        html: `
         OOTD 게시물이 삭제되었습니다.
       `,
-      confirmButtonColor: "#DD6B55", 
+      confirmButtonColor: "#7272ba", 
     })
       .then(() => {
         navigate("/#ootd")
@@ -233,8 +234,8 @@ const OotdDetail = () => {
       <div>
 
       <UpperProfile 
-      onClick={goUserProfile}
-      >
+          onClick={goUserProfile}
+        >
         <ProfileImageBox  >
           <img src={  ootdUserUrl} alt="" />
         </ProfileImageBox >
@@ -289,11 +290,13 @@ const OotdDetail = () => {
           ?<CommentListWrapper>
             <div onClick={()=>setOpenComment(false)}>접기</div>
             <OotdCommentList
+              articleId={id}
               commentData={commentData}
               setIsCocomment={setIsCocomment}
               isCocomment={isCocomment}
               setOpenCoco={setOpenCoco}
               openCoco={ openCoco}
+              getDetailOotd={getDetailOotd}
               />
           </CommentListWrapper>
           : ''

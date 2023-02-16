@@ -32,20 +32,18 @@ export const MarginDiv = styled.div`
 margin: 10px;
 display:flex;
 width:350px;
-textarea{
-    border:none;
-    outline:none;
-    resize:none;
-    width:350px;
-    height:100px;
-    padding:10px;
-    border-bottom:solid 1px gray;
+flex-direction: column;
+align-items: center;
+.toggleLine{
+    width:90%;
 }
+
 `
 export const BottomContainer = styled.div`
 display:flex;
 flex-direction: column;
 align-items: center;
+padding: 10px;
 `
 
 export const OotdInput = styled.input`
@@ -89,7 +87,7 @@ margin: 3% 2% 1%;
 `
 export const NoteBox = styled.div`
 display: flex;
-width: 100%;
+width: 320px;
 height: 100%;
 `
 

@@ -36,7 +36,8 @@ const SimpleSlider = ({ closetList, setSelectCloset }) => {
           Authorization: `Bearer ${Token.token}`,
               },
 		}).then((res) => {
-			console.log(res.data,'😢')
+      console.log(res.data, '😢')
+   
 			setSelectCloset(res.data)
 		}).catch((err) => {
 			console.log(err)
