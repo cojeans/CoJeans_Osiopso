@@ -170,10 +170,7 @@ const ClothesTagModal = ({ closeModal }) => {
 	}
 
 	return (<>
-					<button onClick={testButton}>
-					옷장리스트 테스트
-				</button>
-				{/* <button onClick={testButton}> 옷장리스트 테스트 <button/> */}
+
 		{<CategoryModalContainer>
 
 			<CategoryBox>
@@ -200,12 +197,7 @@ const ClothesTagModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={() => selectHandler('Season', el)} select={ selectedTag['Season'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox>
-			{/* <CategoryBox>
-					<Title>TPO</Title>
-					{tags.TPO.map((el, idx) => {
-						return <Tag key={idx} onClick={()=> selectHandler('TPO', el) } select={ selectedTag['TPO'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
-					}) }
-			</CategoryBox> */}
+
 			<Button onClick={submitHandler}>저장</Button>
 		</CategoryModalContainer>}</>
 	)
