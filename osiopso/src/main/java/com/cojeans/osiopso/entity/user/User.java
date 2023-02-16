@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 
 @Entity
@@ -62,7 +63,7 @@ public class User {
                 .id(this.getId())
                 .name(this.getName())
                 .email(this.getEmail())
-//                .password(this.getPassword())
+                .password(this.getPassword())
                 .age(this.getAge())
                 .imageUrl(this.getImageUrl())
                 .gender(this.getGender())
@@ -76,10 +77,11 @@ public class User {
                 .build();
     }
     /* userPk값을 가져와서 업데이트 후 User객체 다시반환 -> toDto호출해서 Dto로 변환*/
+    @Transactional
     public void changeIsProfilePublic(){
         this.isProfilePublic = !this.isProfilePublic;
     }
-
+    @Transactional
     public void changePassword(String password){
         this.password = password;
     }

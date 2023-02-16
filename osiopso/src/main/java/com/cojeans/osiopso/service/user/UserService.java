@@ -137,7 +137,7 @@ public class UserService {
     }
 
     public UserDto getUser(Long userId, UserDetail userDetail){
-        UserDto userDto = userRepository.findById(userId).orElse(null).toDto();
+        UserDto userDto = userRepository.findById(userId).orElseThrow().toDto();
 
         List<Ootd> ootdList = ootdRepository.findAllByUserId(userId);
         List<HotOotdResponseDto> ootds = new ArrayList<>();
@@ -296,6 +296,7 @@ public class UserService {
         return false;
     }
 
+    @Transactional
     public boolean modifyIsProfilePublic(Long id) {
         userRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException(id.toString(),"userRepository",null))
@@ -303,6 +304,7 @@ public class UserService {
         return true;
     }
 
+    @Transactional
     public void modifyPassword(String password, Long id) {
             userRepository
                     .findById(id)

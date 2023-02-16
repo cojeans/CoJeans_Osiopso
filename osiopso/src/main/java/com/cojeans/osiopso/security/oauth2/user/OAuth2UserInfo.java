@@ -1,7 +1,10 @@
 package com.cojeans.osiopso.security.oauth2.user;
 
+import lombok.ToString;
+
 import java.util.Map;
 
+@ToString
 public abstract class OAuth2UserInfo {
     protected Map<String, Object> attributes;
 
