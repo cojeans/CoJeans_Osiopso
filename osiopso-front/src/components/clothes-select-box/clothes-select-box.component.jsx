@@ -25,7 +25,7 @@ import React from 'react';
 import { createTag, createAutoTag, upload, checkLocal } from "../../store/clothes/clothes.reducer";
 import { selectTag, selectAutoTag } from "../../store/clothes/clothes.selector"
 import axios from "axios";
-import Button from "../button/button.component";
+import Button from "../button/button.component"
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectClosetList } from '../../store/closet/closet.selector';
@@ -39,6 +39,7 @@ import { selectCloset } from '../../store/closet/closet.selector';
 
 import Test from "../test/test.component";
 import { ref as fref, getStorage, uploadString } from "firebase/storage";
+import { AiFillTag } from "react-icons/ai";
 const category = ["원피스","바지","상의","신발","치마","아우터","모자",] 
 const color = ["검정", "파랑", "빨강"]
 // const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
@@ -257,6 +258,7 @@ const ClothesSelectBox = () => {
     <button onClick={FashionAi}> button</button>
   </div> */}
 
+
       <EditContainer>
         <EditBox onClick={onNavigateHandler}>
           <span>편집</span>
@@ -267,25 +269,28 @@ const ClothesSelectBox = () => {
         <PrevUploadImg>
           {saveData && (
             <img
-              src={saveData}
-              alt="https://pixlr.com/images/index/remove-bg.webp"
+            src={saveData}
+            alt="https://pixlr.com/images/index/remove-bg.webp"
             />
-          )}
+            )}
         </PrevUploadImg>
       </ImgContainer>
       <StyleTagButton
         onClick={() => {
           showModal();
           // handleAutoTag();
-          FashionAi();
+          // FashionAi();
         }}
-      >
+        ><AiFillTag color='#7272ba' size='25'/>
         Add Tag
       </StyleTagButton>
+
+      {/* <StyleTagButton onClick={showModal} ><AiFillTag color='#7272ba' size='25'/>Add Tag</StyleTagButton> */}
+
       {modalOpen && (
         <Modal
-          page={4}
-          isAutoTag={isAutoTag}
+        page={4}
+        isAutoTag={isAutoTag}
           // handleAutoTag={handleAutoTag}
           // authCategory={authCategory}
           // authColor={authColor}
@@ -293,11 +298,13 @@ const ClothesSelectBox = () => {
           openScroll={openScroll}
           clothesFormData={clothesFormData}
           setClothesFormData={setClothesFormData}
-        />
-      )}
+          />
+          )}
       {/* <Test isAutoTag={isAutoTag} handleAutoTag={handleAutoTag}/> */}
-        <Button onClick={handleSubmit}>저장</Button>
 
+
+
+        <Button onClick={handleSubmit}>저장</Button>
     </>
     );
 

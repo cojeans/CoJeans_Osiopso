@@ -86,10 +86,10 @@ const ClothesAddPicture = () => {
         // "X-Api-Key":  'pq1tqANSxrre5Ew6kLmHDy9z',
         // "X-Api-Key":  'PzbMyVS4F5y7n1kg9TP2eMau',
         // "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
-        // "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s'
+        "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s'
         // "X-Api-Key":  'RPeTWv3UMQeYg9ZSWfqdJPwC'
         // "X-Api-Key": "xCJE6CPZJE3bM8DeC8CpUcrb",
-        "X-Api-Key": "bQ9R6a8bhNRt4jSm5QG4HQmX",
+        // "X-Api-Key": "bQ9R6a8bhNRt4jSm5QG4HQmX",
         
       },
       responseType: "blob",

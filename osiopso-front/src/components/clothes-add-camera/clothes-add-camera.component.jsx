@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { upload, checkLocal } from "../../store/clothes/clothes.reducer";
 import { useNavigate } from "react-router";
+import Button from "../button/button.component";
 
 import { CameraContainer, Video } from "./clothes-add-camera.styles";
 
@@ -98,7 +99,7 @@ const CameraPage = () => {
             // "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
             // "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s',
             // "X-Api-Key":  'RPeTWv3UMQeYg9ZSWfqdJPwC',
-            "X-Api-Key": "xCJE6CPZJE3bM8DeC8CpUcrb",
+            // "X-Api-Key": "xCJE6CPZJE3bM8DeC8CpUcrb",
             // "X-Api-Key": "bQ9R6a8bhNRt4jSm5QG4HQmX",
           },
           responseType: "blob",
@@ -144,14 +145,14 @@ const CameraPage = () => {
       {/* <img src="imgData" alt="bgremoved" /> */}
       <img src={imgData} />
       {!imgData ? (
-        <button onClick={onCapture}>촬영</button>
+        <Button onClick={onCapture}>촬영</Button>
       ) : (
-        <button onClick={onCapture}>재촬영</button>
+        <Button onClick={onCapture}>재촬영</Button>
       )}
       {imgData && (
-        <button id="my-btn" onClick={onNavigateHandler}>
+        <Button id="my-btn" onClick={onNavigateHandler}>
           이동
-        </button>
+        </Button>
       )}
       {/* <br /> */}
       {/* <button onClick={capOff}>Turn Capture Off</button> */}
