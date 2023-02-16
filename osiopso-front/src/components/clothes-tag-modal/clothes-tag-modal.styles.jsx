@@ -30,18 +30,32 @@ export const Title = styled.div`
 	font-size:15px;
 `
 
-export const Tag = styled.div`
-		height:30px;
-		border-radius:4px;
-		padding:4px;
-		margin:8px;
-		display:inline-block;
-		text-align:center;
-		background-color:#f1f3f5;
-		color:rgba(0,0,0,0.5);
-		cursor:pointer;
-		font-size:13px;
-		${({select})=> select && selectStyle};
+// export const Tag = styled.div`
+// 		height:30px;
+// 		border-radius:4px;
+// 		padding:4px;
+// 		margin:8px;
+// 		display:inline-block;
+// 		text-align:center;
+// 		background-color:#f1f3f5;
+// 		color:rgba(0,0,0,0.5);
+// 		cursor:pointer;
+// 		font-size:13px;
+// 		${({select})=> select && selectStyle};
 
 		
+// `
+export const Tag = styled.div`
+        height:30px;
+        /* border-radius:4px; */
+        padding:4px;
+        margin:6px;
+        display:inline-block;
+        text-align:center;
+        color:rgba(0,0,0,0.5);
+        border:solid 1px gray;
+        cursor:pointer;
+        font-size:13px;
+        ${({ select }) => select && selectStyle};
+        border-radius: 4px;    
 `

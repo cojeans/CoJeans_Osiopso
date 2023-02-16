@@ -37,9 +37,11 @@ import {
 } from "../../store/clothes/clothes.selector";
 import { selectCloset } from '../../store/closet/closet.selector';
 
+
 import Test from "../test/test.component";
 import { ref as fref, getStorage, uploadString } from "firebase/storage";
 import { AiFillTag } from "react-icons/ai";
+import { SaveBox } from "../ootd-modal/ootd-modal.styles";
 const category = ["원피스","바지","상의","신발","치마","아우터","모자",] 
 const color = ["검정", "파랑", "빨강"]
 
@@ -295,9 +297,10 @@ const ClothesSelectBox = () => {
 
 
 
-
+        <SaveBox>
         <Button 
              onClick={handleSubmit}>저장</Button>
+        </SaveBox>
     </>
     );
 

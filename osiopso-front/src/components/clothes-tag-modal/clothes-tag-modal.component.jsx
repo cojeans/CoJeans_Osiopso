@@ -12,6 +12,7 @@ import { selectorOotdCategory } from "../../store/ootd/ootd.selector"
 import { selectOotdCategory } from "../../store/ootd/ootd.reducer"
 import { createTag, createAutoTag, upload, checkLocal } from "../../store/clothes/clothes.reducer"
 import ProfileCloset from "../profile-closet/profile-closet.component"
+import Button from "../button/button.component"
 
 import {
 	CategoryModalContainer,
@@ -205,7 +206,7 @@ const ClothesTagModal = ({ closeModal }) => {
 						return <Tag key={idx} onClick={()=> selectHandler('TPO', el) } select={ selectedTag['TPO'].indexOf(el) !== -1 ? true :false}>{ el }</Tag>
 					}) }
 			</CategoryBox> */}
-			<button onClick={submitHandler}>저장</button>
+			<Button onClick={submitHandler}>저장</Button>
 		</CategoryModalContainer>}</>
 	)
 }
