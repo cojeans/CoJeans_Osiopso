@@ -7,6 +7,8 @@ import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
 import { SlExclamation } from "react-icons/sl";
 
+import Input from '@mui/material/Input';
+
 import Swal from "sweetalert2";
 
 import {
@@ -23,7 +25,6 @@ import {
   TagBox,
   Note,
   ExclamationMark,
-  NoteBox,
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -190,7 +191,14 @@ const OotdCreate = () => {
         </MarginDiv>
 
         <MarginDiv>
-          <textarea
+          <Input
+              name="content"
+              value={ content }
+              placeholder='착용 아이템 및 스타일을 소개해주세요.'
+              onChange={handleChange}
+              style={{height:100, width:320}}
+            ></Input>
+          {/* <textarea
             name="content"
             value={ content }
             id=""
@@ -199,7 +207,7 @@ const OotdCreate = () => {
             placeholder='착용 아이템 및 스타일을 소개해주세요.'
             onChange={handleChange}
           >
-          </textarea>
+          </textarea> */}
         </MarginDiv>
         <Button>저장</Button>
       </BottomContainer>

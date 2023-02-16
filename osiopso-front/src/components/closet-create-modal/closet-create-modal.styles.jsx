@@ -67,5 +67,5 @@ export const ModalBody = styled.div`
 export const ToggleContainer = styled.div`
   display:flex; 
   justify-content: space-between;
-
+  width: 100%;
   `
