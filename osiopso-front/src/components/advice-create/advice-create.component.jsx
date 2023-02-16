@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 
 import {
   useState,
-  useEffect,
   useRef,
 } from 'react';
 
@@ -22,13 +21,10 @@ import {
   MarginDiv,
   OotdInput,
   OotdImgContainer,
-  StyleTagButton,
   NoteBox,
   CautionBox,
   TextBox,
   Note,
-  ExclamationMark
-
 } from "./advice-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -165,12 +161,6 @@ const AdviceCreate = ()=> {
   
     return (
         <div>
-        <TopContainer>
-          <Xcontainer>
-            <img src={require("../../assets/X.png")} alt="" onClick={goToHome}/>
-          </Xcontainer>
-          <h3>새 게시물</h3>
-        </TopContainer>
         <BottomContainer>
           <OotdImgContainer>
             <label htmlFor="profileImg">
