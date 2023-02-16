@@ -7,7 +7,7 @@ color:black;
 
 export const CategoryModalContainer = styled.div`
 	width:100%;
-	height:437px;
+	height:460px;
 	background-color:white;
 	border-radius:50px 50px 0 0;
 	display:flex;
@@ -34,7 +34,7 @@ export const Tag = styled.div`
 		height:30px;
 		/* border-radius:4px; */
 		padding:4px;
-		margin:8px;
+		margin:6px;
 		display:inline-block;
 		text-align:center;
 		color:rgba(0,0,0,0.5);
