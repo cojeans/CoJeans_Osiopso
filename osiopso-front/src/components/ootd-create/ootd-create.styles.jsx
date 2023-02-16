@@ -61,7 +61,7 @@ export const OotdImgContainer = styled.div`
     justify-content: center;
     align-items: center;
     border:1px solid gray;
-    div{
+    .imgBox{
         img{
             width: 60px;
             height: 60px;

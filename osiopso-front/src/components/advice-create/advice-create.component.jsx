@@ -106,7 +106,7 @@ const AdviceCreate = ()=> {
           content: adviceFormData.content,
           urls: [
             {
-              imageUrl:adviceFormData.urls
+              imageUrl:adviceFormData.imageUrl
             }]
         },
         headers: {
@@ -119,7 +119,7 @@ const AdviceCreate = ()=> {
           console.log(err)
         })
       dispatch(resetOotdCategory())
-      // AlertCreateAdvice()
+      AlertCreateAdvice()
     }
 
     const CautionMessage = ()=> {
@@ -160,7 +160,7 @@ const AdviceCreate = ()=> {
               {
                 adviceImg 
                     ? <img src={adviceImg} alt="" />
-                  : <div><img src={require("../../assets/plus.png")}/></div>
+                  : <div className='imgBox'><img src={require("../../assets/plus.png")}/></div>
               }
               </OotdImgContainer>
             </label>

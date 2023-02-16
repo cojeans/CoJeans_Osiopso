@@ -180,7 +180,7 @@ const AdviceDetail = () => {
     <Fragment>
       <div>
         <Title>
-          title: {advicedDetail.subject }
+          {advicedDetail.subject }
         </Title>
       <UpperProfile 
       // onClick={}

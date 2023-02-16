@@ -159,7 +159,7 @@ const OotdCreate = () => {
             {
               ootdImg 
                   ? <img src={ootdImg} alt="" />
-                : <div><img src={require("../../assets/plus.png")}/></div>
+                : <div className='imgBox'><img src={require("../../assets/plus.png")}/></div>
             }
             </OotdImgContainer>
           </label>
@@ -209,7 +209,7 @@ const OotdCreate = () => {
           >
           </textarea> */}
         </MarginDiv>
-        <Button>저장</Button>
+        <Button onClick={ submitOotdCreate }>저장</Button>
       </BottomContainer>
 
 
