@@ -185,7 +185,7 @@ const OotdCreate = () => {
           <TagBox>
             {
               ootdTags.map((tag) => {
-                return <div>#{tag.type}</div>
+                return <div>#{tag.keyword}</div>
               })
             }
           </TagBox>
