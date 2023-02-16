@@ -229,6 +229,7 @@ public class AdviceService {
                 .userName(advice.getUser().getName())
                 .createTime(advice.getCreateTime())
                 .modifyTime(advice.getModifyTime())
+                .profileImageUrl(advice.getUser().getImageUrl())
                 .commentCnt((long) commentRepository.findAllByArticle_Id(advice.getId()).size())
                 .photos(photoResponseDtoList)
                 .articleLikes(articleLikeResponseDtoList)

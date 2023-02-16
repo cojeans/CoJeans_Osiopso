@@ -19,6 +19,7 @@ public class AdviceDetailResponseDto {
     private Date createTime;
     private Date modifyTime;
     private Long commentCnt;
+    private String profileImageUrl;
     private List<ArticlePhotoResponseDto> photos;
     private List<ArticleLikeResponseDto> articleLikes;
     private List<CommentAdviceResponseDto> comments;
