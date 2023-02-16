@@ -29,7 +29,7 @@ import Button from "../button/button.component"
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectClosetList } from '../../store/closet/closet.selector';
-
+import Swal from "sweetalert2";
 import Modal from "../modal/modal.component";
 import {
   selectClothes,
@@ -41,9 +41,8 @@ import Test from "../test/test.component";
 import { ref as fref, getStorage, uploadString } from "firebase/storage";
 import { AiFillTag } from "react-icons/ai";
 const category = ["원피스","바지","상의","신발","치마","아우터","모자",] 
-const color = ["검정", "파랑", "빨강"]
-// const category = ['원피스','바지','상의','신발','치마','아우터','모자',] 
-// const color = ['검정', '파랑', '빨강']
+const color = ["베이지", "검정", "파랑", '회색', '네이비', '핑크', '빨강', '흰색']
+
 
 
 const defaultClothesForm = {
@@ -53,6 +52,7 @@ const defaultClothesForm = {
 
 
 const ClothesSelectBox = () => {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [closetList, setClosetList] = useState([])
@@ -66,7 +66,8 @@ const ClothesSelectBox = () => {
     useEffect(() => {
       getClosetList();
     }, []);
-    
+
+
     // useEffect(() => {
     //   if(closetList) {
     //     console.log(closetList, 'this is closetList')
@@ -83,6 +84,7 @@ const ClothesSelectBox = () => {
 
     // const saveData = useSelector(selectClothes);
     const onNavigateHandler = () => {
+
       navigate("update/");
     };
     
@@ -121,8 +123,16 @@ const ClothesSelectBox = () => {
       
     }
     // getClosetList()
-
+  //   const moveProfile = () => {
+  //     Swal.fire({
+  //     icon: 'success',
+  //     confirmButtonColor: "#7272ba", 
+  //   }).then(() => {
+  //     navigate("profile/")
+  //   })
+  // }
     const handleSubmit = () => {
+
         // https://firebase.google.com/docs/storage/web/upload-files?hl=ko#web-version-9_3
         // fref.putString(saveData, "base64").then(function (snapshot) {
         //     console.log("base64 문자열을 업로드했습니다!");
@@ -145,77 +155,58 @@ const ClothesSelectBox = () => {
         console.log(finalTag.colors)
         console.log(finalTag.seasons)
 
-        uploadString(storageRef, saveData, "data_url").then((snapshot) => {
-            console.log("Uploaded a data_url string!");
-        });
         
-        // storage.ref.putString(saveData, "base64").then(function (snapshot) {
-        //     console.log("Uploaded a data_url string!");
-        // });
+          
+          uploadString(storageRef, saveData, "data_url").then((snapshot) => {
+            console.log("Uploaded a data_url string!");
+          });
 
-        // const response = storage.ref().putString(saveData, "base64")
-
-        // storage
-        //     .ref()
-        //     .putString(saveData, "base64")
-        //     .then(function (snapshot) {
-        //         console.log("육사업로드");
-        //     });
-        const payload = {
-          category: finalTag.category,
-          imageUrl: saveData,
-          closets: finalTag.closets,
-          colors: finalTag.colors,
-          seasons: finalTag.seasons,
-        }
-
-        // const temp_obj = 
-        // const payload = JSON.stringify(obj)
-        console.log(payload, 'this is payload')
-        console.log(typeof(payload), 'type of payload')
+          console.log(typeof(payload), 'type of payload')
           axios({
             method: "post",
             url: `${process.env.REACT_APP_AXIOS_URL}closet/clothes`,
             data: 
               
-              {
-                category: finalTag.category,
-                imageUrl: saveData,
-                closets: finalTag.closets,
-                colors: finalTag.colors,
-                seasons: finalTag.seasons,
-              }
+            
+            {
+              category: finalTag.category,
+              imageUrl: saveData,
+              closets: finalTag.closets,
+              colors: finalTag.colors,
+              seasons: finalTag.seasons,
+            }
             ,
             headers: {
-                Authorization: `Bearer ${Token.token}`,
-                contentType : "application/json"
-              },
-
-        })
-            .then((res) => {
-              console.log(res)
-                console.log("clothes-select-box에서 post axios 요청");
-                console.log(res.data);
-                navigate('/mypage')
-            })
-            .catch((err) => {
-                console.log(err);
+              Authorization: `Bearer ${Token.token}`,
+              contentType : "application/json"
+            },
+            
+          })
+          .then((res) => {
+            console.log(res)
+            console.log("clothes-select-box에서 post axios 요청");
+            console.log(res.data);
+            navigate('/mypage')
+          })
+          .catch((err) => {
+            console.log(err);
             });
-
+            
           };
-            const FashionAi = async () => {
-              // console.log(exampleImage)
-              // const model = await loadGraphModel(AiModel)
-              const model = await loadGraphModel("model/model.json");
-              // const modelpath = require('../../../src/model/model.json')
-              // const model = await loadGraphModel(modelpath);
-              const image = new Image(96, 96);
-              // const newimg = buffer.from(saveData, 'base64')
-              // const t = tf.node.decdeImage(newimg)
-              // console.log(t)
-              // const b = atob(saveData)
-              // console.log(b)
-              // image.src = saveData;
+        
+          const FashionAi = async () => {
+            // console.log(exampleImage)
+            // const model = await loadGraphModel(AiModel)
+            const model = await loadGraphModel("model/model.json");
+            // const modelpath = require('../../../src/model/model.json')
+            // const model = await loadGraphModel(modelpath);
+            const image = new Image(96, 96);
+            // const newimg = buffer.from(saveData, 'base64')
+            // const t = tf.node.decdeImage(newimg)
+            // console.log(t)
+            // const b = atob(saveData)
+            // console.log(b)
+            // image.src = saveData;
               image.crossOrigin = 'anonymous'
               image.src = saveData;
               tf.browser.fromPixels(image).print();

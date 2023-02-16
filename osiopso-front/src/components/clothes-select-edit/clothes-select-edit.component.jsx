@@ -195,7 +195,7 @@ const ClothesSelectEdit = () => {
             size={'md'}
             variant={'success'}
             onClick={reset}>초기화</Button>
-            {!isCrop && <Button 
+            {!isCrop && isErase && <Button 
             type='submit'
             size={'md'}
             variant={'success'}
@@ -205,7 +205,7 @@ const ClothesSelectEdit = () => {
             size={'md'}
             variant={'success'}
             onClick={completeCut}>자르기 완료</Button>}
-            {!isErase && <Button 
+            {!isErase && isCrop && <Button 
             type='submit'
             size={'md'}
             variant={'success'}
