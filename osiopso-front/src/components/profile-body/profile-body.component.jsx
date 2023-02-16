@@ -42,11 +42,11 @@ const ProfileBody = ({ id }) => {
 			console.log(err)
 		})
 	}
-	const testButton = () => {
-		console.log(curClosetList, 'test button')
-		console.log(userInfo, 'test button2')
-		console.log(curCloset, 'test button3')
-	}
+	// const testButton = () => {
+	// 	console.log(curClosetList, 'test button')
+	// 	console.log(userInfo, 'test button2')
+	// 	console.log(curCloset, 'test button3')
+	// }
 	useEffect(() => {
 		if (id > 0) {
 			getUserData(`${process.env.REACT_APP_AXIOS_URL}user/${id}`)
@@ -59,9 +59,7 @@ const ProfileBody = ({ id }) => {
 	return (
 		
 		<Fragment>
-								<button onClick={testButton}>
-					옷장리스트 테스트
-				</button>
+
 			<TabMenue>
 				<p onClick={() => setProfilePage('closet')} page={profilePage === 'closet'}
 					className={ profilePage==='closet' ? 'select' : ''}

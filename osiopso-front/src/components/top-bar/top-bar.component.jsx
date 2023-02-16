@@ -42,7 +42,7 @@ const TopBar = () => {
 				setTopName('OOTD 등록')
 				break
 			case '/advice/create':
-				setTopName('Advice 등록')
+				setTopName('Advice 요청')
 				break
 			case '/advice/ootdCommentCreate':
 			setTopName('Advice 등록')
