@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled,{css} from 'styled-components'
 
 export const BaseButton = styled.button`
   min-width: 165px;
@@ -8,7 +8,7 @@ export const BaseButton = styled.button`
   line-height: 50px;
   padding: 0 35px 0 35px;
   font-size: 20px;
-  background-color: #e7e2ff;
+  background-color: #7272ba;
   color: #32144f;
   text-transform: uppercase;
   font-weight: bolder;
@@ -18,6 +18,35 @@ export const BaseButton = styled.button`
   display: flex;
   justify-content: center;
 	margin:auto;
+  font-family: 'LINESeedKR-Bd';
+`
+
+
+
+export const StyleButton = styled.button`
+  ${(p) => p.sizeStyle}
+  ${(p) => p.variantStyle}
+
+  font-family: 'LINESeedKR-Bd';
+  border: none;
+  cursor: pointer;
+  font-size: var(--button-font-size, 1rem);
+  padding: var(--button-padding, 12px 16px);
+  border-radius: var(--button-radius, 8px);
+  background: var(--button-bg-color,  #7272ba);
+  color: var(--button-color, #ffffff);
+
+  &:active,
+  &:hover,
+  &:focus {
+    background: var(--button-hover-bg-color, #7272ba);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background: var(--button-bg-color, #7272ba);
+  }
 `
 
 

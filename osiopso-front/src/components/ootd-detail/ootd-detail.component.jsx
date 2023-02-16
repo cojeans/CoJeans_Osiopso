@@ -13,9 +13,7 @@ import {
   ContentBox,
 } from "./ootd-detail.styles";
 
-// import { ReactComponent as Like } from "../../assets/like.svg";
-// import {ReactComponent as DetailComment} from "../../assets/detail-comment.svg";
-// import {ReactComponent as Alert} from "../../assets/alert.svg"
+
 import Swal from "sweetalert2";
   
 import axios from "axios";
@@ -42,10 +40,10 @@ const isCocomentDefaultData = {
   selectCommentName: '',
 }
 
-const openCocoDefaultData = {
-  check: false,
-  selectCommentId: '',
-}
+// const openCocoDefaultData = {
+//   check: false,
+//   selectCommentId: '',
+// }
 
 const likeDefaultData = {
   check: false,
@@ -60,14 +58,15 @@ const OotdDetail = () => {
   const id = location.state.id;
 
   const Token = useSelector(selectUser)
+  
   const [ootdDetail, setOotdDetail]= useState('')
   const [phtoUrl, setPhotoUrl] = useState('')
   const [likeData, setLikeData] = useState(likeDefaultData)
   const [commentData, setCommentData] = useState(defaultForm)
-  const [openComment, setOpenComment] = useState(false)
+  const [openComment, setOpenComment] = useState(true)
   // isCocoment는 댓글 생성 창이 답글인지 댓글인지 판별하기 위한 것입니다.
   const [isCocomment, setIsCocomment] = useState(isCocomentDefaultData)
-  const [ootdUserUrl, setOordUserUrl] = useState(require('../../assets/defaultuser.png'))
+  const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
   const [openCoco, setOpenCoco] = useState(false)
 
   
@@ -106,12 +105,13 @@ const OotdDetail = () => {
     })
       .then((res) => {
         const result = res.data.responseData
-        console.log(result)
         setOotdDetail(result)
         setPhotoUrl(result.photos[0].imageUrl)
         setCommentData({ cnt: result.comments.length, list: result.comments.reverse() })
+        setootdUserUrl(result.profileImageUrl)
         const likeList = result.articleLikes
-        console.log(likeList, userInfo.id)
+        console.log(result)
+
         if (likeList.length) {
           likeList.forEach((like) => {
             if (like.userId === userInfo.id) {
@@ -168,7 +168,7 @@ const OotdDetail = () => {
   useEffect(() => {
     getDetailOotd()
 
-  },[])
+  },[openCoco])
 
   const Report = ()=>{
     Swal.fire({
@@ -194,7 +194,7 @@ const OotdDetail = () => {
        html: `
         OOTD 게시물이 삭제되었습니다.
       `,
-      confirmButtonColor: "#DD6B55", 
+      confirmButtonColor: "#7272ba", 
     })
       .then(() => {
         navigate("/#ootd")
@@ -209,6 +209,20 @@ const OotdDetail = () => {
       setOpenComment(true)
     }
   }
+
+  const goUserProfile = () => {
+    if (ootdDetail.userId === userInfo.id) {
+     navigate('/profile/')
+    } else {
+      navigate(
+        '/profile/' + ootdDetail.userId,
+        {
+          state: {
+		      id:ootdDetail.userId
+    	}}
+      )
+   }
+  }
   
   useEffect(() => {
     sccurRef1()
@@ -219,9 +233,10 @@ const OotdDetail = () => {
     <div>
       <div>
 
-      <UpperProfile
+      <UpperProfile 
+      onClick={goUserProfile}
       >
-        <ProfileImageBox >
+        <ProfileImageBox  >
           <img src={  ootdUserUrl} alt="" />
         </ProfileImageBox >
         {ootdDetail.userName}
@@ -296,7 +311,6 @@ const OotdDetail = () => {
         getDetailOotd={getDetailOotd}
         isCocomment={isCocomment}
         setOpenCoco={setOpenCoco}
-
         />
       </div>
 

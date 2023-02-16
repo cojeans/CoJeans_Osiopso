@@ -5,12 +5,12 @@ import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+import { SlExclamation } from "react-icons/sl";
 
 import Swal from "sweetalert2";
 
 import {
   useState,
-  useEffect,
   useRef,
 } from 'react';
 
@@ -21,7 +21,10 @@ import {
   MarginDiv,
   OotdInput,
   OotdImgContainer,
-  StyleTagButton
+  NoteBox,
+  CautionBox,
+  TextBox,
+  Note,
 } from "./advice-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -76,9 +79,11 @@ const AdviceCreate = ()=> {
     const goToHome = ()=> {
         navigate('/')
     }
+
   
     const submitAdviceCreate = (e) => {
       e.preventDefault();
+      console.log(adviceTags)
       // const formData = new FormData()
       const advice = {
         tags: adviceTags,
@@ -124,6 +129,10 @@ const AdviceCreate = ()=> {
       dispatch(resetOotdCategory())
       AlertCreateAdvice()
     }
+
+    const CautionMessage = ()=> {
+      alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
+    }
   
     const AlertCreateAdvice = () => {
   
@@ -152,12 +161,6 @@ const AdviceCreate = ()=> {
   
     return (
         <div>
-        <TopContainer>
-          <Xcontainer>
-            <img src={require("../../assets/X.png")} alt="" onClick={goToHome}/>
-          </Xcontainer>
-          <h3>새 게시물</h3>
-        </TopContainer>
         <BottomContainer>
           <OotdImgContainer>
             <label htmlFor="profileImg">
@@ -177,9 +180,24 @@ const AdviceCreate = ()=> {
               ref={imgRef}
             />
           </OotdImgContainer>
-          <MarginDiv>
-            <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
-          </MarginDiv>
+          <NoteBox>
+          <Note>
+            <CautionBox onClick={CautionMessage}>
+              <SlExclamation />
+              <TextBox>작성 시 유의사항</TextBox>
+            </CautionBox>
+          </Note>
+        </NoteBox>
+          {/* <NoteBox>
+          <Note>
+            <ExclamationMark>
+              <SlExclamation />
+            </ExclamationMark>
+            <div onClick={CautionMessage}>
+              작성 시 유의사항
+            </div>
+          </Note>
+        </NoteBox> */}
           <MarginDiv>
             <textarea
               name="content"

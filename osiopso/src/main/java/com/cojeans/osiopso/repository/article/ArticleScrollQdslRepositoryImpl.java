@@ -22,7 +22,7 @@ public class ArticleScrollQdslRepositoryImpl implements ArticleScrollQdslReposit
 
         return jpaQueryFactory.selectFrom(advice)
                 .where(advice.dtype.eq("A")
-                        .and(advice.id.lt(idx)))
+                .and(advice.id.lt(idx)))
                 .orderBy(advice.id.desc())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -34,7 +34,7 @@ public class ArticleScrollQdslRepositoryImpl implements ArticleScrollQdslReposit
 
         return jpaQueryFactory.selectFrom(ootd)
                 .where(ootd.dtype.eq("O")
-                        .and(ootd.id.lt(idx)))
+                .and(ootd.id.lt(idx)))
                 .orderBy(ootd.id.desc())
                 .limit(pageable.getPageSize())
                 .fetch();

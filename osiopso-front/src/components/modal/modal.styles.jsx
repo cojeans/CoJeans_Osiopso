@@ -1,7 +1,11 @@
 import styled,  {css} from "styled-components";
 
 export const modalStyle = css`
-  padding-bottom:60px;
+  padding-bottom:75px;
+`
+
+export const modalStyle2 = css`
+  align-items: center;
 `
 
 export const ModalPage = styled.div`
@@ -10,9 +14,11 @@ export const ModalPage = styled.div`
   align-items: flex-end;
   width:100%;
   height:100%;
-	${({page})=> page && modalStyle};
+	${({page})=> page===1 && modalStyle};
   /* 최상단 위치 */
   z-index: 999;
+  ${({page})=> page===5 && modalStyle2};
+
   
   /* 중앙 배치 */
   /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */

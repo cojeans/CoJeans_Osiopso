@@ -9,7 +9,10 @@ import { selectUser } from "../../store/user/user.selector";
 import axios from "axios";
 
 import { ItemInfo } from "../closet/closet.styles";
-import { SlickItem } from "./closet-slick.styles";
+import {
+  SlickItem,
+  SliderContainer,
+} from "./closet-slick.styles";
 import {
 	ClosetItem,
 } from "../closet/closet.styles"
@@ -18,7 +21,7 @@ import ClosetPreview from "../closet-preview/closet-preview.component"
 const SimpleSlider = ({ closetList, setSelectCloset }) => {
     const settings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       slidesToShow: 3,
       slidesToScroll: 1,
 	};
@@ -41,7 +44,7 @@ const SimpleSlider = ({ closetList, setSelectCloset }) => {
   }
 
     return (
-      <div>
+      <SliderContainer>
         <Slider {...settings}>
           {
             closetList.map((closet, idx) => {
@@ -60,7 +63,7 @@ const SimpleSlider = ({ closetList, setSelectCloset }) => {
             })
           }
         </Slider>
-      </div>
+      </SliderContainer>
     );
   }
 

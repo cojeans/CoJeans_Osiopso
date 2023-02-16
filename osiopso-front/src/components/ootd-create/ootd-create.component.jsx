@@ -5,24 +5,25 @@ import { resetOotdCategory } from '../../store/ootd/ootd.reducer';
 
 import { selectUser } from '../../store/user/user.selector';
 import { selectorOotdCategory } from '../../store/ootd/ootd.selector';
+import { SlExclamation } from "react-icons/sl";
 
 import Swal from "sweetalert2";
 
 import {
   useState,
-  useEffect,
   useRef,
 } from 'react';
 
 import {
-  Xcontainer,
-  TopContainer,
   BottomContainer,
   MarginDiv,
   OotdInput,
   OotdImgContainer,
   StyleTagButton,
-  TagBox
+  TagBox,
+  Note,
+  ExclamationMark,
+  NoteBox,
 } from "./ootd-create.styles";
 
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component"
@@ -30,6 +31,9 @@ import Modal from '../modal/modal.component';
 
 import { ref as fref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../utils/utils';
+
+import { AiFillTag } from "react-icons/ai";
+import Button from '../button/button.component';
 
 const defaultOotdForm = {
   content: '',
@@ -39,6 +43,9 @@ const defaultOotdForm = {
 
 
 const OotdCreate = () => {
+  const CautionMessage = ()=> {
+    alert("회원들이 전체적인 스타일을 확인할 수 있도록 전신사진을 꼭 포함해주세요.")
+  }
   const Token = useSelector(selectUser)
   
   const [ootdImg, setOotdImg] = useState('')
@@ -116,11 +123,12 @@ const OotdCreate = () => {
     AlertCreateOotd()
   }
 
+
   const AlertCreateOotd = () => {
 
   Swal.fire({
     icon: 'success',
-    confirmButtonColor: "#DD6B55", 
+    confirmButtonColor: "#7272ba", 
     html: `
       OOTD 게시물이 작성되었습니다.
     `,
@@ -143,20 +151,14 @@ const OotdCreate = () => {
 
   return (
     <div>
-      <TopContainer>
-        <Xcontainer>
-          <img src={require("../../assets/X.png")} alt="" onClick={goToMain}/>
-        </Xcontainer>
-        <h3>새 게시물</h3>
-      </TopContainer>
       <BottomContainer>
         <OotdImgContainer>
           <label htmlFor="profileImg">
-            <OotdImgContainer>
+            <OotdImgContainer >
             {
               ootdImg 
                   ? <img src={ootdImg} alt="" />
-                : <div><span>+</span></div>
+                : <div><img src={require("../../assets/plus.png")}/></div>
             }
             </OotdImgContainer>
           </label>
@@ -168,8 +170,16 @@ const OotdCreate = () => {
             ref={imgRef}
           />
         </OotdImgContainer>
+          <Note>
+            <ExclamationMark>
+              <SlExclamation />
+            </ExclamationMark>
+            <div onClick={CautionMessage}>
+              작성 시 유의사항
+            </div>
+          </Note>
         <MarginDiv>
-          <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton>
+          <StyleTagButton onClick={showModal} ><AiFillTag color='#7272ba' size='25'/>Add Tag</StyleTagButton>
           <TagBox>
             {
               ootdTags.map((tag) => {
@@ -178,6 +188,7 @@ const OotdCreate = () => {
             }
           </TagBox>
         </MarginDiv>
+
         <MarginDiv>
           <textarea
             name="content"
@@ -185,13 +196,15 @@ const OotdCreate = () => {
             id=""
             cols="30"
             rows="10" 
-            placeholder='#코딩이 #힘들다'
+            placeholder='착용 아이템 및 스타일을 소개해주세요.'
             onChange={handleChange}
           >
           </textarea>
         </MarginDiv>
-        <button onClick={submitOotdCreate}>저장</button>
+        <Button>저장</Button>
       </BottomContainer>
+
+
       {
         modalOpen && <Modal page={ 2} setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
 			}

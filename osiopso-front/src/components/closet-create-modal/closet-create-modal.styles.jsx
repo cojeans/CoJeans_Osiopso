@@ -31,6 +31,7 @@ export const ClosetInput = styled.input`
   height:40px;
   border:none;
   border-bottom:solid 1px gray;
+  font-family: 'LINESeedKR-Bd';
   &:focus{
     outline:none;
   }
@@ -38,7 +39,7 @@ export const ClosetInput = styled.input`
 
 export const ClosetContent = styled.div`
   width:80%;
-  height:80%;
+  height:54%;
 `
 
 export const ButtonContainer = styled.div`

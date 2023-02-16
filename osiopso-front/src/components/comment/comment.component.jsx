@@ -25,7 +25,6 @@ const Comment = ({ comment, select }) => {
 	const curUser = useSelector(selectUserInfo)// 현재 유저 정보를 가져옵니다. 
 	const Token = useSelector(selectUser) // 현재 유저의 토큰 정보를 가져옵니다.
 
-
 	//처음 댓글 렌더링이 될때 좋아요 상태를 불러옵니다.
 	useEffect(() => {
 		const lst = comment.commentLikes
@@ -68,7 +67,7 @@ const Comment = ({ comment, select }) => {
 			select={ select}>
 			<UserPorfileBox>
 					<div className="imgBox">
-							<img  src={  comment.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.imageUrl} alt="" />
+							<img  src={  comment.profileImageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):comment.profileImageUrl} alt="" />
 					</div>
 			</UserPorfileBox>
 			<ContentBox>

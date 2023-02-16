@@ -163,4 +163,20 @@ width: 90%;
 height: 100%;
 margin: 10px 20px 10px;
 white-space: normal;
+word-break: break-all;
+`
+
+export const Title = styled.div`
+  font-size: 25px;
+  width: 90%;
+  margin: 13px auto 3px auto;
+`
+
+export const Buttoncontainer = styled.div`
+margin:auto;
+width:90%;
+display: flex;
+justify-content: center;
+align-items: center;
+
 `

@@ -13,9 +13,9 @@ img{
 }
 `
 export const TopTag = styled.div`
-width: 30%;
+width: 100%;
 display:flex;
-justify-content: space-around;
+justify-content: space-evenly;
 `
 export const Container = styled.div`
 width: 150px;
@@ -23,6 +23,7 @@ display:flex;
 // flex-direction: column;
 justify-content: space-between;
 align-items:center;
+margin-top: 20px;
 `
 export const UpperupperCommentContainer = styled.div`
 display: flex;
@@ -48,7 +49,7 @@ flex-direction: column;
 `
 export const TrashcanContainer = styled.div`
 display:flex;
-jusyify-content: flex-end;
+justify-content: flex-end;
 svg{
     width: 18px;
     height: 18px;
@@ -59,5 +60,63 @@ display:flex;
 `
 export const TimeBox = styled.div`
 display: flex;
+`
 
+export const AdvicecContainer = styled.div`
+  .hori{
+    width: 88%;
+    border:solid 1px #D3D3D3;
+    opacity: 0.5;
+  }
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  `
+
+export const AdviceItemBox = styled.div`
+  width:80%;
+  height: 130px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+`
+
+export const ContentBox = styled.div`
+  width:60%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+
+  
+  .content{
+    font-size: 13px;
+  }
+
+  .comment{
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    svg{
+      padding-right: 5px;
+      font-size:23px;
+    }
+  }
+
+`
+export const ImageContainer = styled.div`
+  width: 30%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+  }
 `

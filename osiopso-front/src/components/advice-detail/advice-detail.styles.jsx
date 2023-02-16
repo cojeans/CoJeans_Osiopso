@@ -61,12 +61,14 @@ export const ProfileImageBox = styled.img.attrs({
   `
   export const UpperComment = styled.div`
   display: flex; 
+  width: 90%;
+  height: 100%;
+  margin: 10px 20px 20px;
   white-space: normal;
-  word-break: normal;
+  word-break: break-all;
   width: 100%;
   height: 100%;
-  padding-left: 30px;
-  margin-bottom: 20px;
+
   `
 
   export const ClosetInput = styled.input`

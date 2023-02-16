@@ -13,10 +13,14 @@ import {
   ButtonBox,
   TextBox,
 } from "./changepassword.styles";
-
+import axios from "axios";
+import { selectUser } from "../../store/user/user.selector";
+import { useSelector } from "react-redux";
 
 
 const ChangePassword = () => {
+  const Token = useSelector(selectUser)
+  
   const AlertHandler = ()=> {
 
     Swal.fire({
@@ -26,7 +30,7 @@ const ChangePassword = () => {
       비밀번호 변경이 완료되었습니다.`,
       showCancelButton: false,
       confirmButtonText: "확인",
-    }).then(()=> {
+  }).then(()=> {
       navigate('/')
     })
   }
@@ -53,8 +57,37 @@ const ChangePassword = () => {
     
     // navigate('/')
   }
-
-
+  
+  const changeFunc = (password)=> {
+    console.log(password)
+    axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_AXIOS_URL}user/modifyPassword`,
+      data: {
+        "success" : true,
+        "message": password
+      },
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      },
+    })
+    .then((res)=> {
+      console.log(res)
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      .then(()=>{
+        navigate('/mypage')
+      })
+    })
+    .catch((er)=> {
+      console.log(er)
+    })
+  }
 
   return (
     <div>
@@ -63,7 +96,7 @@ const ChangePassword = () => {
       ) : (
         <div>
           <UpperBox>
-            <h3>비밀번호 변경페이지</h3>
+            <h2>비밀번호 변경</h2>
           </UpperBox>
 
           <UpperBox>
@@ -73,7 +106,7 @@ const ChangePassword = () => {
                 변경하지 않은 경우 비밀번호 변경을 권장하고 있습니다.
               </PasswordBoxMessage>
               <UpperInput>
-                <TextBox>비밀번호: </TextBox>
+                <TextBox>새 비밀번호: </TextBox>
                 <UpperCloseInputbox>
                   <CloseInput
                     type="password"
@@ -91,8 +124,9 @@ const ChangePassword = () => {
               </UpperInput>
 
               <UpperInput>
-                <p>비밀번호 확인: </p>
+                <p>새 비밀번호 확인: </p>
                 <UpperCloseInputbox>
+                  {/* <input type="password" onChange={handleInput2} value={inputPassword2}/> */}
                   <CloseInput
                     type="password"
                     onChange={handleInput2}
@@ -110,13 +144,14 @@ const ChangePassword = () => {
             </Box>
           </UpperBox>
           <ButtonBox>
-            {inputPassword1 === inputPassword2 &&
+            {/* {inputPassword1 === inputPassword2 &&
             inputPassword1 > 7 &&
             inputPassword2 > 7 ? (
-              <button onClick={ChangeConfirm}>저장</button>
-            ) : (
-              ""
-            )}
+              <button onClick={()=>{changeFunc(inputPassword2)}}>저장</button>
+              ) : (
+                ""
+                )} */}
+                <button onClick={()=>{changeFunc(inputPassword2)}}>저장</button>
           </ButtonBox>
         </div>
       )}

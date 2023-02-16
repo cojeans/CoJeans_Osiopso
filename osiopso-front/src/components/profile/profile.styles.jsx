@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const ProfileBox = styled.div`
 	display:flex;
 	flex-direction:column;
-	border-bottom:solid 1px black;
 	width: 80%;
 	margin:0 auto;
 `
@@ -19,20 +18,27 @@ export const Intro = styled.div`
 
 export const FollowBox = styled.div`
 	display:flex;
-	justify-content:center;
+justify-content: space-between;
+padding:5px;
 	p{
-		font-size:16px;
-		padding:5px 10px;
+		font-size:14px;
+		padding:5px 5px;
+		margin:10px;
 	}
 `
 
 export const ProfileImageBox = styled.div`
 	border-radius:50%;
-	width:5em;
-	height:5em;
+	width:4em;
+	height:4em;
 	overflow:hidden;
 	img{
 		width:100%;
 		height:100%;
 	}
 `;
+
+export const Followcon = styled.div`
+	display: flex;
+	align-items: center;
+`

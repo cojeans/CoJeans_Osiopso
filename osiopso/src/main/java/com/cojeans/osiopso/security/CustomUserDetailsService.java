@@ -1,5 +1,6 @@
 package com.cojeans.osiopso.security;
 
+import com.cojeans.osiopso.entity.user.AuthProvider;
 import com.cojeans.osiopso.entity.user.User;
 import com.cojeans.osiopso.exception.ResourceNotFoundException;
 import com.cojeans.osiopso.repository.user.UserRepository;
@@ -24,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmailAndProvider(email, AuthProvider.local)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email : " + email)
         );

@@ -10,7 +10,7 @@ import Swal from "sweetalert2"
 export const AlertHandler = ()=> {
     Swal.fire({
         icon: 'success',
-        confirmButtonColor: '#DD6B55',
+        confirmButtonColor: '#7272ba',
         html: `
         회원탈퇴가 완료되었습니다.`,
         showCancelButton: false,

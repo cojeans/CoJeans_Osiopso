@@ -13,4 +13,6 @@ public interface ClosetRepository extends JpaRepository<Closet, Long> {
 
     // 옷장 삭제
     void deleteById(Long id);
+
+    Closet findByName(String name);
 }

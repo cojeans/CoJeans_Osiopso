@@ -12,13 +12,13 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor @NoArgsConstructor
 @ToString @Getter @Setter @Builder
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "user")
 @DynamicInsert @DynamicUpdate
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false)
     private String email;
     @JsonIgnore @Column
@@ -28,7 +28,7 @@ public class User {
     private String name;
     
     @Column(nullable = true)
-    private int age;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -54,7 +54,7 @@ public class User {
     @Column @Enumerated(EnumType.STRING)
     private Role role; //역할. USER ADMIN 둘
 
-
+    private Long grade;
 
 
     public UserDto toDto(){
@@ -64,6 +64,7 @@ public class User {
                 .email(this.getEmail())
 //                .password(this.getPassword())
                 .age(this.getAge())
+                .imageUrl(this.getImageUrl())
                 .gender(this.getGender())
                 .provider(this.getProvider())
                 .providerId(this.getProviderId())
@@ -71,6 +72,7 @@ public class User {
                 .bio(this.getBio())
                 .role(this.getRole())
                 .isProfilePublic(this.getIsProfilePublic())
+                .grade(this.grade)
                 .build();
     }
     /* userPk값을 가져와서 업데이트 후 User객체 다시반환 -> toDto호출해서 Dto로 변환*/

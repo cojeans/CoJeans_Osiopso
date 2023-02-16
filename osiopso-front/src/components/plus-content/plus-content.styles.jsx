@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const PlusModalContainer = styled.div`
-	width:250px;
+	border-radius: 10px;
+	width:215px;
 	height:200px;
 	background-color:white;
-	padding:20px;
+	padding:10px;
 	display:flex;
 	flex-direction:column;
 	align-items: center;
@@ -12,7 +13,7 @@ export const PlusModalContainer = styled.div`
 `
 
 export const PlusContent = styled.div`
-	width:70%;
+	width:80%;
 	height:33%;
 	display:flex;
 	align-items: center;
@@ -26,5 +27,14 @@ export const PlusLogoContainer = styled.div`
 	svg{
 		width:30px;
 		height:30px;
+	}
+`
+
+
+export const MagicLogoContainer = styled.div`
+	padding-right:10%;
+	svg{
+		width:25px;
+		height:25px;
 	}
 `

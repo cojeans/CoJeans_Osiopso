@@ -1,13 +1,19 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
 
 export const TopBarContainer = styled.div`
-	height: 60px;
+	.osiopso{
+		font-family: 'Bodoni';
+		font-size:28px;
+	}
+	height: 53px;
   width: 100%;
 	max-width:430px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-	  justify-content: center;
-	background-color: #BCF0E0;
+	justify-content: center;
+	background-color: black;
+	color:white;
 	margin:auto;
 	position: fixed;
   top: 0;
@@ -24,14 +30,14 @@ export const ButtonContainer = styled.div`
 	justify-content:center;
 	text-decoration:none;
 		svg{
-		width:30px;
+		width:25px;
 		height:80%;
 	}
 	cursor:pointer;
 `
 
 export const TopBarContent = styled.div`
-	font-size:20px;
+	font-size:112%;
 	width:100%;
 	height: 100%;
 	display:flex;
@@ -49,7 +55,7 @@ export const CategoryContainer = styled.div`
 	justify-content:center;
 	text-decoration:none;
 		svg{
-		width:30px;
+		width:25px;
 		height:80%;
 	}
 	cursor:pointer;

@@ -1,7 +1,5 @@
 package com.cojeans.osiopso.service.article;
 
-//import com.cojeans.osiopso.dto.request.feed.ArticleRequestDto;
-
 import com.cojeans.osiopso.dto.GapTimeVo;
 import com.cojeans.osiopso.entity.comment.Comment;
 import com.cojeans.osiopso.entity.feed.Advice;
@@ -25,13 +23,14 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleTagRepository articleTagRepository;
     private final ArticlePhotoRepository articlePhotoRepository;
-    private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final CocommentRepository cocommentRepository;
     private final ArticleLikeRepository articleLikeRepository;
     private final CommentUpRepository commentUpRepository;
     private final CommentDownRepository commentDownRepository;
+    private final CommentClothesRepository commentClothesRepository;
+    private final CommentPhotoRepository commentPhotoRepository;
 
 
     // 1번 article 을 지울 때..
@@ -51,25 +50,35 @@ public class ArticleService {
         List<ArticleTag> articleTag = articleTagRepository.findByArticle_Id(articleNo);
         for (ArticleTag at : articleTag) {
             articleTagRepository.deleteById(at.getId());
-//            tagRepository.deleteById(at.getTag().getId());
         }
 
         // 게시물과 관련된 사진삭제
         articlePhotoRepository.deleteByArticle_Id(articleNo);
         Long articleId = articleRepository.findById(articleNo).orElseThrow().getId();
 
+        // 게시물과 관련된 좋아요들 삭제
+        articleLikeRepository.deleteAllByArticle_Id(articleNo);
+
         // 게시물과 관련된 up, down 삭제
         commentUpRepository.deleteByArticle_Id(articleNo);
         commentDownRepository.deleteByArticle_Id(articleNo);
-
-        // 게시물과 관련된 좋아요들 삭제
-        articleLikeRepository.deleteAllByArticle_Id(articleNo);
 
         // 댓글과 관련된 좋아요들 삭제
         commentLikeRepository.deleteAllByArticle_Id(articleNo);
 
         // 게시물과 관련된 대댓글들 삭제
         cocommentRepository.deleteAllByArticle_Id(articleNo);
+
+        // 게시물에 달린 댓글들의 commentClothes 삭제
+        List<Comment> commentList = commentRepository.findAllByArticle_Id(articleNo);
+        for (Comment comment : commentList) {
+            commentClothesRepository.deleteAllByCommentId(comment.getId());
+        }
+
+        // 게시물에 달린 댓글들의 commentPhoto 삭제
+        for (Comment comment : commentList) {
+            commentPhotoRepository.deleteAllByCommentId(comment.getId());
+        }
 
         // 게시물과 관련된 댓글들 삭제
         commentRepository.deleteAllByArticle_Id(articleNo);

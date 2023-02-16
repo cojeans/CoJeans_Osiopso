@@ -3,6 +3,7 @@ import {
   PrevUploadImg,
   ExampleContainer,
   ExampleBox,
+  LinkContainer,
   ImageInput,
 } from "./clothes-add-picture.styles";
 
@@ -18,18 +19,27 @@ import {
 import axios from "axios";
 import { resetCloset } from "../../store/closet/closet.reducer";
 
+const init_img_url = 'https://pixlr.com/images/index/remove-bg.webp'
 const ClothesAddPicture = () => {
-  // const [isGallery, setGallery] = useState(false);
   const dispatch = useDispatch();
+  const [rawData, setRawData] = useState("");
+
+  
+  useEffect(() => {
+    dispatch(upload(init_img_url))
+  }, [])
+
+  useEffect(() => {
+    if(rawData) {
+      console.log(rawData)
+      callAxios()
+    }
+  }, [rawData])
+
   const navigate = useNavigate();
   const onNavigateHandler = () => {
     navigate("camera/");
   };
-  const onNavigateHandler2 = () => {
-    navigate("selectbox/");
-    
-  }
-    const [rawData, setRawData] = useState("");
 
 
 
@@ -45,13 +55,13 @@ const ClothesAddPicture = () => {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setRawData(reader.result);
-
-      //임시 
       dispatch(upload(reader.result))
-    
-    
+      // callAxios()
     };
   };
+  const testAxios = () => {
+    console.log('this is test axios')
+  }
   const callAxios = () => {
     // dispatch(upload(''))
     console.log();
@@ -74,7 +84,9 @@ const ClothesAddPicture = () => {
         // "X-Api-Key":  'YkXbSwfXA7wfypEVtJ1gu7fZ',
         // "X-Api-Key":  'N4HypXxuuvgLNFWQcgtbBK8s'
         // "X-Api-Key":  'RPeTWv3UMQeYg9ZSWfqdJPwC'
-        "X-Api-Key": "xCJE6CPZJE3bM8DeC8CpUcrb",
+        // "X-Api-Key": "xCJE6CPZJE3bM8DeC8CpUcrb",
+        // "X-Api-Key": "bQ9R6a8bhNRt4jSm5QG4HQmX",
+        
       },
       responseType: "blob",
       encoding: null,
@@ -86,8 +98,12 @@ const ClothesAddPicture = () => {
         setRawData('')
         dispatch(upload(URL.createObjectURL(response.data)));
       })
-      .catch((e) => console.log(e, "something missing"));
-    //   console.log("success");
+      .catch((e) => {
+        console.log(e, "something missing");
+        // setRawData('')
+        dispatch(upload(rawData));
+      })
+        
   };
 
 
@@ -111,19 +127,18 @@ const ClothesAddPicture = () => {
             ref={imgRef}
           />
         </ExampleBox>
-        <ExampleBox onClick={callAxios}>
+        {/* <ExampleBox onClick={callAxios}>
           <img src={require("../../assets/background.jpg")} alt="" />
           <span>배경제거</span>
-        </ExampleBox>
+        </ExampleBox> */}
         <ExampleBox onClick={onNavigateHandler}>
           <img src={require("../../assets/upload-camera.png")} alt="" />
           <span>사진 촬영</span>
         </ExampleBox>
-        {/* <ExampleBox onClick={callAxios}>
-          <span>배경 제거</span>
-        </ExampleBox> */}
       </ExampleContainer>
-      <Button onClick={onNavigateHandler2}>선택 완료</Button>
+      <LinkContainer to='/selectbox'>
+        <Button>선택 완료</Button>
+      </LinkContainer>
     </AddPictureBody>
   );
 };

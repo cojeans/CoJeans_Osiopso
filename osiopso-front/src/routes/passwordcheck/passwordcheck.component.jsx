@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   Box,
   PasswordBoxMessage,
@@ -13,30 +13,64 @@ import {
 } from "./passwordcheck.styles";
 
 import Button from '../../components/button/button.component'
+import axios from "axios";
+import { selectUser } from "../../store/user/user.selector";
+import { useSelector } from "react-redux";
+import Swal from 'sweetalert2';
 
 
 const PasswordCheck = ({setConfirm}) => {
-   
+  const Token = useSelector(selectUser)
   const [inputPassword, setInputPassword] = useState('')
+  // const [confirm, setConfirm] = useState(false)
   const handleInput = (event) => {
     const {value} = event.target
     setInputPassword(value)
     console.log(value)
   }
+  const checkFunc = (password)=> {
+    console.log(password)
+    axios({
+      method: 'post',
+      url:`${process.env.REACT_APP_AXIOS_URL}user/checkPassword`,
+      data: {
+        "success": true,
+        "message": password,
+        // confirmPassword: password,
+        // responseData:{
+        //   confirmPassword : password,
+        // }
+      },
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      },
+    })
+    .then((res)=> {
+      console.log(res)  
+      setConfirm(true)    
+      
+    })
+    .catch((er)=> {
+      console.log(er)
+      Swal.fire({
+        icon: 'error',
+        title: '비밀번호가 다릅니다.',
+        text: '비밀번호를 확인해주세요!',
+        // footer: '<a href="">Why do I have this issue?</a>'
+      })
+      // alert('비밀번호가 다릅니다. 비밀번호를 확인해주세요.')
+    })
+  }
 
-  // const checkFunc = (e) => {
-  //   e.preventDefault();
-  //   axios({
-  //     method: "post",
-  //     data: {
-  //         "message": value
-  //     }
-  //   })
-  //   .then((res) => {
-  //     console.log(res)
+  const onKeyPress = (inputPassword)=>{
+    if(inputPassword.key == 'Enter') {
+      console.log(inputPassword)
+      checkFunc(inputPassword);
+      // setConfirm(true)
+    }
+  }
 
-  //   })
-  // }
+
 
   return (
     <div>
@@ -53,7 +87,7 @@ const PasswordCheck = ({setConfirm}) => {
           <UpperInput>
             <p>비밀번호: </p>
             <UpperCloseInputbox>
-              <CloseInput type="password" onChange={handleInput} value={inputPassword}/>
+              <CloseInput type="password" onKeyPress={()=>onKeyPress(inputPassword)} onChange={handleInput} value={inputPassword}/>
               {/* { 
                 inputPassword.length >1 && inputPassword.length< 8
                 ? <AlertMessage>비밀번호는 8자 이상이어야합니다.</AlertMessage>
@@ -64,9 +98,13 @@ const PasswordCheck = ({setConfirm}) => {
         </Box>
       </UpperBox>
       <ButtonsContainer>
-        <Button onClick={()=>setConfirm(true)}>
-          확인
-        </Button>
+        <Button 
+        type='submit'
+        size={'md'}
+        variant={'success'}
+        value={inputPassword}
+        onClick={()=>checkFunc(inputPassword)}
+        >확인</Button>
       </ButtonsContainer>
 
     </div>

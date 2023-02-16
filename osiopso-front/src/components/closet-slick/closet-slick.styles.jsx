@@ -5,4 +5,20 @@ export const SlickItem = styled.div`
 margin:10px;
 display: flex;
 width:30%;
+
+`
+
+export const SliderContainer = styled.div`
+		display: flex;
+	justify-content: center;
+width: 100%;
+	.slick-slider{
+	width: 85%;
+	.slick-list{
+		 margin: 0 -18px; 
+	}
+	.slick-next:before{
+		display: none;
+	}
+}
 `

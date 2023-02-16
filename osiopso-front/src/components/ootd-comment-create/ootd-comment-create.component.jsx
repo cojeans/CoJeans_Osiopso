@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 
 import { useEffect, useState } from 'react';
 import {
-  CommentProfileImage,
   UpperComment,
   ClosetInput,
   InputBox
@@ -11,6 +10,7 @@ import {
 import { ProfileImageBox } from '../ootd-detail/ootd-detail.styles';
 import { selectUser, selectUserInfo } from '../../store/user/user.selector';
 import { useSelector } from 'react-redux';
+import Button from '../button/button.component';
 
 const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComment, getDetailOotd, isCocomment,setOpenCoco }) => {
   
@@ -87,7 +87,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
   const commentCreateAlert = ()=>{
     Swal.fire({
      icon: 'success',
-      confirmButtonColor: "#DD6B55", 
+      confirmButtonColor: "#7272ba", 
       html: `
         댓글이 작성되었습니다.
       `,
@@ -100,10 +100,14 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
   return (
     <div>
       <UpperComment>
-        <ProfileImageBox >
-          <img src={  userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
-        </ProfileImageBox >
-
+        <div className='userBox' >
+          <ProfileImageBox >
+            <img src={  !userInfo.imageUrl || userInfo.imageUrl ==='UNKNOWN'? require('../../assets/defaultuser.png'):userInfo.imageUrl} alt="" />
+          </ProfileImageBox >
+          <span className='username'>
+            { userInfo.name}
+          </span>
+        </div>
         {
           !isCocomment.check
             ?
@@ -116,7 +120,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
                 onChange={ handleChangeState}
                 value={content}
               />
-              <button onClick={handleSubmit}>게시</button>
+              <Button onClick={handleSubmit}>게시</Button>
             </InputBox>
 
             :
@@ -129,7 +133,7 @@ const OotdCommentCreate = ({ articleId, setCommentData, commentData, setOpenComm
                 onChange={handleChangeCocoment}
                 value={cocoment}
               />
-              <button onClick={createCocoment}>게시</button>
+              <Button onClick={createCocoment}>게시</Button>
             </InputBox>
         }
 

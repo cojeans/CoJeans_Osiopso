@@ -1,5 +1,5 @@
 .App {
-  font-family: LINESeedKR-Bd;
+  font-family: 'LINESeedKR-Bd';
 }
 
 @font-face {
@@ -7,5 +7,10 @@
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bodoni';
+  src: url('assets/fonts/Bodoni-96-Bold-Italic.otf');
 }
 

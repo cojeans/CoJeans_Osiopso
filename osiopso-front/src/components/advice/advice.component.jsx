@@ -1,28 +1,23 @@
 import {
-  HunsuImages,
+  AdvicecContainer, 
+  AdviceItemBox,
+  ContentBox,
+  ImageContainer,
+
   TopTag,
   Container,
-  UpperupperCommentContainer,
-  EachIcon,
-  CommentContainer,
-  EachBox,
-  ThumbBox,
-  TimeBox,
 } from "./advice.styles";
 import { TextToLeft } from "../../routes/home/home.styles";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { ReactComponent as Comment } from "../../assets/comment.svg";
 import { selectUser } from "../../store/user/user.selector";
-import { FiThumbsUp,  FiThumbsDown, FiAlertTriangle, FiTrash2  } from "react-icons/fi";
-import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
+
+import { VscComment } from "react-icons/vsc";
 
 import axios from "axios";
-import Modal from '../modal/modal.component'
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
-import AdviectComment from "../advice-comment/advice-comment.component";
 
 const defaultAdviceForm = {
   content:'',
@@ -34,17 +29,73 @@ const Advice = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const {lockScroll, openScroll } = useBodyScrollLock()
   const [adviceFormData, setAdviceFormData] = useState(defaultAdviceForm)
-
+  const [bottom, setBottom] = useState(null);
+  const [curPage, setCurPage] = useState(1)
+  const bottomObserver = useRef(null);
+  
   const Token = useSelector(selectUser);
 
   const [adviceArticle, setAdviceArticle] = useState([]);
+  //페이지가 하단에 닿을때마다 추가 게시글 리스트를 가져옵니다.
+  useEffect(() => {
+    console.log('끝')
+    const lastArr = adviceArticle.at(-1)
+    if (lastArr) {
+      console.log(lastArr.id)
+      const lastId = lastArr.id
+      
+       axios({
+        method: "get",
+        url: `${process.env.REACT_APP_AXIOS_URL}feed/advice?idx=${lastId}`,
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+        },
+      })
+        .then((res) => res.data.responseData)
+         .then((data) => {
+           console.log(data)
+          //  for (let i=0; i < data.length < i++;){
+            setAdviceArticle([...adviceArticle, ...data])
+          //  }
+         })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },[curPage])
+
+  useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setCurPage((pre) => pre + 1);
+          }
+        },
+        { threshold: 0.25, rootMargin: "80px" }
+      );
+      bottomObserver.current = observer;
+    }, []);
+
+  
+	useEffect(() => {
+		const observer = bottomObserver.current;
+		if (bottom) {
+      observer.observe(bottom);
+      
+		}
+		return () => {
+			if (bottom) {
+				observer.unobserve(bottom);
+			}
+		};
+	}, [bottom]);
 
   const showModal = ()=>{
     window.scrollTo(0,0);
     setModalOpen(true)
     lockScroll();
   }
-
+ 
   const getAdviceAxios = () => {
     axios({
       method: "get",
@@ -55,11 +106,14 @@ const Advice = () => {
     })
       .then((res) => {
         console.log(res.data.responseData);
-        setAdviceArticle(res.data.responseData.reverse());
+        setAdviceArticle(res.data.responseData);
       })
       .catch((err) => {
         console.log(err);
       });
+    
+
+    
   };
 
   useEffect(() => {
@@ -82,52 +136,41 @@ const Advice = () => {
   const goToDetail = () => {
     navigate("detail");
   };
-  console.log("어드바이스",adviceArticle)
   return (
     <div>
-      
-      {/* <AdviectComment>
-      </AdviectComment> */}
-
-      <TextToLeft>
-        <Container>
-          <span>최신순</span> <span>논란순</span>
-        </Container>
-      </TextToLeft>
 
       <TextToLeft>
         <TopTag>
           <h4>채택 중</h4> <h4>채택완료</h4>
         </TopTag>
       </TextToLeft>
-
-      <HunsuImages>
-        {adviceArticle.map((el, idx) => {
-          return (
-            <EachBox key={idx} onClick={() => goToAdviceDetail(el.id)}>
-              <img src={el.photo.imageUrl} alt="" />
-
-              <CommentContainer>
-              <ThumbBox>
-                <EachIcon>
-                  <FiThumbsUp size="30" />
-                </EachIcon>
-                <EachIcon>
-                  <VscComment size="30" />
-                  {el.commentCnt}
-                </EachIcon>
-              </ThumbBox>
-
-                <TimeBox>{ el.time }</TimeBox>
-               
-              </CommentContainer>
-            </EachBox>
-          );
-        })}
-      </HunsuImages>
+      {console.log(adviceArticle)}
+      <Fragment>
       {
-        modalOpen && <Modal page={ 3 } setModalOpen={setModalOpen} openScroll={openScroll} adviceFormData={adviceFormData} setAdviceFormData={setAdviceFormData}/>
-      }
+          adviceArticle &&
+          adviceArticle.map((at) => {
+            return (
+              <AdvicecContainer onClick={()=>goToAdviceDetail(at.id)}>
+                <AdviceItemBox>
+                  <ContentBox>
+                      <div className="title">{ at.subject}</div>
+                      <div className="content">{ at.content}</div>
+                      <div className="comment"><VscComment /><div>{ at.commentCnt}</div></div>
+                  </ContentBox>
+                    <ImageContainer>
+                      <img src={ at.photo.imageUrl} alt="" />
+                  </ImageContainer>
+                </AdviceItemBox>
+                <div className="hori">
+                </div>
+            </AdvicecContainer>
+
+            )
+          })
+          
+        }
+        <div ref={setBottom} />
+      </Fragment>
  </div>
   );
 };

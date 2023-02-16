@@ -3,15 +3,13 @@ package com.cojeans.osiopso.service.closet;
 import com.cojeans.osiopso.dto.request.closet.ClothesRequestDto;
 import com.cojeans.osiopso.dto.response.closet.*;
 import com.cojeans.osiopso.entity.closet.*;
-import com.cojeans.osiopso.entity.tag.Tag;
 import com.cojeans.osiopso.entity.user.User;
-import com.cojeans.osiopso.repository.article.TagRepository;
 import com.cojeans.osiopso.repository.closet.*;
+import com.cojeans.osiopso.repository.comment.CommentClothesRepository;
 import com.cojeans.osiopso.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,12 +28,11 @@ public class ClothesService {
     private final ClosetClothesRepository closetClothesRepository;
     private final ClothesColorRepository clothesColorRepository;
     private final ClothesSeasonRepository clothesSeasonRepository;
-    private final ClothesTagRepository clothesTagRepository;
+    private final CommentClothesRepository commentClothesRepository;
 
     // 연결 Repo 단독
     private final ColorRepository colorRepository;
     private final SeasonRepository seasonRepository;
-    private final TagRepository tagRepository;
     private final UserRepository userRepository;
 
     // 1. C : 옷 등록
@@ -47,7 +44,7 @@ public class ClothesService {
         System.out.println("Create Clothes Service : " + clothesRequestDto);
 
         User user = userRepository.getById(uid);
-
+        System.out.println(clothesRequestDto.getClosets());
         Clothes clothes = clothesRepository.save(new Clothes().builder()
                 .category(clothesRequestDto.getCategory())
                 .imageUrl(clothesRequestDto.getImageUrl())
@@ -57,53 +54,35 @@ public class ClothesService {
         Long clothesId = clothes.getId();
 
         // 옷장
-        List<ClosetResponseDto> closets = clothesRequestDto.getClosets();
-        for(ClosetResponseDto c :closets){
+        List<Long> closets = clothesRequestDto.getClosets();
+        for(Long id :closets){
+            Closet closet = closetRepository.findById(id).orElseThrow();
+
             closetClothesRepository.save(new ClosetClothes().builder()
-                    .closet(new Closet().builder()
-                            .id(c.getId())
-                            .name(c.getName())
-                            .isSelected(c.getIsSelected())
-                            .user(user)
-                            .build())
+                    .closet(closet)
                     .clothes(clothes)
                     .build());
         }
 
         // 색
-        List<ColorResponseDto> colors = clothesRequestDto.getColors();
-        for(ColorResponseDto c :colors){
+        List<String> colors = clothesRequestDto.getColors();
+        for(String name :colors){
+            Color color = colorRepository.findByName(name);
+
             ClothesColor result = clothesColorRepository.save(new ClothesColor().builder()
                     .clothes(clothes)
-                    .color(new Color().builder()
-                            .id(c.getId())
-                            .name(c.getName())
-                            .build())
+                    .color(color)
                     .build());
         }
 
         // 계절
-        List<SeasonResponseDto> seasons = clothesRequestDto.getSeasons();
-        for(SeasonResponseDto s :seasons){
+        List<String> seasons = clothesRequestDto.getSeasons();
+        for(String name :seasons){
+            Season season = seasonRepository.findByName(name);
+
             ClothesSeason result = clothesSeasonRepository.save(new ClothesSeason().builder()
                     .clothes(clothes)
-                    .season(new Season().builder()
-                            .id(s.getId())
-                            .name(s.getName())
-                            .build())
-                    .build());
-        }
-
-        // 태그
-        List<ClothesTagResponseDto> tags = clothesRequestDto.getTags();
-        for(ClothesTagResponseDto t :tags){
-            ClothesTag result = clothesTagRepository.save(new ClothesTag().builder()
-                    .clothes(clothes)
-                    .tag(new Tag().builder()
-                            .id(t.getId())
-                            .keyword(t.getKeyword())
-                            .type(t.getType())
-                            .build())
+                    .season(season)
                     .build());
         }
 
@@ -146,16 +125,6 @@ public class ClothesService {
                         .build())
                 .collect(Collectors.toList());
 
-        // 연관 Tag
-        List<ClothesTagResponseDto> tags = clothesTagRepository.findAllByClothesId(clothesNo).stream()
-                .map(a -> tagRepository.findById(a.getTag().getId()).orElseThrow())
-                .map(b -> new ClothesTagResponseDto().builder()
-                        .id(b.getId())
-                        .keyword(b.getKeyword())
-                        .type(b.getType())
-                        .build())
-                .collect(Collectors.toList());
-
         return ClothesDetailResponseDto.builder()
                 .id(clothesNo)
                 .category(clothes.getCategory())
@@ -163,7 +132,6 @@ public class ClothesService {
                 .closets(closets)
                 .colors(colors)
                 .seasons(seasons)
-                .tags(tags)
                 .build();
     }
 
@@ -186,108 +154,64 @@ public class ClothesService {
         // 수정 리스트만큼 돌면서 기존.contains(수정) = false면 추가
         // 기존.length만큼 돌면서 수정.contains(기존) = false면 삭제
         // 옷장
-        List<ClosetResponseDto> oldClosets = closetClothesRepository.findAllByClothesId(id).stream()
+        List<Long> oldClosets = closetClothesRepository.findAllByClothesId(id).stream()
                 .map(a -> closetRepository.findById(a.getCloset().getId()).orElseThrow())
-                .map(b -> new ClosetResponseDto().builder()
-                        .id(b.getId())
-                        .name(b.getName())
-                        .isSelected(b.getIsSelected())
-                        .build())
+                .map(b -> b.getId())
                 .collect(Collectors.toList());
-        List<ClosetResponseDto> newClosets = clothesRequestDto.getClosets();
+        List<Long> newClosets = clothesRequestDto.getClosets();
 
-        for(ClosetResponseDto dto : newClosets){
-            if(!oldClosets.contains(dto)) closetClothesRepository.save(ClosetClothes.builder()
-                    .clothes(clothes)
-                    .closet(new Closet().builder()
-                            .id(dto.getId())
-                            .name(dto.getName())
-                            .isSelected(dto.getIsSelected())
-                            .build())
-                    .build());
+        for(Long cid : newClosets){
+            if(!oldClosets.contains(cid)) {
+                closetClothesRepository.save(ClosetClothes.builder()
+                        .clothes(clothes)
+                        .closet(closetRepository.findById(cid).orElseThrow())
+                        .build());
+            }
         }
 
         int length = oldClosets.size();
         for(int i = 0; i < length; i++){
-            if(!newClosets.contains(oldClosets.get(i))) deleteClosetClothes(id, oldClosets.get(i).getId());
+            if(!newClosets.contains(oldClosets.get(i))) deleteClosetClothes(id, closetRepository.findById(oldClosets.get(i)).orElseThrow().getId());
         }
 
         // 색깔
-        List<ColorResponseDto> oldColors = clothesColorRepository.findAllByClothesId(id).stream()
+        List<String> oldColors = clothesColorRepository.findAllByClothesId(id).stream()
                 .map(a -> colorRepository.findById(a.getColor().getId()).orElseThrow())
-                .map(b -> new ColorResponseDto().builder()
-                        .id(b.getId())
-                        .name(b.getName())
-                        .build())
+                .map(b -> b.getName())
                 .collect(Collectors.toList());
-        List<ColorResponseDto> newColors = clothesRequestDto.getColors();
+        List<String> newColors = clothesRequestDto.getColors();
 
-        for(ColorResponseDto dto : newColors){ // 새로운 색 insert
-            if(!oldColors.contains(dto)) clothesColorRepository.save(ClothesColor.builder()
+        for(String name : newColors){ // 새로운 색 insert
+            if(!oldColors.contains(name)) clothesColorRepository.save(ClothesColor.builder()
                                 .clothes(clothes)
-                                .color(new Color().builder()
-                                        .id(dto.getId())
-                                        .name(dto.getName())
-                                        .build())
+                                .color(colorRepository.findByName(name))
                                 .build());
         }
 
         length = oldColors.size();
         for(int i = 0; i < length; i++){  // 빠진 색 delete
-              if(!newColors.contains(oldColors.get(i))) deleteClothesColor(id, oldColors.get(i).getId());
+              if(!newColors.contains(oldColors.get(i))) deleteClothesColor(id, colorRepository.findByName(oldColors.get(i)).getId());
         }
 
         // 계절
-        List<SeasonResponseDto> oldSeasons = clothesSeasonRepository.findAllByClothesId(id).stream()
+        List<String> oldSeasons = clothesSeasonRepository.findAllByClothesId(id).stream()
                 .map(a -> seasonRepository.findById(a.getSeason().getId()).orElseThrow())
-                .map(b -> new SeasonResponseDto().builder()
-                        .id(b.getId())
-                        .name(b.getName())
-                        .build())
+                .map(b -> b.getName())
                 .collect(Collectors.toList());
-        List<SeasonResponseDto> newSeasons = clothesRequestDto.getSeasons();
+        List<String> newSeasons = clothesRequestDto.getSeasons();
 
-        for(SeasonResponseDto dto : newSeasons){
-            if(!oldSeasons.contains(dto)) clothesSeasonRepository.save(ClothesSeason.builder()
+        for(String name : newSeasons){
+            if(!oldSeasons.contains(name)) clothesSeasonRepository.save(ClothesSeason.builder()
                             .clothes(clothes)
-                            .season(new Season().builder()
-                                    .id(dto.getId())
-                                    .name(dto.getName())
-                                    .build())
+                            .season(seasonRepository.findByName(name))
                             .build());
         }
 
         length = oldSeasons.size();
         for(int i = 0; i < length; i++){
-            if(!newSeasons.contains(oldSeasons.get(i))) deleteClothesSeason(id, oldSeasons.get(i).getId());
+            if(!newSeasons.contains(oldSeasons.get(i))) deleteClothesSeason(id, seasonRepository.findByName(oldSeasons.get(i)).getId());
         }
 
-        // 태그
-        List<ClothesTagResponseDto> oldTags = clothesTagRepository.findAllByClothesId(id).stream()
-                .map(a -> tagRepository.findById(a.getTag().getId()).orElseThrow())
-                .map(b -> new ClothesTagResponseDto().builder()
-                        .id(b.getId())
-                        .keyword(b.getKeyword())
-                        .type(b.getType())
-                        .build())
-                .collect(Collectors.toList());
-        List<ClothesTagResponseDto> newTags = clothesRequestDto.getTags();
-
-        for(ClothesTagResponseDto dto : newTags){
-            if(!oldTags.contains(dto)) clothesTagRepository.save(ClothesTag.builder()
-                    .clothes(clothes)
-                    .tag(new Tag().builder()
-                            .id(dto.getId())
-                            .keyword(dto.getKeyword())
-                            .type(dto.getType())
-                            .build())
-                    .build());
-        }
-
-        length = oldTags.size();
-        for(int i = 0; i < length; i++){
-            if(!newTags.contains(oldTags.get(i))) deleteClothesTag(id, oldTags.get(i).getId());
-        }
     }
 
     // 4. D : 옷 삭제
@@ -306,8 +230,8 @@ public class ClothesService {
         // 3. ClothesSeason
         clothesSeasonRepository.deleteAllByClothesId(id);
 
-        // 4. ClothesTag
-        clothesTagRepository.deleteAllByClothesId(id);
+        // 4. CommentClothes
+        commentClothesRepository.deleteAllByClothesId(id);
 
         // 5. Clothes
         clothesRepository.deleteById(id);
@@ -328,11 +252,6 @@ public class ClothesService {
     // 계절
     public void deleteClothesSeason(Long clothesId, Long seasonId){
         clothesSeasonRepository.deleteByClothesIdAndSeasonId(clothesId, seasonId);
-    }
-
-    // 태그
-    public void deleteClothesTag(Long clothesId, Long tagId){
-        clothesTagRepository.deleteByClothesIdAndTagId(clothesId, tagId);
     }
 
 }

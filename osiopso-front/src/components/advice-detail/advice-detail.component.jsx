@@ -1,50 +1,52 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  ProfileImageBox,
-  UpperProfile,
-  AdviceDetailImage,
-  UpperImage,
-  UpperComment,
-  UpperLikeContainer,
-  IconBox,
-  TrashBox,
-  HunsuButton,
-  EachIcon,
-} from "./advice-detail.styles";
 
-import { ReactComponent as DetailComment } from "../../assets/detail-comment.svg";
-import { ReactComponent as Alert } from "../../assets/alert.svg";
-import { ReactComponent as Advice_like } from "../../assets/advice_like.svg";
-import { ReactComponent as Advice_dislike } from "../../assets/advice_dislike.svg";
+import {
+  UpperProfile,
+  ProfileImageBox,
+  UpperImage,
+  OotdDetailImage,
+  DetailContainer,
+  IconMessageBox,
+  IconContainer,
+  IconBox,
+  ContentBox,
+  Title,
+  Buttoncontainer
+} from "../ootd-detail/ootd-detail.styles";
+
+import Button from "../button/button.component";
+
 import Swal from "sweetalert2";
 
-import axios from "axios";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../store/user/user.selector";
-import { useState, useEffect } from "react";
-import { VscTrash, VscHeart, VscComment, VscWarning } from "react-icons/vsc";
-import { FiThumbsUp,  FiThumbsDown, FiAlertTriangle, FiTrash2  } from "react-icons/fi";
-import { FaRegComment } from "react-icons/fa";
+import { selectUser, selectUserInfo } from "../../store/user/user.selector";
+import { useState, useEffect, Fragment } from "react";
 
+import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
+import { VscTrash, VscComment, VscWarning } from "react-icons/vsc";
+
+import axios from "axios";
 const defaultForm = {
   cnt: 0,
   list: []
 }
 
 const AdviceDetail = () => {
+  const location = useLocation();
+  const id = location.state.id
+  
   const navigate = useNavigate();
 
-  const goToAdviceComment = ()=> {
-    navigate("/advice/comment", {
+  const goToComment = ()=> {
+    navigate("/advice/commentlist/"+id, {
       state: {
-        id: id
+        id: id, 
+        comments: commentData
       }
     })
   }
 
 
-  const location = useLocation();
-  const id= location.state.id
 
   const Token = useSelector(selectUser)
   const [advicedDetail, setAdviceDetail] = useState('')
@@ -52,9 +54,31 @@ const AdviceDetail = () => {
   const [userData, setUserData] = useState('')
   const [likeData, setLikeData] = useState(defaultForm)
   const [commentData, setCommentData] = useState(defaultForm)
+  const [ootdUserUrl, setootdUserUrl] = useState(require('../../assets/defaultuser.png'))
+
+  const userInfo = useSelector(selectUserInfo)
+
+  const likeOotd = () => {
+    axios({
+      method: "post",
+      url: `${process.env.REACT_APP_AXIOS_URL}feed/likearticle/${id}`,
+      headers: {
+        Authorization: `Bearer ${Token.token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res)
+        getDetailAdvice()
+
+      })
+      .catch((err) => {
+      console.log(err)
+    })
+  }
 
 
-  const getDetailAdvice = ()=>{
+
+  const getDetailAdvice = () => {
     axios({
       method: "get",
       url: `${process.env.REACT_APP_AXIOS_URL}feed/advice/${id}`,
@@ -63,30 +87,29 @@ const AdviceDetail = () => {
       }
     })
     .then((res)=>{
-      // console.log(res.data.responseData)
+      console.log(res.data.responseData)
       const result = res.data.responseData
       setAdviceDetail(result)
       setPhotoUrl(result.photos[0].imageUrl)
       setCommentData({cnt : result.comments.length, list: result.comments})
-      setLikeData({cnt: result.articleLikes.length, list: result.articleLikes})
+      const likeList = result.articleLikes
+
+      if (likeList.length) {
+        likeList.forEach((like) => {
+          if (like.userId === userInfo.id) {
+            setLikeData({ cnt: likeList.length, check: true, lst: likeList })
+          } else{
+            setLikeData({ cnt: likeList.length, check: false, lst: likeList})
+          }
+        })
+      } else {
+        setLikeData({ cnt: likeList.length, check: false, lst: likeList})
+      }
     })
     .catch((err)=>{
       console.log(err)
     })
   }
-
-  // const putData= ()=> {
-  //   axios({
-  //     method: "put",
-  //     url: `http://localhost:8080/api/feed/article/${id}`,
-  //     headers: {
-  //       Authorization: `Bearer ${Token.token}`,
-  //     }
-  //   })
-  //   .then((res)=> {
-      
-  //   })
-  // }
 
   const deleteAdvice = ()=> {
     axios({
@@ -97,7 +120,6 @@ const AdviceDetail = () => {
       }
     })
     .then((res)=>{
-      console.log(res.data)
       Delete()
     })
     .catch((err)=> {
@@ -123,13 +145,16 @@ const AdviceDetail = () => {
   },[])
 
 
-  const goToCheckoutHandler = () => {
-    navigate("/advice/commentlist")
+  const goToCreateComment = () => {
+    navigate('/advice/create-comment/', {
+      state: {
+        articleId: id,
+        userId : advicedDetail.userId
+      }
+    })
   }
 
-  const goToAdviceCreate = ()=> {
-    navigate("/advice/create")
-  }
+
 
   const Report = ()=>{
     Swal.fire({
@@ -152,50 +177,66 @@ const AdviceDetail = () => {
 
 
   return (
-    <div>
-      <hr />
-      <UpperProfile>
-        <ProfileImageBox />
-        MyNameIsMr.Umm
+    <Fragment>
+      <div>
+        <Title>
+          title: {advicedDetail.subject }
+        </Title>
+      <UpperProfile 
+      // onClick={}
+      >
+        <ProfileImageBox  >
+          <img src={ ootdUserUrl  } alt="" />
+        </ProfileImageBox >
+        {advicedDetail.userName}
       </UpperProfile>
 
       <UpperImage>
-        <AdviceDetailImage>
-          <img src={photoUrl} alt="" />
-        </AdviceDetailImage>
-
-        <UpperLikeContainer>
+        <OotdDetailImage>
+          <img src={photoUrl } alt="" />
+        </OotdDetailImage>
+        <DetailContainer>
+          <IconMessageBox>
+            <IconContainer
+              onClick={likeOotd}
+            >
+              {
+                likeData.check
+                  ? <AiFillHeart size="23" color="red"/>
+                  : <AiOutlineHeart size="23" />
+              }
+              <div>{likeData.cnt}</div>
+            </IconContainer>
+            <IconContainer
+              onClick={() => {
+                goToComment()
+              }
+              }
+            >
+              <VscComment size="23"/>  
+              <div>{ commentData.cnt }</div>
+            </IconContainer>
+          </IconMessageBox>
           <IconBox>
-            <EachIcon>
-              <FiThumbsUp size="20px"/>
-            </EachIcon>
-            <EachIcon>
-              <FiThumbsDown size="20px"/>
-            </EachIcon>
-            <EachIcon>
-              <FaRegComment onClick={goToCheckoutHandler} size="20px"/>
-            </EachIcon>
-            </IconBox>
-            <TrashBox>
-              <EachIcon>
-                <FiTrash2 onClick={deleteAdvice} size="20px"/>
-              </EachIcon>
-              <EachIcon>
-                <FiAlertTriangle onClick={Report} size="20px"/>
-              </EachIcon>
-            </TrashBox>
-
-        </UpperLikeContainer>
-      </UpperImage>
-
-      <UpperComment>
-        {AdviceDetail.content}
-      </UpperComment>
-
-      <HunsuButton>
-        <button onClick={goToAdviceCreate}>훈수두기</button>
-      </HunsuButton>
-    </div>
+              <VscWarning size="23" onClick={Report} />
+              {
+                advicedDetail.userId === userInfo.id
+                ?<VscTrash size="23" onClick={deleteAdvice}/>
+                : ''
+              }
+          </IconBox>
+        </DetailContainer>
+        <DetailContainer>
+          <ContentBox>t
+          {}
+          </ContentBox>
+        </DetailContainer>
+        </UpperImage>
+        <Buttoncontainer>
+          <Button write={true} size='lg' onClick={goToCreateComment}>Advice</Button>
+        </Buttoncontainer>
+      </div>
+    </Fragment>
   );
 };
 

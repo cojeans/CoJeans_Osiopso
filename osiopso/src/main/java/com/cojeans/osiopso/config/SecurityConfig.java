@@ -83,7 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -102,6 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
                 .authorizeRequests()
+                .antMatchers("/**").permitAll()
                     .antMatchers("/",
                         "/error",
                         "/favicon.ico",
@@ -123,7 +123,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/closet/**")
                         .permitAll()
                     .anyRequest()
-                        .authenticated()
+                        .permitAll()
                     .and()
                 .oauth2Login()
                     .authorizationEndpoint()

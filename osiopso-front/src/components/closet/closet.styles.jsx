@@ -40,11 +40,13 @@ export const ClosetItem = styled.div`
 export const ItemInfo = styled.div`
 	width:93%;
 	display:flex;
-	flex-direction:column;
+	/* flex-direction:column; */
+	justify-content: cneter;
+	align-items: center;
 	margin:auto;
 	p{
 		margin-bottom:0;
-		width:120px;
+		width:93%;
 		font-size:13px;
 		span{
 			font-size:13px;
