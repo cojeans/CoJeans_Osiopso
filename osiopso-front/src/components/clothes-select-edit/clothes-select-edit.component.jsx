@@ -1,4 +1,4 @@
-import { Xcontainer, TopContainer, BottomContainer, MarginDiv, OotdInput, OotdImgContainer, StyleTagButton, PrevUploadImg, ImgContainer, Div } from "./clothes-select-edit.styles";
+import { Xcontainer, TopContainer, BottomContainer, MarginDiv, OotdInput, OotdImgContainer, StyleTagButton, PrevUploadImg, ImgContainer, Div, ButtonsContainer, SaveButtonBox } from "./clothes-select-edit.styles";
 import { useNavigate } from "react-router-dom";
 import { resetOotdCategory } from "../../store/ootd/ootd.reducer";
 import Cropper from "react-cropper";
@@ -189,12 +189,41 @@ const ClothesSelectEdit = () => {
     return (
         <>
         {/* <button onClick={onCapture}>capture</button> */}
+            <ButtonsContainer>
+            <Button 
+            type='submit'
+            size={'md'}
+            variant={'success'}
+            onClick={reset}>초기화</Button>
+            {!isCrop && <Button 
+            type='submit'
+            size={'md'}
+            variant={'success'}
+            onClick={makeCrop}>자르기</Button>}
+            {isCrop && <Button 
+            type='submit'
+            size={'md'}
+            variant={'success'}
+            onClick={completeCut}>자르기 완료</Button>}
+            {!isErase && <Button 
+            type='submit'
+            size={'md'}
+            variant={'success'}
+            onClick={eraseCrop}>지우기</Button>}
+            {isErase && <Button 
+            type='submit'
+            size={'md'}
+            variant={'success'}
+            onClick={completeErase}>지우기 완료</Button>}
+            </ButtonsContainer>
 
-            <button onClick={reset}>초기화</button>
-            {!isCrop && <button onClick={makeCrop}>자르기</button>}
-            {isCrop && <button onClick={completeCut}>자르기 완료</button>}
-            {!isErase && <button onClick={eraseCrop}>지우기</button>}
-            {isErase && <button onClick={completeErase}>지우기 완료</button>}
+            <SaveButtonBox>
+                {<Button
+                type='submit'
+                size={'md'}
+                // variant={'warning'} 
+                onClick={onSave}>저장</Button>}
+            </SaveButtonBox>
 
             {/* <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton> */}
 
@@ -208,7 +237,7 @@ const ClothesSelectEdit = () => {
           )} */}
                     {/* {canvasValue && <img src = {canvasValue} alt=''/>} */}
                     {/* {afterCrop && <img src={croppedImage} alt={saveData} />} */}
-                    {<button onClick={onSave}>저장</button>}
+                   
 
                     {/* <img src={saveData} alt="" /> */}
                         <Div>

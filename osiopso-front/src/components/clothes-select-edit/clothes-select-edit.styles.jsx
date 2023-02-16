@@ -93,3 +93,14 @@ export const PrevUploadImg = styled.div`
 	}
 `;
 
+export const ButtonsContainer = styled.div`
+display:flex;
+justify-content: center;
+margin-top: 2%;
+
+`
+export const SaveButtonBox = styled.div`
+display: flex;
+justify-content: center;
+margin-top: 2%;
+`
