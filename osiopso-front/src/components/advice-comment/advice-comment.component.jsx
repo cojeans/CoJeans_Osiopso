@@ -130,7 +130,11 @@ const onCapture = () => {
           showCancelButton: false,
           confirmButtonText: "확인",
     })
-		navigate('/commentlist/'+articleId)
+			navigate('/advice/commentlist/' + articleId, {
+			  state: {
+        id: articleId,
+      }
+		})
 		})
 			.catch((err) => {
 			console.log(err)

@@ -18,7 +18,8 @@ import {
   ContentBox,
   UserBox,
   UserInfo,
-  IconContainer
+  IconContainer,
+  ItemSlider
 } from "./advice-commnet-list.styles";
 
 import { RiThumbDownLine, RiThumbUpLine } from "react-icons/ri";
@@ -35,7 +36,9 @@ const AdviceCommentList = () => {
       slidesToShow: 3,
 			slidesToScroll: 1,
 		variableWidth: true,
-	};
+  };
+  
+
 	//slick
 
   const location = useLocation()
@@ -120,26 +123,26 @@ const AdviceCommentList = () => {
               </AdviceImgBox>
               <ContentBox>
                 <UserInfo>
-                  <UserBox>
-                    <img src={ comment.profileImageUrl} alt="" />
+                    <UserBox>
+                    <img src={ comment.profileImageUrl==='UNKNOWN'? userImg :comment.profileImageUrl} alt="" />
                   </UserBox>
                     <div className="username">{ comment.userName}</div>
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">
                     <div className="flex">
-                      <RiThumbUpLine size='22' />
+                      <RiThumbUpLine size='17' />
                       <div>{ comment.up}</div>
                     </div>
                     <div className="flex">
-                      <RiThumbDownLine size='22'/>
+                      <RiThumbDownLine size='17'/>
                       <div>{ comment.down}</div>
                     </div>
                   </div>
-                  <VscWarning size="22" onClick={Report} />
+                  <VscWarning size="17" onClick={Report} />
                     {
                       comment.userId === userInfo.id
-                      ?<VscTrash size="23" onClick={()=>deleteComment(comment.commentId)}/>
+                      ?<VscTrash size="17" onClick={()=>deleteComment(comment.commentId)}/>
                       : ''
                     }
                 </IconContainer>
@@ -151,12 +154,22 @@ const AdviceCommentList = () => {
                 </div>
               </ContentBox>
          
-            </CommentListContainer>
-            <Slider {...settings}>
-                <div></div>
-                <div></div>
-                <div></div>
-            </Slider>
+              </CommentListContainer>
+              <ItemSlider>
+                <Slider {...settings}>
+                  {
+                    comment.itemList.map((item) => {
+                      return (
+                        <div className='imgBox'>
+                          <img src={ item } alt="" />
+                        </div>
+                      )
+                  })
+                  }
+              
+              </Slider>
+              </ItemSlider>
+              <hr style={{color:'#D3D3D3', width:'90%'}}/>
             </Fragment>
         )
         })

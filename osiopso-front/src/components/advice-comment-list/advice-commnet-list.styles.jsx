@@ -6,15 +6,17 @@ export const CommentListContainer = styled.div`
   width: 90%;
   align-items: center;
   margin: auto;
+  /* margin-top:20px; */
 `
 
 export const AdviceImgBox = styled.div`
-  height: 70%;
-  width: 50%;
+  height: 80%;
+  width: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px gray;
+  /* border: solid 1px gray; */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
   border-radius: 4px;
   img{
     width: 90%;
@@ -34,7 +36,7 @@ export const ContentBox = styled.div`
   .content{
     height: 30%;
     padding:10px;
-    font-size: 15px;
+    font-size: 80%;
   }
   .time{
     text-align: right;
@@ -47,7 +49,7 @@ export const ContentBox = styled.div`
 export const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   width: 80%;
   margin: auto;
 .username{
@@ -89,4 +91,30 @@ export const IconContainer = styled.div`
       align-items: center;
     }
   }
+`
+
+export const ItemSlider = styled.div`
+width: 93%;
+margin: auto;
+/* margin-bottom:20px; */
+ .slick-list{
+      margin:0 10px;
+
+    .imgBox{
+        display: flex;
+        justify-content: center;
+        img{
+            height: 70px;
+            width: 70px;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+        }
+    }
+}
+.slick-slide {
+    margin:0 10px;
+}
+.slick-arrow{
+    display: none !important;
+}
 `
