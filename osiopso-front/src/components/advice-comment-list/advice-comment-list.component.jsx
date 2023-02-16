@@ -30,7 +30,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Fragment } from "react";
 
-const AdviceCommentList = ({id}) => {
+const AdviceCommentList = ({id, userId}) => {
   	//slick
 	const settings = {
       dots: false,
@@ -47,7 +47,7 @@ const AdviceCommentList = ({id}) => {
   // const id = location.state.id
 
 
-  const writeId = location.state.userId
+
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
 
@@ -112,6 +112,25 @@ const AdviceCommentList = ({id}) => {
       }
     })
   }
+
+  const upComment = (coId) => {
+    axios({
+        method: 'get',
+         url: `${process.env.REACT_APP_AXIOS_URL}comment/up/${coId}`,
+          headers: {
+            Authorization: `Bearer ${Token.token}`,
+          },
+      })
+      .then((res)=>{
+        const result = res.data.responseData
+        console.log(result,'😎')
+        setCommentArr(result.comments)
+        console.log(result.comments)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
   
   return (
     <div>
@@ -126,7 +145,7 @@ const AdviceCommentList = ({id}) => {
               </AdviceImgBox>
                 <ContentBox>
                   {
-                    writeId === userInfo.id ?
+                    userId === userInfo.id ?
                     <div className="select">
                       <div>
                         <BsCheck2Circle size='17' />
@@ -144,11 +163,11 @@ const AdviceCommentList = ({id}) => {
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">
-                    <div className="flex">
+                    <div className="flex" onClick={()=>upComment(comment.commentId)}>
                       <RiThumbUpLine size='17' />
                       <div>{ comment.up}</div>
                     </div>
-                    <div className="flex">
+                    <div className="flex" onClick={()=>upComment(comment.commentId)}>
                       <RiThumbDownLine size='17'/>
                       <div>{ comment.down}</div>
                     </div>
@@ -187,7 +206,7 @@ const AdviceCommentList = ({id}) => {
             </Fragment>
         )
         })
-          :<div style={{textAlign:'center'}}>Advice가 없습니다.</div>
+          :<div style={{textAlign:'center', marginTop:'10px 0'}}>Advice가 없습니다.</div>
           
       }
 
