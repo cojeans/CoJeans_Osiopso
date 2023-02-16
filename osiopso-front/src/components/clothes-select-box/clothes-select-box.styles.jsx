@@ -170,11 +170,39 @@ export const OotdImgContainer = styled.div`
     }
 `
 
-export const StyleTagButton = styled.button`
+export const StyleTagButton = styled.div`
+    padding:10px 0;
     border:none;
     height:40px;
-    width:80px;
+    width:320px;
     border-radius:4px;
-    background-color:#e7e2ff;
     cursor:pointer;
+    background-color: white;
+    font-family: 'LINESeedKR-Bd';
+    display: flex;
+    align-items: center;
+    justify-content: flex-start
+`
+
+export const TagBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    div{
+        margin:3px;
+    }
+`
+export const Note = styled.div`
+display: flex;
+width: 320px;
+height: 100%;
+text-align: start;
+font-size: 80%;
+padding:10px 0;
+`
+
+export const ExclamationMark = styled.div`
+display: flex;
+margin-right: 1%;
 `

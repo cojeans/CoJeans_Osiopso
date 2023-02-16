@@ -1,12 +1,13 @@
-import { Xcontainer, TopContainer, BottomContainer, MarginDiv, OotdInput, OotdImgContainer, StyleTagButton, PrevUploadImg, ImgContainer } from "./clothes-select-edit.styles";
+import { Xcontainer, TopContainer, BottomContainer, MarginDiv, OotdInput, OotdImgContainer, StyleTagButton, PrevUploadImg, ImgContainer, Div, ButtonsContainer, SaveButtonBox } from "./clothes-select-edit.styles";
 import { useNavigate } from "react-router-dom";
 import { resetOotdCategory } from "../../store/ootd/ootd.reducer";
 import Cropper from "react-cropper";
 import CanvasDraw from "react-canvas-draw";
+import html2canvas from 'html2canvas';
 // import Grid from "@material-ui/core/Grid";
 
-import { selectUser } from "../../store/user/user.selector";
-import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
+// import { selectUser } from "../../store/user/user.selector";
+// import { selectorOotdCategory } from "../../store/ootd/ootd.selector";
 import { useBodyScrollLock } from "../../components/profile-closet/profile-closet.component";
 
 import Button from "../button/button.component";
@@ -39,13 +40,38 @@ const ClothesSelectEdit = () => {
     const [drawWidth, setDrawWidth] = useState(400);
     const [drawHeight, setDrawHeight] = useState(400);
     const [modalOpen, setModalOpen] = useState(false);
+    const [drawing, setDrawing] = useState();
     const { lockScroll, openScroll } = useBodyScrollLock();
     const [changeImg, setChangeImg] = useState("");
+    const [afterCrop, setAfterCrop ] = useState(false) 
+    const [afterErase, setAfterErase ] = useState(false) 
     const showModal = () => {
         window.scrollTo(0, 0);
         setModalOpen(true);
         lockScroll();
     };
+
+
+    const onCapture = () => {
+		console.log('onCapture');
+		html2canvas(document.getElementById('div')).then(canvas=>{
+            setChangeImg(canvas.toDataURL('image/png'))
+
+		});
+
+		const onSaveAs =(uri, filename)=> {
+			console.log('onSaveAs');
+			var link = document.createElement('a');
+			document.body.appendChild(link);
+			link.href = uri;
+			link.download = filename;
+			link.click();
+			document.body.removeChild(link);
+		};
+	
+	};
+
+
     const reset = () => {
         // setIsCrop(false);
         // setIsErase(false);
@@ -54,30 +80,36 @@ const ClothesSelectEdit = () => {
         dispatch(upload(beforeData));
     };
     const cropperRef = useRef(null);
+    const canvasRef = useRef(null);
     // 캡쳐이미지가 리사이즈 될때 실행
+    useEffect(() => {
+        setChangeImg(beforeData);
+        setCroppedImage(beforeData);
+        dispatch(upload(beforeData))
+    }, [])
     useEffect(() => {
         if (croppedImage) {
             console.log(croppedImage);
-            // onSaveAs(croppedImage, 'image-download/png')
-            // const ctx = canvasRef.current.getContext("2d")
-            // ctx.clearRect(0, 0, 500, 500)
+
 
             const image = new Image();
             image.src = croppedImage;
             console.log(image.width);
 
-            setDrawWidth(image.width);
-            setDrawHeight(image.Heigth);
 
-            // image.onload = function() {
-            //   ctx.drawImage(image, 0, 0);
-            // };
+            setDrawWidth(250);
+            setDrawHeight(250);
+
+
         }
     }, [croppedImage]);
+
+
+    
     const eraseCrop = () => {
-        console.log(changeImg);
+
         setIsErase(true);
-        // setIsCrop(false);
+
     };
     const makeCrop = () => {
         setIsCrop(true);
@@ -91,68 +123,122 @@ const ClothesSelectEdit = () => {
     };
     const completeCut = () => {
         setIsCrop(false);
-        setIsErase(false);
+        // setIsErase(false);
         setChangeImg(croppedImage);
+        setCroppedImage(beforeData);
+        // setAfterCrop(true);
     };
+
+
+    ////지우기 관련
     const completeErase = () => {
-        setIsCrop(false);
-        setIsErase(false);
-        // dispatch(upload(croppedImage))
+        // setIsCrop(false);
+        setIsErase(false)
+        html2canvas(document.getElementById('div')).then(canvas=>{
+            setChangeImg(canvas.toDataURL('image/png'))
+
+		});
+
     };
-    const canvasRef = useRef(null);
-    // 캡쳐이미지가 리사이즈 될때 실행
-    // const erase_image = ReactDOM.createRoot(
-    //   document.getElementById('erase_image')
-    // );
+
+
+
+
     const onSave = () => {
-        console.log("테스트 : " + croppedImage);
-        dispatch(upload(croppedImage));
+
+        dispatch(upload(changeImg));
         navigate(-1);
     };
     return (
         <>
-            <div>안녕</div>
-            <button onClick={reset}>초기화</button>
-            {!isCrop && <button onClick={makeCrop}>자르기</button>}
-            {isCrop && <button onClick={completeCut}>자르기 완료</button>}
-            {/* <button onClick={eraseCrop}>지우기</button>
-    {isErase && <button onClick={completeErase}>지우기 완료</button>} */}
 
-            {/* <StyleTagButton onClick={showModal} >Add Tag</StyleTagButton> */}
+            <ButtonsContainer>
+            <Button 
+            type='submit'
+            size={'md'}
+            variant={'success'}
+            color='#7272ba'
+            onClick={reset}>초기화</Button>
+            {!isCrop &&  <Button 
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+            variant={'success'}
+            onClick={makeCrop}>자르기</Button>}
+            {isCrop && <Button 
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+            variant={'success'}
+            onClick={completeCut}>자르기 완료</Button>}
+            {!isErase &&  <Button 
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+            variant={'success'}
+            onClick={eraseCrop}>지우기</Button>}
+            {isErase && <Button 
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+            variant={'success'}
+            onClick={completeErase}>지우기 완료</Button>}
+            </ButtonsContainer>
+            {isErase && (<Button
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+
+            variant={'success'}
+        onClick={() => {
+          canvasRef.current.undo();
+        }}
+        >
+        UNDO
+        </Button>)}
+        
+        
+        {isErase && (<Button           
+            type='submit'
+            size={'md'}
+            color='#7272ba'
+
+            variant={'success'}
+        onClick={() => {
+          canvasRef.current.clear();
+        }}
+        >
+        CLEAR
+      </Button>)}
+
+            <SaveButtonBox>
+                {<Button
+                type='submit'
+                size={'md'}
+
+                onClick={onSave}>저장</Button>}
+            </SaveButtonBox>
+
 
             <ImgContainer>
                 <PrevUploadImg>
-                    {/* {saveData && (
-            <img
-              src={saveData}
-              alt="https://pixlr.com/images/index/remove-bg.webp"
-            />
-          )} */}
-                    <img src={croppedImage} alt="" />
-                    {<button onClick={onSave}>저장</button>}
+                        <Div>
+                        <img src={changeImg} alt="" />
+                        </Div>
 
-                    {/* <img src={saveData} alt="" /> */}
-                    {/* <img src={changeImg} alt="" /> */}
-                    {/* {croppedImage ? (<img src={croppedImage} />):(<img src={saveData} />)} */}
-                    {/* <img src={croppedImage} /> */}
-                    {isCrop && <Cropper src={changeImg} crop={onCrop} ref={cropperRef} />}
+                    {isCrop && <Div>
+                        <Cropper src={changeImg} crop={onCrop} ref={cropperRef} />
+                        </Div>}
+                        
                 </PrevUploadImg>
-                {/* <ExampleBox onClick={callAxios}>
-          <img src={require("../../assets/background.jpg")} alt="" />
-          <span>이미지 자르기</span>
-        </ExampleBox> */}
-                {/* {canvasRef && <img src={canvasRef} alt="" />} */}
 
-                {isErase && (
-                    <CanvasDraw imgSrc={changeImg} brushColor={"white"} hideGridX={true} hideGridY={true} hideInterface={true} ref={canvasRef} canvasWidth={drawWidth} canvasHeight={drawHeight} />
-                )}
             </ImgContainer>
 
-            {/* {
-        modalOpen && <Modal page={ false } setModalOpen={setModalOpen} openScroll={openScroll}ootdFormData={ ootdFormData } setOotdFormData = {setOotdFormData} />
-			} */}
-            {/* <CanvasDraw  
-        imgSrc={croppedImage}
+
+        {isErase && (<Div id="div">
+                <CanvasDraw 
+        
+        imgSrc={changeImg}        
         brushColor={'white'}
         hideGridX={true}
         hideGridY={true}
@@ -160,24 +246,11 @@ const ClothesSelectEdit = () => {
         ref={canvasRef}
         canvasWidth={drawWidth}
         canvasHeight={drawHeight}
-      /> */}
-            {/* <button
-        onClick={() => {
-          canvasRef.current.undo();
-        }}
-        >
-        UNDO
-        </button>
-        <button
-        onClick={() => {
-          canvasRef.current.clear();
-        }}
-        >
-        CLEAR
-      </button> */}
-            {/* <ImgContainer>
-  <img src={beforeData} alt="" />
-      </ImgContainer> */}
+        
+        />
+        </Div>)}
+
+
         </>
     );
 };
