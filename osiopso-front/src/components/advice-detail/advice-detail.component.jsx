@@ -182,6 +182,22 @@ const AdviceDetail = () => {
     })
   }
 
+  const goProfile = () => {
+    if (! advicedDetail.selected){
+      if (advicedDetail.userId === userInfo.id) {
+       navigate('/profile/')
+      } else {
+        navigate(
+          '/profile/' + advicedDetail.userId,
+          {
+            state: {
+            id:advicedDetail.userId
+        }}
+        )
+     }
+    }
+  }
+  
   return (
     <Fragment>
       <div>
@@ -189,11 +205,11 @@ const AdviceDetail = () => {
           {advicedDetail.subject }
         </Title>
       <UpperProfile 
-      // onClick={}
+      onClick={goProfile}
       >
         <ProfileImageBox  >
               {
-            advicedDetail.selected || advicedDetail.profileImageUrl ==='UNKNOWN'
+             advicedDetail.selected || advicedDetail.profileImageUrl ==='UNKNOWN'
             ? <img src={require('../../assets/defaultuser.png')} alt="" /> 
             :  <img src={ootdUserUrl} alt="" />   
         }

@@ -5,7 +5,7 @@ import {
   ImageContainer,
 
   TopTag,
-  Container,
+  // Container,
 } from "./advice.styles";
 import { TextToLeft } from "../../routes/home/home.styles";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ const defaultAdviceForm = {
 }
 
 const Advice = () => {
+  // const [curTab, setCurTab] = useState('ing')
   const [modalOpen, setModalOpen] = useState(false);
   const {lockScroll, openScroll } = useBodyScrollLock()
   const [adviceFormData, setAdviceFormData] = useState(defaultAdviceForm)
@@ -90,11 +91,6 @@ const Advice = () => {
 		};
 	}, [bottom]);
 
-  const showModal = ()=>{
-    window.scrollTo(0,0);
-    setModalOpen(true)
-    lockScroll();
-  }
  
   const getAdviceAxios = () => {
     axios({
@@ -127,21 +123,22 @@ const Advice = () => {
   };
 
   const navigate = useNavigate();
-  const goToCheckoutHandler = () => {
-    navigate("create");
-  };
-  const goToDetail = () => {
-    navigate("detail");
-  };
+
   return (
     <div>
-
+{/* 
       <TextToLeft>
         <TopTag>
-          <h4>채택 중</h4> <h4>채택완료</h4>
+          <div onClick={()=>setCurTab('ing')}  className={curTab === 'ing' ? 'curTab' : ''}>
+            
+            채택 중
+            </div> 
+            <div onClick={()=>setCurTab('ed')} className={curTab === 'ed' ?'curTab' : ''}>
+
+              채택완료
+              </div>
         </TopTag>
-      </TextToLeft>
-      {console.log(adviceArticle)}
+      </TextToLeft> */}
       <Fragment>
       {
           adviceArticle &&
