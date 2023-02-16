@@ -12,6 +12,8 @@ import Slider from "react-slick";
 //
 import Swal from "sweetalert2";
 
+import { BsCheck2Circle } from "react-icons/bs";
+
 import {
   CommentListContainer,
   AdviceImgBox,
@@ -43,7 +45,7 @@ const AdviceCommentList = () => {
 
   const location = useLocation()
   const id = location.state.id
-
+  const writeId = location.state.userId
   const Token = useSelector(selectUser)
   const userInfo = useSelector(selectUserInfo)
 
@@ -116,12 +118,22 @@ const AdviceCommentList = () => {
           commentArr.map((comment) => {
           return (
             <Fragment>
-          <CommentListContainer>
+              <CommentListContainer>
               <AdviceImgBox>
-
                 <img src={ comment.imageUrl } alt="" />
               </AdviceImgBox>
-              <ContentBox>
+                <ContentBox>
+                  {
+                    writeId === userInfo.id ?
+                    <div className="select">
+                      <div>
+                        <BsCheck2Circle size='17' />
+                        <div>
+                          채택
+                        </div>
+                      </div>
+                    </div> : ''
+                  }
                 <UserInfo>
                     <UserBox>
                     <img src={ userImg } alt="" />
