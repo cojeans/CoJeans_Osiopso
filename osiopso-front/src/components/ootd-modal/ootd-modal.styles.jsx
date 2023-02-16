@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 
 export const selectStyle = css`
-background-color:#e7e2ff;
-color:black;
+background-color:#7272ba;
+color:white;
 `
 
 export const CategoryModalContainer = styled.div`
