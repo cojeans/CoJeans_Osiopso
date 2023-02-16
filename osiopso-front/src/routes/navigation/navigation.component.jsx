@@ -27,7 +27,7 @@ import { useSelector, } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { selectUser } from '../../store/user/user.selector'
 import { useEffect } from "react"
-
+import Swal from "sweetalert2"
 
 const Navigation = () => {
 	const [modalOpen, setModalOpen] = useState(false);
@@ -40,7 +40,16 @@ const Navigation = () => {
  
 	const showModal = () => {
 		if (!Token.token) {
-		alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+		// alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+		Swal.fire({
+			 confirmButtonColor: "#7272ba", 
+			 html: `
+			 로그인이 안되어 있네요. 
+			 😢 로그인 후 이용가능한 서비스입니다.
+			 `,
+				 showCancelButton: false,
+				 confirmButtonText: "확인",
+		   })
 		navigate('/login')
 		} else {
 			window.scrollTo(0, 0);

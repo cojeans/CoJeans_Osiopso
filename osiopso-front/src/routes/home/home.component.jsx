@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './home.styles'
 
+import Swal from 'sweetalert2'
+
 // slick
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -110,7 +112,15 @@ const Home = () => {
 
 	useEffect(() => {
 		if (!Token.token) {
-			alert('로그인이 안되어 있네요 😢 로그인 후 이용가능한 서비스입니다.')
+			Swal.fire({
+				 confirmButtonColor: "#7272ba", 
+				 html: `
+				 로그인이 안되어 있네요. 
+				 😢 로그인 후 이용가능한 서비스입니다.
+				 `,
+					 showCancelButton: false,
+					 confirmButtonText: "확인",
+			   })
 			navigate('/login')
 		} else {
 			getCurrentUser()
