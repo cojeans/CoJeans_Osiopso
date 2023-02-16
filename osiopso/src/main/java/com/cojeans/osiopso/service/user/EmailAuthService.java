@@ -30,8 +30,8 @@ public class EmailAuthService {
     private final MailService mailService;
 
 
-    static String ACTIVATION_EMAIL = "http://localhost:8080/api/user/emailVerification/";
-//    static String ACTIVATION_EMAIL = "https://www.osiopso.site/api/user/emailVerification/";
+//    static String ACTIVATION_EMAIL = "http://localhost:8080/api/user/emailVerification/";
+    static String ACTIVATION_EMAIL = "https://www.osiopso.site/api/user/emailVerification/";
     static String EMAIL_SUBJECT = "오시옵소 계정활성화를 해주세요";
     static String PASSWORD_EMAIL_SUBJECT = "오시옵소 임시비밀번호";
 
