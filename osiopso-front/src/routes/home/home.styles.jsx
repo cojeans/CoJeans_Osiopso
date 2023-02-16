@@ -90,5 +90,5 @@ display: flex;
 text-align: left;
 font-size: 80%;
 margin: 1% 2% 2% 0%;
-
+/* font-family: 'Bodoni'; */
 `

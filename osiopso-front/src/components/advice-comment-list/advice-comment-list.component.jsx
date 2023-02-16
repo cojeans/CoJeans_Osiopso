@@ -124,9 +124,9 @@ const AdviceCommentList = () => {
               <ContentBox>
                 <UserInfo>
                     <UserBox>
-                    <img src={ comment.profileImageUrl==='UNKNOWN'? userImg :comment.profileImageUrl} alt="" />
+                    <img src={ userImg } alt="" />
                   </UserBox>
-                    <div className="username">{ comment.userName}</div>
+                    <div className="username">익명</div>
                 </UserInfo>
                 <IconContainer>
                   <div className="outer">

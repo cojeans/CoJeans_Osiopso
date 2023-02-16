@@ -234,8 +234,8 @@ const OotdDetail = () => {
       <div>
 
       <UpperProfile 
-      onClick={goUserProfile}
-      >
+          onClick={goUserProfile}
+        >
         <ProfileImageBox  >
           <img src={  ootdUserUrl} alt="" />
         </ProfileImageBox >
