@@ -252,13 +252,14 @@ const AdviceDetail = () => {
         </Buttoncontainer>
         
         {/* <hr style={{color:'#D3D3D3', width:'90%'}}/> */}
+        <div ref={adviceRef}></div>
         <CommentTitle >
-          <div ref={adviceRef}></div>
           <FaMagic color="#7272ba "/>
         Advice List
         </CommentTitle>
         <AdviceCommentList
         id={id}
+        userId = {advicedDetail.userId}
         /> 
       </div>
     </Fragment>

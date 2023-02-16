@@ -223,6 +223,8 @@ const OotdDetail = () => {
       )
    }
   }
+
+
   
   useEffect(() => {
     sccurRef1()

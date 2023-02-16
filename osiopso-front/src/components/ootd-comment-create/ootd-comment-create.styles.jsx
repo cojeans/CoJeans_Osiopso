@@ -79,7 +79,7 @@ export const UpperComment = styled.div`
     flex-direction: column;
     align-items: center;
     .username{
-      font-size: 30%;
+      font-size: 81%;
     }
 
   }
@@ -107,7 +107,7 @@ export const UpperComment = styled.div`
     border:none;
     height:40px;
       button{
-        font-size: 15px;
+        font-size: 100%;
       }
   }
   `

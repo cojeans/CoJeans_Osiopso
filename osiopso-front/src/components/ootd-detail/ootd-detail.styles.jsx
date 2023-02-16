@@ -41,7 +41,7 @@ export const ProfileImageBox = styled.div`
   display:flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   `
   export const UpperLikeContainer = styled.div`
   display: flex;
@@ -182,7 +182,7 @@ align-items: center;
 `
 
 export const CommentTitle = styled.div`
-  margin: 40px auto 0 auto;
+  margin: 55px auto 0 auto;
   width: 90%;
   font-size: 109%;
 `
