@@ -23,6 +23,7 @@ import axios from 'axios'
 import Modal from '../modal/modal.component'
 
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { useBodyScrollLock } from "../profile-closet/profile-closet.component";
 
 
@@ -36,7 +37,66 @@ const Ootd = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { lockScroll, openScroll } = useBodyScrollLock()
   const [ootdFormData, setOotdFormData] = useState(defaultOotdForm)
+  const [ootdArticle, setOotdArticle] = useState([])
 
+  const [bottom, setBottom] = useState(null);
+  const [curPage, setCurPage] = useState(1)
+  const bottomObserver = useRef(null);
+
+  useEffect(() => {
+    console.log('끝')
+    const lastArr = ootdArticle.at(-1)
+    if (lastArr) {
+      console.log(lastArr.id)
+      const lastId = lastArr.id
+      
+       axios({
+        method: "get",
+        url: `${process.env.REACT_APP_AXIOS_URL}feed/ootd?idx=${lastId}`,
+        headers: {
+          Authorization: `Bearer ${Token.token}`,
+        },
+      })
+        .then((res) => res.data.responseData)
+         .then((data) => {
+           console.log(data)
+          //  for (let i=0; i < data.length < i++;){
+            setOotdArticle([...ootdArticle, ...data])
+          //  }
+         })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },[curPage])
+
+  useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setCurPage((pre) => pre + 1);
+          }
+        },
+        { threshold: 0.25, rootMargin: "80px" }
+      );
+      bottomObserver.current = observer;
+    }, []);
+
+  
+	useEffect(() => {
+		const observer = bottomObserver.current;
+		if (bottom) {
+      observer.observe(bottom);
+      
+		}
+		return () => {
+			if (bottom) {
+				observer.unobserve(bottom);
+			}
+		};
+	}, [bottom]);
+
+  
   const showModal = ()=> {
     window.scrollTo(0,0);
     setModalOpen(true);
@@ -56,7 +116,6 @@ const Ootd = () => {
     });
   };
 
-  const [ootdArticle, setOotdArticle] = useState([])
   const getOotdAxios = () => {
     axios({
       method: "get",
@@ -110,6 +169,7 @@ const Ootd = () => {
           );
         })}
       </OotdList>
+      <div ref={setBottom} />
       {
         modalOpen && <Modal page={ 2 } setModalOpen={setModalOpen} openScroll={openScroll} ootdFormData={ootdFormData} setOotdFormData={setOotdFormData} />
       }
