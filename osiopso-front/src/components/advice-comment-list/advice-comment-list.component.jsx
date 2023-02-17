@@ -173,6 +173,14 @@ const AdviceCommentList = ({id, userId}) => {
           })
           .then((res)=>{
             console.log(res,'✔')
+            Swal.fire({
+              confirmButtonColor: "#7272ba", 
+              html: `
+              채택되었습니다. 
+              `,
+                showCancelButton: false,
+                confirmButtonText: "확인",
+              })
             getComment()
           })
           .catch((err)=>{
