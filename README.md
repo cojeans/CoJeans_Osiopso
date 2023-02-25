@@ -73,10 +73,23 @@ Osiopso
 └── util
 ```
 <br>
-<br>
 
  ### Front
  ```
+ osiopso-front
+├── model
+├── public
+│   └── model
+└── src
+    ├── assets
+    │   ├── fashion_dataset
+    │   ├── fonts
+    │   └── components
+    ├── constants
+    ├── model
+    ├── routes
+    ├── store
+    └── utils
  ```
 
 
