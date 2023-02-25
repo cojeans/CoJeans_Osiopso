@@ -45,14 +45,14 @@ SSAFY 8기 2학기 공통 프로젝트 - `OSIOPSO`
   - ### 옷장 등록
     - 내가 원하는 카테고리별 옷장을 생성 가능합니다.
     - 옷장에는 내가 원하는 옷들을 등록할 수 있습니다.
-   <br/>
+    <br/>
   - ### 옷 등록
     - 내가 만든 옷장에 옷을 등록할 수 있습니다.
     - 옷 사진을 업로드하면 자동으로 배경을 제거한 이미지로 변경됩니다.
     - 선택한 이미지를 자르고 지워서 수정할 수 있습니다.
     - 옷을 등록할 때 색깔, 계절, 카테고리 등을 선택합니다.
     - 색깔과 카테고리는 AI를 활용하여 자동으로 태깅되고 수정할 수 있습니다.
-    <br/>
+      <br/>
   - ### Advice
     - 사진과 글을 기반으로한 게시물을 업로드합니다.
     - 게시글을 올린 유저의 옷장에 등록된 옷을 드래그&드롭 하여 이미지 형태의 코디 조합을 생성할 수 있습니다. 
@@ -73,16 +73,16 @@ SSAFY 8기 2학기 공통 프로젝트 - `OSIOPSO`
 
 # 주요 기술
   **백엔드**
-    - SpringBoot: 2.5
-    - SpringSecurity
-    - SpringDataJPA
-    - Oauth2-client
-    - JWT 
+  - SpringBoot: 2.5
+  - SpringSecurity
+  - SpringDataJPA
+  - Oauth2-client
+  - JWT 
 
   **프론트엔드**
-    - React : 18.2
-    - Redux tool kit
-    - Axios
+  - React : 18.2
+  - Redux tool kit
+  - Axios
 
   **AI**
   - tensorflow
@@ -90,15 +90,15 @@ SSAFY 8기 2학기 공통 프로젝트 - `OSIOPSO`
   - google collab
 
   **인프라**
-    - AWS EC2
-    - Docker
-    - Nginx
+  - AWS EC2
+  - Docker
+  - Nginx
 
   **기획**
-    - Figma
-    - Notion
-    - JIRA
-    - GitLab
+  - Figma
+  - Notion
+  - JIRA
+  - GitLab
 <br>
 <br>
 
