@@ -1,23 +1,23 @@
 
 
-# 소개 영상 보기 : UCC 링크
-
 <br>
 <br>
 
 # 프로젝트 진행 기간 
- 2023.01.03(화) ~  2023.02.17(금) (45일간 진행) <br>
- SSAFY 8기 2학기 공통 프로젝트 - OSIOPSO
+2023.01.03(화) ~  2023.02.17(금) (45일간 진행) <br>
+SSAFY 8기 2학기 공통 프로젝트 - `OSIOPSO`
+> ## [팀노션](https://comet-sailfish-e6b.notion.site/S-076fbfa5a4bd4e27bae894063fc05392)
+> ## [소개 영상 보기 : UCC 링크](https://youtu.be/hS9hGuiZsVM)
 
 <br>
 <br>
 
-# OSIOPSO - 배경
+# `OSIOPSO` - 배경
 
 <br>
 <br>
 
-# OSIOPSO - 개요
+# `OSIOPSO` - 개요
 
 <br>
 <br>
@@ -127,7 +127,7 @@ Osiopso
 <br>
 <br>
 
-# Osiopso 서비스 (구동화면)
+# `Osiopso` 서비스 (구동화면)
 - 1
 - 2
 - 3
