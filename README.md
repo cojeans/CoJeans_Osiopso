@@ -75,7 +75,9 @@ Osiopso
 
 
  # 팀원 역할 분배
-img
+ ![members](https://user-images.githubusercontent.com/39759666/221364459-55ecc390-14bc-4c3d-a67d-bcd4cb7100f9.png)
+
+
 
 
 # 프로젝트 산출물
