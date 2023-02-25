@@ -3,13 +3,13 @@
 // import { getFirestore } from "firebase/firestore";
 
 // const firebaseConfig = {
-//     apiKey: "AIzaSyAtgDtxzIdAQdvSEKjxd2UBGoKscEq_j6M",
-//     authDomain: "osiopso-fc80c.firebaseapp.com",
-//     projectId: "osiopso-fc80c",
-//     storageBucket: "osiopso-fc80c.appspot.com",
-//     messagingSenderId: "74373764080",
-//     appId: "1:74373764080:web:c5c6eba2d9450ce0fb8335",
-//     measurementId: "G-QHSTBHHRQK",
+//     apiKey: "비밀^_^",
+//     authDomain: "비밀^_^",
+//     projectId: "비밀^_^",
+//     storageBucket: "비밀^_^",
+//     messagingSenderId: "비밀^_^",
+//     appId: "비밀^_^",
+//     measurementId: "비밀^_^",
 // };
 
 // const app = initializeApp(firebaseConfig);
@@ -21,13 +21,13 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCESE3FBfTVvTQd-Xt2beJJRpfmbfomUZw",
-  authDomain: "osiopso.firebaseapp.com",
-  projectId: "osiopso",
-  storageBucket: "osiopso.appspot.com",
-  messagingSenderId: "679410198207",
-  appId: "1:679410198207:web:97a1ccc4dfe4b9c5e6480a",
-  measurementId: "G-N1XB2BHBXF",
+  apiKey: "비밀^_^",
+  authDomain: "비밀^_^",
+  projectId: "비밀^_^",
+  storageBucket: "비밀^_^",
+  messagingSenderId: "비밀^_^",
+  appId: "비밀^_^",
+  measurementId: "비밀^_^",
 };
 
 const app = initializeApp(firebaseConfig);
