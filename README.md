@@ -171,20 +171,78 @@ Osiopso
 <br>
 
 # 프로젝트 산출물
-- ### 기능명세서
-![image](https://user-images.githubusercontent.com/67217686/221364506-ea80eb64-2ffd-49cb-b386-9c6f53a31cd2.png)
-- 디자인&컨셉기획
-- 스토리보드
-- 시퀀스다이어그램
-- 아키텍처
-- 와이어프레임
-- 컨벤션
-- API
-- ERD
-- 회의록
-- 테스트케이스
-- 시스템기술서
-- 명세기술서
+<details>
+<summary>기능명세서</summary>
+<div markdown="1">       
+</div>
+</details>
+
+<details>
+<summary>시퀀스다이어그램</summary>
+<div markdown="1">       
+</div>
+</details>
+
+<details>
+<summary>와이어프레임</summary>
+<div markdown="1">       
+</div>
+</details>
+<details>
+
+<summary>컨벤션</summary>
+<div markdown="1">       
+</div>
+</details>
+
+<details>
+<summary>스토리보드 : 더 보기(링크)</summary>
+<div markdown="1">       
+<br><img width="1440" alt="" src="https://user-images.githubusercontent.com/67217686/221364797-7a270d5b-e77c-41a7-a80c-b20fd6234619.PNG"><br>
+</div>
+</details>
+
+<details>
+<summary>아키텍처</summary>
+<div markdown="1">  
+<br><img width="1440" alt="" src="https://user-images.githubusercontent.com/67217686/221364506-ea80eb64-2ffd-49cb-b386-9c6f53a31cd2.png"><br>
+</div>
+</details>
+
+<details>
+<summary>API</summary>
+<div markdown="1">       
+<br><img width="1440" alt="api" src="https://user-images.githubusercontent.com/67217686/221365631-40a505b4-7730-448a-9e01-dec8bce3d73a.png"><br>
+</div>
+</details>
+
+<details>
+<summary>ERD</summary>
+<div markdown="1">       
+<br><img width="1440" alt="api" src="https://user-images.githubusercontent.com/67217686/221365631-40a505b4-7730-448a-9e01-dec8bce3d73a.png"><br>
+</div>
+</details>
+
+<details>
+<summary>회의록</summary>
+<div markdown="1">       
+<br><img width="1440" alt="api" src="https://user-images.githubusercontent.com/67217686/221365631-40a505b4-7730-448a-9e01-dec8bce3d73a.png"><br>
+</div>
+</details>
+
+<details>
+<summary>시스템기술서</summary>
+<div markdown="1">       
+<br><img width="1440" alt="api" src="https://user-images.githubusercontent.com/67217686/221365631-40a505b4-7730-448a-9e01-dec8bce3d73a.png"><br>
+</div>
+</details>
+
+<details>
+<summary>명세기술서</summary>
+<div markdown="1">       
+<br><img width="1440" alt="api" src="https://user-images.githubusercontent.com/67217686/221365631-40a505b4-7730-448a-9e01-dec8bce3d73a.png"><br>
+</div>
+</details>
 
 <br>
 <br>
