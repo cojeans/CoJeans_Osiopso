@@ -18,6 +18,42 @@
  # 프로젝트 파일 구조
  ### Back
 ```
+Osiopso
+├── config
+├── controller
+├── dto
+│   ├── request
+│   │   ├── closet
+│   │   ├── comment
+│   │   ├── feed
+│   │   └── filter
+│   ├── response
+│   │   ├── closet
+│   │   ├── comment
+│   │   ├── feed
+│   │   └── tag
+│   ├── tag
+│   └── user
+├── entity
+│   ├── closet
+│   ├── comment
+│   ├── feed
+│   ├── tag
+│   └── user
+├── exception
+├── repository
+│   ├── article
+│   ├── closet
+│   ├── comment
+│   └── user
+├── security
+│   └── oauth2
+│       └── user
+├── service
+│   ├── article
+│   ├── closet
+│   └── user
+└── util
 ```
 
  ### Front
