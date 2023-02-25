@@ -2,20 +2,37 @@
 
 # 소개 영상 보기 : UCC 링크
 
+<br>
+<br>
+
 # 프로젝트 진행 기간 
  2023.01.03(화) ~  2023.02.17(금) (45일간 진행) <br>
  SSAFY 8기 2학기 공통 프로젝트 - OSIOPSO
 
+<br>
+<br>
 
- # OSIOPSO - 배경
+# OSIOPSO - 배경
 
- # OSIOPSO - 개요
+<br>
+<br>
 
- # 주요 기능
+# OSIOPSO - 개요
 
- # 주요 기술
+<br>
+<br>
 
- # 프로젝트 파일 구조
+# 주요 기능
+
+<br>
+<br>
+
+# 주요 기술
+
+<br>
+<br>
+
+# 프로젝트 파일 구조
  ### Back
 ```
 Osiopso
@@ -55,6 +72,8 @@ Osiopso
 │   └── user
 └── util
 ```
+<br>
+<br>
 
  ### Front
  ```
@@ -78,10 +97,12 @@ Osiopso
  ![members](https://user-images.githubusercontent.com/39759666/221364459-55ecc390-14bc-4c3d-a67d-bcd4cb7100f9.png)
 
 
-
+<br>
+<br>
 
 # 프로젝트 산출물
-- 기능명세서
+- ### 기능명세서
+![image](https://user-images.githubusercontent.com/67217686/221364506-ea80eb64-2ffd-49cb-b386-9c6f53a31cd2.png)
 - 디자인&컨셉기획
 - 스토리보드
 - 시퀀스다이어그램
@@ -95,21 +116,24 @@ Osiopso
 - 시스템기술서
 - 명세기술서
 
-
+<br>
+<br>
 
 # 프로젝트 결과물
 - 포팅메뉴얼
 - 중간발표자료
 - 최종발표자료
 
-
+<br>
+<br>
 
 # Osiopso 서비스 (구동화면)
 - 1
 - 2
 - 3
 
-
+<br>
+<br>
 
 ---
 ---
